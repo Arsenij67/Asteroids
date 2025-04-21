@@ -61,7 +61,7 @@
     <Analyzer Include="E:\6000.0.39f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\AnimatedCosmos\Shaders\Editor\CosmosSkyEditor.cs" />
+    <Compile Include="Assets\_Project\AnimatedCosmos\Shaders\Editor\CosmosSkyEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
