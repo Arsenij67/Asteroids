@@ -4,7 +4,7 @@ namespace Asteroid.Weapon
 {
     public class WeaponController : MonoBehaviour
     {
-        private  IWeaponStrategy [] _weaponStrategies;
+        private IWeaponStrategy [] _weaponStrategies;
         private IWeaponStrategy _currentWeaponStrategy;
         private void Awake()
         {
@@ -13,10 +13,8 @@ namespace Asteroid.Weapon
         }
         private void Update()
         {
-
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-
                 SetWeapon(_weaponStrategies[0]);
             }
 
@@ -30,8 +28,6 @@ namespace Asteroid.Weapon
                 Fire(_currentWeaponStrategy);
             }
         }
-
-
         private void SetWeapon(IWeaponStrategy weaponStrategy)
         {
             _currentWeaponStrategy = weaponStrategy;

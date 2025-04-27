@@ -9,7 +9,6 @@ namespace Asteroid.Inputs
             float thrustInput = Input.GetAxis("Vertical");
             return  thrustInput;
         }
-
         public float ScanRotation()
         {
             float rotationInput = Input.GetAxis("Horizontal");

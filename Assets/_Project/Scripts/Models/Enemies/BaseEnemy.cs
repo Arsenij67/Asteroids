@@ -1,10 +1,11 @@
 using Asteroid.Statistic;
 using UnityEngine;
+using Asteroid.SpaceObjectActions;
 
 namespace Asteroid.Enemies
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public abstract class BaseEnemy : MonoBehaviour
+    public abstract class BaseEnemy : SpaceObject
     {
         [HideInInspector] public Rigidbody2D _rb2dEnemy;
 
@@ -33,13 +34,11 @@ namespace Asteroid.Enemies
             {
                 _health -= damage;
             }
-
             else
             {
                 _health = 0;
                 Die();
             }
-
         }
         public void Die()
         {

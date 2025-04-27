@@ -82,6 +82,7 @@
     <Compile Include="Assets\_Project\Scripts\Interfaces\IDeviceInput.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\MeteoriteEnemy.cs" />
     <Compile Include="Assets\_Project\AnimatedCosmos\Example\MaterialSwitch.cs" />
+    <Compile Include="Assets\_Project\Scripts\Controllers\SpaceObject.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\LaserWeapon.cs" />
     <Compile Include="Assets\_Project\Scripts\DeviceInputs\DesktopInput.cs" />

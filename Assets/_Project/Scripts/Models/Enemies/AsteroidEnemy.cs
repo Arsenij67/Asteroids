@@ -7,19 +7,12 @@ namespace Asteroid.Enemies
     {
         [SerializeField] private MeteoriteEnemy _meteoriteExample;
         [SerializeField] private int _countMeteorites = 3;
-
-        private readonly float _lifeTime = 10f;
-        private void Start()
-        {
-            Destroy(gameObject, _lifeTime);
-        }
         public override void Move(Transform transformEnd)
         {
             _rb2dEnemy.linearVelocity = transform.up * Time.fixedDeltaTime * _speed;
         }
         public override void TakeDamage(float damage)
         {
-
             if (damage >= _health)
             {
                 SplitIntoMeteorites();

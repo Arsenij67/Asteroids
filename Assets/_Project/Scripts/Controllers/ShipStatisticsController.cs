@@ -10,11 +10,10 @@ namespace Asteroid.SpaceShip
         [SerializeField] private ShipStatisticsView _shipStView;
 
         private ShipStatisticsModel _shipStModel;
-
         private void Awake()
         {
             _shipStModel = GetComponent<ShipStatisticsModel>();
-            _shipStView.EnableRestartAction(ReloadScene);
+            _shipStView.AddRestartAction(ReloadScene);
         }
         private void OnDestroy()
         {
@@ -28,7 +27,5 @@ namespace Asteroid.SpaceShip
         {
             _shipStView.UpdateDestroyedEnemies(_shipStModel._enemiesDestroyed);
         }
-
-
     }
 }

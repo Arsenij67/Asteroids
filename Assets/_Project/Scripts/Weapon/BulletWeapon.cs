@@ -19,7 +19,6 @@ namespace Asteroid.Weapon
                 _countShoots--;
                 UpdateViewWeapon();
             }
-
         }
         protected override void UpdateViewWeapon()
         {

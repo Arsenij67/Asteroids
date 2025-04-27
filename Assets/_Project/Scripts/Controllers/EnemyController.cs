@@ -9,36 +9,32 @@ namespace Asteroid.Enemies
     {
         private Transform? _shipTransform;
         private BaseEnemy _enemy;
-
         private void Awake()
         {
             _enemy = GetComponent<BaseEnemy>();
             _shipTransform = FindAnyObjectByType<SpaceShipController>()?.transform;
         }
-
         private void FixedUpdate()
         {
             if (_shipTransform)
             {
                 _enemy.Move(_shipTransform);
+                _enemy.TryTeleport(_enemy.transform.position);
             }
         }
-
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            var ship = collision.gameObject.GetComponent<SpaceShipController>();
-            BaseBullet bullet = collision.GetComponent<BaseBullet>();
             if (collision.TryGetComponent(out BaseEnemy enemy))
             {
                 return;
             }
 
-            if (bullet != null)
+            if (collision.TryGetComponent(out BaseBullet bullet))
             {
                 _enemy.TakeDamage(bullet.Damage);
             }
 
-            if (ship)
+            if (collision.TryGetComponent(out SpaceShipController ship))
             {
                 _enemy.Die();
             }

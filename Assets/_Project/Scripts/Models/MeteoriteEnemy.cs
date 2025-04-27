@@ -26,7 +26,5 @@ namespace Asteroid.Enemies
         {
             _rb2dEnemy.MoveRotation(_rb2dEnemy.rotation + (angleOffset * Time.fixedDeltaTime));
         }
-
-
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Asteroid.Generation
 {
-
     [RequireComponent(typeof(ObstaclesGenerationData))]
     public class ObstaclesGenerationController : MonoBehaviour
     {
@@ -42,7 +41,5 @@ namespace Asteroid.Generation
                 enemyScene._rb2dEnemy.MoveRotation(angle);
             }
         }
-
-
     }
 }
