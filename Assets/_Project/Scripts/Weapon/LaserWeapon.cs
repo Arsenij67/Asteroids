@@ -8,7 +8,7 @@ namespace Asteroid.Weapon
         [SerializeField] private float _glowDuration;
 
         private GameObject _laserObject;
-        private bool _laserTurned = false;
+        private bool _laserTurned;
         private WaitForSeconds _waitSecondsGlow;
         [field: SerializeField] public short UniqueNumber { get; private set; }
         public void Init()
@@ -43,7 +43,6 @@ namespace Asteroid.Weapon
         {
             _shipView.UpdateLaserCount(_countShoots);
             _shipView.UpdateRollbackTime(_glowDuration);
-
         }
     }
 }

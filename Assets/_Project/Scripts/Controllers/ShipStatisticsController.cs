@@ -10,7 +10,7 @@ namespace Asteroid.SpaceShip
     {
         public ShipStatisticsModel ShipStModel { get; private set;}
         public ShipStatisticsView ShipStView { get; private set; }
-        public void OnDestroy()
+        public void RemoveAllListeners()
         {
             ShipStView.DisableRestartAction(ReloadScene);
         }

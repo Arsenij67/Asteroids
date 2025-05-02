@@ -10,17 +10,16 @@ namespace Asteroid.Enemies
     {
         protected Action<EnemyController, BaseEnemy> OnEnemySpawned;
 
-        protected Rigidbody2D _rb2dEnemy;
-
         [SerializeField] protected float _health;
         [SerializeField] protected int _damage;
         [SerializeField] protected int _speed;
 
-        private ShipStatisticsModel _shipStModel;
-
+        protected Rigidbody2D _rb2dEnemy;
         protected readonly int _maxDamage = 999_999;
         protected readonly int _maxSpeed = 1000;
         protected readonly int _maxHealth = 1000;
+
+        private ShipStatisticsModel _shipStModel; 
         public float Health => Mathf.Clamp(_health, 0, _maxHealth);
         public virtual int Damage => _maxDamage;
         public int Speed => Mathf.Clamp(_speed, 0, _maxSpeed);

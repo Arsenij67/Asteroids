@@ -7,7 +7,7 @@ namespace Asteroid.Statistic
 {
     public class ShipStatisticsView : MonoBehaviour
     {
-        [Header("UI —сылки")]
+        [Header("UI References")]
         [SerializeField] private TMP_Text _fireballCountText;
         [SerializeField] private TMP_Text _laserCountText;
         [SerializeField] private TMP_Text _coordinatesText;

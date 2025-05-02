@@ -5,7 +5,7 @@ namespace Asteroid.SpaceShip
     [CreateAssetMenu(fileName = "SpaceShipData", menuName = "ScriptableObjects/SpaceShipData")]
     public class SpaceShipData:ScriptableObject
     {
-        [Header("Движение")]
+        [Header("Moving")]
         [field: SerializeField] public float AngularSpeed { get; private set; }
         [field: SerializeField] public float Speed { get; private set; }
 

@@ -8,10 +8,11 @@ namespace Asteroid.Weapon
     {
         [SerializeField] protected int _countShoots;
         [SerializeField] protected int _maxBulletsCount = 50;
-        [SerializeField] private float _timeBulletRecovery = 2f;
 
         protected ShipStatisticsView _shipView;
         protected GameObject _bulletPref;
+
+        [SerializeField] private float _timeBulletRecovery = 2f;
 
         private WaitForSeconds _waitSecondsRecover;
         public void Init(GameObject bulletPref, ShipStatisticsView shipStView)
@@ -21,7 +22,6 @@ namespace Asteroid.Weapon
             StartCoroutine(RecoverBullet());
             _shipView = shipStView;
             UpdateViewWeapon();
-
         }
         protected abstract void UpdateViewWeapon();
         protected IEnumerator RecoverBullet()
