@@ -9,9 +9,12 @@ namespace Asteroid.Enemies
     {
         [SerializeField] private MeteoriteEnemy _meteoriteExample;
         [SerializeField] private int _countMeteorites = 3;
-        public void Init(Action<EnemyController, BaseEnemy> action)
+        public void Init(Action<EnemyController, BaseEnemy> action,Vector2 directionFly)
         {
             OnEnemySpawned = action;
+            Vector2 direction = directionFly - (Vector2)transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
+            _rb2dEnemy.MoveRotation(angle);
         }
         public override void Move(Transform transformEnd)
         {

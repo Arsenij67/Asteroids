@@ -2,7 +2,8 @@ using UnityEngine;
 
 namespace Asteroid.Statistic
 {
-    public class ShipStatisticsModel
+    [CreateAssetMenu(fileName = "ShipStatisticsModel", menuName = "ScriptableObjects/ShipStatisticsModel")]
+    public class ShipStatisticsModel:ScriptableObject
     {
         [Header("Stats")]
         public int _enemiesDestroyed = 0;

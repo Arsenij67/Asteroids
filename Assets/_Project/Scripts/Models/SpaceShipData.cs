@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace Asteroid.SpaceShip
 {
-    [RequireComponent(typeof(Rigidbody2D))]
-    public class SpaceShipData
+    [CreateAssetMenu(fileName = "SpaceShipData", menuName = "ScriptableObjects/SpaceShipData")]
+    public class SpaceShipData:ScriptableObject
     {
         [Header("Движение")]
         [field: SerializeField] public float AngularSpeed { get; private set; }

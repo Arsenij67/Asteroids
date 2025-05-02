@@ -1,21 +1,28 @@
 using Asteroid.Statistic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Asteroid.SpaceShip
 {
     public class ShipStatisticsController
     {
-        [field: SerializeField] public ShipStatisticsModel ShipStModel { get; private set;}
+        public ShipStatisticsModel ShipStModel { get; private set;}
         public ShipStatisticsView ShipStView { get; private set; }
-        private void OnDestroy()
+        public void OnDestroy()
         {
             ShipStView.DisableRestartAction(ReloadScene);
         }
-        public void Init(ShipStatisticsView shipStView)
+        public void Init(ShipStatisticsView shipStView, ShipStatisticsModel shipStModel)
         {
             ShipStView = shipStView;
+            ShipStModel = shipStModel;
+        }
+        public void Init()
+        { 
             ShipStView.EnableRestartAction(ReloadScene);
+            ShipStView.UpdateDestroyedEnemies(ShipStModel._enemiesDestroyed);
         }
         public void ReloadScene()
         {

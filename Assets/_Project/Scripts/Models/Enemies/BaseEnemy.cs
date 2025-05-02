@@ -10,7 +10,7 @@ namespace Asteroid.Enemies
     {
         protected Action<EnemyController, BaseEnemy> OnEnemySpawned;
 
-        [HideInInspector] public Rigidbody2D _rb2dEnemy;
+        protected Rigidbody2D _rb2dEnemy;
 
         [SerializeField] protected float _health;
         [SerializeField] protected int _damage;

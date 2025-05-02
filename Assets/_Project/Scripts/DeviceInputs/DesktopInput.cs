@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Asteroid.Inputs
 {
-    public class DesktopInput : MonoBehaviour, IDeviceInput
+    public class DesktopInput :IDeviceInput
     {
         public float ScanMove()
         {

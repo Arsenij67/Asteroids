@@ -3,7 +3,7 @@ using UnityEngine;
  
 namespace Asteroid.Weapon
 {
-    public class WeaponController : MonoBehaviour
+    public class WeaponController:MonoBehaviour
     {
         private IWeaponStrategy [] _weaponStrategies;
         private IWeaponStrategy _currentWeaponStrategy;

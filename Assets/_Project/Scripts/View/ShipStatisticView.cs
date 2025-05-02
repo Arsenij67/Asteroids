@@ -14,8 +14,14 @@ namespace Asteroid.Statistic
         [SerializeField] private TMP_Text _angleRotationText;
         [SerializeField] private TMP_Text _rollbackTimeText;
         [SerializeField] private TMP_Text _spaceShipVelocityText;
-        [SerializeField] private TMP_Text _enemiesDestroyedText;
-        [SerializeField] private Button _buttonRestart;
+        
+        private TMP_Text _enemiesDestroyedText;
+        private Button _buttonRestart;
+        public void Init(GameOverView gameOverView)
+        {
+            _enemiesDestroyedText = gameOverView.EnemiesDestroyedText;
+            _buttonRestart = gameOverView.ButtonRestart;
+        }
         public void UpdateFireballCount(int count)
         {
             if (_fireballCountText != null)

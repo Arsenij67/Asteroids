@@ -8,17 +8,14 @@ using System;
 
 namespace Asteroid.SpaceShip
 {
-    [RequireComponent(typeof(SpaceShipData))]
     [RequireComponent(typeof(Rigidbody2D))]
-    [RequireComponent(typeof(IDeviceInput))]
     public class SpaceShipController : SpaceObject
     {
-        private event Func<ShipStatisticsController> OnGameOver;
+        private event Action OnGameOver;
 
         private IDeviceInput _deviceInput;
         private ShipStatisticsView _statisticsView;
         private ShipStatisticsController _statisticsController;
-
         private SpaceShipData _shipData;
         private Rigidbody2D _rbController;
         private void FixedUpdate()
@@ -27,17 +24,14 @@ namespace Asteroid.SpaceShip
             TryRotateShip(_deviceInput.ScanRotation());
             TryMoveShip(_deviceInput.ScanMove());
         }
-        public void Init(ShipStatisticsController stController)
-        {
-            _statisticsController = stController;
-        }
-        public void Init(Func<ShipStatisticsController> callBack, ShipStatisticsView stView)
+        public void Init(Action callBack, ShipStatisticsView stView, IDeviceInput concreteInput, ShipStatisticsController stController)
         {
             OnGameOver = callBack;
-            _shipData = GetComponent<SpaceShipData>();
+            _shipData = Resources.Load<SpaceShipData>("ScriptableObjects/SpaceShipData");
             _rbController = GetComponent<Rigidbody2D>();
-            _deviceInput = GetComponent<IDeviceInput>();
+            _deviceInput = concreteInput;
             _statisticsView = stView;
+            _statisticsController = stController;
         }
         private bool TryRotateShip(float rotationInput)
         {
@@ -71,7 +65,7 @@ namespace Asteroid.SpaceShip
         }
         private void Die()
         {
-            _statisticsController = OnGameOver?.Invoke();
+            OnGameOver?.Invoke();
             _statisticsController.UpdateDestroyedEnemies();
             Destroy(gameObject);
         }
