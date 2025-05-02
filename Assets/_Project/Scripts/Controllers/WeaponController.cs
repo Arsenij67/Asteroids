@@ -1,16 +1,12 @@
+using System;
 using UnityEngine;
-
+ 
 namespace Asteroid.Weapon
 {
     public class WeaponController : MonoBehaviour
     {
         private IWeaponStrategy [] _weaponStrategies;
         private IWeaponStrategy _currentWeaponStrategy;
-        private void Awake()
-        {
-            _weaponStrategies = GetComponents<IWeaponStrategy>();
-            _currentWeaponStrategy = _weaponStrategies[0];
-        }
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -26,6 +22,19 @@ namespace Asteroid.Weapon
             else if (Input.GetKeyDown(KeyCode.Space))
             {
                 Fire(_currentWeaponStrategy);
+            }
+        }
+        public void Init(Action<FireballBullet,Vector2> callBack)
+        {
+            _weaponStrategies = GetComponents<IWeaponStrategy>();
+            _currentWeaponStrategy = _weaponStrategies[0];
+
+            foreach (var strategy in _weaponStrategies)
+            {
+                if (strategy is BulletWeaponController bulletWeapon)
+                {
+                    bulletWeapon.SetSpawnCallback(callBack);
+                }
             }
         }
         private void SetWeapon(IWeaponStrategy weaponStrategy)

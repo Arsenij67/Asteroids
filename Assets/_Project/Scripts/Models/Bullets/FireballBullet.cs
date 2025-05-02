@@ -1,21 +1,26 @@
 using Asteroid.Enemies;
 using UnityEngine;
 
-
 namespace Asteroid.Weapon
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    [RequireComponent(typeof(CircleCollider2D))]
     public class FireballBullet : BaseBullet
     {
-        private readonly float _lifeTime = 10f;
-        private void Start()
+        private Rigidbody2D _rb;
+        private float _lifeTime = 5f;
+        public void Init(Vector2 direction, float speed, float damage)
         {
+            _rb = GetComponent<Rigidbody2D>();
+            _speed = speed;
+            _damage = damage;
+            _rb.linearVelocity = direction.normalized * _speed;
+
             Destroy(gameObject, _lifeTime);
         }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.TryGetComponent(out BaseEnemy baseEnemy))
+            if (collision.TryGetComponent(out BaseEnemy enemy))
             {
                 Destroy(gameObject);
             }

@@ -1,12 +1,18 @@
+using System;
 using UnityEngine;
 
 namespace Asteroid.Enemies
 {
     [RequireComponent(typeof(CircleCollider2D))]
+    [RequireComponent(typeof(EnemyController))]
     public class AsteroidEnemy : BaseEnemy
     {
         [SerializeField] private MeteoriteEnemy _meteoriteExample;
         [SerializeField] private int _countMeteorites = 3;
+        public void Init(Action<EnemyController, BaseEnemy> action)
+        {
+            OnEnemySpawned = action;
+        }
         public override void Move(Transform transformEnd)
         {
             _rb2dEnemy.linearVelocity = transform.up * Time.fixedDeltaTime * _speed;
@@ -17,7 +23,6 @@ namespace Asteroid.Enemies
             {
                 SplitIntoMeteorites();
             }
-
             base.TakeDamage(damage);
         }
         private void SplitIntoMeteorites()
@@ -27,6 +32,7 @@ namespace Asteroid.Enemies
             {
                 MeteoriteEnemy meteorite = Instantiate(_meteoriteExample, transform.position, Quaternion.identity);
                 meteorite.SetDirection(startDir += (Vector2)transform.up);
+                OnEnemySpawned?.Invoke(meteorite.GetComponent<EnemyController>(), meteorite);
             }
         }
     }

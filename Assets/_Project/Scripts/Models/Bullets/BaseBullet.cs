@@ -11,7 +11,5 @@ namespace Asteroid.Weapon
         [SerializeField] protected readonly int _maxSpeed = 10_000;
         public virtual float Damage => Mathf.Clamp(_damage, 0, _maxDamage);
         public float Speed => Mathf.Clamp(_speed, 0, _maxSpeed);
-
-
     }
 }

@@ -118,6 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16c8d6fca395eb94eb134f362668545a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <DownLeftBorder>k__BackingField: {x: -9, y: -5}
+  <UpRightBorder>k__BackingField: {x: 9, y: 5}
   _statisticsView: {fileID: 0}
   _statisticsController: {fileID: 0}
 --- !u!50 &5567368389572326926
@@ -161,8 +163,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <AngularSpeed>k__BackingField: 400
   <Speed>k__BackingField: 400
-  <DownLeftBorder>k__BackingField: {x: -9, y: -5}
-  <UpRightBorder>k__BackingField: {x: 9, y: 5}
 --- !u!114 &3358305332501715251
 MonoBehaviour:
   m_ObjectHideFlags: 0

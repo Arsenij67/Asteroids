@@ -11,12 +11,9 @@ namespace Asteroid.Weapon
         private bool _laserTurned = false;
         private WaitForSeconds _waitSecondsGlow;
         [field: SerializeField] public short UniqueNumber { get; private set; }
-        private void Awake()
+        public void Init()
         {
             _waitSecondsGlow = new WaitForSeconds(_glowDuration);
-        }
-        private void Start()
-        {
             _laserObject = Instantiate(_bulletPref, transform);
             _laserObject.SetActive(false);
             _laserObject.transform.position = transform.position;
@@ -41,7 +38,6 @@ namespace Asteroid.Weapon
                 _countShoots--;
                 UpdateViewWeapon();
             }
-
         }
         protected override void UpdateViewWeapon()
         {

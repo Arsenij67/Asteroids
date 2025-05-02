@@ -6,21 +6,22 @@ namespace Asteroid.Weapon
 {
     public abstract class WeaponShip : MonoBehaviour
     {
-        [SerializeField] protected GameObject _bulletPref;
         [SerializeField] protected int _countShoots;
-        [SerializeField] protected ShipStatisticsView _shipView;
         [SerializeField] protected int _maxBulletsCount = 50;
         [SerializeField] private float _timeBulletRecovery = 2f;
 
-        private WaitForSeconds _waitSecondsRecover;
+        protected ShipStatisticsView _shipView;
+        protected GameObject _bulletPref;
 
-        private void Awake()
-        {
+        private WaitForSeconds _waitSecondsRecover;
+        public void Init(GameObject bulletPref, ShipStatisticsView shipStView)
+        { 
+            _bulletPref = bulletPref;
             _waitSecondsRecover = new WaitForSeconds(_timeBulletRecovery);
-        }
-        private void Start()
-        {
+            StartCoroutine(RecoverBullet());
+            _shipView = shipStView;
             UpdateViewWeapon();
+
         }
         protected abstract void UpdateViewWeapon();
         protected IEnumerator RecoverBullet()
@@ -32,6 +33,5 @@ namespace Asteroid.Weapon
                 UpdateViewWeapon();
             }
         }
-
     }
 }

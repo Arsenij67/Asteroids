@@ -22,7 +22,5 @@ namespace Asteroid.Enemies
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
             _rb2dEnemy.MoveRotation(angle);
         }
-
-
     }
 }

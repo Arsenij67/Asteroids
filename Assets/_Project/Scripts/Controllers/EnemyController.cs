@@ -9,11 +9,6 @@ namespace Asteroid.Enemies
     {
         private Transform? _shipTransform;
         private BaseEnemy _enemy;
-        private void Awake()
-        {
-            _enemy = GetComponent<BaseEnemy>();
-            _shipTransform = FindAnyObjectByType<SpaceShipController>()?.transform;
-        }
         private void FixedUpdate()
         {
             if (_shipTransform)
@@ -21,6 +16,11 @@ namespace Asteroid.Enemies
                 _enemy.Move(_shipTransform);
                 _enemy.TryTeleport(_enemy.transform.position);
             }
+        }
+        public void Init(Transform shipTransform)
+        {
+            _enemy = GetComponent<BaseEnemy>();
+            _shipTransform = shipTransform;
         }
         private void OnTriggerEnter2D(Collider2D collision)
         {

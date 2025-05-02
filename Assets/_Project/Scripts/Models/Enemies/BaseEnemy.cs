@@ -1,12 +1,15 @@
 using Asteroid.Statistic;
 using UnityEngine;
 using Asteroid.SpaceObjectActions;
+using System;
 
 namespace Asteroid.Enemies
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public abstract class BaseEnemy : SpaceObject
     {
+        protected Action<EnemyController, BaseEnemy> OnEnemySpawned;
+
         [HideInInspector] public Rigidbody2D _rb2dEnemy;
 
         [SerializeField] protected float _health;
@@ -21,10 +24,10 @@ namespace Asteroid.Enemies
         public float Health => Mathf.Clamp(_health, 0, _maxHealth);
         public virtual int Damage => _maxDamage;
         public int Speed => Mathf.Clamp(_speed, 0, _maxSpeed);
-        private void Awake()
+        public void Init(ShipStatisticsModel shipStModel)
         {
             _rb2dEnemy = GetComponent<Rigidbody2D>();
-            _shipStModel = FindFirstObjectByType<ShipStatisticsModel>(FindObjectsInactive.Include);
+            _shipStModel = shipStModel;
         }
         public abstract void Move(Transform transformEnd = null);
         public virtual void TakeDamage(float damage)
@@ -45,7 +48,5 @@ namespace Asteroid.Enemies
             _shipStModel._enemiesDestroyed++;
             Destroy(gameObject);
         }
-
-
     }
 }

@@ -63,7 +63,7 @@ namespace Asteroid.Statistic
                 _enemiesDestroyedText.text = $"Enemies destroyed: {count:D1} units";
             }
         }
-        public void AddRestartAction(UnityAction actionRestart)
+        public void EnableRestartAction(UnityAction actionRestart)
         {
             _buttonRestart.onClick.AddListener(actionRestart);
         }

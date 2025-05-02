@@ -4,20 +4,18 @@ using UnityEngine.SceneManagement;
 
 namespace Asteroid.SpaceShip
 {
-    [RequireComponent(typeof(ShipStatisticsModel))]
-    public class ShipStatisticsController : MonoBehaviour
+    public class ShipStatisticsController
     {
-        [SerializeField] private ShipStatisticsView _shipStView;
-
-        private ShipStatisticsModel _shipStModel;
-        private void Awake()
-        {
-            _shipStModel = GetComponent<ShipStatisticsModel>();
-            _shipStView.AddRestartAction(ReloadScene);
-        }
+        [field: SerializeField] public ShipStatisticsModel ShipStModel { get; private set;}
+        public ShipStatisticsView ShipStView { get; private set; }
         private void OnDestroy()
         {
-            _shipStView.DisableRestartAction(ReloadScene);
+            ShipStView.DisableRestartAction(ReloadScene);
+        }
+        public void Init(ShipStatisticsView shipStView)
+        {
+            ShipStView = shipStView;
+            ShipStView.EnableRestartAction(ReloadScene);
         }
         public void ReloadScene()
         {
@@ -25,7 +23,7 @@ namespace Asteroid.SpaceShip
         }
         public void UpdateDestroyedEnemies()
         {
-            _shipStView.UpdateDestroyedEnemies(_shipStModel._enemiesDestroyed);
+            ShipStView.UpdateDestroyedEnemies(ShipStModel._enemiesDestroyed);
         }
     }
 }

@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace Asteroid.Statistic
 {
-    public class ShipStatisticsModel : MonoBehaviour
+    public class ShipStatisticsModel
     {
-        [Header("Статистика")]
+        [Header("Stats")]
         public int _enemiesDestroyed = 0;
     }
 }

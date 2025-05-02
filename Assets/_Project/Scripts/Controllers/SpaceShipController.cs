@@ -4,6 +4,7 @@ using Asteroid.Enemies;
 using Asteroid.Weapon;
 using Asteroid.Inputs;
 using Asteroid.SpaceObjectActions;
+using System;
 
 namespace Asteroid.SpaceShip
 {
@@ -12,24 +13,31 @@ namespace Asteroid.SpaceShip
     [RequireComponent(typeof(IDeviceInput))]
     public class SpaceShipController : SpaceObject
     {
-        private IDeviceInput _deviceInput;
+        private event Func<ShipStatisticsController> OnGameOver;
 
-        [SerializeField] private ShipStatisticsView _statisticsView;
-        [SerializeField] private ShipStatisticsController _statisticsController;
+        private IDeviceInput _deviceInput;
+        private ShipStatisticsView _statisticsView;
+        private ShipStatisticsController _statisticsController;
 
         private SpaceShipData _shipData;
         private Rigidbody2D _rbController;
-        private void Awake()
-        {
-            _shipData = GetComponent<SpaceShipData>();
-            _rbController = GetComponent<Rigidbody2D>();
-            _deviceInput = GetComponent<IDeviceInput>();
-        }
         private void FixedUpdate()
         {
             TryTeleport(transform.position);
             TryRotateShip(_deviceInput.ScanRotation());
             TryMoveShip(_deviceInput.ScanMove());
+        }
+        public void Init(ShipStatisticsController stController)
+        {
+            _statisticsController = stController;
+        }
+        public void Init(Func<ShipStatisticsController> callBack, ShipStatisticsView stView)
+        {
+            OnGameOver = callBack;
+            _shipData = GetComponent<SpaceShipData>();
+            _rbController = GetComponent<Rigidbody2D>();
+            _deviceInput = GetComponent<IDeviceInput>();
+            _statisticsView = stView;
         }
         private bool TryRotateShip(float rotationInput)
         {
@@ -63,7 +71,7 @@ namespace Asteroid.SpaceShip
         }
         private void Die()
         {
-            _statisticsController.gameObject.SetActive(true);
+            _statisticsController = OnGameOver?.Invoke();
             _statisticsController.UpdateDestroyedEnemies();
             Destroy(gameObject);
         }

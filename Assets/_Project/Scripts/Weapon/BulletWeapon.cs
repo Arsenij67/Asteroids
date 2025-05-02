@@ -4,18 +4,19 @@ namespace Asteroid.Weapon
 {
     public class BulletWeaponController : WeaponShip, IWeaponStrategy
     {
-        [field: SerializeField] public short UniqueNumber { get; private set;}
-        private void Start()
+        private event System.Action<FireballBullet, Vector2> OnBulletSpawnedCallback;
+        [field: SerializeField] public short UniqueNumber { get; private set; }
+        public void SetSpawnCallback(System.Action<FireballBullet, Vector2> callback)
         {
-            StartCoroutine(RecoverBullet());
+            OnBulletSpawnedCallback = callback;
         }
         public void Fire()
         {
             if (_countShoots > 0)
             {
-                Rigidbody2D rb = Instantiate(_bulletPref, transform.position, Quaternion.identity).GetComponent<Rigidbody2D>();
-                rb.linearVelocity = rb.GetComponent<FireballBullet>().Speed * -transform.up * Time.fixedDeltaTime;
-                Destroy(rb.gameObject, 5f);
+                var bullet = Instantiate(_bulletPref, transform.position, Quaternion.identity)
+                    .GetComponent<FireballBullet>();
+                OnBulletSpawnedCallback?.Invoke(bullet, -transform.up);
                 _countShoots--;
                 UpdateViewWeapon();
             }
@@ -24,6 +25,5 @@ namespace Asteroid.Weapon
         {
             _shipView.UpdateFireballCount(_countShoots);
         }
-
     }
 }

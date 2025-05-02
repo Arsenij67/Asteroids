@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Asteroid.SpaceShip
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public class SpaceShipData : MonoBehaviour
+    public class SpaceShipData
     {
         [Header("Движение")]
         [field: SerializeField] public float AngularSpeed { get; private set; }
