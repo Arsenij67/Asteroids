@@ -563,10 +563,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fireBulletSpeed: 20
   _fireBulletDamage: 50
-  _laserPref: {fileID: 186369872102106782, guid: 7aedc3d3800e35748a80176f3d49258f, type: 3}
-  _bulletPref: {fileID: 1860706049015914, guid: 0b0c27137eb4d504096874b80ace66bd, type: 3}
+  _laserPrefab: {fileID: 186369872102106782, guid: 7aedc3d3800e35748a80176f3d49258f, type: 3}
+  _bulletPrefab: {fileID: 1860706049015914, guid: 0b0c27137eb4d504096874b80ace66bd, type: 3}
   _obstaclesGenerationController: {fileID: 1489394316}
-  _shipStView: {fileID: 1509017783}
+  _shipStatisticView: {fileID: 1509017783}
   _restartPrefab: {fileID: 8417194731950465201, guid: 1deb9489119882c40a6ecf1f397a93a0, type: 3}
 --- !u!4 &416978516
 Transform:

@@ -17,11 +17,6 @@ namespace Asteroid.Enemies
                 _enemy.TryTeleport(_enemy.transform.position);
             }
         }
-        public void Init(Transform shipTransform)
-        {
-            _enemy = GetComponent<BaseEnemy>();
-            _shipTransform = shipTransform;
-        }
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.TryGetComponent(out BaseEnemy enemy))
@@ -39,5 +34,11 @@ namespace Asteroid.Enemies
                 _enemy.Die();
             }
         }
+        public void Initialize(Transform shipTransform)
+        {
+            _enemy = GetComponent<BaseEnemy>();
+            _shipTransform = shipTransform;
+        }
+
     }
 }

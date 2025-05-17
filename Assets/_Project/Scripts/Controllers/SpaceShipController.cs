@@ -17,42 +17,12 @@ namespace Asteroid.SpaceShip
         private ShipStatisticsView _statisticsView;
         private ShipStatisticsController _statisticsController;
         private SpaceShipData _shipData;
-        private Rigidbody2D _rbController;
+        private Rigidbody2D _rigidBody2D;
         private void FixedUpdate()
         {
             TryTeleport(transform.position);
-            TryRotateShip(_deviceInput.ScanRotation());
-            TryMoveShip(_deviceInput.ScanMove());
-        }
-        public void Init(Action callBack, ShipStatisticsView stView, IDeviceInput concreteInput, ShipStatisticsController stController)
-        {
-            OnGameOver = callBack;
-            _shipData = Resources.Load<SpaceShipData>("ScriptableObjects/SpaceShipData");
-            _rbController = GetComponent<Rigidbody2D>();
-            _deviceInput = concreteInput;
-            _statisticsView = stView;
-            _statisticsController = stController;
-        }
-        private bool TryRotateShip(float rotationInput)
-        {
-            if (Mathf.Approximately(rotationInput, 0f))
-                return false;
-
-            float rotationAngle = -rotationInput * _shipData.AngularSpeed * Time.fixedDeltaTime;
-            _rbController.MoveRotation(_rbController.rotation + rotationAngle);
-            _statisticsView.UpdateAngleRotation(_rbController.rotation);
-            return true;
-        }
-        private bool TryMoveShip(float thrustInput)
-        {
-            if (thrustInput <= 0)
-                return false;
-
-            Vector2 forwardForce = -transform.up * _shipData.Speed * thrustInput * Time.fixedDeltaTime;
-            _rbController.linearVelocity = forwardForce;
-            _statisticsView.UpdateCoordinates(_rbController.position);
-            _statisticsView.UpdateSpaceShipVelocity(_rbController.linearVelocity);
-            return true;
+            RotateShipKeyBoard(_deviceInput.ScanRotation());
+            MoveShipKeyBoard(_deviceInput.ScanMove());
         }
         private void OnTriggerEnter2D(Collider2D collision)
         {
@@ -61,6 +31,34 @@ namespace Asteroid.SpaceShip
             if (someEnemy && !gameObject.GetComponentInChildren<LaserBullet>())
             {
                 Die();
+            }
+        }
+        public void Initialize(Action callBack, ShipStatisticsView statisticView, IDeviceInput concreteInput, ShipStatisticsController statisticController)
+        {
+            OnGameOver = callBack;
+            _shipData = Resources.Load<SpaceShipData>("ScriptableObjects/SpaceShipData");
+            _rigidBody2D = GetComponent<Rigidbody2D>();
+            _deviceInput = concreteInput;
+            _statisticsView = statisticView;
+            _statisticsController = statisticController;
+        }
+        private void RotateShipKeyBoard(float intensityInput)
+        {
+            if (!Mathf.Approximately(intensityInput, 0f))
+            { 
+                float rotationAngle = -intensityInput * _shipData.AngularSpeed * Time.fixedDeltaTime;
+                _rigidBody2D.MoveRotation(_rigidBody2D.rotation + rotationAngle);
+                _statisticsView.UpdateAngleRotation(_rigidBody2D.rotation);
+             }
+        }
+        private void MoveShipKeyBoard(float intensityInput)
+        {
+            if (intensityInput > 0)
+            {
+                Vector2 forwardForce = -transform.up * _shipData.Speed * intensityInput * Time.fixedDeltaTime;
+                _rigidBody2D.linearVelocity = forwardForce;
+                _statisticsView.UpdateCoordinates(_rigidBody2D.position);
+                _statisticsView.UpdateSpaceShipVelocity(_rigidBody2D.linearVelocity);
             }
         }
         private void Die()

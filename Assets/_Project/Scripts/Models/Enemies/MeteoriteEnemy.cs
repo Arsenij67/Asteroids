@@ -6,19 +6,19 @@ namespace Asteroid.Enemies
     {
         [SerializeField] private float _rotationSpeed = 2f;
 
-        private Vector2 _dir = Vector2.zero;
+        private Vector2 _direction = Vector2.zero;
         public override void Move(Transform transformEnd = null)
         {
-            _rb2dEnemy.linearVelocity = _dir.normalized * Time.fixedDeltaTime * _speed;
+            _rigidBody2DEnemy.linearVelocity = _direction.normalized * Time.fixedDeltaTime * _speed;
             Rotate(_rotationSpeed);
         }
         public void SetDirection(Vector2 dir)
         {
-            _dir = dir;
+            _direction = dir;
         }
         public void Rotate(float angleOffset)
         {
-            _rb2dEnemy.MoveRotation(_rb2dEnemy.rotation + (angleOffset * Time.fixedDeltaTime));
+            _rigidBody2DEnemy.MoveRotation(_rigidBody2DEnemy.rotation + (angleOffset * Time.fixedDeltaTime));
         }
     }
 }

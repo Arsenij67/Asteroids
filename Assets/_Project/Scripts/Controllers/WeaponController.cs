@@ -24,7 +24,7 @@ namespace Asteroid.Weapon
                 Fire(_currentWeaponStrategy);
             }
         }
-        public void Init(Action<FireballBullet,Vector2> callBack)
+        public void Initialize(Action<FireballBullet,Vector2> callBack)
         {
             _weaponStrategies = GetComponents<IWeaponStrategy>();
             _currentWeaponStrategy = _weaponStrategies[0];

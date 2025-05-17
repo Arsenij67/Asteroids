@@ -17,7 +17,7 @@ namespace Asteroid.Statistic
         
         private TMP_Text _enemiesDestroyedText;
         private Button _buttonRestart;
-        public void Init(GameOverView gameOverView)
+        public void Initialize(GameOverView gameOverView)
         {
             _enemiesDestroyedText = gameOverView.EnemiesDestroyedText;
             _buttonRestart = gameOverView.ButtonRestart;

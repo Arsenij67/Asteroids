@@ -2,12 +2,12 @@ using UnityEngine;
 
 namespace Asteroid.Inputs
 {
-    public class DesktopInput :IDeviceInput
+    public class DesktopInput : IDeviceInput
     {
         public float ScanMove()
         {
-            float thrustInput = Input.GetAxis("Vertical");
-            return  thrustInput;
+            float positionInput = Input.GetAxis("Vertical");
+            return  positionInput;
         }
         public float ScanRotation()
         {

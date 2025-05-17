@@ -9,7 +9,7 @@ namespace Asteroid.Generation
     {
         [SerializeField] private GameObject[] _obstacles;
         [SerializeField] private GameObject[] _playerShips;
-        [field: SerializeField] public int GenFrequency { get; private set; }
+        [field: SerializeField] public int GenerationFrequency { get; private set; }
         [field: SerializeField] public Vector2[] GenerationVertices { get; private set; }
         public Transform DirectionToFly { get; private set; }
         public BaseEnemy ObstacleToGenerateNow => _obstacles[Random.Range(0, _obstacles.Length)].GetComponent<BaseEnemy>();
@@ -37,7 +37,7 @@ namespace Asteroid.Generation
                     (GenerationVertices[0].y + GenerationVertices[2].y) / 2);
             }
         }
-        public void Init(Transform directionToFly)
+        public void Initialize(Transform directionToFly)
         {
             DirectionToFly = directionToFly;
         }

@@ -13,14 +13,14 @@ namespace Asteroid.Enemies
             Vector2 forwardForce = direction.normalized * Speed * Time.fixedDeltaTime;
             if (direction.sqrMagnitude > MIN_LENGHT_REACT)
             {
-                _rb2dEnemy.linearVelocity = forwardForce;
+                _rigidBody2DEnemy.linearVelocity = forwardForce;
                 Rotate(forwardForce);
             }
         }
         private void Rotate(Vector2 direction)
         {
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
-            _rb2dEnemy.MoveRotation(angle);
+            _rigidBody2DEnemy.MoveRotation(angle);
         }
     }
 }

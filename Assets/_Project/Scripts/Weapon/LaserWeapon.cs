@@ -11,10 +11,10 @@ namespace Asteroid.Weapon
         private bool _laserTurned;
         private WaitForSeconds _waitSecondsGlow;
         [field: SerializeField] public short UniqueNumber { get; private set; }
-        public void Init()
+        public void Initialize()
         {
             _waitSecondsGlow = new WaitForSeconds(_glowDuration);
-            _laserObject = Instantiate(_bulletPref, transform);
+            _laserObject = Instantiate(_bulletPrefab, transform);
             _laserObject.SetActive(false);
             _laserObject.transform.position = transform.position;
             StartCoroutine(RecoverBullet());

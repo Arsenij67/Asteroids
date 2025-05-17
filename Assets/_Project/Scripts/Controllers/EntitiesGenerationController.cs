@@ -11,18 +11,18 @@ namespace Asteroid.Generation
         private event Action<EnemyController, BaseEnemy> OnEnemySpawned;
         private event Action<SpaceShipController> OnShipSpawned;
 
-        private EntitiesGenerationData _genData;
+        private EntitiesGenerationData _generationData;
         private WaitForSeconds _waitSecondsGenFreq;
-        public void Init(Action<SpaceShipController> actonCallBack, EntitiesGenerationData eGenData)
+        public void Initialize(Action<SpaceShipController> actonCallBack, EntitiesGenerationData eGenData)
         {
-            _genData = eGenData;
+            _generationData = eGenData;
             OnShipSpawned = actonCallBack;
-            _waitSecondsGenFreq = new WaitForSeconds(_genData.GenFrequency);
-            GenerateShip(_genData.PlayerShipToGenerateNow);
+            _waitSecondsGenFreq = new WaitForSeconds(_generationData.GenerationFrequency);
+            GenerateShip(_generationData.PlayerShipToGenerateNow);
             StartCoroutine(WaitForNextGeneration());
 
         }
-        public void Init(Action<EnemyController, BaseEnemy> actionCallBack)
+        public void Initialize(Action<EnemyController, BaseEnemy> actionCallBack)
         {
             OnEnemySpawned = actionCallBack;
         }
@@ -31,16 +31,16 @@ namespace Asteroid.Generation
             while (true)
             {
                 yield return _waitSecondsGenFreq;
-                GenerateObstacle(_genData.
+                GenerateObstacle(_generationData.
                     ObstacleToGenerateNow);
             }
         }
         private void GenerateObstacle(BaseEnemy enemy)
         {
-            if (_genData.DirectionToFly)
+            if (_generationData.DirectionToFly)
             {
                 BaseEnemy enemyScene = Instantiate(enemy,
-                    _genData.PointObstacleToGenerate, Quaternion.identity);
+                    _generationData.PointObstacleToGenerate, Quaternion.identity);
 
                 if (enemyScene.TryGetComponent(out EnemyController enemyController))
                 {
@@ -50,7 +50,7 @@ namespace Asteroid.Generation
         }
         private void GenerateShip(SpaceShipController shipController)
         {
-            SpaceShipController playerShip = Instantiate(shipController, _genData.PointShipToGenerate, Quaternion.identity);
+            SpaceShipController playerShip = Instantiate(shipController, _generationData.PointShipToGenerate, Quaternion.identity);
             OnShipSpawned?.Invoke(playerShip);
         }
     }

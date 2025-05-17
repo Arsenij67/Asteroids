@@ -9,16 +9,16 @@ namespace Asteroid.Enemies
     {
         [SerializeField] private MeteoriteEnemy _meteoriteExample;
         [SerializeField] private int _countMeteorites = 3;
-        public void Init(Action<EnemyController, BaseEnemy> action,Vector2 directionFly)
+        public void Initialize(Action<EnemyController, BaseEnemy> action,Vector2 directionFly)
         {
             OnEnemySpawned = action;
             Vector2 direction = directionFly - (Vector2)transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
-            _rb2dEnemy.MoveRotation(angle);
+            _rigidBody2DEnemy.MoveRotation(angle);
         }
         public override void Move(Transform transformEnd)
         {
-            _rb2dEnemy.linearVelocity = transform.up * Time.fixedDeltaTime * _speed;
+            _rigidBody2DEnemy.linearVelocity = transform.up * Time.fixedDeltaTime * _speed;
         }
         public override void TakeDamage(float damage)
         {
@@ -30,7 +30,8 @@ namespace Asteroid.Enemies
         }
         private void SplitIntoMeteorites()
         {
-            Vector2 startDir = (Vector2)transform.up + new Vector2(1f, 1f);
+            Vector2 offset = (Vector2)transform.up + (Vector2)transform.right;
+            Vector2 startDir = (Vector2)transform.up + offset;
             for (int i = 0; i < _countMeteorites; i++)
             {
                 MeteoriteEnemy meteorite = Instantiate(_meteoriteExample, transform.position, Quaternion.identity);

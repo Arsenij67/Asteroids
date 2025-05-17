@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\_Project\Scripts\EntryPoints\SpaceEntryPoint.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\IResourceLoaderService.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\BulletWeapon.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\EnemyController.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\LaserBullet.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Assets\_Project\AnimatedCosmos\Example\MouseLook.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IDeviceInput.cs" />
     <Compile Include="Assets\_Project\Scripts\View\GameOverView.cs" />
+    <Compile Include="Assets\_Project\Scripts\ResourceLoaders\BaseResourceLoaderService.cs" />
     <Compile Include="Assets\_Project\AnimatedCosmos\Example\MaterialSwitch.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\SpaceObject.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />
