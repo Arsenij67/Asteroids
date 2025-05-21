@@ -10,15 +10,20 @@ namespace Asteroid.Weapon
         private GameObject _laserObject;
         private bool _laserTurned;
         private WaitForSeconds _waitSecondsGlow;
+
         [field: SerializeField] public short UniqueNumber { get; private set; }
+
+        public bool LaserTurned => _laserTurned;
+
         public void Initialize()
         {
             _waitSecondsGlow = new WaitForSeconds(_glowDuration);
             _laserObject = Instantiate(_bulletPrefab, transform);
             _laserObject.SetActive(false);
-            _laserObject.transform.position = transform.position;
+            _laserObject.transform.position = transform.position+transform.up*-1;
             StartCoroutine(RecoverBullet());
         }
+
         public void Fire()
         {
             if (!_laserTurned)
@@ -27,6 +32,7 @@ namespace Asteroid.Weapon
                 _laserTurned = true;
             }
         }
+
         private IEnumerator FireLaser()
         {
             if (_countShoots > 0)
@@ -39,6 +45,7 @@ namespace Asteroid.Weapon
                 UpdateViewWeapon();
             }
         }
+
         protected override void UpdateViewWeapon()
         {
             _shipView.UpdateLaserCount(_countShoots);

@@ -7,6 +7,7 @@ namespace Asteroid.Weapon
     {
         private IWeaponStrategy [] _weaponStrategies;
         private IWeaponStrategy _currentWeaponStrategy;
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -24,6 +25,7 @@ namespace Asteroid.Weapon
                 Fire(_currentWeaponStrategy);
             }
         }
+
         public void Initialize(Action<FireballBullet,Vector2> callBack)
         {
             _weaponStrategies = GetComponents<IWeaponStrategy>();
@@ -37,10 +39,12 @@ namespace Asteroid.Weapon
                 }
             }
         }
+
         private void SetWeapon(IWeaponStrategy weaponStrategy)
         {
             _currentWeaponStrategy = weaponStrategy;
         }
+
         private void Fire(IWeaponStrategy weaponStrategy)
         {
             weaponStrategy.Fire();

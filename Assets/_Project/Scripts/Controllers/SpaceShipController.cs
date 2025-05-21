@@ -18,22 +18,27 @@ namespace Asteroid.SpaceShip
         private ShipStatisticsController _statisticsController;
         private SpaceShipData _shipData;
         private Rigidbody2D _rigidBody2D;
+        private WeaponShip _laserWeaponController;
+
+
         private void FixedUpdate()
         {
             TryTeleport(transform.position);
             RotateShipKeyBoard(_deviceInput.ScanRotation());
             MoveShipKeyBoard(_deviceInput.ScanMove());
         }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             BaseEnemy someEnemy = collision.GetComponent<BaseEnemy>();
-
-            if (someEnemy && !gameObject.GetComponentInChildren<LaserBullet>())
+            LaserWeaponController laserController = _laserWeaponController as LaserWeaponController;
+            if (someEnemy!=null && !laserController.LaserTurned)
             {
                 Die();
             }
         }
-        public void Initialize(Action callBack, ShipStatisticsView statisticView, IDeviceInput concreteInput, ShipStatisticsController statisticController)
+
+        public void Initialize(Action callBack, ShipStatisticsView statisticView, IDeviceInput concreteInput, ShipStatisticsController statisticController, WeaponShip laserWeaponController)
         {
             OnGameOver = callBack;
             _shipData = Resources.Load<SpaceShipData>("ScriptableObjects/SpaceShipData");
@@ -41,7 +46,9 @@ namespace Asteroid.SpaceShip
             _deviceInput = concreteInput;
             _statisticsView = statisticView;
             _statisticsController = statisticController;
+            _laserWeaponController = laserWeaponController;
         }
+
         private void RotateShipKeyBoard(float intensityInput)
         {
             if (!Mathf.Approximately(intensityInput, 0f))
@@ -51,6 +58,7 @@ namespace Asteroid.SpaceShip
                 _statisticsView.UpdateAngleRotation(_rigidBody2D.rotation);
              }
         }
+
         private void MoveShipKeyBoard(float intensityInput)
         {
             if (intensityInput > 0)
@@ -61,6 +69,7 @@ namespace Asteroid.SpaceShip
                 _statisticsView.UpdateSpaceShipVelocity(_rigidBody2D.linearVelocity);
             }
         }
+
         private void Die()
         {
             OnGameOver?.Invoke();

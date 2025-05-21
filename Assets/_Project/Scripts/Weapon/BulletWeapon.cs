@@ -6,11 +6,14 @@ namespace Asteroid.Weapon
     public class BulletWeaponController : WeaponShip, IWeaponStrategy
     {
         private event Action<FireballBullet, Vector2> OnBulletSpawnedCallback;
+
         [field: SerializeField] public short UniqueNumber { get; private set; }
+
         public void SetSpawnCallback(Action<FireballBullet, Vector2> callBack)
         {
             OnBulletSpawnedCallback = callBack;
         }
+
         public void Fire()
         {
             if (_countShoots > 0)
@@ -21,6 +24,7 @@ namespace Asteroid.Weapon
                 UpdateViewWeapon();
             }
         }
+
         protected override void UpdateViewWeapon()
         {
             _shipView.UpdateFireballCount(_countShoots);

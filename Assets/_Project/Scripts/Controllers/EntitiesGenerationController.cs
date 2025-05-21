@@ -22,10 +22,12 @@ namespace Asteroid.Generation
             StartCoroutine(WaitForNextGeneration());
 
         }
+
         public void Initialize(Action<EnemyController, BaseEnemy> actionCallBack)
         {
             OnEnemySpawned = actionCallBack;
         }
+
         private IEnumerator WaitForNextGeneration()
         {
             while (true)
@@ -35,9 +37,10 @@ namespace Asteroid.Generation
                     ObstacleToGenerateNow);
             }
         }
+
         private void GenerateObstacle(BaseEnemy enemy)
         {
-            if (_generationData.DirectionToFly)
+            if (_generationData.EndPointToFly!=null)
             {
                 BaseEnemy enemyScene = Instantiate(enemy,
                     _generationData.PointObstacleToGenerate, Quaternion.identity);
@@ -48,6 +51,7 @@ namespace Asteroid.Generation
                 }
             }
         }
+
         private void GenerateShip(SpaceShipController shipController)
         {
             SpaceShipController playerShip = Instantiate(shipController, _generationData.PointShipToGenerate, Quaternion.identity);

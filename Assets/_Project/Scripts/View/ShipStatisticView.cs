@@ -17,11 +17,13 @@ namespace Asteroid.Statistic
         
         private TMP_Text _enemiesDestroyedText;
         private Button _buttonRestart;
+
         public void Initialize(GameOverView gameOverView)
         {
             _enemiesDestroyedText = gameOverView.EnemiesDestroyedText;
             _buttonRestart = gameOverView.ButtonRestart;
         }
+
         public void UpdateFireballCount(int count)
         {
             if (_fireballCountText != null)
@@ -29,6 +31,7 @@ namespace Asteroid.Statistic
                 _fireballCountText.text = $"Fireballs: {count}";
             }
         }
+
         public void UpdateLaserCount(int count)
         {
             if (_laserCountText != null)
@@ -36,6 +39,7 @@ namespace Asteroid.Statistic
                 _laserCountText.text = $"Lasers: {count}";
             }
         }
+
         public void UpdateCoordinates(Vector3 position)
         {
             if (_coordinatesText != null)
@@ -43,11 +47,13 @@ namespace Asteroid.Statistic
                 _coordinatesText.text = $"Pos: {position.x:F1}, {position.y:F1}";
             }
         }
+
         public void UpdateAngleRotation(float angle)
         {
             if (_angleRotationText != null)
                 _angleRotationText.text = $"Angle: {angle:F1}°";
         }
+
         public void UpdateRollbackTime(float time)
         {
             if (_rollbackTimeText != null)
@@ -55,6 +61,7 @@ namespace Asteroid.Statistic
                 _rollbackTimeText.text = $"Rollback: {time:F1}s";
             }
         }
+
         public void UpdateSpaceShipVelocity(Vector3 velocity)
         {
             if (_spaceShipVelocityText != null)
@@ -62,6 +69,7 @@ namespace Asteroid.Statistic
                 _spaceShipVelocityText.text = $"Speed: {velocity.magnitude:F1} m/s";
             }
         }
+
         public void UpdateDestroyedEnemies(int count)
         {
             if (_enemiesDestroyedText != null)
@@ -69,10 +77,12 @@ namespace Asteroid.Statistic
                 _enemiesDestroyedText.text = $"Enemies destroyed: {count:D1} units";
             }
         }
+
         public void EnableRestartAction(UnityAction actionRestart)
         {
             _buttonRestart.onClick.AddListener(actionRestart);
         }
+
         public void DisableRestartAction(UnityAction actionRestart)
         {
             _buttonRestart.onClick.RemoveListener(actionRestart);

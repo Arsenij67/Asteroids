@@ -8,29 +8,33 @@ namespace Asteroid.SpaceShip
 {
     public class ShipStatisticsController
     {
-        public ShipStatisticsModel ShipStatisticModel { get; private set;}
-        public ShipStatisticsView ShipStatisticView { get; private set; }
+        private ShipStatisticsModel _shipStatisticModel;
+        private ShipStatisticsView _shipStatisticView;
         public void Initialize(ShipStatisticsView shipStatisticView, ShipStatisticsModel shipStatisticModel)
         {
-            ShipStatisticView = shipStatisticView;
-            ShipStatisticModel = shipStatisticModel;
+            _shipStatisticView = shipStatisticView;
+            _shipStatisticModel = shipStatisticModel;
         }
+
         public void Initialize()
         { 
-            ShipStatisticView.EnableRestartAction(ReloadScene);
-            ShipStatisticView.UpdateDestroyedEnemies(ShipStatisticModel.EnemiesDestroyed);
+            _shipStatisticView.EnableRestartAction(ReloadScene);
+            _shipStatisticView.UpdateDestroyedEnemies(_shipStatisticModel.EnemiesDestroyed);
         }
+
         public void RemoveAllListeners()
         {
-            ShipStatisticView.DisableRestartAction(ReloadScene);
+            _shipStatisticView.DisableRestartAction(ReloadScene);
         }
+
         public void ReloadScene()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+
         public void UpdateDestroyedEnemies()
         {
-            ShipStatisticView.UpdateDestroyedEnemies(ShipStatisticModel.EnemiesDestroyed);
+            _shipStatisticView.UpdateDestroyedEnemies(_shipStatisticModel.EnemiesDestroyed);
         }
     }
 }

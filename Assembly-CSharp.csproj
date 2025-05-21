@@ -85,6 +85,7 @@
     <Compile Include="Assets\_Project\Scripts\Interfaces\IDeviceInput.cs" />
     <Compile Include="Assets\_Project\Scripts\View\GameOverView.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\BaseResourceLoaderService.cs" />
+    <Compile Include="Assets\_Project\Scripts\Models\Enemies\EnemyDeathTracker.cs" />
     <Compile Include="Assets\_Project\AnimatedCosmos\Example\MaterialSwitch.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\SpaceObject.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />

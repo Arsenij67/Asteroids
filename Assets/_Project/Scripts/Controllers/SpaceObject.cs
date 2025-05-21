@@ -6,6 +6,7 @@ namespace Asteroid.SpaceObjectActions
     {
         [field: SerializeField] public Vector2 DownLeftBorder { get; private set; }
         [field: SerializeField] public Vector2 UpRightBorder { get; private set; }
+
         public bool TryTeleport(Vector2 position)
         {
             Vector2 newPosition = position;

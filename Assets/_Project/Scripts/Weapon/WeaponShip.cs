@@ -15,6 +15,7 @@ namespace Asteroid.Weapon
         [SerializeField] private float _timeBulletRecovery = 2f;
 
         private WaitForSeconds _waitSecondsRecover;
+
         public void Initialize(GameObject bulletPref, ShipStatisticsView shipStView)
         { 
             _bulletPrefab = bulletPref;
@@ -23,7 +24,9 @@ namespace Asteroid.Weapon
             UpdateViewWeapon();
             StartCoroutine(RecoverBullet());
         }
+
         protected abstract void UpdateViewWeapon();
+
         protected IEnumerator RecoverBullet()
         {
             while (_countShoots < _maxBulletsCount)

@@ -8,6 +8,7 @@ namespace Asteroid.Weapon
     {
         private Rigidbody2D _rigidBody2D;
         private float _lifeTime = 5f;
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.TryGetComponent(out BaseEnemy enemy))
@@ -15,6 +16,7 @@ namespace Asteroid.Weapon
                 Destroy(gameObject);
             }
         }
+
         public void Initialize(Vector2 direction, float speed, float damage)
         {
             _rigidBody2D = GetComponent<Rigidbody2D>();

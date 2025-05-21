@@ -11,12 +11,13 @@ namespace Asteroid.Enemies
         private BaseEnemy _enemy;
         private void FixedUpdate()
         {
-            if (_shipTransform)
+            if (_shipTransform!=null)
             {
                 _enemy.Move(_shipTransform);
                 _enemy.TryTeleport(_enemy.transform.position);
             }
         }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.TryGetComponent(out BaseEnemy enemy))
@@ -26,7 +27,9 @@ namespace Asteroid.Enemies
 
             if (collision.TryGetComponent(out BaseBullet bullet))
             {
-                _enemy.TakeDamage(bullet.Damage);
+                _enemy.
+                    TakeDamage(bullet.
+                    Damage);
             }
 
             if (collision.TryGetComponent(out SpaceShipController ship))
@@ -34,6 +37,7 @@ namespace Asteroid.Enemies
                 _enemy.Die();
             }
         }
+
         public void Initialize(Transform shipTransform)
         {
             _enemy = GetComponent<BaseEnemy>();

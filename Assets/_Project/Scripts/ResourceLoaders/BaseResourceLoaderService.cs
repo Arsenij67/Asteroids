@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 namespace Asteroid.Generation
 {
     public class BaseResourceLoaderService : IResourceLoaderService
@@ -12,8 +11,9 @@ namespace Asteroid.Generation
                 Debug.LogError("Prefab is null");
                 return null;
             }
-            return Instantiate(prefab,parent);
+            return Object.Instantiate(prefab,parent);
         }
+
         public GameObject Instantiate(GameObject prefab, Vector2 position, Quaternion rotation)
         {
             if (rotation == null)
@@ -25,8 +25,9 @@ namespace Asteroid.Generation
                 Debug.LogError("Prefab is null");
                 return null;
             }
-            return Instantiate(prefab, position, rotation);
+            return Object.Instantiate(prefab, position, rotation);
         }
+
         public T LoadResource<T>(string path) where T : Object
         {
             T result = Resources.Load<T>(path);
