@@ -2,7 +2,7 @@ using Asteroid.Statistic;
 using UnityEngine;
 using Asteroid.SpaceObjectActions;
 using System;
-using Unity.Mathematics.Geometry;
+using Unity.Mathematics;
 
 namespace Asteroid.Enemies
 {
