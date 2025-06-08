@@ -24,7 +24,7 @@ namespace Asteroid.Weapon
             _damage = damage;
             _rigidBody2D.linearVelocity = direction.normalized * _speed;
 
-            //Destroy(gameObject, _lifeTime);
+            Destroy(gameObject, _lifeTime);
         }
         
     }

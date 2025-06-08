@@ -1,31 +1,17 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Asteroid.Generation
 {
     public class BaseResourceLoaderService : IResourceLoaderService
     {
-        public GameObject Instantiate(GameObject prefab, Transform parent = null)
+        public GameObject Instantiate<T>(T prefab, Vector2 position, Quaternion rotation) where T : Object
         {
-            if (prefab == null)
-            {
-                Debug.LogError("Prefab is null");
-                return null;
-            }
-            return Object.Instantiate(prefab,parent);
+            return InstantiateGameObject(prefab.GameObject(), position,rotation);
         }
-
-        public GameObject Instantiate(GameObject prefab, Vector2 position, Quaternion rotation)
+        public GameObject Instantiate<T>(T prefab, Transform transform) where T : Object
         {
-            if (rotation == null)
-            {
-                return Instantiate(prefab, position,Quaternion.identity);
-            }
-            if (prefab == null)
-            {
-                Debug.LogError("Prefab is null");
-                return null;
-            }
-            return Object.Instantiate(prefab, position, rotation);
+            return InstantiateGameObject(prefab.GameObject(), transform);    
         }
 
         public T LoadResource<T>(string path) where T : Object
@@ -38,6 +24,34 @@ namespace Asteroid.Generation
                
             }
             return result;
+        }
+
+        public T CreateInstance<T>() where T : new()
+        {
+            return new T();
+        }
+        private GameObject InstantiateGameObject(GameObject prefab, Transform parent = null)
+        {
+            if (prefab == null)
+            {
+                Debug.LogError("Prefab is null");
+                return null;
+            }
+            return Object.Instantiate(prefab.GameObject(), parent);
+        }
+
+        private GameObject InstantiateGameObject(GameObject prefab, Vector2 position, Quaternion rotation)
+        {
+            if (rotation == null)
+            {
+                return Instantiate(prefab as GameObject, position, Quaternion.identity);
+            }
+            if (prefab == null)
+            {
+                Debug.LogError("Prefab is null");
+                return null;
+            }
+            return Object.Instantiate(prefab.GameObject(), position, rotation);
         }
     }
 }

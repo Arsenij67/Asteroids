@@ -13,9 +13,11 @@ namespace Asteroid.Generation
 
         private EntitiesGenerationData _generationData;
         private WaitForSeconds _waitSecondsGenFreq;
-        public void Initialize(EntitiesGenerationData entitiesGenData)
+        private IResourceLoaderService _resourceLoaderService;
+        public void Initialize(EntitiesGenerationData entitiesGenData,IResourceLoaderService resourceLoader)
         {
             _generationData = entitiesGenData;
+            _resourceLoaderService = resourceLoader;
             _waitSecondsGenFreq = new WaitForSeconds(_generationData.GenerationFrequency);
             GenerateShip(_generationData.PlayerShipToGenerateNow);
             StartCoroutine(WaitForNextGeneration());
@@ -48,7 +50,7 @@ namespace Asteroid.Generation
 
         private void GenerateShip(SpaceShipController shipController)
         {
-            SpaceShipController playerShip = Instantiate(shipController, _generationData.PointShipToGenerate, Quaternion.identity);
+            SpaceShipController playerShip = _resourceLoaderService.Instantiate(shipController, _generationData.PointShipToGenerate, Quaternion.identity).GetComponent<SpaceShipController>();
             OnShipSpawned?.Invoke(playerShip);
         }
     }

@@ -1,3 +1,4 @@
+using Asteroid.Generation;
 using Asteroid.Statistic;
 using System.Collections;
 using UnityEngine;
@@ -16,12 +17,12 @@ namespace Asteroid.Weapon
 
         public bool LaserTurned => _laserTurned;
 
-        public override void Initialize(BaseBullet concreteBullet, ShipStatisticsView shipStView)
+        public override void Initialize(BaseBullet concreteBullet, ShipStatisticsView shipStView, IResourceLoaderService resourceLoader)
         {
-            base.Initialize(concreteBullet, shipStView);
+            base.Initialize(concreteBullet, shipStView, resourceLoader);
 
             _waitSecondsGlow = new WaitForSeconds(_glowDuration);
-            _laserObject = Instantiate(_concreteBulletPrefab, transform).GetComponent<LaserBullet>();
+            _laserObject = _resourceLoaderService.Instantiate(_concreteBulletPrefab, transform).GetComponent<LaserBullet>();
             _laserObject.gameObject.SetActive(false);
             _laserObject.transform.position = (Vector2)transform.position + _laserObject.SpawnOffset;
         }

@@ -60,7 +60,7 @@ namespace Asteroid.Generation
             _obstaclesGenerationController.OnShipSpawned += ShipInitializedHandler;
 
             _shipStatisticController.Initialize(_shipStatisticView, _shipStatisticModel);
-            _obstaclesGenerationController.Initialize(_entitiesGenerationData);
+            _obstaclesGenerationController.Initialize(_entitiesGenerationData,_resourceLoader);
         }
 
         private void InitializeEnemySystems()
@@ -73,8 +73,6 @@ namespace Asteroid.Generation
 
         private void BulletSpawnedHandler(BaseBullet bullet, Vector2 direction)
         {
-            Debug.Log("BulletSpawnedHandler");
-
             bullet.Initialize(direction, _fireBulletSpeed, _fireBulletDamage);
         }
 
@@ -102,8 +100,8 @@ namespace Asteroid.Generation
 
             _shipController.OnGameOver += PanelRestartSpawnedHandler;
             _weaponShipBullet.OnMissalSpawned += BulletSpawnedHandler;
-            _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView);
-            _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView);
+            _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView,_resourceLoader);
+            _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView,_resourceLoader);
             _shipController.Initialize(_shipStatisticView,new DesktopInput(),_shipStatisticController,_laserWeaponControl);
             _weaponController.Initialize();
             _entitiesGenerationData.Initialize(_shipTransform);

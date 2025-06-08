@@ -11,7 +11,7 @@ namespace Asteroid.Weapon
         {
             if (_countShoots > 0)
             {
-                var bullet = Instantiate(_concreteBulletPrefab, transform.position, Quaternion.identity).GetComponent<FireballBullet>();
+                var bullet = _resourceLoaderService.Instantiate(_concreteBulletPrefab, transform.position, Quaternion.identity).GetComponent<FireballBullet>();
                 OnMissalSpawned?.Invoke(bullet, -transform.up);
                 _countShoots--;
                 UpdateViewWeapon();
