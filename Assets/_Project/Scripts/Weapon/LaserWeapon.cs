@@ -23,7 +23,7 @@ namespace Asteroid.Weapon
             _waitSecondsGlow = new WaitForSeconds(_glowDuration);
             _laserObject = Instantiate(_concreteBulletPrefab, transform).GetComponent<LaserBullet>();
             _laserObject.gameObject.SetActive(false);
-            _laserObject.transform.position = transform.position;
+            _laserObject.transform.position = (Vector2)transform.position + _laserObject.SpawnOffset;
         }
 
          public void Fire()
