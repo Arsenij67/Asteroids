@@ -11,7 +11,7 @@ namespace Asteroid.SpaceShip
     [RequireComponent(typeof(Rigidbody2D))]
     public class SpaceShipController : SpaceObject
     {
-        private event Action OnGameOver;
+        public event Action OnGameOver;
 
         private IDeviceInput _deviceInput;
         private ShipStatisticsView _statisticsView;
@@ -38,9 +38,9 @@ namespace Asteroid.SpaceShip
             }
         }
 
-        public void Initialize(Action callBack, ShipStatisticsView statisticView, IDeviceInput concreteInput, ShipStatisticsController statisticController, WeaponShip laserWeaponController)
+        public void Initialize(ShipStatisticsView statisticView, IDeviceInput concreteInput, ShipStatisticsController statisticController, WeaponShip laserWeaponController)
         {
-            OnGameOver = callBack;
+            Debug.Log("Initialize SSController");
             _shipData = Resources.Load<SpaceShipData>("ScriptableObjects/SpaceShipData");
             _rigidBody2D = GetComponent<Rigidbody2D>();
             _deviceInput = concreteInput;

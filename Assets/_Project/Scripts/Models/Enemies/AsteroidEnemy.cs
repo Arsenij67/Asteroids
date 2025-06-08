@@ -8,18 +8,17 @@ namespace Asteroid.Enemies
     [RequireComponent(typeof(EnemyController))]
     public class AsteroidEnemy : BaseEnemy
     {
-        private Action<BaseEnemy> OnMeteoriteDestroyedCallBack;
+        public Action<BaseEnemy> OnMeteoriteDestroyed;
 
         [SerializeField] private MeteoriteEnemy _meteoriteExample;
         [SerializeField] private int _countMeteorites = 3;
 
-        public void Initialize(ShipStatisticsModel shipStModel, Transform transformEnd, Action<BaseEnemy> destroyEnemyCallBack,Vector2 PointEndFly, Action<BaseEnemy> meteoriteDestroyedCallBack)
+        public void Initialize(ShipStatisticsModel shipStModel, Transform transformEnd, Action<BaseEnemy> destroyEnemyCallBack,Vector2 PointEndFly)
         {
-            base.Initialize(shipStModel, transformEnd, destroyEnemyCallBack);
+            base.Initialize(shipStModel, transformEnd);
             Vector2 direction = PointEndFly - (Vector2)transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
             _rigidBody2DEnemy.MoveRotation(angle);
-            OnMeteoriteDestroyedCallBack = meteoriteDestroyedCallBack;
         }
 
         public override void Move(Transform transformEnd)
@@ -45,17 +44,18 @@ namespace Asteroid.Enemies
                 MeteoriteEnemy meteorite = Instantiate(_meteoriteExample, transform.position, Quaternion.identity);
                 EnemyController enemyController = meteorite.GetComponent<EnemyController>();
 
-                meteorite.Initialize(_shipStatisticModel,_transformEnd,OnMeteoriteDestroyed);
+                meteorite.Initialize(_shipStatisticModel,_transformEnd);
                 enemyController.Initialize(_transformEnd);
 
+                meteorite.OnEnemyDestroyed += MeteoriteDestroyedHandler;
                 meteorite.SetDirection(startDir += (Vector2)transform.up);
                  
             }
         }
 
-        private void OnMeteoriteDestroyed(BaseEnemy meteorite)
+        private void MeteoriteDestroyedHandler(BaseEnemy meteorite)
         {
-            OnMeteoriteDestroyedCallBack?.Invoke(meteorite);
+            OnMeteoriteDestroyed?.Invoke(meteorite);
         }
     }
 }

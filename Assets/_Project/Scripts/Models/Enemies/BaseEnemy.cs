@@ -9,7 +9,7 @@ namespace Asteroid.Enemies
     [RequireComponent(typeof(Rigidbody2D))]
     public abstract class BaseEnemy : SpaceObject
     {
-        protected event Action<BaseEnemy> OnEnemyDestroyed;
+        public event Action<BaseEnemy> OnEnemyDestroyed;
 
         [SerializeField] protected float _health;
         [SerializeField] protected int _speed;
@@ -23,12 +23,11 @@ namespace Asteroid.Enemies
 
         public float Speed => Mathf.Clamp(_speed, 0, _maxSpeed);
 
-        public void Initialize(ShipStatisticsModel shipStModel, Transform transformEnd, Action<BaseEnemy> destroyEnemyCallBack)
+        public void Initialize(ShipStatisticsModel shipStModel, Transform transformEnd)
         {
             _rigidBody2DEnemy = GetComponent<Rigidbody2D>();
             _shipStatisticModel = shipStModel;
             _transformEnd = transformEnd;
-            OnEnemyDestroyed = destroyEnemyCallBack;
         }
 
         public abstract void Move(Transform transformEnd = null);

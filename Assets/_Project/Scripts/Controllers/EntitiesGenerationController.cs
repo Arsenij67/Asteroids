@@ -8,24 +8,18 @@ namespace Asteroid.Generation
 {
     public class EntitiesGenerationController : MonoBehaviour
     {
-        private event Action<EnemyController, BaseEnemy> OnEnemySpawned;
-        private event Action<SpaceShipController> OnShipSpawned;
+        public event Action<EnemyController, BaseEnemy> OnEnemySpawned;
+        public event Action<SpaceShipController> OnShipSpawned;
 
         private EntitiesGenerationData _generationData;
         private WaitForSeconds _waitSecondsGenFreq;
-        public void Initialize(Action<SpaceShipController> actonCallBack, EntitiesGenerationData eGenData)
+        public void Initialize(EntitiesGenerationData entitiesGenData)
         {
-            _generationData = eGenData;
-            OnShipSpawned = actonCallBack;
+            _generationData = entitiesGenData;
             _waitSecondsGenFreq = new WaitForSeconds(_generationData.GenerationFrequency);
             GenerateShip(_generationData.PlayerShipToGenerateNow);
             StartCoroutine(WaitForNextGeneration());
 
-        }
-
-        public void Initialize(Action<EnemyController, BaseEnemy> actionCallBack)
-        {
-            OnEnemySpawned = actionCallBack;
         }
 
         private IEnumerator WaitForNextGeneration()

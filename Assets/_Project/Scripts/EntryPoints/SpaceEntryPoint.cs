@@ -12,8 +12,8 @@ namespace Asteroid.Generation
         [Header("Bullet Settings")]
         [SerializeField] private float _fireBulletSpeed = 15f;
         [SerializeField] private float _fireBulletDamage = 10f;
-        [SerializeField] private GameObject _laserPrefab;
-        [SerializeField] private GameObject _bulletPrefab;
+        [SerializeField] private LaserBullet _laserPrefab;
+        [SerializeField] private FireballBullet _bulletPrefab;
 
         [Header("Space Settings")]
         [SerializeField] private EntitiesGenerationController _obstaclesGenerationController;
@@ -57,33 +57,41 @@ namespace Asteroid.Generation
 
         private void InitializeSpaceShipSystems()
         {
+            _obstaclesGenerationController.OnShipSpawned += ShipInitializedHandler;
+
             _shipStatisticController.Initialize(_shipStatisticView, _shipStatisticModel);
-            _obstaclesGenerationController.Initialize(OnInitializedShipSystems, _entitiesGenerationData);
+            _obstaclesGenerationController.Initialize(_entitiesGenerationData);
         }
 
         private void InitializeEnemySystems()
         {
-            _obstaclesGenerationController.Initialize(OnEnemySpawned);
+            _obstaclesGenerationController.OnEnemySpawned += EnemyInitializedHander;
+
             _allEnemiesDeathTracker.Initialize(_shipStatisticModel);
+
         }
 
-        private void OnBulletSpawned(FireballBullet bullet, Vector2 direction)
+        private void BulletSpawnedHandler(BaseBullet bullet, Vector2 direction)
         {
+            Debug.Log("BulletSpawnedHandler");
+
             bullet.Initialize(direction, _fireBulletSpeed, _fireBulletDamage);
         }
 
-        private void OnEnemySpawned(EnemyController enemyController, BaseEnemy currentEnemy)
+        private void EnemyInitializedHander(EnemyController enemyController, BaseEnemy currentEnemy)
         {
-            currentEnemy.Initialize(_shipStatisticModel,_shipTransform,OnEnemyDestroyed);
+            currentEnemy.OnEnemyDestroyed += EnemyDestroyedHandler;
+
+            currentEnemy.Initialize(_shipStatisticModel,_shipTransform);
             enemyController.Initialize(_shipTransform);
         }
 
-        private void OnEnemyDestroyed(BaseEnemy enemyDestroy)
+        private void EnemyDestroyedHandler(BaseEnemy enemyDestroy)
         {
             _allEnemiesDeathTracker.OnEnemyDied();
         }
 
-        private void OnInitializedShipSystems(SpaceShipController playerShip)
+        private void ShipInitializedHandler(SpaceShipController playerShip)
         {
             _shipTransform = playerShip.transform;
             _shipController = playerShip;
@@ -92,19 +100,21 @@ namespace Asteroid.Generation
             _weaponShipLaser = (WeaponShip)_laserWeaponControl;
             _weaponShipBullet = (WeaponShip)playerShip.GetComponent<BulletWeaponController>();
 
+            _shipController.OnGameOver += PanelRestartSpawnedHandler;
+            _weaponShipBullet.OnMissalSpawned += BulletSpawnedHandler;
             _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView);
             _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView);
-            _laserWeaponControl.Initialize();
-            _shipController.Initialize(OnPanelRestartSpawned,_shipStatisticView,new DesktopInput(),_shipStatisticController,_laserWeaponControl);
-            _weaponController.Initialize(OnBulletSpawned);
+            _shipController.Initialize(_shipStatisticView,new DesktopInput(),_shipStatisticController,_laserWeaponControl);
+            _weaponController.Initialize();
             _entitiesGenerationData.Initialize(_shipTransform);
         }
-        private void OnPanelRestartSpawned()
+        private void PanelRestartSpawnedHandler()
         {
-            var endPanelView = _resourceLoader.Instantiate(
+            var endPanelView = _resourceLoader.Instantiate
+                (
                 _restartPrefab,
-                _shipStatisticView.transform.parent)
-                .GetComponent<GameOverView>();
+                _shipStatisticView.transform.parent
+                ).GetComponent<GameOverView>();
 
             _shipStatisticView.Initialize(endPanelView);
             _shipStatisticController.Initialize();

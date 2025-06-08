@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 namespace Asteroid.Weapon
 {
     public class LaserBullet : BaseBullet

@@ -129,7 +129,6 @@ GameObject:
   m_Component:
   - component: {fileID: 25563757}
   - component: {fileID: 25563756}
-  - component: {fileID: 25563755}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -137,18 +136,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &25563755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 25563754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &25563756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,8 +531,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fireBulletSpeed: 20
   _fireBulletDamage: 50
-  _laserPrefab: {fileID: 186369872102106782, guid: 7aedc3d3800e35748a80176f3d49258f, type: 3}
-  _bulletPrefab: {fileID: 1860706049015914, guid: 0b0c27137eb4d504096874b80ace66bd, type: 3}
+  _laserPrefab: {fileID: 7557963557402377491, guid: dd66b356fa5632d4493b1517b93c2ade, type: 3}
+  _bulletPrefab: {fileID: 4627742481004242442, guid: 0b0c27137eb4d504096874b80ace66bd, type: 3}
   _obstaclesGenerationController: {fileID: 1489394316}
   _shipStatisticView: {fileID: 1509017783}
   _restartPrefab: {fileID: 8417194731950465201, guid: 1deb9489119882c40a6ecf1f397a93a0, type: 3}

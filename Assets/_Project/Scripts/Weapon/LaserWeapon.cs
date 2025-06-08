@@ -1,3 +1,4 @@
+using Asteroid.Statistic;
 using System.Collections;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace Asteroid.Weapon
     {
         [SerializeField] private float _glowDuration;
 
-        private GameObject _laserObject;
+        private LaserBullet _laserObject;
         private bool _laserTurned;
         private WaitForSeconds _waitSecondsGlow;
 
@@ -15,21 +16,23 @@ namespace Asteroid.Weapon
 
         public bool LaserTurned => _laserTurned;
 
-        public void Initialize()
+        public override void Initialize(BaseBullet concreteBullet, ShipStatisticsView shipStView)
         {
+            base.Initialize(concreteBullet, shipStView);
+
             _waitSecondsGlow = new WaitForSeconds(_glowDuration);
-            _laserObject = Instantiate(_bulletPrefab, transform);
-            _laserObject.SetActive(false);
-            _laserObject.transform.position = transform.position+transform.up*-1;
-            StartCoroutine(RecoverBullet());
+            _laserObject = Instantiate(_concreteBulletPrefab, transform).GetComponent<LaserBullet>();
+            _laserObject.gameObject.SetActive(false);
+            _laserObject.transform.position = transform.position;
         }
 
-        public void Fire()
+         public void Fire()
         {
             if (!_laserTurned)
             {
-                StartCoroutine(FireLaser());
+                OnMissalSpawned?.Invoke(_concreteBulletPrefab, transform.up * -1);
                 _laserTurned = true;
+                StartCoroutine(FireLaser());
             }
         }
 
@@ -37,9 +40,9 @@ namespace Asteroid.Weapon
         {
             if (_countShoots > 0)
             {
-                _laserObject.SetActive(true);
+                _laserObject.gameObject.SetActive(true);
                 yield return _waitSecondsGlow;
-                _laserObject.SetActive(false);
+                _laserObject.gameObject.SetActive(false);
                 _laserTurned = false;
                 _countShoots--;
                 UpdateViewWeapon();

@@ -26,18 +26,10 @@ namespace Asteroid.Weapon
             }
         }
 
-        public void Initialize(Action<FireballBullet,Vector2> callBack)
+        public void Initialize()
         {
             _weaponStrategies = GetComponents<IWeaponStrategy>();
             _currentWeaponStrategy = _weaponStrategies[0];
-
-            foreach (var strategy in _weaponStrategies)
-            {
-                if (strategy is BulletWeaponController bulletWeapon)
-                {
-                    bulletWeapon.SetSpawnCallback(callBack);
-                }
-            }
         }
 
         private void SetWeapon(IWeaponStrategy weaponStrategy)
