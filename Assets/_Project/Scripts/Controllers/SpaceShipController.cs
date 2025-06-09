@@ -25,7 +25,7 @@ namespace Asteroid.SpaceShip
         {
             TryTeleport(transform.position);
             RotateShipKeyBoard(_deviceInput.ScanRotation());
-            MoveShipKeyBoard(_deviceInput.ScanMove());
+            TryMove(_deviceInput.ScanMove());
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -59,7 +59,7 @@ namespace Asteroid.SpaceShip
              }
         }
 
-        private void MoveShipKeyBoard(float intensityInput)
+        private void TryMove(float intensityInput)
         {
             if (intensityInput > 0)
             {

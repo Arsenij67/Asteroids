@@ -82,7 +82,7 @@
     <Compile Include="Assets\_Project\Scripts\View\GameOverView.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\BaseResourceLoaderService.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\AsteroidEnemy.cs" />
-    <Compile Include="Assets\_Project\Scripts\Models\Enemies\EnemyDeathTracker.cs" />
+    <Compile Include="Assets\_Project\Scripts\Models\Enemies\EnemyDeathCounter.cs" />
     <Compile Include="Assets\_Project\Scripts\View\ShipStatisticView.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\BaseBullet.cs" />
     <Compile Include="Assets\_Project\AnimatedCosmos\Example\MaterialSwitch.cs" />

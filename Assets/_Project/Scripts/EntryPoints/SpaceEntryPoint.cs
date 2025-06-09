@@ -25,7 +25,7 @@ namespace Asteroid.Generation
         [SerializeField] private GameObject _restartPrefab;
 
         private LaserWeaponController _laserWeaponControl;
-        private EnemyDeathTracker _allEnemiesDeathTracker;
+        private EnemyDeathCounter _allEnemiesDeathCounter;
         private EntitiesGenerationData _entitiesGenerationData;
         private ShipStatisticsController _shipStatisticController;
         private ShipStatisticsModel _shipStatisticModel;
@@ -44,7 +44,7 @@ namespace Asteroid.Generation
             _entitiesGenerationData = _resourceLoader.LoadResource<EntitiesGenerationData>("ScriptableObjects/EntitiesGenerationData");
             _shipStatisticModel = _resourceLoader.CreateInstance<ShipStatisticsModel>();
             _shipStatisticController = _resourceLoader.CreateInstance<ShipStatisticsController>();
-            _allEnemiesDeathTracker = _resourceLoader.CreateInstance<EnemyDeathTracker>();
+            _allEnemiesDeathCounter = _resourceLoader.CreateInstance<EnemyDeathCounter>();
             _obstaclesGenerationController = _resourceLoader.CreateInstance<EntitiesGenerationController>();
 
             InitializeSpaceShipSystems();
@@ -68,7 +68,7 @@ namespace Asteroid.Generation
         {
             _obstaclesGenerationController.OnEnemySpawned += EnemyInitializedHander;
 
-            _allEnemiesDeathTracker.Initialize(_shipStatisticModel);
+            _allEnemiesDeathCounter.Initialize(_shipStatisticModel);
 
         }
 
@@ -81,13 +81,13 @@ namespace Asteroid.Generation
         {
             currentEnemy.OnEnemyDestroyed += EnemyDestroyedHandler;
 
-            currentEnemy.Initialize(_shipStatisticModel,_shipTransform);
+            currentEnemy.Initialize(_shipTransform);
             enemyController.Initialize(_shipTransform);
         }
 
         private void EnemyDestroyedHandler(BaseEnemy enemyDestroy)
         {
-            _allEnemiesDeathTracker.OnEnemyDied();
+            _allEnemiesDeathCounter.OnEnemyDied();
         }
 
         private void ShipInitializedHandler(SpaceShipController playerShip)
