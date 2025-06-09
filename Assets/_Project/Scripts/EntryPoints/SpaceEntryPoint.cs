@@ -96,8 +96,8 @@ namespace Asteroid.Generation
             _shipController = playerShip;
             _weaponController = playerShip.GetComponent<WeaponController>();
             _laserWeaponControl = playerShip.GetComponent<LaserWeaponController>();
-            _weaponShipLaser = (WeaponShip)_laserWeaponControl;
-            _weaponShipBullet = (WeaponShip)playerShip.GetComponent<BulletWeaponController>();
+            _weaponShipLaser = _laserWeaponControl;
+            _weaponShipBullet = playerShip.GetComponent<BulletWeaponController>();
 
             _shipController.OnGameOver += PanelRestartSpawnedHandler;
             _weaponShipBullet.OnMissalSpawned += BulletSpawnedHandler;
