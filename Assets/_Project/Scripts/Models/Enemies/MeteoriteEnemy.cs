@@ -10,7 +10,7 @@ namespace Asteroid.Enemies
 
         public override void Move(Transform transformEnd = null)
         {
-            _rigidBody2DEnemy.linearVelocity = _direction.normalized * Time.fixedDeltaTime * _speed;
+            _rigidBody2DEnemy.linearVelocity = _direction.normalized * Time.fixedDeltaTime * Speed;
             Rotate(_rotationSpeed);
         }
 

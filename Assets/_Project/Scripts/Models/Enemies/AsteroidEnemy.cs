@@ -23,12 +23,12 @@ namespace Asteroid.Enemies
 
         public override void Move(Transform transformEnd)
         {
-            _rigidBody2DEnemy.linearVelocity = transform.up * Time.fixedDeltaTime * _speed;
+            _rigidBody2DEnemy.linearVelocity = transform.up * Time.fixedDeltaTime * Speed;
         }
 
         public override void TakeDamage(float damage)
         {
-            if (damage >= _health)
+            if (damage >= Health)
             {
                 SplitIntoMeteorites();
             }

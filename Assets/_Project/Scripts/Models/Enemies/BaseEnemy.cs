@@ -11,17 +11,16 @@ namespace Asteroid.Enemies
     {
         public event Action<BaseEnemy> OnEnemyDestroyed;
 
-        [SerializeField] protected float _health;
-        [SerializeField] protected int _speed;
+        [SerializeField] private float _health;
+        [SerializeField] private int _speed;
 
         protected Rigidbody2D _rigidBody2DEnemy;
-        protected readonly float _maxSpeed =  Mathf.Infinity;
-        protected readonly float _maxHealth = Mathf.Infinity;
 
         protected ShipStatisticsModel _shipStatisticModel;
         protected Transform _transformEnd;
 
-        public float Speed => Mathf.Clamp(_speed, 0, _maxSpeed);
+        protected float Speed => Mathf.Clamp(_speed, 0, Mathf.Infinity);
+        protected float Health => Mathf.Clamp(_health, 0, Mathf.Infinity);
 
         public void Initialize(ShipStatisticsModel shipStModel, Transform transformEnd)
         {
