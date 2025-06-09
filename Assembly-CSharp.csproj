@@ -61,20 +61,26 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.50f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\_Project\Scripts\Weapon\WeaponShip.cs" />
-    <Compile Include="Assets\_Project\Scripts\Interfaces\IDeviceInput.cs" />
     <Compile Include="Assets\_Project\Scripts\EntryPoints\SpaceEntryPoint.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IResourceLoaderService.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\BulletWeapon.cs" />
-    <Compile Include="Assets\_Project\Scripts\Interfaces\IWeaponStrategy.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\WeaponController.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\MeteoriteEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\EnemyController.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\LaserBullet.cs" />
-    <Compile Include="Assets\_Project\Scripts\View\GameOverView.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\SpaceShipData.cs" />
-    <Compile Include="Assets\_Project\Scripts\ResourceLoaders\BaseResourceLoaderService.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\EntitiesGenerationData.cs" />
+    <Compile Include="Assets\_Project\Scripts\Controllers\SpaceShipController.cs" />
+    <Compile Include="Assets\_Project\Scripts\Models\ShipStatisticsModel.cs" />
+    <Compile Include="Assets\_Project\Scripts\Controllers\ShipStatisticsController.cs" />
+    <Compile Include="Assets\_Project\Scripts\Controllers\EntitiesGenerationController.cs" />
+    <Compile Include="Assets\_Project\Scripts\Models\Enemies\UFOEnemy.cs" />
+    <Compile Include="Assets\_Project\AnimatedCosmos\Example\MouseLook.cs" />
+    <Compile Include="Assets\_Project\Scripts\Weapon\WeaponShip.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\IDeviceInput.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\IWeaponStrategy.cs" />
+    <Compile Include="Assets\_Project\Scripts\View\GameOverView.cs" />
+    <Compile Include="Assets\_Project\Scripts\ResourceLoaders\BaseResourceLoaderService.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\AsteroidEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\EnemyDeathTracker.cs" />
     <Compile Include="Assets\_Project\Scripts\View\ShipStatisticView.cs" />
@@ -82,15 +88,9 @@
     <Compile Include="Assets\_Project\AnimatedCosmos\Example\MaterialSwitch.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\SpaceObject.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\BaseEnemy.cs" />
-    <Compile Include="Assets\_Project\Scripts\Controllers\SpaceShipController.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />
-    <Compile Include="Assets\_Project\Scripts\Models\ShipStatisticsModel.cs" />
-    <Compile Include="Assets\_Project\Scripts\Controllers\ShipStatisticsController.cs" />
-    <Compile Include="Assets\_Project\Scripts\Controllers\EntitiesGenerationController.cs" />
-    <Compile Include="Assets\_Project\Scripts\Models\Enemies\UFOEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\LaserWeapon.cs" />
     <Compile Include="Assets\_Project\Scripts\DeviceInputs\DesktopInput.cs" />
-    <Compile Include="Assets\_Project\AnimatedCosmos\Example\MouseLook.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\_Project\AnimatedCosmos\Shaders\CosmosAnimated.shader" />
@@ -1154,6 +1154,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="UniTask.TextMeshPro.csproj">
+      <Project>{896A2773-4907-36D5-5AA6-7BE3526F1E98}</Project>
+      <Name>UniTask.TextMeshPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="UniTask.csproj">
+      <Project>{AC24630E-5F35-89D2-5695-EE975B4F80F4}</Project>
+      <Name>UniTask</Name>
+    </ProjectReference>
+    <ProjectReference Include="UniTask.Linq.csproj">
+      <Project>{30E3255D-5B9D-C5E3-6543-6336B63B5997}</Project>
+      <Name>UniTask.Linq</Name>
+    </ProjectReference>
+    <ProjectReference Include="UniTask.Addressables.csproj">
+      <Project>{62F470EA-7A9F-19F0-D104-D139CD879F54}</Project>
+      <Name>UniTask.Addressables</Name>
+    </ProjectReference>
+    <ProjectReference Include="UniTask.DOTween.csproj">
+      <Project>{325AFEC3-E955-E1EB-3910-045365840687}</Project>
+      <Name>UniTask.DOTween</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

@@ -533,7 +533,6 @@ MonoBehaviour:
   _fireBulletDamage: 50
   _laserPrefab: {fileID: 7557963557402377491, guid: dd66b356fa5632d4493b1517b93c2ade, type: 3}
   _bulletPrefab: {fileID: 4627742481004242442, guid: 0b0c27137eb4d504096874b80ace66bd, type: 3}
-  _obstaclesGenerationController: {fileID: 1489394316}
   _shipStatisticView: {fileID: 1509017783}
   _restartPrefab: {fileID: 8417194731950465201, guid: 1deb9489119882c40a6ecf1f397a93a0, type: 3}
 --- !u!4 &416978516
@@ -1359,7 +1358,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1489394315}
-  - component: {fileID: 1489394316}
   m_Layer: 0
   m_Name: EntitiesGenerationController
   m_TagString: Untagged
@@ -1386,18 +1384,6 @@ Transform:
   - {fileID: 859688952}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1489394316
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1489394312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e50790780d5979469213b9073c106ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1509017780
 GameObject:
   m_ObjectHideFlags: 0

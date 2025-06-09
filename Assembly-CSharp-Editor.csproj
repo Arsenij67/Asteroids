@@ -1150,6 +1150,26 @@
       <Project>{70261382-45EB-0236-7EA2-855FCD841B8F}</Project>
       <Name>Assembly-CSharp</Name>
     </ProjectReference>
+    <ProjectReference Include="UniTask.TextMeshPro.csproj">
+      <Project>{896A2773-4907-36D5-5AA6-7BE3526F1E98}</Project>
+      <Name>UniTask.TextMeshPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="UniTask.csproj">
+      <Project>{AC24630E-5F35-89D2-5695-EE975B4F80F4}</Project>
+      <Name>UniTask</Name>
+    </ProjectReference>
+    <ProjectReference Include="UniTask.Linq.csproj">
+      <Project>{30E3255D-5B9D-C5E3-6543-6336B63B5997}</Project>
+      <Name>UniTask.Linq</Name>
+    </ProjectReference>
+    <ProjectReference Include="UniTask.Addressables.csproj">
+      <Project>{62F470EA-7A9F-19F0-D104-D139CD879F54}</Project>
+      <Name>UniTask.Addressables</Name>
+    </ProjectReference>
+    <ProjectReference Include="UniTask.DOTween.csproj">
+      <Project>{325AFEC3-E955-E1EB-3910-045365840687}</Project>
+      <Name>UniTask.DOTween</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

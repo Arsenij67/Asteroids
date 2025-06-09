@@ -16,7 +16,7 @@ namespace Asteroid.Generation
         [SerializeField] private FireballBullet _bulletPrefab;
 
         [Header("Space Settings")]
-        [SerializeField] private EntitiesGenerationController _obstaclesGenerationController;
+        private EntitiesGenerationController _obstaclesGenerationController;
 
         [Header("Statistic")]
         [SerializeField] private ShipStatisticsView _shipStatisticView;
@@ -45,6 +45,7 @@ namespace Asteroid.Generation
             _shipStatisticModel = _resourceLoader.CreateInstance<ShipStatisticsModel>();
             _shipStatisticController = _resourceLoader.CreateInstance<ShipStatisticsController>();
             _allEnemiesDeathTracker = _resourceLoader.CreateInstance<EnemyDeathTracker>();
+            _obstaclesGenerationController = _resourceLoader.CreateInstance<EntitiesGenerationController>();
 
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
