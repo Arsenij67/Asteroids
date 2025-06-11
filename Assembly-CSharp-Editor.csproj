@@ -1072,6 +1072,10 @@
       <HintPath>Library\ScriptAssemblies\UnityEngine.TestRunner.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Multiplayer.Center.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Center.Editor.dll</HintPath>
       <Private>False</Private>
@@ -1140,10 +1144,6 @@
       <HintPath>Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
@@ -1153,10 +1153,6 @@
     <ProjectReference Include="UniTask.TextMeshPro.csproj">
       <Project>{896A2773-4907-36D5-5AA6-7BE3526F1E98}</Project>
       <Name>UniTask.TextMeshPro</Name>
-    </ProjectReference>
-    <ProjectReference Include="UniTask.csproj">
-      <Project>{AC24630E-5F35-89D2-5695-EE975B4F80F4}</Project>
-      <Name>UniTask</Name>
     </ProjectReference>
     <ProjectReference Include="UniTask.Linq.csproj">
       <Project>{30E3255D-5B9D-C5E3-6543-6336B63B5997}</Project>
@@ -1169,6 +1165,10 @@
     <ProjectReference Include="UniTask.DOTween.csproj">
       <Project>{325AFEC3-E955-E1EB-3910-045365840687}</Project>
       <Name>UniTask.DOTween</Name>
+    </ProjectReference>
+    <ProjectReference Include="UniTask.csproj">
+      <Project>{AC24630E-5F35-89D2-5695-EE975B4F80F4}</Project>
+      <Name>UniTask</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

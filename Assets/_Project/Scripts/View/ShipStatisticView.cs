@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,6 +8,8 @@ namespace Asteroid.Statistic
 {
     public class ShipStatisticsView : MonoBehaviour
     {
+        public event Action OnGameReloadClicked;
+
         [Header("UI References")]
         [SerializeField] private TMP_Text _fireballCountText;
         [SerializeField] private TMP_Text _laserCountText;
@@ -18,10 +21,16 @@ namespace Asteroid.Statistic
         private TMP_Text _enemiesDestroyedText;
         private Button _buttonRestart;
 
+        public void OnDestroy()
+        {
+            _buttonRestart.onClick.RemoveAllListeners();
+        }
+
         public void Initialize(GameOverView gameOverView)
         {
             _enemiesDestroyedText = gameOverView.EnemiesDestroyedText;
             _buttonRestart = gameOverView.ButtonRestart;
+            _buttonRestart.onClick.AddListener(() => { OnGameReloadClicked.Invoke(); });
         }
 
         public void UpdateFireballCount(int count)
@@ -76,16 +85,6 @@ namespace Asteroid.Statistic
             {
                 _enemiesDestroyedText.text = $"Enemies destroyed: {count:D1} units";
             }
-        }
-
-        public void EnableRestartAction(UnityAction actionRestart)
-        {
-            _buttonRestart.onClick.AddListener(actionRestart);
-        }
-
-        public void DisableRestartAction(UnityAction actionRestart)
-        {
-            _buttonRestart.onClick.RemoveListener(actionRestart);
         }
     }
 }

@@ -5,13 +5,15 @@ using Asteroid.Weapon;
 using Asteroid.Inputs;
 using Asteroid.SpaceObjectActions;
 using System;
+using Asteroid.Generation;
+using System.Collections.Generic;
 
 namespace Asteroid.SpaceShip
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public class SpaceShipController : SpaceObject
     {
-        public event Action OnGameOver;
+        public event Action OnEnemyDie;
 
         private IDeviceInput _deviceInput;
         private ShipStatisticsView _statisticsView;
@@ -19,6 +21,7 @@ namespace Asteroid.SpaceShip
         private SpaceShipData _shipData;
         private Rigidbody2D _rigidBody2D;
         private WeaponShip _laserWeaponController;
+        private IResourceLoaderService _baseLoader;
 
 
         private void FixedUpdate()
@@ -38,15 +41,15 @@ namespace Asteroid.SpaceShip
             }
         }
 
-        public void Initialize(ShipStatisticsView statisticView, IDeviceInput concreteInput, ShipStatisticsController statisticController, WeaponShip laserWeaponController)
+        public void Initialize(ShipStatisticsView statisticView, IDeviceInput concreteInput, ShipStatisticsController statisticController, WeaponShip laserWeaponController, IResourceLoaderService loader)
         {
-            Debug.Log("Initialize SSController");
-            _shipData = Resources.Load<SpaceShipData>("ScriptableObjects/SpaceShipData");
             _rigidBody2D = GetComponent<Rigidbody2D>();
             _deviceInput = concreteInput;
             _statisticsView = statisticView;
             _statisticsController = statisticController;
             _laserWeaponController = laserWeaponController;
+            _baseLoader = loader;
+            _shipData = _baseLoader.LoadResource<SpaceShipData>("ScriptableObjects/SpaceShipData");
         }
 
         private void RotateShipKeyBoard(float intensityInput)
@@ -72,9 +75,10 @@ namespace Asteroid.SpaceShip
 
         private void Die()
         {
-            OnGameOver?.Invoke();
+            OnEnemyDie?.Invoke();
             _statisticsController.UpdateDestroyedEnemies();
             Destroy(gameObject);
+            
         }
     }
 }

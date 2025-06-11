@@ -133,11 +133,11 @@
     <Compile Include="C:\Users\Арсений\Downloads\UniTask-master\src\UniTask\Assets\Plugins\UniTask\Runtime\Linq\DefaultIfEmpty.cs">
       <Link>Runtime\Linq\DefaultIfEmpty.cs</Link>
     </Compile>
-    <Compile Include="C:\Users\Арсений\Downloads\UniTask-master\src\UniTask\Assets\Plugins\UniTask\Runtime\Linq\Last.cs">
-      <Link>Runtime\Linq\Last.cs</Link>
-    </Compile>
     <Compile Include="C:\Users\Арсений\Downloads\UniTask-master\src\UniTask\Assets\Plugins\UniTask\Runtime\Linq\TakeUntil.cs">
       <Link>Runtime\Linq\TakeUntil.cs</Link>
+    </Compile>
+    <Compile Include="C:\Users\Арсений\Downloads\UniTask-master\src\UniTask\Assets\Plugins\UniTask\Runtime\Linq\Last.cs">
+      <Link>Runtime\Linq\Last.cs</Link>
     </Compile>
     <Compile Include="C:\Users\Арсений\Downloads\UniTask-master\src\UniTask\Assets\Plugins\UniTask\Runtime\Linq\Buffer.cs">
       <Link>Runtime\Linq\Buffer.cs</Link>
