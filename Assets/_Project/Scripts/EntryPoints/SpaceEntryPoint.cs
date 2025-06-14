@@ -37,9 +37,8 @@ namespace Asteroid.Generation
         private IResourceLoaderService _baseResourceLoader;
         private ISceneLoader _simpleSceneLoader;
 
-
         private void Awake()
-        {
+        {   
             _baseResourceLoader = new BaseResourceLoaderService();
 
             _entitiesGenerationData = _baseResourceLoader.LoadResource<EntitiesGenerationData>("ScriptableObjects/EntitiesGenerationData");
@@ -51,8 +50,18 @@ namespace Asteroid.Generation
 
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
-        }
 
+        }   
+        private void OnDestroy()
+        {
+            _obstaclesGenerationController.OnShipSpawned -= ShipInitializedHandler;
+            _shipStatisticView.OnGameReloadClicked -= _simpleSceneLoader.ReloadScene;
+            _obstaclesGenerationController.OnEnemySpawned -= EnemyInitializedHander;
+            _shipController.OnEnemyDie -= PanelRestartSpawnedHandler;
+            _weaponShipBullet.OnMissalSpawned -= BulletSpawnedHandler;
+
+            _obstaclesGenerationController.OnDestroy();
+        }
         private void InitializeSpaceShipSystems()
         {
             _obstaclesGenerationController.OnShipSpawned += ShipInitializedHandler;
@@ -86,6 +95,7 @@ namespace Asteroid.Generation
         private void EnemyDestroyedHandler(BaseEnemy enemyDestroy)
         {
             _allEnemiesDeathCounter.OnEnemyDied();
+            enemyDestroy.OnEnemyDestroyed -= EnemyDestroyedHandler;
         }
 
         private void ShipInitializedHandler(SpaceShipController playerShip)

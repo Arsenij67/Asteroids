@@ -3,6 +3,7 @@ using Asteroid.SpaceShip;
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using System.Threading;
 
 namespace Asteroid.Generation
 {
@@ -13,18 +14,28 @@ namespace Asteroid.Generation
 
         private EntitiesGenerationData _generationData;
         private IResourceLoaderService _resourceLoaderService;
+        private CancellationTokenSource _cancellationTokenSource;
         public void Initialize(EntitiesGenerationData entitiesGenData,IResourceLoaderService resourceLoader)
         {
+
             _generationData = entitiesGenData;
             _resourceLoaderService = resourceLoader;
+
+            _cancellationTokenSource = _resourceLoaderService.CreateInstance<CancellationTokenSource>();
             GenerateShip(_generationData.PlayerShipToGenerateNow);
-            WaitForNextGeneration();
+            WaitForNextGeneration(_cancellationTokenSource.Token);
             
         }
 
-        private async UniTask WaitForNextGeneration()
+        public void OnDestroy()
         {
-            while (true) {
+            _cancellationTokenSource?.Cancel();
+            _cancellationTokenSource?.Dispose();
+        }
+
+        private async UniTask WaitForNextGeneration(CancellationToken tokenStop)
+        {
+            while (!tokenStop.IsCancellationRequested) {
                 await UniTask.Delay(TimeSpan.FromSeconds(_generationData.GenerationFrequency));
                 GenerateObstacle(_generationData.ObstacleToGenerateNow);
             }

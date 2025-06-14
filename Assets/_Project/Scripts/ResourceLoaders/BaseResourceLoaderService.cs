@@ -44,7 +44,7 @@ namespace Asteroid.Generation
         {
             if (rotation == null)
             {
-                return Instantiate(prefab as GameObject, position, Quaternion.identity);
+                return Instantiate(prefab, position, Quaternion.identity);
             }
             if (prefab == null)
             {

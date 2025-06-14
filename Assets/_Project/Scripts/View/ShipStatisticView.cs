@@ -23,7 +23,7 @@ namespace Asteroid.Statistic
 
         public void OnDestroy()
         {
-            _buttonRestart.onClick.RemoveAllListeners();
+            _buttonRestart?.onClick.RemoveAllListeners();
         }
 
         public void Initialize(GameOverView gameOverView)
