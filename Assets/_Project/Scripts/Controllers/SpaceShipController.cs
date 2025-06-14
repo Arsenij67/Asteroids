@@ -27,7 +27,7 @@ namespace Asteroid.SpaceShip
         private void FixedUpdate()
         {
             TryTeleport(transform.position);
-            RotateShipKeyBoard(_deviceInput.ScanRotation());
+            TryRotate(_deviceInput.ScanRotation());
             TryMove(_deviceInput.ScanMove());
         }
 
@@ -52,7 +52,7 @@ namespace Asteroid.SpaceShip
             _shipData = _baseLoader.LoadResource<SpaceShipData>("ScriptableObjects/SpaceShipData");
         }
 
-        private void RotateShipKeyBoard(float intensityInput)
+        private void TryRotate(float intensityInput)
         {
             if (!Mathf.Approximately(intensityInput, 0f))
             { 
