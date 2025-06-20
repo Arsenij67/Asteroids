@@ -78,6 +78,7 @@
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\UFOEnemy.cs" />
     <Compile Include="Assets\_Project\AnimatedCosmos\Example\MouseLook.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\WeaponShip.cs" />
+    <Compile Include="Assets\_Project\Scripts\EntryPoints\BootsrapEntryPoint.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IDeviceInput.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IWeaponStrategy.cs" />
     <Compile Include="Assets\_Project\Scripts\View\GameOverView.cs" />
@@ -108,6 +109,7 @@
     <None Include="Assets\_Project\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF.shader" />
+    <None Include="Assets\test.uss" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
     <None Include="Assets\_Project\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
