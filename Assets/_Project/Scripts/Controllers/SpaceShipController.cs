@@ -21,7 +21,7 @@ namespace Asteroid.SpaceShip
         private SpaceShipData _shipData;
         private Rigidbody2D _rigidBody2D;
         private WeaponShip _laserWeaponController;
-        private IResourceLoaderService _baseLoader;
+        private IResourceLoaderService _loaderService;
 
 
         private void FixedUpdate()
@@ -48,8 +48,8 @@ namespace Asteroid.SpaceShip
             _statisticsView = statisticView;
             _statisticsController = statisticController;
             _laserWeaponController = laserWeaponController;
-            _baseLoader = loader;
-            _shipData = _baseLoader.LoadResource<SpaceShipData>("ScriptableObjects/SpaceShipData");
+            _loaderService = loader;
+            _shipData = _loaderService.LoadResource<SpaceShipData>("ScriptableObjects/SpaceShipData");
         }
 
         private void TryRotate(float intensityInput)

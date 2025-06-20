@@ -34,19 +34,19 @@ namespace Asteroid.Generation
         private WeaponShip _weaponShipLaser;
         private WeaponShip _weaponShipBullet;
         private Transform _shipTransform;
-        private IResourceLoaderService _baseResourceLoader;
-        private ISceneLoader _simpleSceneLoader;
+        private IResourceLoaderService _resourceLoader;
+        private ISceneLoader _sceneLoader;
 
         private void Awake()
         {   
-            _baseResourceLoader = new BaseResourceLoaderService();
+            _resourceLoader = new BaseResourceLoaderService();
 
-            _entitiesGenerationData = _baseResourceLoader.LoadResource<EntitiesGenerationData>("ScriptableObjects/EntitiesGenerationData");
-            _shipStatisticModel = _baseResourceLoader.CreateInstance<ShipStatisticsModel>();
-            _shipStatisticController = _baseResourceLoader.CreateInstance<ShipStatisticsController>();
-            _allEnemiesDeathCounter = _baseResourceLoader.CreateInstance<EnemyDeathCounter>();
-            _obstaclesGenerationController = _baseResourceLoader.CreateInstance<EntitiesGenerationController>();
-            _simpleSceneLoader = _baseResourceLoader.CreateInstance<SimpleSceneLoader>();   
+            _entitiesGenerationData = _resourceLoader.LoadResource<EntitiesGenerationData>("ScriptableObjects/EntitiesGenerationData");
+            _shipStatisticModel = _resourceLoader.CreateInstance<ShipStatisticsModel>();
+            _shipStatisticController = _resourceLoader.CreateInstance<ShipStatisticsController>();
+            _allEnemiesDeathCounter = _resourceLoader.CreateInstance<EnemyDeathCounter>();
+            _obstaclesGenerationController = _resourceLoader.CreateInstance<EntitiesGenerationController>();
+            _sceneLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();   
 
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
@@ -55,7 +55,7 @@ namespace Asteroid.Generation
         private void OnDestroy()
         {
             _obstaclesGenerationController.OnShipSpawned -= ShipInitializedHandler;
-            _shipStatisticView.OnGameReloadClicked -= _simpleSceneLoader.ReloadScene;
+            _shipStatisticView.OnGameReloadClicked -= _sceneLoader.ReloadScene;
             _obstaclesGenerationController.OnEnemySpawned -= EnemyInitializedHander;
             _shipController.OnEnemyDie -= PanelRestartSpawnedHandler;
             _weaponShipBullet.OnMissalSpawned -= BulletSpawnedHandler;
@@ -65,10 +65,10 @@ namespace Asteroid.Generation
         private void InitializeSpaceShipSystems()
         {
             _obstaclesGenerationController.OnShipSpawned += ShipInitializedHandler;
-            _shipStatisticView.OnGameReloadClicked += _simpleSceneLoader.ReloadScene;
+            _shipStatisticView.OnGameReloadClicked += _sceneLoader.ReloadScene;
 
             _shipStatisticController.Initialize(_shipStatisticView, _shipStatisticModel);
-            _obstaclesGenerationController.Initialize(_entitiesGenerationData,_baseResourceLoader);
+            _obstaclesGenerationController.Initialize(_entitiesGenerationData,_resourceLoader);
         }
 
         private void InitializeEnemySystems()
@@ -109,15 +109,15 @@ namespace Asteroid.Generation
 
             _shipController.OnEnemyDie += PanelRestartSpawnedHandler;
             _weaponShipBullet.OnMissalSpawned += BulletSpawnedHandler;
-            _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView,_baseResourceLoader);
-            _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView,_baseResourceLoader);
-            _shipController.Initialize(_shipStatisticView,new DesktopInput(),_shipStatisticController,_laserWeaponControl,_baseResourceLoader);
+            _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView,_resourceLoader);
+            _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView,_resourceLoader);
+            _shipController.Initialize(_shipStatisticView,new DesktopInput(),_shipStatisticController,_laserWeaponControl,_resourceLoader);
             _weaponController.Initialize();
             _entitiesGenerationData.Initialize(_shipTransform);
         }
         private void PanelRestartSpawnedHandler()
         {
-            var endPanelView = _baseResourceLoader.Instantiate
+            var endPanelView = _resourceLoader.Instantiate
                 (
                 _restartPrefab,
                 _shipStatisticView.transform.parent
