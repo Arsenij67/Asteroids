@@ -75,14 +75,15 @@
     <Compile Include="Assets\_Project\Scripts\Models\ShipStatisticsModel.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\ShipStatisticsController.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\EntitiesGenerationController.cs" />
+    <Compile Include="Assets\_Project\Scripts\Models\BootStrap\BootstrapSceneModel.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\UFOEnemy.cs" />
     <Compile Include="Assets\_Project\AnimatedCosmos\Example\MouseLook.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\WeaponShip.cs" />
-    <Compile Include="Assets\_Project\Scripts\EntryPoints\BootsrapEntryPoint.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IDeviceInput.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IWeaponStrategy.cs" />
     <Compile Include="Assets\_Project\Scripts\View\GameOverView.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\BaseResourceLoaderService.cs" />
+    <Compile Include="Assets\_Project\Scripts\View\Bootstrap\BootstrapUI.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\AsteroidEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\EnemyDeathCounter.cs" />
     <Compile Include="Assets\_Project\Scripts\View\ShipStatisticView.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\BaseEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />
     <Compile Include="Assets\_Project\Scripts\ScenesManagement\SimpleSceneLoader.cs" />
+    <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapEntryPointController.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\LaserWeapon.cs" />
     <Compile Include="Assets\_Project\Scripts\DeviceInputs\DesktopInput.cs" />
   </ItemGroup>

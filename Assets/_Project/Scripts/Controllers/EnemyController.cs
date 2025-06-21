@@ -42,7 +42,6 @@ namespace Asteroid.Enemies
         {
             _enemy = GetComponent<BaseEnemy>();
             _shipTransform = shipTransform;
-            Debug.Log(_enemy == null);
         }
 
     }
