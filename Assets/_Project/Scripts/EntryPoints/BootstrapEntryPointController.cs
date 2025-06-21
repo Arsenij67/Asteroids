@@ -20,8 +20,7 @@ namespace Asteroid.Generation
             _sceneLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();
             _bootstrapSceneModel = _resourceLoader.LoadResource<BootstrapSceneModel>("ScriptableObjects/BootstrapSceneData");
             _bootstrapUI = GetComponent<BootstrapUI>();
-            _bootstrapUI.OnPlayerClickButtonStart += ActivateLoadedScene;
-
+            _bootstrapUI.OnPlayerClickButtonStart += SwitchLoadedScenes;
             TickLoading();
             await PrepareGameSceneAsync();
             await UniTask.WaitForSeconds(_bootstrapSceneModel.TIME_WAIT_LOADING);
@@ -30,12 +29,12 @@ namespace Asteroid.Generation
 
         private void OnDestroy()
         {
-            _bootstrapUI.OnPlayerClickButtonStart -= ActivateLoadedScene;
+            _bootstrapUI.OnPlayerClickButtonStart -= SwitchLoadedScenes;
         }
 
         private UniTask PrepareGameSceneAsync()
         {
-            return _sceneLoader.LoadSceneAsyncAdditive(_bootstrapSceneModel.PreLoadedScene,false);
+            return _sceneLoader.LoadSceneAsyncAdditive(_bootstrapSceneModel.SceneForLoad,false);
         }
 
         private async void TickLoading()
@@ -54,10 +53,9 @@ namespace Asteroid.Generation
             _bootstrapUI.UpdateSlider(_sceneLoader.LoadingProgress);
         }
 
-        private void ActivateLoadedScene()
+        private void SwitchLoadedScenes()
         {
             _sceneLoader.SwitchSceneActivation(true);
         }
-        
     }
 }

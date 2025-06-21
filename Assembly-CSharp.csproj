@@ -85,6 +85,7 @@
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\BaseResourceLoaderService.cs" />
     <Compile Include="Assets\_Project\Scripts\View\Bootstrap\BootstrapUI.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\AsteroidEnemy.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\ISceneUnloader.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\EnemyDeathCounter.cs" />
     <Compile Include="Assets\_Project\Scripts\View\ShipStatisticView.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\BaseBullet.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />
     <Compile Include="Assets\_Project\Scripts\ScenesManagement\SimpleSceneLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapEntryPointController.cs" />
+    <Compile Include="Assets\_Project\Scripts\ScenesManagement\SimpleSceneUnloader.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\LaserWeapon.cs" />
     <Compile Include="Assets\_Project\Scripts\DeviceInputs\DesktopInput.cs" />
   </ItemGroup>

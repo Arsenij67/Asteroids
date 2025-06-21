@@ -5,8 +5,10 @@ using Cysharp.Threading.Tasks;
 
 public class SimpleSceneLoader : ISceneLoader
 {
-    private AsyncOperation asyncLoading;
     private const float LEVEL_LOAD_ADDITIVE_SCENE = 0.9f;
+
+    private AsyncOperation asyncLoading;
+
     public float LoadingProgress => asyncLoading== null ? 0: asyncLoading.progress;
 
     public void LoadScene(string name)

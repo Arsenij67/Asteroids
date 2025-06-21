@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fbc27ec5b320d24a9d2511ccb26d6fe, type: 3}
   m_Name: BootstrapSceneData
   m_EditorClassIdentifier: 
-  <PreLoadedScene>k__BackingField: RocketEvade
+  <SceneForLoad>k__BackingField: RocketEvade

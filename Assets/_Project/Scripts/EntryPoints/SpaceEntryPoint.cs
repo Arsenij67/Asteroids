@@ -36,6 +36,7 @@ namespace Asteroid.Generation
         private Transform _shipTransform;
         private IResourceLoaderService _resourceLoader;
         private ISceneLoader _sceneLoader;
+        private ISceneUnloader _sceneUnloader;
 
         private void Awake()
         {   
@@ -46,8 +47,11 @@ namespace Asteroid.Generation
             _shipStatisticController = _resourceLoader.CreateInstance<ShipStatisticsController>();
             _allEnemiesDeathCounter = _resourceLoader.CreateInstance<EnemyDeathCounter>();
             _obstaclesGenerationController = _resourceLoader.CreateInstance<EntitiesGenerationController>();
-            _sceneLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();   
+            _sceneLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();
+            _sceneUnloader = _resourceLoader.CreateInstance<SimpleSceneUnloader>();
 
+            _sceneLoader.LoadSceneAdditive("Bootstrap");
+            _sceneUnloader.UnloadScene("Bootstrap");
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
 
