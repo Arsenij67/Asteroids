@@ -1,3 +1,4 @@
+using Asteroid.Database;
 using Asteroid.Generation;
 using Asteroid.Statistic;
 using TMPro;
@@ -11,11 +12,13 @@ namespace Asteroid.SpaceShip
     {
         private ShipStatisticsModel _shipStatisticModel;
         private ShipStatisticsView _shipStatisticView;
+        private IResourceLoaderService _resourceLoaderService;
 
-        public void Initialize(ShipStatisticsView shipStatisticView, ShipStatisticsModel shipStatisticModel)
+        public void Initialize(ShipStatisticsView shipStatisticView, ShipStatisticsModel shipStatisticModel, IResourceLoaderService resourceLoaderService)
         {
             _shipStatisticView = shipStatisticView;
             _shipStatisticModel = shipStatisticModel;
+            _resourceLoaderService = resourceLoaderService;
         }
 
         public void Initialize()
@@ -26,6 +29,14 @@ namespace Asteroid.SpaceShip
         public void UpdateDestroyedEnemies()
         {
             _shipStatisticView.UpdateDestroyedEnemies(_shipStatisticModel.EnemiesDestroyed);
+            UpdateDataSave();
+        }
+        private void UpdateDataSave()
+        {
+            DataSave playerSave = _resourceLoaderService.CreateInstance<DataSave>();
+            playerSave.EnemiesDestroyed = _shipStatisticModel.EnemiesDestroyed;
+            string jsonData = JsonUtility.ToJson(playerSave);
+            PlayerPrefs.SetString("statsSave", jsonData);
         }
     }
 }
