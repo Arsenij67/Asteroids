@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: BootstrapSceneData
   m_EditorClassIdentifier: 
   <SceneForLoad>k__BackingField: RocketEvade
+  <BootstrapSceneName>k__BackingField: Bootstrap

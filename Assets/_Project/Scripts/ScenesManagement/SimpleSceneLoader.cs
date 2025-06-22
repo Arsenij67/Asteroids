@@ -1,7 +1,8 @@
 using Asteroid.Generation;
+using Cysharp.Threading.Tasks;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Cysharp.Threading.Tasks;
 
 public class SimpleSceneLoader : ISceneLoader
 {
@@ -37,7 +38,12 @@ public class SimpleSceneLoader : ISceneLoader
 
     public void ReloadScene()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Scene sceneData = SceneManager.GetActiveScene();
+
+        if (!sceneData.isLoaded)
+        {
+            SceneManager.LoadScene(sceneData.name);
+        }
     }
 
     public void SwitchSceneActivation(bool allowSceneBeActive)

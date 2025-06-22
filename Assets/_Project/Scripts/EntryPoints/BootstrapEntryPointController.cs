@@ -11,37 +11,41 @@ namespace Asteroid.Generation
     {
         private BootstrapSceneModel _bootstrapSceneModel;
         private BootstrapUI _bootstrapUI;
-        private ISceneLoader _sceneLoader;
+        private ISceneLoader _sceneBootstrapLoader;
+        private ISceneLoader _sceneGameLoader;
+        private ISceneUnloader _sceneUnloader;
         private IResourceLoaderService _resourceLoader;
 
         private async void Start()
         {
             _resourceLoader = new BaseResourceLoaderService();
-            _sceneLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();
+            _sceneGameLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();
+            _sceneBootstrapLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();
+            _sceneUnloader = _resourceLoader.CreateInstance<SimpleSceneUnloader>();
             _bootstrapSceneModel = _resourceLoader.LoadResource<BootstrapSceneModel>("ScriptableObjects/BootstrapSceneData");
             _bootstrapUI = GetComponent<BootstrapUI>();
-            _bootstrapUI.OnPlayerClickButtonStart += SwitchLoadedScenes;
+            _sceneBootstrapLoader.ReloadScene();
+            _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedScene;
             TickLoading();
             await PrepareGameSceneAsync();
-            await UniTask.WaitForSeconds(_bootstrapSceneModel.TIME_WAIT_LOADING);
+            await UniTask.WaitForSeconds(_bootstrapSceneModel.timeWaitLoading);
             _bootstrapUI.ActivateButtonStart();
         }
 
         private void OnDestroy()
         {
-            _bootstrapUI.OnPlayerClickButtonStart -= SwitchLoadedScenes;
+            _bootstrapUI.OnPlayerClickButtonStart -= OpenLoadedScene;
         }
 
         private UniTask PrepareGameSceneAsync()
         {
-            return _sceneLoader.LoadSceneAsyncAdditive(_bootstrapSceneModel.SceneForLoad,false);
+            return _sceneGameLoader.LoadSceneAsyncAdditive(_bootstrapSceneModel.ScenePreLoad,false);
         }
 
         private async void TickLoading()
         {
             const float TICK_TIME = 0.2f;
-            const float FINAL_LOADING_SHARE = 0.9f;
-            while (_sceneLoader.LoadingProgress < FINAL_LOADING_SHARE)
+            while (_sceneGameLoader.LoadingProgress < _bootstrapSceneModel.finalLoadingShare)
             {
                await UniTask.Delay(TimeSpan.FromSeconds(TICK_TIME));
                UpdateBootstrapUI();
@@ -50,12 +54,15 @@ namespace Asteroid.Generation
 
         private void UpdateBootstrapUI()
         {
-            _bootstrapUI.UpdateSlider(_sceneLoader.LoadingProgress);
+            _bootstrapUI.UpdateSlider(_sceneGameLoader.LoadingProgress);
         }
 
-        private void SwitchLoadedScenes()
+        private async void OpenLoadedScene()
         {
-            _sceneLoader.SwitchSceneActivation(true);
+            _sceneGameLoader.SwitchSceneActivation(true);
+            await UniTask.WaitUntil(() => _sceneGameLoader.LoadingProgress >= _bootstrapSceneModel.finalLoadingShare);
+            await _sceneUnloader.UnloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);
+            
         }
     }
 }

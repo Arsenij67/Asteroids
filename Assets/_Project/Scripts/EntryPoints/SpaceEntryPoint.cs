@@ -3,6 +3,7 @@ using Asteroid.Inputs;
 using Asteroid.SpaceShip;
 using Asteroid.Statistic;
 using Asteroid.Weapon;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace Asteroid.Generation
@@ -50,8 +51,6 @@ namespace Asteroid.Generation
             _sceneLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();
             _sceneUnloader = _resourceLoader.CreateInstance<SimpleSceneUnloader>();
 
-            _sceneLoader.LoadSceneAdditive("Bootstrap");
-            _sceneUnloader.UnloadScene("Bootstrap");
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
 
