@@ -1,3 +1,7 @@
 Assets/Firebase filter=lfs diff=lfs merge=lfs -text
 Assets/Plugins filter=lfs diff=lfs merge=lfs -text
 Assets filter=lfs diff=lfs merge=lfs -text
+Assets/Firebase/Plugins/x86_64/FirebaseCppApp-* filter=lfs diff=lfs merge=lfs -text
+Assets/Firebase/Plugins/x86_64/FirebaseCppAuth-* filter=lfs diff=lfs merge=lfs -text
+Assets/Firebase/Plugins/x86_64/*.bundle filter=lfs diff=lfs merge=lfs -text
+Assets/Firebase/Plugins/x86_64/*.so filter=lfs diff=lfs merge=lfs -text
