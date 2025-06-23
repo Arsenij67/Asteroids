@@ -33,13 +33,12 @@ public class SimpleSceneLoader : ISceneLoader
     {
        asyncLoading = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
        asyncLoading.allowSceneActivation = allowSceneActivate;
-       return UniTask.WaitUntil(() => asyncLoading.progress >= LEVEL_LOAD_ADDITIVE_SCENE).ContinueWith(() => Debug.Log($"Scene {name} succesfuly loaded additive!"));
+       return UniTask.WaitUntil(() => asyncLoading.progress >= LEVEL_LOAD_ADDITIVE_SCENE).ContinueWith(() => Debug.Log($"Scene {name} succesfuly loaded additive! Progress :{asyncLoading.progress}"));
     }
 
     public void ReloadScene()
     {
         Scene sceneData = SceneManager.GetActiveScene();
-
         if (!sceneData.isLoaded)
         {
             SceneManager.LoadScene(sceneData.name);

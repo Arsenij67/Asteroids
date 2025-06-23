@@ -23,7 +23,7 @@ namespace Asteroid.Generation
         private bool _waitingCompleted;
         private float _loadingProgress;
 
-        private async void Start()
+        private void Awake()
         {
             _resourceLoader = new BaseResourceLoaderService();
             _sceneGameLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();
@@ -33,9 +33,13 @@ namespace Asteroid.Generation
             _bootstrapSceneModel = _resourceLoader.LoadResource<BootstrapSceneModel>("ScriptableObjects/BootstrapSceneData");
             _analytics = _resourceLoader.CreateInstance<FirebaseAnalytics>();
             _bootstrapUI = GetComponent<BootstrapUI>();
+        }
 
+        private async void Start()
+        {
             _sceneBootstrapLoader.ReloadScene();
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedScene;
+            _bootstrapUI.OnPlayerClickButtonStart += SendEventGameStart;
             _loadingTasks.Add(PrepareAnalyticsAsync());
             _loadingTasks.Add(PrepareGameSceneAsync());
             _loadingTasks.Add(WaitBeforeLoadingSceneAsync(_bootstrapSceneModel.timeWaitLoading));
@@ -47,6 +51,7 @@ namespace Asteroid.Generation
         private void OnDestroy()
         {
             _bootstrapUI.OnPlayerClickButtonStart -= OpenLoadedScene;
+            _bootstrapUI.OnPlayerClickButtonStart -= SendEventGameStart;
         }
 
         private void UpdateProgress()
@@ -65,7 +70,7 @@ namespace Asteroid.Generation
         private async void TickLoading()
         {
             const float TICK_TIME = 0.2f;
-            while (_loadingProgress<1)
+            while (_loadingProgress < _bootstrapSceneModel.finalProgressTasks)
             {
                 UpdateProgress();
                 UpdateBootstrapUI();
@@ -95,6 +100,11 @@ namespace Asteroid.Generation
             _sceneGameLoader.SwitchSceneActivation(true);
             await UniTask.WaitUntil(() => _sceneGameLoader.LoadingProgress >= _bootstrapSceneModel.finalLoadingShare);
             await _sceneUnloader.UnloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);
+        }
+
+        private void SendEventGameStart()
+        { 
+            _analytics.PushEvent(Firebase.Analytics.FirebaseAnalytics.EventLogin, Firebase.Analytics.FirebaseAnalytics.ParameterStartDate, DateTime.UtcNow);
         }
     }
 }

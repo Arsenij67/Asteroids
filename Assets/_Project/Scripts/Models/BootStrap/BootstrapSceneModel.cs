@@ -10,4 +10,5 @@ public class BootstrapSceneModel : ScriptableObject
 
     public readonly float timeWaitLoading = 2.00f;
     public readonly float finalLoadingShare = 0.9f;
+    public readonly float finalProgressTasks = 1f;
 }
