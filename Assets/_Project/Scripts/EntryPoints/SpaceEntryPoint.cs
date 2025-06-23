@@ -41,7 +41,7 @@ namespace Asteroid.Generation
         private void Awake()
         {   
             _resourceLoader = new BaseResourceLoaderService();
-            FirebaseAnalytics.LogEvent("custom_progress_event", "percent", 0.4f);
+   
 
             _entitiesGenerationData = _resourceLoader.LoadResource<EntitiesGenerationData>("ScriptableObjects/EntitiesGenerationData");
             _shipStatisticModel = _resourceLoader.CreateInstance<ShipStatisticsModel>();
