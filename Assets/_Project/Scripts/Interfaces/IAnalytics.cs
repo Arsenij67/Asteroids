@@ -1,13 +1,15 @@
+using Cysharp.Threading.Tasks;
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Asteroid.Services
 {
-    public interface  IAnalytics <E,P> where P : struct where E : struct
+    public interface  IAnalytics 
     {
-        public void PushEvent(string name, string parameterName, E parameterValue);
-        public void PushUserProperty(string name, P property);
+        public UniTask<bool> Initialize();
+        public void PushEvent <E> (string name, string parameterName, E parameterValue) where E : struct;
+        public void PushUserProperty <P> (string name, P property) where P : struct;
         public void ResetAnalyticsData();
-
     }
 }

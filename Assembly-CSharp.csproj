@@ -72,6 +72,7 @@
     <Compile Include="Assets\_Project\Scripts\Models\EntitiesGenerationData.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\ISceneLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\SpaceShipController.cs" />
+    <Compile Include="Assets\_Project\Scripts\Analytics\FirebaseAnalytics.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\ShipStatisticsModel.cs" />
     <Compile Include="Assets\_Project\Scripts\SaveDataBase\DataSave.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\ShipStatisticsController.cs" />

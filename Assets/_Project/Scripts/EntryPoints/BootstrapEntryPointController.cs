@@ -1,11 +1,9 @@
 using Cysharp.Threading.Tasks;
-using Firebase;
-using Firebase.Analytics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Asteroid.Services;
 
 namespace Asteroid.Generation
 {
@@ -18,6 +16,7 @@ namespace Asteroid.Generation
         private ISceneLoader _sceneGameLoader;
         private ISceneUnloader _sceneUnloader;
         private IResourceLoaderService _resourceLoader;
+        private IAnalytics _analytics;
         private List<UniTask> _loadingTasks;
         private bool _analyticsReady;
         private bool _sceneLoaded;
@@ -32,7 +31,9 @@ namespace Asteroid.Generation
             _sceneBootstrapLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();
             _sceneUnloader = _resourceLoader.CreateInstance<SimpleSceneUnloader>();
             _bootstrapSceneModel = _resourceLoader.LoadResource<BootstrapSceneModel>("ScriptableObjects/BootstrapSceneData");
+            _analytics = _resourceLoader.CreateInstance<FirebaseAnalytics>();
             _bootstrapUI = GetComponent<BootstrapUI>();
+
             _sceneBootstrapLoader.ReloadScene();
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedScene;
             _loadingTasks.Add(PrepareAnalyticsAsync());
@@ -41,8 +42,11 @@ namespace Asteroid.Generation
             TickLoading();
             await UniTask.WhenAll(_loadingTasks);
             _bootstrapUI.ActivateButtonStart();
-            FirebaseAnalytics.LogEvent("custom_progress_event", "percent", 0.4f);
-            FirebaseAnalytics.SetUserProperty("favorite_food", "ice cream");
+        }
+
+        private void OnDestroy()
+        {
+            _bootstrapUI.OnPlayerClickButtonStart -= OpenLoadedScene;
         }
 
         private void UpdateProgress()
@@ -56,17 +60,7 @@ namespace Asteroid.Generation
 
         private async UniTask PrepareAnalyticsAsync()
         {
-            var dependencyStatus = await FirebaseApp.CheckAndFixDependenciesAsync();
-            if (dependencyStatus == DependencyStatus.Available)
-            {
-                FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
-                Debug.Log("Firebase initialized successfully");
-            }
-            else
-            {
-                Debug.LogError($"Could not resolve Firebase dependencies: {dependencyStatus}");
-            }
-            _analyticsReady = true;
+            _analyticsReady = await _analytics.Initialize();
         }
         private async void TickLoading()
         {
@@ -101,11 +95,6 @@ namespace Asteroid.Generation
             _sceneGameLoader.SwitchSceneActivation(true);
             await UniTask.WaitUntil(() => _sceneGameLoader.LoadingProgress >= _bootstrapSceneModel.finalLoadingShare);
             await _sceneUnloader.UnloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);
-        }
-
-        private void OnDestroy()
-        {
-            _bootstrapUI.OnPlayerClickButtonStart -= OpenLoadedScene;
         }
     }
 }
