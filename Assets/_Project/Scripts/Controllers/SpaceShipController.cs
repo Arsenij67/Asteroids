@@ -13,7 +13,7 @@ namespace Asteroid.SpaceShip
     [RequireComponent(typeof(Rigidbody2D))]
     public class SpaceShipController : SpaceObject
     {
-        public event Action OnEnemyDie;
+        public event Action OnPlayerDie;
 
         private IDeviceInput _deviceInput;
         private ShipStatisticsView _statisticsView;
@@ -75,7 +75,7 @@ namespace Asteroid.SpaceShip
 
         private void Die()
         {
-            OnEnemyDie?.Invoke();
+            OnPlayerDie?.Invoke();
             _statisticsController.UpdateDestroyedEnemies();
             Destroy(gameObject);
             

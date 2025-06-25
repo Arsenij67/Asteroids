@@ -7,6 +7,7 @@ namespace Asteroid.Database
     {
         public string Name;
         public int EnemiesDestroyed;
+        public bool IsLaserUsed;
 
     }
 }

@@ -7,6 +7,11 @@ namespace Asteroid.Enemies
     {
         private const float MIN_LENGHT_REACT = 0.05f;
 
+        public override void AddToStatistic()
+        {
+            _shipStatisticController.IncreaseCountUFODestroyed();
+        }
+
         public override void Move(Transform transformEnd)
         {
             Vector2 transformStart = transform.position;

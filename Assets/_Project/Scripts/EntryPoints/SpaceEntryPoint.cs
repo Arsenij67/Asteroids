@@ -1,15 +1,20 @@
 using Asteroid.Enemies;
 using Asteroid.Inputs;
+using Asteroid.Services;
 using Asteroid.SpaceShip;
 using Asteroid.Statistic;
 using Asteroid.Weapon;
 using Firebase.Analytics;
+using System;
 using UnityEngine;
 
 namespace Asteroid.Generation
 {
     public class SpaceEntryPoint : MonoBehaviour
     {
+        public event Action OnGameStarted;
+        public event Action OnPlayerDied;
+
         [Header("Bullet Settings")]
         [SerializeField] private float _fireBulletSpeed = 15f;
         [SerializeField] private float _fireBulletDamage = 10f;
@@ -37,28 +42,35 @@ namespace Asteroid.Generation
         private Transform _shipTransform;
         private IResourceLoaderService _resourceLoader;
         private ISceneLoader _sceneLoader;
+        private AnalyticsEventHandler _analyticsEventHandler;
 
         private void Awake()
         {   
             _resourceLoader = new BaseResourceLoaderService();
-   
-
             _entitiesGenerationData = _resourceLoader.LoadResource<EntitiesGenerationData>("ScriptableObjects/EntitiesGenerationData");
             _shipStatisticModel = _resourceLoader.CreateInstance<ShipStatisticsModel>();
             _shipStatisticController = _resourceLoader.CreateInstance<ShipStatisticsController>();
             _allEnemiesDeathCounter = _resourceLoader.CreateInstance<EnemyDeathCounter>();
             _obstaclesGenerationController = _resourceLoader.CreateInstance<EntitiesGenerationController>();
             _sceneLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();
+            _analyticsEventHandler = _resourceLoader.CreateInstance<AnalyticsEventHandler>();
 
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
-        }   
+
+            _analyticsEventHandler.Initialize(this, _shipStatisticModel, _laserWeaponControl);
+        }
+
+        private void Start()
+        {
+            OnGameStarted?.Invoke();
+        }
         private void OnDestroy()
         {
             _obstaclesGenerationController.OnShipSpawned -= ShipInitializedHandler;
             _shipStatisticView.OnGameReloadClicked -= _sceneLoader.ReloadScene;
             _obstaclesGenerationController.OnEnemySpawned -= EnemyInitializedHander;
-            _shipController.OnEnemyDie -= PanelRestartSpawnedHandler;
+            _shipController.OnPlayerDie -= PanelRestartSpawnedHandler;
             _weaponShipBullet.OnMissalSpawned -= BulletSpawnedHandler;
 
             _obstaclesGenerationController.OnDestroy();
@@ -89,13 +101,13 @@ namespace Asteroid.Generation
         {
             currentEnemy.OnEnemyDestroyed += EnemyDestroyedHandler;
 
-            currentEnemy.Initialize(_shipTransform);
+            currentEnemy.Initialize(_shipTransform,_shipStatisticController);
             enemyController.Initialize(_shipTransform);
         }
 
         private void EnemyDestroyedHandler(BaseEnemy enemyDestroy)
         {
-            _allEnemiesDeathCounter.OnEnemyDied();
+            _allEnemiesDeathCounter.OnEnemyDied(enemyDestroy);
             enemyDestroy.OnEnemyDestroyed -= EnemyDestroyedHandler;
         }
 
@@ -108,8 +120,10 @@ namespace Asteroid.Generation
             _weaponShipLaser = _laserWeaponControl;
             _weaponShipBullet = playerShip.GetComponent<BulletWeaponController>();
 
-            _shipController.OnEnemyDie += PanelRestartSpawnedHandler;
+            _shipController.OnPlayerDie += PanelRestartSpawnedHandler;
+            _shipController.OnPlayerDie += () => OnPlayerDied?.Invoke();
             _weaponShipBullet.OnMissalSpawned += BulletSpawnedHandler;
+
             _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView,_resourceLoader);
             _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView,_resourceLoader);
             _shipController.Initialize(_shipStatisticView,new DesktopInput(),_shipStatisticController,_laserWeaponControl,_resourceLoader);
@@ -126,6 +140,7 @@ namespace Asteroid.Generation
 
             _shipStatisticView.Initialize(endPanelView);
             _shipStatisticController.Initialize();
+
         }
     }
 }

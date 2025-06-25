@@ -6,9 +6,10 @@ using Cysharp.Threading.Tasks;
 
 namespace Asteroid.Services
 {
-    public class FirebaseAnalytics : IAnalytics
+    public class FirebaseAnalyticsSender : IAnalytics
     {
         private bool _isInitialized = false;
+        public bool AnalyticsEnabled => _isInitialized;
 
         public async UniTask<bool> Initialize()
         {
@@ -27,7 +28,7 @@ namespace Asteroid.Services
             return _isInitialized;
         }
 
-        public void PushEvent<E>(string eventName, string parameterName, E parameterValue) where E : struct
+        public void PushEvent<E>(string eventName, string parameterName, E parameterValue = default)
         {
             if (!_isInitialized)
             {
@@ -42,7 +43,7 @@ namespace Asteroid.Services
             );
         }
 
-        public void PushUserProperty<P>(string propertyName, P propertyValue) where P : struct
+        public void PushUserProperty<P>(string propertyName, P propertyValue = default)
         {
             if (!_isInitialized)
             {

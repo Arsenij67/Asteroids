@@ -10,6 +10,8 @@ namespace Asteroid.Generation
     [RequireComponent(typeof(BootstrapUI))]
     public class BootstrapEntryPointController : MonoBehaviour
     {
+        public event Action OnGameStarted;
+
         private BootstrapSceneModel _bootstrapSceneModel;
         private BootstrapUI _bootstrapUI;
         private ISceneLoader _sceneBootstrapLoader;
@@ -27,11 +29,11 @@ namespace Asteroid.Generation
         {
             _resourceLoader = new BaseResourceLoaderService();
             _sceneGameLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();
-            _loadingTasks = _resourceLoader.CreateInstance<List<UniTask>>();   
+            _loadingTasks = _resourceLoader.CreateInstance<List<UniTask>>();
             _sceneBootstrapLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();
             _sceneUnloader = _resourceLoader.CreateInstance<SimpleSceneUnloader>();
             _bootstrapSceneModel = _resourceLoader.LoadResource<BootstrapSceneModel>("ScriptableObjects/BootstrapSceneData");
-            _analytics = _resourceLoader.CreateInstance<FirebaseAnalytics>();
+            _analytics = _resourceLoader.CreateInstance<FirebaseAnalyticsSender>();
             _bootstrapUI = GetComponent<BootstrapUI>();
         }
 
@@ -39,7 +41,7 @@ namespace Asteroid.Generation
         {
             _sceneBootstrapLoader.ReloadScene();
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedScene;
-            _bootstrapUI.OnPlayerClickButtonStart += SendEventGameStart;
+            _bootstrapUI.OnPlayerClickButtonStart += () => OnGameStarted?.Invoke();
             _loadingTasks.Add(PrepareAnalyticsAsync());
             _loadingTasks.Add(PrepareGameSceneAsync());
             _loadingTasks.Add(WaitBeforeLoadingSceneAsync(_bootstrapSceneModel.timeWaitLoading));
@@ -51,16 +53,14 @@ namespace Asteroid.Generation
         private void OnDestroy()
         {
             _bootstrapUI.OnPlayerClickButtonStart -= OpenLoadedScene;
-            _bootstrapUI.OnPlayerClickButtonStart -= SendEventGameStart;
         }
-
         private void UpdateProgress()
         {
             int completedCount = 0;
             completedCount += Convert.ToInt32(_analyticsReady);
             completedCount += Convert.ToInt32(_sceneLoaded);
             completedCount += Convert.ToInt32(_waitingCompleted);
-            _loadingProgress =(float) completedCount / _loadingTasks.Count();
+            _loadingProgress = (float)completedCount / _loadingTasks.Count();
         }
 
         private async UniTask PrepareAnalyticsAsync()
@@ -100,11 +100,6 @@ namespace Asteroid.Generation
             _sceneGameLoader.SwitchSceneActivation(true);
             await UniTask.WaitUntil(() => _sceneGameLoader.LoadingProgress >= _bootstrapSceneModel.finalLoadingShare);
             await _sceneUnloader.UnloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);
-        }
-
-        private void SendEventGameStart()
-        { 
-            _analytics.PushEvent(Firebase.Analytics.FirebaseAnalytics.EventLogin, Firebase.Analytics.FirebaseAnalytics.ParameterStartDate, DateTime.UtcNow);
         }
     }
 }

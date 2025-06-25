@@ -8,8 +8,9 @@ namespace Asteroid.Services
     public interface  IAnalytics 
     {
         public UniTask<bool> Initialize();
-        public void PushEvent <E> (string name, string parameterName, E parameterValue) where E : struct;
-        public void PushUserProperty <P> (string name, P property) where P : struct;
+        public void PushEvent<E>(string name, string parameterName, E parameterValue = default);
+        public void PushUserProperty <P> (string name, P property = default);
         public void ResetAnalyticsData();
+        public bool AnalyticsEnabled { get; }
     }
 }

@@ -1,5 +1,6 @@
 using Asteroid.Generation;
 using Asteroid.Statistic;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ namespace Asteroid.Weapon
 {
     public class LaserWeaponController : WeaponShip, IWeaponStrategy
     {
+        public event Action OnLaserTurned;
+
         [SerializeField] private float _glowDuration;
 
         private LaserBullet _laserObject;
@@ -31,6 +34,7 @@ namespace Asteroid.Weapon
         {
             if (!_laserTurned)
             {
+                OnLaserTurned?.Invoke();
                 OnMissalSpawned?.Invoke(_concreteBulletPrefab, transform.up * -1);
                 _laserTurned = true;
                 StartCoroutine(FireLaser());

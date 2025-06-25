@@ -3,6 +3,7 @@ using Asteroid.Database;
 using UnityEngine;
 using Asteroid.Generation;
 using UnityEditor.Playables;
+using Asteroid.Enemies;
 
 public class EnemyDeathCounter
 {
@@ -12,14 +13,14 @@ public class EnemyDeathCounter
         _shipStatisticModel = shipStatisticModel;
     }
 
-    public void OnEnemyDied()
+    public void OnEnemyDied(BaseEnemy enemy)
     {
-        IncreaseKilledEnemies();
+        IncreaseKilledEnemies(enemy);
     }
 
-    private void IncreaseKilledEnemies()
+    private void IncreaseKilledEnemies(BaseEnemy enemy)
     {
-        _shipStatisticModel.EnemiesDestroyed++;
+        enemy.AddToStatistic();
     }
 
  

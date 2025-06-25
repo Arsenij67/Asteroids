@@ -23,5 +23,10 @@ namespace Asteroid.Enemies
         {
             _rigidBody2DEnemy.MoveRotation(_rigidBody2DEnemy.rotation + (angleOffset * Time.fixedDeltaTime));
         }
+
+        public override void AddToStatistic()
+        {
+            _shipStatisticController.IncreaseCountMeteoritesDestroyed();
+        }
     }
 }

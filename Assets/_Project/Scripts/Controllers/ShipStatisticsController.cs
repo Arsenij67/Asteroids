@@ -31,6 +31,25 @@ namespace Asteroid.SpaceShip
             _shipStatisticView.UpdateDestroyedEnemies(_shipStatisticModel.EnemiesDestroyed);
             UpdateDataSave();
         }
+
+        public void IncreaseCountLaserShoots()
+        {
+            _shipStatisticModel.CountShootsLaser++;
+        }
+
+        public void IncreaseCountUFODestroyed()
+        {
+            _shipStatisticModel.CountDestroyedUFO++;
+        }
+
+        public void IncreaseCountMeteoritesDestroyed()
+        {
+           _shipStatisticModel.CountDestroyedMeteorites++;
+        }
+        public void IncreaseCountAsteroidsDestroyed()
+        {
+            _shipStatisticModel.CountDestroyedAsteroids++;
+        }
         private void UpdateDataSave()
         {
             DataSave playerSave = _resourceLoaderService.CreateInstance<DataSave>();

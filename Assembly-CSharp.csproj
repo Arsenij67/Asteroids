@@ -67,12 +67,12 @@
     <Compile Include="Assets\_Project\Scripts\Controllers\WeaponController.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\MeteoriteEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\EnemyController.cs" />
+    <Compile Include="Assets\_Project\Scripts\Analytics\AnallyticsEventHanler.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\LaserBullet.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\SpaceShipData.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\EntitiesGenerationData.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\ISceneLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\SpaceShipController.cs" />
-    <Compile Include="Assets\_Project\Scripts\Analytics\FirebaseAnalytics.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\ShipStatisticsModel.cs" />
     <Compile Include="Assets\_Project\Scripts\SaveDataBase\DataSave.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\ShipStatisticsController.cs" />
@@ -90,6 +90,7 @@
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\AsteroidEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\ISceneUnloader.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\EnemyDeathCounter.cs" />
+    <Compile Include="Assets\_Project\Scripts\Analytics\FirebaseAnalyticsSender.cs" />
     <Compile Include="Assets\_Project\Scripts\View\ShipStatisticView.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\BaseBullet.cs" />
     <Compile Include="Assets\_Project\AnimatedCosmos\Example\MaterialSwitch.cs" />
