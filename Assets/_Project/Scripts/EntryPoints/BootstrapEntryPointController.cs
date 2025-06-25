@@ -86,7 +86,7 @@ namespace Asteroid.Generation
 
         private async UniTask WaitBeforeLoadingSceneAsync(float seconds)
         {
-            await UniTask.WaitForSeconds(seconds);
+            await UniTask.Delay(TimeSpan.FromSeconds(seconds));
             _waitingCompleted = true;
         }
 
