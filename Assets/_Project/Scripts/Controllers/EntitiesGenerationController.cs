@@ -36,7 +36,7 @@ namespace Asteroid.Generation
         private async UniTask WaitForNextGeneration(CancellationToken tokenStop)
         {
             while (!tokenStop.IsCancellationRequested) {
-                await UniTask.Delay(TimeSpan.FromSeconds(_generationData.GenerationFrequency));
+                await UniTask.Delay(_generationData.GenerationFrequency,cancellationToken:tokenStop);
                 GenerateObstacle(_generationData.ObstacleToGenerateNow);
             }
           
