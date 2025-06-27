@@ -1,4 +1,5 @@
 using Asteroid.Generation;
+using Asteroid.SpaceShip;
 using Asteroid.Statistic;
 using System;
 using System.Collections;
@@ -15,18 +16,20 @@ namespace Asteroid.Weapon
 
         protected ShipStatisticsView _shipView;
         protected BaseBullet _concreteBulletPrefab;
+        protected ShipStatisticsController _controllerStatistics;
         protected IResourceLoaderService _resourceLoaderService;
 
         [SerializeField] private float _timeBulletRecovery = 2f;
 
         private WaitForSeconds _waitSecondsRecover;
 
-        public virtual void Initialize(BaseBullet concreteBullet, ShipStatisticsView shipStView, IResourceLoaderService resourceLoader)
+        public virtual void Initialize(BaseBullet concreteBullet, ShipStatisticsView shipStView,ShipStatisticsController controllerStatistics, IResourceLoaderService resourceLoader)
         { 
             _concreteBulletPrefab = concreteBullet;
             _waitSecondsRecover = new WaitForSeconds(_timeBulletRecovery);
             _shipView = shipStView;
             _resourceLoaderService = resourceLoader;
+            _controllerStatistics = controllerStatistics;
             UpdateViewWeapon();
             StartCoroutine(RecoverMissile());
         }

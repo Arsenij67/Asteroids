@@ -1,4 +1,5 @@
 using Asteroid.Generation;
+using Asteroid.SpaceShip;
 using Asteroid.Statistic;
 using System;
 using System.Collections;
@@ -20,9 +21,9 @@ namespace Asteroid.Weapon
 
         public bool LaserTurned => _laserTurned;
 
-        public override void Initialize(BaseBullet concreteBullet, ShipStatisticsView shipStView, IResourceLoaderService resourceLoader)
+        public override void Initialize(BaseBullet concreteBullet, ShipStatisticsView shipStView, ShipStatisticsController controllerStatistics, IResourceLoaderService resourceLoader)
         {
-            base.Initialize(concreteBullet, shipStView, resourceLoader);
+            base.Initialize(concreteBullet, shipStView,controllerStatistics, resourceLoader);
 
             _waitSecondsGlow = new WaitForSeconds(_glowDuration);
             _laserObject = _resourceLoaderService.Instantiate(_concreteBulletPrefab, transform).GetComponent<LaserBullet>();
@@ -38,6 +39,7 @@ namespace Asteroid.Weapon
                 OnMissalSpawned?.Invoke(_concreteBulletPrefab, transform.up * -1);
                 _laserTurned = true;
                 StartCoroutine(FireLaser());
+                _controllerStatistics.IncreaseCountLaserShoots();
             }
         }
 

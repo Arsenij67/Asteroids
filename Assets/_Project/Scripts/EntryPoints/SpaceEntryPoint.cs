@@ -42,6 +42,7 @@ namespace Asteroid.Generation
         private Transform _shipTransform;
         private IResourceLoaderService _resourceLoader;
         private ISceneLoader _sceneLoader;
+        private IDeviceInput _deviceInput;
         private AnalyticsEventHandler _analyticsEventHandler;
 
         private void Awake()
@@ -54,6 +55,7 @@ namespace Asteroid.Generation
             _obstaclesGenerationController = _resourceLoader.CreateInstance<EntitiesGenerationController>();
             _sceneLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();
             _analyticsEventHandler = _resourceLoader.CreateInstance<AnalyticsEventHandler>();
+            _deviceInput = _resourceLoader.CreateInstance<DesktopInput>();
 
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
@@ -124,9 +126,9 @@ namespace Asteroid.Generation
             _shipController.OnPlayerDie += () => OnPlayerDied?.Invoke();
             _weaponShipBullet.OnMissalSpawned += BulletSpawnedHandler;
 
-            _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView,_resourceLoader);
-            _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView,_resourceLoader);
-            _shipController.Initialize(_shipStatisticView,new DesktopInput(),_shipStatisticController,_laserWeaponControl,_resourceLoader);
+            _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView,_shipStatisticController,_resourceLoader);
+            _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader);
+            _shipController.Initialize(_shipStatisticView,_deviceInput,_shipStatisticController,_laserWeaponControl,_resourceLoader);
             _weaponController.Initialize();
             _entitiesGenerationData.Initialize(_shipTransform);
         }

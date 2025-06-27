@@ -37,6 +37,11 @@ namespace Asteroid.SpaceShip
             _shipStatisticModel.CountShootsLaser++;
         }
 
+        public void IncreaseCountBulletShoots()
+        {
+            _shipStatisticModel.CountShootsFireball++;
+        }
+
         public void IncreaseCountUFODestroyed()
         {
             _shipStatisticModel.CountDestroyedUFO++;

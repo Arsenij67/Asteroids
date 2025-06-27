@@ -15,7 +15,9 @@ namespace Asteroid.Weapon
                 OnMissalSpawned?.Invoke(bullet, -transform.up);
                 _countShoots--;
                 UpdateViewWeapon();
+                _controllerStatistics.IncreaseCountBulletShoots();
             }
+
         }
 
         protected override void UpdateViewWeapon()
