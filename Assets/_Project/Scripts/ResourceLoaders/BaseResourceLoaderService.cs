@@ -1,5 +1,10 @@
+using Cysharp.Threading.Tasks;
+using System.Linq;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Asteroid.Generation
 {
@@ -52,6 +57,11 @@ namespace Asteroid.Generation
                 return null;
             }
             return Object.Instantiate(prefab.GameObject(), position, rotation);
+        }
+        public UniTask<GameObject> InstantiateAsync<T>(T prefab, Transform parent) where T : Object
+        {
+            AsyncInstantiateOperation<GameObject> asyncOperation = Object.InstantiateAsync(prefab.GameObject(), parent);
+            return asyncOperation.ToUniTask().ContinueWith(() => asyncOperation.Result.First());
         }
     }
 }

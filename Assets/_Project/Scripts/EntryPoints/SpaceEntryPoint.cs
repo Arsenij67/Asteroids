@@ -41,21 +41,23 @@ namespace Asteroid.Generation
         private WeaponShip _weaponShipBullet;
         private Transform _shipTransform;
         private IResourceLoaderService _resourceLoader;
+        private IInstanceLoader _instanceLoader;
         private ISceneLoader _sceneLoader;
         private IDeviceInput _deviceInput;
         private AnalyticsEventHandler _analyticsEventHandler;
 
         private void Awake()
-        {   
-            _resourceLoader = new BaseResourceLoaderService();
+        {
+            _instanceLoader = new InstanceCreator();
+            _resourceLoader = _instanceLoader.CreateInstance<BaseResourceLoaderService>();
             _entitiesGenerationData = _resourceLoader.LoadResource<EntitiesGenerationData>("ScriptableObjects/EntitiesGenerationData");
-            _shipStatisticModel = _resourceLoader.CreateInstance<ShipStatisticsModel>();
-            _shipStatisticController = _resourceLoader.CreateInstance<ShipStatisticsController>();
-            _allEnemiesDeathCounter = _resourceLoader.CreateInstance<EnemyDeathCounter>();
-            _obstaclesGenerationController = _resourceLoader.CreateInstance<EntitiesGenerationController>();
-            _sceneLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();
-            _analyticsEventHandler = _resourceLoader.CreateInstance<AnalyticsEventHandler>();
-            _deviceInput = _resourceLoader.CreateInstance<DesktopInput>();
+            _shipStatisticModel = _instanceLoader.CreateInstance<ShipStatisticsModel>();
+            _shipStatisticController = _instanceLoader.CreateInstance<ShipStatisticsController>();
+            _allEnemiesDeathCounter = _instanceLoader.CreateInstance<EnemyDeathCounter>();
+            _obstaclesGenerationController = _instanceLoader.CreateInstance<EntitiesGenerationController>();
+            _sceneLoader = _instanceLoader.CreateInstance<SimpleSceneLoader>();
+            _analyticsEventHandler = _instanceLoader.CreateInstance<AnalyticsEventHandler>();
+            _deviceInput = _instanceLoader.CreateInstance<DesktopInput>();
 
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
@@ -82,8 +84,8 @@ namespace Asteroid.Generation
             _obstaclesGenerationController.OnShipSpawned += ShipInitializedHandler;
             _shipStatisticView.OnGameReloadClicked += _sceneLoader.ReloadScene;
 
-            _shipStatisticController.Initialize(_shipStatisticView, _shipStatisticModel,_resourceLoader);
-            _obstaclesGenerationController.Initialize(_entitiesGenerationData,_resourceLoader);
+            _shipStatisticController.Initialize(_shipStatisticView, _shipStatisticModel,_instanceLoader);
+            _obstaclesGenerationController.Initialize(_entitiesGenerationData,_resourceLoader,_instanceLoader);
         }
 
         private void InitializeEnemySystems()
@@ -127,7 +129,7 @@ namespace Asteroid.Generation
             _weaponShipBullet.OnMissalSpawned += BulletSpawnedHandler;
 
             _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView,_shipStatisticController,_resourceLoader);
-            _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader);
+            _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView, _shipStatisticController,_resourceLoader);
             _shipController.Initialize(_shipStatisticView,_deviceInput,_shipStatisticController,_laserWeaponControl,_resourceLoader);
             _weaponController.Initialize();
             _entitiesGenerationData.Initialize(_shipTransform);

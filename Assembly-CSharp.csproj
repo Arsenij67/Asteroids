@@ -73,6 +73,7 @@
     <Compile Include="Assets\_Project\Scripts\Models\EntitiesGenerationData.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\ISceneLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\SpaceShipController.cs" />
+    <Compile Include="Assets\_Project\Scripts\ResourceLoaders\InstanceCreator\InstanceCreator.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\ShipStatisticsModel.cs" />
     <Compile Include="Assets\_Project\Scripts\SaveDataBase\DataSave.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\ShipStatisticsController.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Assets\_Project\Scripts\View\Bootstrap\BootstrapUI.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\AsteroidEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\ISceneUnloader.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\IInstanceLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\EnemyDeathCounter.cs" />
     <Compile Include="Assets\_Project\Scripts\Analytics\FirebaseAnalyticsSender.cs" />
     <Compile Include="Assets\_Project\Scripts\View\ShipStatisticView.cs" />
@@ -98,6 +100,7 @@
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\BaseEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />
     <Compile Include="Assets\_Project\Scripts\ScenesManagement\SimpleSceneLoader.cs" />
+    <Compile Include="Assets\_Project\Scripts\ResourceLoaders\LocalBundleLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapEntryPointController.cs" />
     <Compile Include="Assets\_Project\Scripts\ScenesManagement\SimpleSceneUnloader.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\LaserWeapon.cs" />

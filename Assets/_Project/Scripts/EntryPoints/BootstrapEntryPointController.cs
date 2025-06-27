@@ -18,6 +18,7 @@ namespace Asteroid.Generation
         private ISceneLoader _sceneGameLoader;
         private ISceneUnloader _sceneUnloader;
         private IResourceLoaderService _resourceLoader;
+        private IInstanceLoader _instanceLoader;
         private IAnalytics _analytics;
         private List<UniTask> _loadingTasks;
         private bool _analyticsReady;
@@ -27,13 +28,14 @@ namespace Asteroid.Generation
 
         private void Awake()
         {
-            _resourceLoader = new BaseResourceLoaderService();
-            _sceneGameLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();
-            _loadingTasks = _resourceLoader.CreateInstance<List<UniTask>>();
-            _sceneBootstrapLoader = _resourceLoader.CreateInstance<SimpleSceneLoader>();
-            _sceneUnloader = _resourceLoader.CreateInstance<SimpleSceneUnloader>();
+            _instanceLoader = new InstanceCreator();
+            _resourceLoader = _instanceLoader.CreateInstance<BaseResourceLoaderService>();
+            _sceneGameLoader = _instanceLoader.CreateInstance<SimpleSceneLoader>();
+            _loadingTasks = _instanceLoader.CreateInstance<List<UniTask>>();
+            _sceneBootstrapLoader = _instanceLoader.CreateInstance<SimpleSceneLoader>();
+            _sceneUnloader = _instanceLoader.CreateInstance<SimpleSceneUnloader>();
+            _analytics = _instanceLoader.CreateInstance<FirebaseAnalyticsSender>();
             _bootstrapSceneModel = _resourceLoader.LoadResource<BootstrapSceneModel>("ScriptableObjects/BootstrapSceneData");
-            _analytics = _resourceLoader.CreateInstance<FirebaseAnalyticsSender>();
             _bootstrapUI = GetComponent<BootstrapUI>();
         }
 

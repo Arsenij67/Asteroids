@@ -14,14 +14,15 @@ namespace Asteroid.Generation
 
         private EntitiesGenerationData _generationData;
         private IResourceLoaderService _resourceLoaderService;
+        private IInstanceLoader _instanceLoader;
         private CancellationTokenSource _cancellationTokenSource;
-        public void Initialize(EntitiesGenerationData entitiesGenData,IResourceLoaderService resourceLoader)
+        public void Initialize(EntitiesGenerationData entitiesGenData,IResourceLoaderService resourceLoader,IInstanceLoader instanceLoader)
         {
 
             _generationData = entitiesGenData;
             _resourceLoaderService = resourceLoader;
-
-            _cancellationTokenSource = _resourceLoaderService.CreateInstance<CancellationTokenSource>();
+            _instanceLoader = instanceLoader;
+            _cancellationTokenSource = _instanceLoader.CreateInstance<CancellationTokenSource>();
             GenerateShip(_generationData.PlayerShipToGenerateNow);
             WaitForNextGeneration(_cancellationTokenSource.Token);
             

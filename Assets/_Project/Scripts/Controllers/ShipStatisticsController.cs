@@ -12,13 +12,13 @@ namespace Asteroid.SpaceShip
     {
         private ShipStatisticsModel _shipStatisticModel;
         private ShipStatisticsView _shipStatisticView;
-        private IResourceLoaderService _resourceLoaderService;
+        private IInstanceLoader _resourceLoaderService;
 
-        public void Initialize(ShipStatisticsView shipStatisticView, ShipStatisticsModel shipStatisticModel, IResourceLoaderService resourceLoaderService)
+        public void Initialize(ShipStatisticsView shipStatisticView, ShipStatisticsModel shipStatisticModel, IInstanceLoader instanceLoader)
         {
             _shipStatisticView = shipStatisticView;
             _shipStatisticModel = shipStatisticModel;
-            _resourceLoaderService = resourceLoaderService;
+            _resourceLoaderService = instanceLoader;
         }
 
         public void Initialize()

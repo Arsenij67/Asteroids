@@ -9,15 +9,15 @@ namespace Asteroid.Services
 {
     public class AnalyticsEventHandler
     {
-        private IResourceLoaderService _resourceLoader;
+        private IInstanceLoader _instanceLoader;
         private IAnalytics _analytics;
         private ShipStatisticsModel _shipStatisticModel;
         private SpaceEntryPoint _spaceEntryPoint;
         private LaserWeaponController _laserWeapon;
         public void Initialize(SpaceEntryPoint spaceEntryPoint,ShipStatisticsModel shipStatisticsModel, LaserWeaponController laserWeapon)
         {
-            _resourceLoader = new BaseResourceLoaderService();
-            _analytics = _resourceLoader.CreateInstance<Asteroid.Services.FirebaseAnalyticsSender>();
+            _instanceLoader = new InstanceCreator();
+            _analytics = _instanceLoader.CreateInstance<Asteroid.Services.FirebaseAnalyticsSender>();
             _spaceEntryPoint = spaceEntryPoint;
             _shipStatisticModel = shipStatisticsModel;
             _laserWeapon = laserWeapon;
