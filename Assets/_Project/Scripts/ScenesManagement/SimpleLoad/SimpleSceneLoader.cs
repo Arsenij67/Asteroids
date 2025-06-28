@@ -43,6 +43,7 @@ public class SimpleSceneLoader : ISceneLoader
 
     public UniTask LoadSceneAdditiveAsync(string name, bool allowSceneActivate = true)
     {
+       Debug.Log(0);
        asyncLoading = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
        asyncLoading.allowSceneActivation = allowSceneActivate;
        return UniTask.WaitUntil(() => asyncLoading.progress >= LEVEL_LOAD_ADDITIVE_SCENE).ContinueWith(() => Debug.Log($"Scene {name} succesfuly loaded additive! Progress :{asyncLoading.progress}"));

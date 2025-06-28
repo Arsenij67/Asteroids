@@ -50,7 +50,10 @@ namespace Asteroid.Generation
             _loadingTasks.Add(WaitBeforeLoadingSceneAsync(_bootstrapSceneModel.timeWaitLoading));
             TickLoading();
             await UniTask.WhenAll(_loadingTasks);
-            _bootstrapUI.ActivateButtonStart();
+            if (_bootstrapUI != null)
+            {
+                _bootstrapUI.ActivateButtonStart();
+            }
         }
 
         private void OnDestroy()
@@ -75,9 +78,14 @@ namespace Asteroid.Generation
             const float TICK_TIME = 0.2f;
             while (_loadingProgress < _bootstrapSceneModel.finalProgressTasks)
             {
+                if (this == null)
+                    return;
                 UpdateProgress();
-                UpdateBootstrapUI();
-                await UniTask.Delay(TimeSpan.FromSeconds(TICK_TIME), cancellationToken: this.GetCancellationTokenOnDestroy());
+                if (_bootstrapUI != null)
+                {
+                    UpdateBootstrapUI();
+                }
+                await UniTask.Delay(TimeSpan.FromSeconds(TICK_TIME));
             }
         }
 
@@ -95,14 +103,19 @@ namespace Asteroid.Generation
 
         private void UpdateBootstrapUI()
         {
-            _bootstrapUI.UpdateSlider(_loadingProgress);
+            if (_bootstrapUI != null)
+            {
+                _bootstrapUI.UpdateSlider(_loadingProgress);
+            }
         }
 
         private async void OpenLoadedScene()
         {
+            Debug.Log(9);
             _sceneGameLoader.SwitchSceneActivation(true);
             await UniTask.WaitUntil(() => _sceneGameLoader.LoadingProgress >= _bootstrapSceneModel.finalLoadingShare);
             await _bootstrapSceneLoader.UnloadSceneAsync();
+            Debug.Log(9);
         }
     }
 }

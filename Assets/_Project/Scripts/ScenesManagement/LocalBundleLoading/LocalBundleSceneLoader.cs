@@ -1,5 +1,6 @@
 using Asteroid.Generation;
 using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -12,8 +13,8 @@ public class LocalBundleSceneLoader : ISceneLoader
     private const float MAX_LOADING_LEVEL = 1f;
 
     private SceneInstance _currentScene;
-    private AsyncOperationHandle<SceneInstance> _sceneLoadHandle;
     private string _lastSceneName = string.Empty;
+    private AsyncOperationHandle<SceneInstance> _sceneLoadHandle;
     public float LoadingProgress => _sceneLoadHandle.IsValid() ? _sceneLoadHandle.PercentComplete : 0f;
     public string LastLoadedScene => _sceneLoadHandle.IsValid() && _sceneLoadHandle.PercentComplete >= MAX_LOADING_LEVEL ? _lastSceneName : string.Empty;
 
@@ -31,26 +32,26 @@ public class LocalBundleSceneLoader : ISceneLoader
 
     public async UniTask LoadSceneAsync(string name)
     {
-        _lastSceneName = name;
-
-        if (_currentScene.Scene.IsValid() && !_currentScene.Scene.isLoaded)
+        if (_sceneLoadHandle.IsValid())
         {
-
-            _sceneLoadHandle = Addressables.LoadSceneAsync(name, LoadSceneMode.Single);
-            _currentScene = await _sceneLoadHandle.ToUniTask();
+            await UnloadSceneAsync();
         }
+
+        _lastSceneName = name;
+        _sceneLoadHandle = Addressables.LoadSceneAsync(name, LoadSceneMode.Single);
+        _currentScene = await _sceneLoadHandle.ToUniTask();
     }
 
-    public UniTask LoadSceneAdditiveAsync(string name, bool allowSceneActivate = true)
+    public async UniTask LoadSceneAdditiveAsync(string name, bool allowSceneActivate = true)
     {
-        _lastSceneName = name;
-        _sceneLoadHandle = Addressables.LoadSceneAsync(name, LoadSceneMode.Additive,allowSceneActivate);
-        _sceneLoadHandle.Completed += handle =>
+        if (_sceneLoadHandle.IsValid())
         {
-            _currentScene = handle.Result;
-        };
+            await UnloadSceneAsync();
+        }
 
-       return _sceneLoadHandle.ToUniTask();
+        _lastSceneName = name;
+        _sceneLoadHandle = Addressables.LoadSceneAsync(name, LoadSceneMode.Additive, allowSceneActivate);
+        _currentScene = await _sceneLoadHandle.ToUniTask();
     }
 
     public void ReloadScene(string nameId)
@@ -61,10 +62,23 @@ public class LocalBundleSceneLoader : ISceneLoader
 
     public void SwitchSceneActivation(bool allowSceneBeActive)
     {
-        if (_sceneLoadHandle.IsValid() && _sceneLoadHandle.IsDone)
+        if (IsSceneReady())
         {
-            _sceneLoadHandle.Result.ActivateAsync().allowSceneActivation = allowSceneBeActive;
+            Debug.Log(9);
+            var operation = _sceneLoadHandle
+                .Result
+                .ActivateAsync();
+            operation.allowSceneActivation = allowSceneBeActive;
+            return;
         }
+
+    }
+
+    private bool IsSceneReady()
+    {
+        return _sceneLoadHandle.IsValid()
+               && _sceneLoadHandle.IsDone
+               && _sceneLoadHandle.Result.Scene.isLoaded;
     }
 
     public void UnloadScene()
@@ -74,7 +88,10 @@ public class LocalBundleSceneLoader : ISceneLoader
 
     public UniTask UnloadSceneAsync()
     {
-        var handler = Addressables.UnloadSceneAsync(_currentScene, UnityEngine.SceneManagement.UnloadSceneOptions.None);
+        var handler = Addressables.UnloadSceneAsync(_sceneLoadHandle);
+        Addressables.Release(_sceneLoadHandle);
+        _currentScene = default;
+        _sceneLoadHandle = default;
         return handler.ToUniTask();
     }
 }

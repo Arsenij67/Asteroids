@@ -20,7 +20,10 @@ public class BootstrapUI : MonoBehaviour
 
     public void ActivateButtonStart()
     {
-        _buttonStartGame.gameObject.SetActive(true);
+        if (_buttonStartGame != null && _buttonStartGame.gameObject != null)
+        {
+            _buttonStartGame.gameObject.SetActive(true);
+        }
     }
 
     private void ActivateLoadedScene()
