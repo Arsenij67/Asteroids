@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Asteroid.Services;
+using UnityEngine.AddressableAssets;
+using UnityEngine.SceneManagement;
 
 namespace Asteroid.Generation
 {
@@ -14,9 +16,8 @@ namespace Asteroid.Generation
 
         private BootstrapSceneModel _bootstrapSceneModel;
         private BootstrapUI _bootstrapUI;
-        private ISceneLoader _sceneBootstrapLoader;
         private ISceneLoader _sceneGameLoader;
-        private ISceneUnloader _sceneUnloader;
+        private ISceneLoader _bootstrapSceneLoader;
         private IResourceLoaderService _resourceLoader;
         private IInstanceLoader _instanceLoader;
         private IAnalytics _analytics;
@@ -26,14 +27,14 @@ namespace Asteroid.Generation
         private bool _waitingCompleted;
         private float _loadingProgress;
 
+
         private void Awake()
         {
             _instanceLoader = new InstanceCreator();
             _resourceLoader = _instanceLoader.CreateInstance<BaseResourceLoaderService>();
-            _sceneGameLoader = _instanceLoader.CreateInstance<SimpleSceneLoader>();
+            _bootstrapSceneLoader = _instanceLoader.CreateInstance<LocalBundleSceneLoader>();
+            _sceneGameLoader = _instanceLoader.CreateInstance<LocalBundleSceneLoader>();
             _loadingTasks = _instanceLoader.CreateInstance<List<UniTask>>();
-            _sceneBootstrapLoader = _instanceLoader.CreateInstance<SimpleSceneLoader>();
-            _sceneUnloader = _instanceLoader.CreateInstance<SimpleSceneUnloader>();
             _analytics = _instanceLoader.CreateInstance<FirebaseAnalyticsSender>();
             _bootstrapSceneModel = _resourceLoader.LoadResource<BootstrapSceneModel>("ScriptableObjects/BootstrapSceneData");
             _bootstrapUI = GetComponent<BootstrapUI>();
@@ -41,7 +42,7 @@ namespace Asteroid.Generation
 
         private async void Start()
         {
-            _sceneBootstrapLoader.ReloadScene();
+            _bootstrapSceneLoader.ReloadScene(_bootstrapSceneModel.BootstrapSceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedScene;
             _bootstrapUI.OnPlayerClickButtonStart += () => OnGameStarted?.Invoke();
             _loadingTasks.Add(PrepareAnalyticsAsync());
@@ -82,7 +83,7 @@ namespace Asteroid.Generation
 
         private async UniTask PrepareGameSceneAsync()
         {
-            await _sceneGameLoader.LoadSceneAsyncAdditive(_bootstrapSceneModel.ScenePreLoad, false);
+            await _sceneGameLoader.LoadSceneAdditiveAsync(_bootstrapSceneModel.ScenePreLoad,false);
             _sceneLoaded = true;
         }
 
@@ -101,7 +102,7 @@ namespace Asteroid.Generation
         {
             _sceneGameLoader.SwitchSceneActivation(true);
             await UniTask.WaitUntil(() => _sceneGameLoader.LoadingProgress >= _bootstrapSceneModel.finalLoadingShare);
-            await _sceneUnloader.UnloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);
+            await _bootstrapSceneLoader.UnloadSceneAsync();
         }
     }
 }

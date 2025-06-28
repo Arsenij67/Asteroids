@@ -1,3 +1,4 @@
+using Asteroid.Generation;
 using System;
 using TMPro;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace Asteroid.Statistic
 {
     public class ShipStatisticsView : MonoBehaviour
     {
-        public event Action OnGameReloadClicked;
+        public event Action<string> OnGameReloadClicked;
 
         [Header("UI References")]
         [SerializeField] private TMP_Text _fireballCountText;
@@ -20,17 +21,19 @@ namespace Asteroid.Statistic
         
         private TMP_Text _enemiesDestroyedText;
         private Button _buttonRestart;
+        private ISceneLoader _sceneLoader;
 
         public void OnDestroy()
         {
             _buttonRestart?.onClick.RemoveAllListeners();
         }
 
-        public void Initialize(GameOverView gameOverView)
+        public void Initialize(GameOverView gameOverView, ISceneLoader sceneLoader)
         {
             _enemiesDestroyedText = gameOverView.EnemiesDestroyedText;
             _buttonRestart = gameOverView.ButtonRestart;
-            _buttonRestart.onClick.AddListener(() => { OnGameReloadClicked.Invoke(); });
+            _sceneLoader = sceneLoader;
+            _buttonRestart.onClick.AddListener(() => { OnGameReloadClicked.Invoke(_sceneLoader.LastLoadedScene); });
         }
 
         public void UpdateFireballCount(int count)

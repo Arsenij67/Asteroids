@@ -6,8 +6,8 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class LocalBundleLoader : IResourceLoaderService
 {
-
-    public GameObject Instantiate<T>(T prefab, Vector2 position, Quaternion rotation) where T : Object
+    AssetReference resourceReference;
+    public  GameObject Instantiate<T>(T prefab, Vector2 position, Quaternion rotation) where T : Object
     {
         return null;
     }

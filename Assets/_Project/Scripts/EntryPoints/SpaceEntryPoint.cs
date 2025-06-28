@@ -142,7 +142,7 @@ namespace Asteroid.Generation
                 _shipStatisticView.transform.parent
                 ).GetComponent<GameOverView>();
 
-            _shipStatisticView.Initialize(endPanelView);
+            _shipStatisticView.Initialize(endPanelView,_sceneLoader);
             _shipStatisticController.Initialize();
 
         }
