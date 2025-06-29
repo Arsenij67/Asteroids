@@ -1,4 +1,4 @@
-using Asteroid.Generation;
+
 using Cysharp.Threading.Tasks;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -8,6 +8,8 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 
+namespace Asteroid.Generation
+{
 public class LocalBundleSceneLoader : ISceneLoader
 {
     private const float MAX_LOADING_LEVEL = 1f;
@@ -56,8 +58,11 @@ public class LocalBundleSceneLoader : ISceneLoader
 
     public void ReloadScene(string nameId)
     {
-        _lastSceneName = nameId;
-        LoadScene(nameId);
+        Scene sceneData = SceneManager.GetSceneByName(nameId);
+        if (!sceneData.isLoaded)
+        {
+            LoadScene(sceneData.name);
+        }
     }
 
     public void SwitchSceneActivation(bool allowSceneBeActive)
@@ -94,4 +99,6 @@ public class LocalBundleSceneLoader : ISceneLoader
         _sceneLoadHandle = default;
         return handler.ToUniTask();
     }
+
+}
 }
