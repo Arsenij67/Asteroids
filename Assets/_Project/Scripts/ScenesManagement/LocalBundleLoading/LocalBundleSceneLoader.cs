@@ -61,6 +61,7 @@ public class LocalBundleSceneLoader : ISceneLoader
         Scene sceneData = SceneManager.GetSceneByName(nameId);
         if (!sceneData.isLoaded)
         {
+                Debug.Log("Scene loaded");
             LoadScene(sceneData.name);
         }
     }
@@ -93,10 +94,9 @@ public class LocalBundleSceneLoader : ISceneLoader
 
     public UniTask UnloadSceneAsync()
     {
-        var handler = Addressables.UnloadSceneAsync(_sceneLoadHandle);
+        var handler = Addressables.UnloadSceneAsync(_sceneLoadHandle,autoReleaseHandle:false);
         Addressables.Release(_sceneLoadHandle);
         _currentScene = default;
-        _sceneLoadHandle = default;
         return handler.ToUniTask();
     }
 
