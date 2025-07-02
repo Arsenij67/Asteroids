@@ -102,6 +102,7 @@
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\LocalBundleLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapEntryPointController.cs" />
+    <Compile Include="Assets\_Project\Resources\MonoInstallers\BootstrapMonoInstaller.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\LaserWeapon.cs" />
     <Compile Include="Assets\_Project\Scripts\DeviceInputs\DesktopInput.cs" />
   </ItemGroup>
@@ -623,6 +624,26 @@
     </Reference>
     <Reference Include="Google.MiniJson">
       <HintPath>Assets\Firebase\Plugins\Google.MiniJson.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Rocks">
+      <HintPath>Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Rocks.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Pdb">
+      <HintPath>Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Pdb.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Zenject-usage">
+      <HintPath>Assets\Plugins\Zenject\Source\Usage\Zenject-usage.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Zenject.ReflectionBaking.Mono.Cecil">
+      <HintPath>Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Zenject.ReflectionBaking.Mono.Cecil.Mdb">
+      <HintPath>Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.Mdb.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">
@@ -1227,6 +1248,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Zenject-Editor.csproj">
+      <Project>{88DD598C-6A5B-8E23-F5D0-7810F379D4D1}</Project>
+      <Name>Zenject-Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="UniTask.Addressables.csproj">
       <Project>{62F470EA-7A9F-19F0-D104-D139CD879F54}</Project>
       <Name>UniTask.Addressables</Name>
@@ -1239,6 +1264,10 @@
       <Project>{325AFEC3-E955-E1EB-3910-045365840687}</Project>
       <Name>UniTask.DOTween</Name>
     </ProjectReference>
+    <ProjectReference Include="Zenject-PoolMonitor-Editor.csproj">
+      <Project>{3E8E72F0-F794-647A-C2D3-C74BF47F4627}</Project>
+      <Name>Zenject-PoolMonitor-Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="UniTask.csproj">
       <Project>{AC24630E-5F35-89D2-5695-EE975B4F80F4}</Project>
       <Name>UniTask</Name>
@@ -1246,6 +1275,14 @@
     <ProjectReference Include="UniTask.TextMeshPro.csproj">
       <Project>{896A2773-4907-36D5-5AA6-7BE3526F1E98}</Project>
       <Name>UniTask.TextMeshPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="Zenject-ReflectionBaking-Editor.csproj">
+      <Project>{1778EB25-3AD8-7336-F0F2-5A735BE12CCA}</Project>
+      <Name>Zenject-ReflectionBaking-Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Zenject.csproj">
+      <Project>{8F9F474A-824A-2397-6CA9-FAD021E49CFE}</Project>
+      <Name>Zenject</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
