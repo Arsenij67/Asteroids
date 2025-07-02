@@ -102,6 +102,7 @@
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\LocalBundleLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapEntryPointController.cs" />
+    <Compile Include="Assets\SceneSaveInstaller.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\LaserWeapon.cs" />
     <Compile Include="Assets\_Project\Resources\MonoInstallers\DontDestroyOnLoadInstaller.cs" />
     <Compile Include="Assets\_Project\Scripts\DeviceInputs\DesktopInput.cs" />

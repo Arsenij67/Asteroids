@@ -9,7 +9,6 @@ public class DontDestroyOnLoadInstaller : MonoInstaller
     {
         foreach (var entity in _gameEntities)
         { 
-            entity.transform.parent = null;
             DontDestroyOnLoad(entity);
         }
     }
