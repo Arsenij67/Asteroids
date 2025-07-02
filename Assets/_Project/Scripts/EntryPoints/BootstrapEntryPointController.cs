@@ -6,6 +6,7 @@ using UnityEngine;
 using Asteroid.Services;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace Asteroid.Generation
 {
@@ -30,6 +31,11 @@ namespace Asteroid.Generation
 
         private void Awake()
         {
+          
+        }
+
+        private async void Start()
+        {
             _instanceLoader = new InstanceCreator();
             _resourceLoader = _instanceLoader.CreateInstance<BaseResourceLoaderService>();
             _bootstrapSceneLoader = _instanceLoader.CreateInstance<LocalBundleSceneLoader>();
@@ -38,10 +44,7 @@ namespace Asteroid.Generation
             _analytics = _instanceLoader.CreateInstance<FirebaseAnalyticsSender>();
             _bootstrapSceneModel = _resourceLoader.LoadResource<BootstrapSceneModel>("ScriptableObjects/BootstrapSceneData");
             _bootstrapUI = GetComponent<BootstrapUI>();
-        }
 
-        private async void Start()
-        {
             _bootstrapSceneLoader.ReloadScene(_bootstrapSceneModel.BootstrapSceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedScene;
             _bootstrapUI.OnPlayerClickButtonStart += () => OnGameStarted?.Invoke();
