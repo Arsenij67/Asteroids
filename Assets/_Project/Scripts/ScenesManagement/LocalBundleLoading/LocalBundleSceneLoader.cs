@@ -34,48 +34,55 @@ public class LocalBundleSceneLoader : ISceneLoader
 
     public async UniTask LoadSceneAsync(string name)
     {
-        if (_sceneLoadHandle.IsValid())
-        {
-            await UnloadSceneAsync();
-        }
-
-        _lastSceneName = name;
+            if (_sceneLoadHandle.IsValid())
+            {
+                await UnloadSceneAsync();
+            }
+            _lastSceneName = name;
         _sceneLoadHandle = Addressables.LoadSceneAsync(name, LoadSceneMode.Single);
         _currentScene = await _sceneLoadHandle.ToUniTask();
     }
 
     public async UniTask LoadSceneAdditiveAsync(string name, bool allowSceneActivate = true)
     {
-        if (_sceneLoadHandle.IsValid())
-        {
-            await UnloadSceneAsync();
-        }
-
+            Debug.Log("add");
+            if (_sceneLoadHandle.IsValid())
+            {
+                await UnloadSceneAsync();
+            }
         _lastSceneName = name;
         _sceneLoadHandle = Addressables.LoadSceneAsync(name, LoadSceneMode.Additive, allowSceneActivate);
         _currentScene = await _sceneLoadHandle.ToUniTask();
-    }
+
+            Debug.Log("add");
+
+        }
 
     public void ReloadScene(string nameId)
     {
         Scene sceneData = SceneManager.GetSceneByName(nameId);
-        if (!sceneData.isLoaded)
+        if (!_sceneLoadHandle.IsValid())
         {
-                Debug.Log("Scene loaded");
+            Debug.Log("Scene loaded");
             LoadScene(sceneData.name);
         }
     }
 
-    public void SwitchSceneActivation(bool allowSceneBeActive)
+    public async void SwitchSceneActivation(bool allowSceneBeActive)
     {
-        if (IsSceneReady())
+        if (true)
         {
-            Debug.Log(9);
-            var operation = _sceneLoadHandle
-                .Result
-                .ActivateAsync();
-            operation.allowSceneActivation = allowSceneBeActive;
-            return;
+
+                var op = _sceneLoadHandle
+                       .Result
+                       .ActivateAsync();
+                op.allowSceneActivation = allowSceneBeActive;
+                Debug.Log(_sceneLoadHandle.IsValid());
+                Debug.Log(_sceneLoadHandle.IsDone);
+                Debug.Log(_sceneLoadHandle.Result.Scene.isLoaded);
+
+                await op;
+ 
         }
 
     }
@@ -94,11 +101,15 @@ public class LocalBundleSceneLoader : ISceneLoader
 
     public UniTask UnloadSceneAsync()
     {
-        var handler = Addressables.UnloadSceneAsync(_sceneLoadHandle,autoReleaseHandle:false);
-        Addressables.Release(_sceneLoadHandle);
+        
+        var handler = Addressables.UnloadSceneAsync(_sceneLoadHandle);
+         Addressables.Release(_sceneLoadHandle);
         _currentScene = default;
-        return handler.ToUniTask();
+         _sceneLoadHandle = default;
+         Debug.Log(_lastSceneName);
+         return handler.ToUniTask();
     }
+
 
 }
 }
