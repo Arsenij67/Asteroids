@@ -1,21 +1,29 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
+
+namespace  Asteroid.UI
+{ 
 public class BootstrapUI : MonoBehaviour
 {
     public event Action OnPlayerClickButtonStart;
 
-    [SerializeField] private Slider _slider;
-    [SerializeField] private Button _buttonStartGame;
+    private Slider _sliderLoading;
+    private Button _buttonStartGame;
 
-    private void Start()
+    [Inject]
+    public void Construct(Slider slider, Button button)
     {
+        _sliderLoading = slider;
+        _buttonStartGame = button;
         _buttonStartGame.onClick.AddListener(ActivateLoadedScene);
     }
+
     public void UpdateSlider(float endValue)
     { 
         endValue = Mathf.Clamp01(endValue);
-        _slider.value = endValue;
+        _sliderLoading.value = endValue;
     }
 
     public void ActivateButtonStart()
@@ -29,7 +37,6 @@ public class BootstrapUI : MonoBehaviour
     private void ActivateLoadedScene()
     { 
         OnPlayerClickButtonStart?.Invoke();
-    }
-    
-
+    } 
+}
 }

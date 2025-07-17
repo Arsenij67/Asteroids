@@ -34,36 +34,34 @@ public class LocalBundleSceneLoader : ISceneLoader
 
     public async UniTask LoadSceneAsync(string name)
     {
-            if (_sceneLoadHandle.IsValid())
-            {
-                await UnloadSceneAsync();
-            }
-            _lastSceneName = name;
+        if (_sceneLoadHandle.IsValid())
+        {
+            await UnloadSceneAsync();
+        }
+        _lastSceneName = name;
         _sceneLoadHandle = Addressables.LoadSceneAsync(name, LoadSceneMode.Single);
         _currentScene = await _sceneLoadHandle.ToUniTask();
     }
 
     public async UniTask LoadSceneAdditiveAsync(string name, bool allowSceneActivate = true)
     {
-            Debug.Log("add");
-            if (_sceneLoadHandle.IsValid())
-            {
+       if (_sceneLoadHandle.IsValid())
+       {
                 await UnloadSceneAsync();
-            }
+       }
         _lastSceneName = name;
         _sceneLoadHandle = Addressables.LoadSceneAsync(name, LoadSceneMode.Additive, allowSceneActivate);
         _currentScene = await _sceneLoadHandle.ToUniTask();
 
-            Debug.Log("add");
-
-        }
+     }
 
     public void ReloadScene(string nameId)
     {
+            Debug.Log("scene load handle: " + _sceneLoadHandle.IsValid()+" "+ _sceneLoadHandle.GetHashCode());
         Scene sceneData = SceneManager.GetSceneByName(nameId);
         if (!_sceneLoadHandle.IsValid())
         {
-            Debug.Log("Scene loaded");
+            Debug.Log($"Scene {nameId} reloaded");
             LoadScene(sceneData.name);
         }
     }
@@ -77,9 +75,6 @@ public class LocalBundleSceneLoader : ISceneLoader
                        .Result
                        .ActivateAsync();
                 op.allowSceneActivation = allowSceneBeActive;
-                Debug.Log(_sceneLoadHandle.IsValid());
-                Debug.Log(_sceneLoadHandle.IsDone);
-                Debug.Log(_sceneLoadHandle.Result.Scene.isLoaded);
 
                 await op;
  
@@ -102,11 +97,10 @@ public class LocalBundleSceneLoader : ISceneLoader
     public UniTask UnloadSceneAsync()
     {
         
-        var handler = Addressables.UnloadSceneAsync(_sceneLoadHandle);
+        var handler = Addressables.UnloadSceneAsync(_sceneLoadHandle,autoReleaseHandle:false);
          Addressables.Release(_sceneLoadHandle);
         _currentScene = default;
-         _sceneLoadHandle = default;
-         Debug.Log(_lastSceneName);
+        _sceneLoadHandle = default;
          return handler.ToUniTask();
     }
 
