@@ -45,14 +45,17 @@ public class LocalBundleSceneLoader : ISceneLoader
 
     public async UniTask LoadSceneAdditiveAsync(string name, bool allowSceneActivate = true)
     {
-       if (_sceneLoadHandle.IsValid() && _lastSceneName==name)
-       {
-          await UnloadSceneAsync();
-       }
-        _lastSceneName = name;
-        _sceneLoadHandle = Addressables.LoadSceneAsync(name, LoadSceneMode.Additive, allowSceneActivate);
-        _currentScene = await _sceneLoadHandle.ToUniTask();
+            if (_sceneLoadHandle.IsValid() && _lastSceneName.Equals(name))
+            {
+                await UnloadSceneAsync();
+            }
 
+            if (_lastSceneName.Equals(name))
+            {
+                _sceneLoadHandle = Addressables.LoadSceneAsync(name, LoadSceneMode.Additive, allowSceneActivate);
+                _currentScene = await _sceneLoadHandle.ToUniTask();
+            }
+            _lastSceneName = name;
      }
 
     public void ReloadScene(string nameId)
@@ -95,7 +98,7 @@ public class LocalBundleSceneLoader : ISceneLoader
 
     public UniTask UnloadSceneAsync()
     {
-        
+   
         var handler = Addressables.UnloadSceneAsync(_sceneLoadHandle,autoReleaseHandle:false);
          Addressables.Release(_sceneLoadHandle);
         _currentScene = default;

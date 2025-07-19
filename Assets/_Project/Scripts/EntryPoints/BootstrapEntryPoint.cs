@@ -92,6 +92,7 @@ namespace Asteroid.Generation
 
         private async UniTask PrepareGameSceneAsync()
         {
+            Debug.Log(" PrepareGameSceneAsync");
             await _sceneLoader.LoadSceneAdditiveAsync(_bootstrapSceneModel.ScenePreLoad,false);
             _sceneLoaded = true;
         }
@@ -106,7 +107,6 @@ namespace Asteroid.Generation
         {
             if (_bootstrapUI != null)
             {
-                Debug.Log(_loadingProgress);
                 _bootstrapUI.UpdateSlider(_loadingProgress);
             }
         }
