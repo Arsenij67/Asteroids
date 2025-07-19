@@ -12,8 +12,8 @@ namespace Asteroid.Installers.MonoInstallers
         [SerializeField] private Button _button;
         public override void InstallBindings()
         {
-            Container.Bind<Button>().FromInstance(_button).AsSingle().NonLazy();
-            Container.Bind<Slider>().FromInstance(_slider).AsSingle().NonLazy();
+            Container.Bind<Button>().FromInstance(_button).AsSingle();
+            Container.Bind<Slider>().FromInstance(_slider).AsSingle();
             var bootstrapUI = Container.InstantiatePrefabForComponent<BootstrapUI>(this.gameObject);
             Container.Bind<BootstrapUI>().FromInstance(bootstrapUI).AsSingle().NonLazy();
 

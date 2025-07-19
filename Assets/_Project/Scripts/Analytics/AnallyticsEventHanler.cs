@@ -13,17 +13,17 @@ namespace Asteroid.Services
         private IAnalytics _analytics;
         private ShipStatisticsModel _shipStatisticModel;
         private SpaceEntryPoint _spaceEntryPoint;
-        private LaserWeaponController _laserWeapon;
-        public void Initialize(SpaceEntryPoint spaceEntryPoint,ShipStatisticsModel shipStatisticsModel, LaserWeaponController laserWeapon)
+        private IWeaponStrategy _weaponStrategy;
+        public void Initialize(SpaceEntryPoint spaceEntryPoint,ShipStatisticsModel shipStatisticsModel, IWeaponStrategy weaponStrategy)
         {
             _instanceLoader = new InstanceCreator();
             _analytics = _instanceLoader.CreateInstance<Asteroid.Services.FirebaseAnalyticsSender>();
             _spaceEntryPoint = spaceEntryPoint;
             _shipStatisticModel = shipStatisticsModel;
-            _laserWeapon = laserWeapon;
+            _weaponStrategy = weaponStrategy;
             _spaceEntryPoint.OnGameStarted += SendEventGameStart;
             _spaceEntryPoint.OnPlayerDied += SendEventGameEnd;
-            _laserWeapon.OnLaserTurned += SendEventLaserUsed;
+            (_weaponStrategy as LaserWeaponController).OnLaserTurned += SendEventLaserUsed;
 
         }
         public void SendEventGameStart()

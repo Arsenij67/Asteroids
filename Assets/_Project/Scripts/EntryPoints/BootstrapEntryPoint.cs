@@ -106,6 +106,7 @@ namespace Asteroid.Generation
         {
             if (_bootstrapUI != null)
             {
+                Debug.Log(_loadingProgress);
                 _bootstrapUI.UpdateSlider(_loadingProgress);
             }
         }

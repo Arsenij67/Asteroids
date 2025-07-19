@@ -20,10 +20,10 @@ public class LocalBundleSceneLoader : ISceneLoader
     public float LoadingProgress => _sceneLoadHandle.IsValid() ? _sceneLoadHandle.PercentComplete : 0f;
     public string LastLoadedScene => _sceneLoadHandle.IsValid() && _sceneLoadHandle.PercentComplete >= MAX_LOADING_LEVEL ? _lastSceneName : string.Empty;
 
-    public void LoadScene(string name)
+    public async void LoadScene(string name)
     {
         _lastSceneName = name;
-        LoadSceneAsync(name).Forget();
+       await LoadSceneAsync(name);
     }
 
     public void LoadSceneAdditive(string name)
@@ -45,9 +45,9 @@ public class LocalBundleSceneLoader : ISceneLoader
 
     public async UniTask LoadSceneAdditiveAsync(string name, bool allowSceneActivate = true)
     {
-       if (_sceneLoadHandle.IsValid())
+       if (_sceneLoadHandle.IsValid() && _lastSceneName==name)
        {
-                await UnloadSceneAsync();
+          await UnloadSceneAsync();
        }
         _lastSceneName = name;
         _sceneLoadHandle = Addressables.LoadSceneAsync(name, LoadSceneMode.Additive, allowSceneActivate);
@@ -58,11 +58,10 @@ public class LocalBundleSceneLoader : ISceneLoader
     public void ReloadScene(string nameId)
     {
             Debug.Log("scene load handle: " + _sceneLoadHandle.IsValid()+" "+ _sceneLoadHandle.GetHashCode());
-        Scene sceneData = SceneManager.GetSceneByName(nameId);
         if (!_sceneLoadHandle.IsValid())
         {
             Debug.Log($"Scene {nameId} reloaded");
-            LoadScene(sceneData.name);
+            LoadScene(nameId);
         }
     }
 
