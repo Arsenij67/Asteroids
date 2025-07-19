@@ -30,7 +30,7 @@ public class BootstrapUI : MonoBehaviour
     {
         if (_buttonStartGame != null)
         {
-                Debug.Log("Activate ButtonStart");
+            Debug.Log("Activate ButtonStart");
             _buttonStartGame.gameObject.SetActive(true);
         }
     }
