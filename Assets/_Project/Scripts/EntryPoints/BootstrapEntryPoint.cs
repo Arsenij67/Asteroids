@@ -28,7 +28,6 @@ namespace Asteroid.Generation
         private float _loadingProgress;
         public object _loadedScene;
 
-
         private void Awake()
         {
             _loadingTasks = _instanceLoader.CreateInstance<List<UniTask>>();
@@ -53,11 +52,11 @@ namespace Asteroid.Generation
             }
         }
 
-
         private void OnDestroy()
         {
             _bootstrapUI.OnPlayerClickButtonStart -= OpenLoadedScene;
         }
+
         private void UpdateProgress()
         {
             int completedCount = 0;
