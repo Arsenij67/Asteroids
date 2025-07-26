@@ -42,13 +42,11 @@ public class SimpleSceneLoader : ISceneLoader
        return UniTask.WaitUntil(() => asyncLoading.progress >= LEVEL_LOAD_ADDITIVE_SCENE);
     }
 
-    public void ReloadScene(string nameId)
+    public void ReloadScene()
     {
-        Scene sceneData = SceneManager.GetSceneByName(nameId);
-        if (!sceneData.isLoaded)
-        {
-            SceneManager.LoadScene(sceneData.name);
-        }
+        Scene sceneData = SceneManager.GetActiveScene();
+        _lastSceneName = sceneData.name;    
+        SceneManager.LoadScene(sceneData.name);
     }
 
     public UniTask SwitchSceneActivation(bool allowSceneBeActive)

@@ -1,7 +1,5 @@
 
 using Cysharp.Threading.Tasks;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -42,12 +40,11 @@ namespace Asteroid.Generation
             _lastSceneName = name;
         }
 
-        public void ReloadScene(string nameId)
+        public void ReloadScene()
         {
-            if (!_sceneLoadHandle.IsValid())
-            {
-                LoadScene(nameId);
-            }
+            Scene sceneData = SceneManager.GetActiveScene();
+            _lastSceneName = sceneData.name;
+            LoadScene(_lastSceneName);
         }
         public UniTask SwitchSceneActivation(bool allowSceneBeActive)
         {
