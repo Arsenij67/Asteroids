@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Project/Scenes/RocketEvadeScene.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
     path: Assets/_Project/Scenes/BootstrapScene.unity
     guid: bde90569afa499b46a111098ce9f2ea3
+  - enabled: 1
+    path: Assets/_Project/Scenes/RocketEvadeScene.unity
+    guid: 8c9cfa26abfee488c85f1582747f6a02
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 283050e4d6275684185fde58ad044bc6, type: 2}
   m_UseUCBPForAssetBundles: 0

@@ -16,7 +16,7 @@ namespace Asteroid.Generation
         private IResourceLoaderService _resourceLoaderService;
         private IInstanceLoader _instanceLoader;
         private CancellationTokenSource _cancellationTokenSource;
-        public void Initialize(EntitiesGenerationData entitiesGenData,IResourceLoaderService resourceLoader,IInstanceLoader instanceLoader)
+        public async void Initialize(EntitiesGenerationData entitiesGenData,IResourceLoaderService resourceLoader,IInstanceLoader instanceLoader)
         {
 
             _generationData = entitiesGenData;
@@ -24,7 +24,7 @@ namespace Asteroid.Generation
             _instanceLoader = instanceLoader;
             _cancellationTokenSource = _instanceLoader.CreateInstance<CancellationTokenSource>();
             GenerateShip(_generationData.PlayerShipToGenerateNow);
-            WaitForNextGeneration(_cancellationTokenSource.Token);
+            await WaitForNextGeneration(_cancellationTokenSource.Token);
             
         }
 
@@ -37,7 +37,7 @@ namespace Asteroid.Generation
         private async UniTask WaitForNextGeneration(CancellationToken tokenStop)
         {
             while (!tokenStop.IsCancellationRequested) {
-                await UniTask.Delay(_generationData.GenerationFrequency,cancellationToken:tokenStop);
+                await UniTask.Delay(TimeSpan.FromSeconds(_generationData.GenerationFrequency),cancellationToken:tokenStop);
                 GenerateObstacle(_generationData.ObstacleToGenerateNow);
             }
         }
