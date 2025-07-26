@@ -13,7 +13,7 @@ namespace Asteroid.Generation
         public UniTask<object> LoadSceneAsync(string name);
         public UniTask LoadSceneAdditiveAsync(string name, bool allowSceneActivate = true);
         public void ReloadScene(string nameId);
-        public void SwitchSceneActivation(bool allowSceneBeActive);
+        public UniTask SwitchSceneActivation(bool allowSceneBeActive);
         public void UnloadScene();
         public UniTask <object> UnloadSceneAsync(object data);
 

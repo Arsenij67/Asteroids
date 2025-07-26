@@ -40,7 +40,6 @@ namespace Asteroid.Generation
                 await UniTask.Delay(_generationData.GenerationFrequency,cancellationToken:tokenStop);
                 GenerateObstacle(_generationData.ObstacleToGenerateNow);
             }
-          
         }
 
         private void GenerateObstacle(BaseEnemy enemy)
