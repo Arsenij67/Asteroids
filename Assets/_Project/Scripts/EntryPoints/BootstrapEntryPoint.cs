@@ -1,10 +1,12 @@
+using Asteroid.Services;
+using Asteroid.UI;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Asteroid.Services;
-using Asteroid.UI;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
 using Zenject;
 
 namespace Asteroid.Generation
@@ -25,6 +27,10 @@ namespace Asteroid.Generation
         private bool _waitingCompleted;
         private float _loadingProgress;
 
+        
+        private object t;
+        public object _loadedScene { get { return t;  } set { Debug.Log("changed on" + value); t = value; } }
+
 
         private void Awake()
         {
@@ -36,7 +42,7 @@ namespace Asteroid.Generation
         private async void Start()
         {
             SetUpUI(_userInterface);
-            _sceneLoader.ReloadScene(_bootstrapSceneModel.BootstrapSceneName);
+            _loadedScene =  await _sceneLoader.ReloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);            
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedScene;
             _bootstrapUI.OnPlayerClickButtonStart += () => OnGameStarted?.Invoke();
             _loadingTasks.Add(PrepareAnalyticsAsync());
@@ -50,6 +56,12 @@ namespace Asteroid.Generation
             }
         }
 
+        private void Update()
+        {
+            Debug.Log((_loadedScene != null) ? " ls != null " + ((AsyncOperationHandle<SceneInstance>)_loadedScene).Result.Scene.name : "False  - "+ _loadedScene);
+            Debug.Log(_sceneLoader.LastLoadedScene+" last loaded");
+        }
+
         private void OnDestroy()
         {
             _bootstrapUI.OnPlayerClickButtonStart -= OpenLoadedScene;
@@ -61,6 +73,14 @@ namespace Asteroid.Generation
             completedCount += Convert.ToInt32(_sceneLoaded);
             completedCount += Convert.ToInt32(_waitingCompleted);
             _loadingProgress = (float)completedCount / _loadingTasks.Count();
+        }
+
+        private void SetUpSceneData(object newData)
+        {
+            if (newData!=null)
+            {
+                _loadedScene = newData;
+            }
         }
 
         private void SetUpUI(RectTransform parent)
@@ -113,8 +133,11 @@ namespace Asteroid.Generation
 
         private async void OpenLoadedScene()
         {
-            _sceneLoader.SwitchSceneActivation(true);
-            await _sceneLoader.UnloadSceneAsync();
+            Debug.Log((_loadedScene != null) ? " ls != null " 
+                + ((AsyncOperationHandle<SceneInstance>)_loadedScene).Result.Scene.name :
+                "False");
+            await ((LocalBundleSceneLoader)_sceneLoader).SwitchSceneActivation(true,0);
+            await _sceneLoader.UnloadSceneAsync(_loadedScene);
 
         }
     }

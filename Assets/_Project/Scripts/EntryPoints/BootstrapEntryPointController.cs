@@ -23,6 +23,7 @@ namespace Asteroid.Generation
         private bool _sceneLoaded;
         private bool _waitingCompleted;
         private float _loadingProgress;
+        private object _loadedScene;
 
         public async void Initialize()
         {
@@ -31,7 +32,7 @@ namespace Asteroid.Generation
             _analytics = _instanceLoader.CreateInstance<FirebaseAnalyticsSender>();
             _bootstrapSceneModel = _resourceLoader.LoadResource<BootstrapSceneModel>("ScriptableObjects/BootstrapSceneData");
 
-            _sceneLoader.ReloadScene(_bootstrapSceneModel.BootstrapSceneName);
+            _loadedScene =_sceneLoader.ReloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedScene;
             _bootstrapUI.OnPlayerClickButtonStart += () => OnGameStarted?.Invoke();
             _loadingTasks.Add(PrepareAnalyticsAsync());
@@ -100,7 +101,7 @@ namespace Asteroid.Generation
         private async void OpenLoadedScene()
         {
             _sceneLoader.SwitchSceneActivation(true);
-            await _sceneLoader.UnloadSceneAsync();
+            await _sceneLoader.UnloadSceneAsync(_loadedScene);
 
         }
     }

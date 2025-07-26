@@ -32,24 +32,8 @@ public class LocalBundleSceneLoader : ISceneLoader
         LoadSceneAdditiveAsync(name).Forget();
     }
 
-    public async UniTask LoadSceneAsync(string name)
-    {
-        if (_sceneLoadHandle.IsValid())
-        {
-            await UnloadSceneAsync();
-        }
-        _lastSceneName = name;
-        _sceneLoadHandle = Addressables.LoadSceneAsync(name, LoadSceneMode.Single);
-        _currentScene = await _sceneLoadHandle.ToUniTask();
-    }
-
     public async UniTask LoadSceneAdditiveAsync(string name, bool allowSceneActivate = true)
     {
-            if (_sceneLoadHandle.IsValid() && _lastSceneName.Equals(name))
-            {
-                await UnloadSceneAsync();
-            }
-
             if (_lastSceneName.Equals(name))
             {
                 _sceneLoadHandle = Addressables.LoadSceneAsync(name, LoadSceneMode.Additive, allowSceneActivate);
@@ -67,10 +51,25 @@ public class LocalBundleSceneLoader : ISceneLoader
             LoadScene(nameId);
         }
     }
+        public void SwitchSceneActivation(bool allowSceneBeActive)
+        {
 
-    public async void SwitchSceneActivation(bool allowSceneBeActive)
+            {
+
+                var op = _sceneLoadHandle
+                       .Result
+                       .ActivateAsync();
+                op.allowSceneActivation = allowSceneBeActive;
+
+         
+
+            }
+
+        }
+
+        public UniTask SwitchSceneActivation(bool allowSceneBeActive,int i =0)
     {
-        if (true)
+       
         {
 
                 var op = _sceneLoadHandle
@@ -78,7 +77,7 @@ public class LocalBundleSceneLoader : ISceneLoader
                        .ActivateAsync();
                 op.allowSceneActivation = allowSceneBeActive;
 
-                await op;
+                return op.ToUniTask();
  
         }
 
@@ -93,19 +92,63 @@ public class LocalBundleSceneLoader : ISceneLoader
 
     public void UnloadScene()
     {
-        UnloadSceneAsync().Forget();
-    }
-
-    public UniTask UnloadSceneAsync()
-    {
-   
-        var handler = Addressables.UnloadSceneAsync(_sceneLoadHandle,autoReleaseHandle:false);
-         Addressables.Release(_sceneLoadHandle);
-        _currentScene = default;
-        _sceneLoadHandle = default;
-         return handler.ToUniTask();
+        UnloadSceneAsync(_sceneLoadHandle).Forget();
     }
 
 
-}
+        public UniTask<object> ReloadSceneAsync(string name)
+        {
+            if (!_sceneLoadHandle.IsValid())
+            {
+                return LoadSceneAsync(name);
+            }
+            return UniTask.FromResult<object>(_sceneLoadHandle);
+        }
+
+        public async UniTask<object> LoadSceneAsync(string name)
+        {
+            if (_sceneLoadHandle.IsValid() && !(_lastSceneName.Equals(name)))
+            {
+                await UnloadSceneAsync(_sceneLoadHandle);
+            }
+
+            _lastSceneName = name;
+            _sceneLoadHandle = Addressables.LoadSceneAsync(name, LoadSceneMode.Single);
+            await _sceneLoadHandle;
+            return _sceneLoadHandle;
+        }
+
+        public async UniTask<object> UnloadSceneAsync(object data)
+        {
+            Debug.Log("Start...");
+            if (data == null)
+            {
+                Debug.LogWarning("Attempted to unload null scene");
+                return default;
+            }
+
+            else if (data is AsyncOperationHandle<SceneInstance> handle)
+            {
+                Debug.Log("Start..."+ handle.Result.Scene.name);
+                _sceneLoadHandle = handle;
+                var handler = Addressables.UnloadSceneAsync(_sceneLoadHandle, autoReleaseHandle: false);
+                await handler.ToUniTask();
+           
+                if (handler.Status == AsyncOperationStatus.Succeeded)
+                {
+                    _currentScene = default;
+                    _sceneLoadHandle = default;
+                    Addressables.Release(handle);
+                }
+            }
+            else
+            {
+                Debug.LogError($"Invalid type for scene unloading: {data.GetType()}");
+                return default;
+            }
+
+            
+            return default;
+        }
+    }
 }

@@ -84,5 +84,20 @@ public class SimpleSceneLoader : ISceneLoader
         AsyncOperation operation = SceneManager.UnloadSceneAsync(_sceneName);
         return operation.ToUniTask();
     }
+
+    public UniTask<object> ReloadSceneAsync(string name)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    UniTask<object> ISceneLoader.LoadSceneAsync(string name)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public UniTask<object> UnloadSceneAsync(object data)
+    {
+        throw new System.NotImplementedException();
+    }
 }
 
