@@ -11,7 +11,7 @@ public class ResourcesInitializerInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<InstanceCreator>().AsSingle();
         Container.BindInterfacesAndSelfTo<BaseResourceLoaderService>().AsSingle();
         Container.BindInterfacesAndSelfTo<FirebaseAnalyticsSender>().AsSingle();
+        Container.BindInterfacesAndSelfTo<BootstrapController>().AsSingle();
         Container.Bind<List<UniTask>>().AsTransient();
-
     }
 }

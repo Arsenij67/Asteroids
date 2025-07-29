@@ -64,7 +64,6 @@
     <Compile Include="Assets\_Project\Scripts\EntryPoints\SpaceEntryPoint.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IResourceLoaderService.cs" />
     <Compile Include="Assets\_Project\Scripts\ScenesManagement\SimpleLoad\SimpleSceneLoader.cs" />
-    <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapController.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\BulletWeapon.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\WeaponController.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\MeteoriteEnemy.cs" />
@@ -86,7 +85,9 @@
     <Compile Include="Assets\_Project\Scripts\Weapon\WeaponShip.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IDeviceInput.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IAnalytics.cs" />
+    <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapСontroller.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IWeaponStrategy.cs" />
+    <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapEntryPoint.cs" />
     <Compile Include="Assets\_Project\Scripts\View\GameOverView.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\BaseResourceLoaderService.cs" />
     <Compile Include="Assets\_Project\Scripts\View\Bootstrap\BootstrapUI.cs" />
@@ -103,7 +104,6 @@
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\BaseEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\LocalBundleLoader.cs" />
-    <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapEntryPointController.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\ResourcesInitializerInstaller.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\LaserWeapon.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\BootsrapUIInstaller.cs" />
