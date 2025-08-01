@@ -16,7 +16,6 @@ namespace Asteroid.Statistic
         public int EnemiesDestroyed => CountDestroyedUFO + CountDestroyedAsteroids + CountDestroyedMeteorites;
         public bool LaserWasUsed => Convert.ToBoolean(CountShootsLaser);
 
-    
     }
 
 }

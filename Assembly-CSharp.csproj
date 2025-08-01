@@ -68,7 +68,6 @@
     <Compile Include="Assets\_Project\Scripts\Controllers\WeaponController.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\MeteoriteEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\EnemyController.cs" />
-    <Compile Include="Assets\_Project\Scripts\Analytics\AnallyticsEventHanler.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\LaserBullet.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\SpaceShipData.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\EntitiesGenerationData.cs" />
@@ -85,10 +84,12 @@
     <Compile Include="Assets\_Project\Scripts\Weapon\WeaponShip.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IDeviceInput.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IAnalytics.cs" />
+    <Compile Include="Assets\_Project\Scripts\Analytics\AnallyticsEventHandler.cs" />
     <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapСontroller.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IWeaponStrategy.cs" />
     <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapEntryPoint.cs" />
     <Compile Include="Assets\_Project\Scripts\View\GameOverView.cs" />
+    <Compile Include="Assets\_Project\Scripts\ResourceLoaders\Addressables\LocalBundleLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\BaseResourceLoaderService.cs" />
     <Compile Include="Assets\_Project\Scripts\View\Bootstrap\BootstrapUI.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\SceneSaveInstaller.cs" />
@@ -103,7 +104,6 @@
     <Compile Include="Assets\_Project\Scripts\Controllers\SpaceObject.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\BaseEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />
-    <Compile Include="Assets\_Project\Scripts\ResourceLoaders\LocalBundleLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\ResourcesInitializerInstaller.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\LaserWeapon.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\BootsrapUIInstaller.cs" />
