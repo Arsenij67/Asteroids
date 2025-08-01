@@ -7,6 +7,8 @@ using Asteroid.Weapon;
 using Firebase.Analytics;
 using System;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.UIElements;
 
 namespace Asteroid.Generation
 {
@@ -49,13 +51,13 @@ namespace Asteroid.Generation
         private void Awake()
         {
             _instanceLoader = new InstanceCreator();
-            _resourceLoader = _instanceLoader.CreateInstance<BaseResourceLoaderService>();
+            _resourceLoader = _instanceLoader.CreateInstance<LocalBundleLoader>();
             _entitiesGenerationData = _resourceLoader.LoadResource<EntitiesGenerationData>("ScriptableObjects/EntitiesGenerationData");
             _shipStatisticModel = _instanceLoader.CreateInstance<ShipStatisticsModel>();
             _shipStatisticController = _instanceLoader.CreateInstance<ShipStatisticsController>();
             _allEnemiesDeathCounter = _instanceLoader.CreateInstance<EnemyDeathCounter>();
             _obstaclesGenerationController = _instanceLoader.CreateInstance<EntitiesGenerationController>();
-            _sceneLoader = _instanceLoader.CreateInstance<SimpleSceneLoader>();
+            _sceneLoader = _instanceLoader.CreateInstance<LocalBundleSceneLoader>();
             _analyticsEventHandler = _instanceLoader.CreateInstance<AnalyticsEventHandler>();
             _deviceInput = _instanceLoader.CreateInstance<DesktopInput>();
 

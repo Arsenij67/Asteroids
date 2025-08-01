@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: UI
+  m_EditorClassIdentifier: 
+  m_GroupName: UI
+  m_GUID: 35d58fea9de5a32498cc7bc64a1cb8de
+  m_SerializeEntries:
+  - m_GUID: 1deb9489119882c40a6ecf1f397a93a0
+    m_Address: RestartView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 217f36e8ee669ce48b05beb9247fc240
+    m_Address: Assets/_Project/Prefabs/UI/Bootstrap/StartGameButton
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b73125fe376e4644e8fe0f9f4ea184a1
+    m_Address: UI/Images/bootstrapBackground
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e7432cbcc284f1a4495e442dfdf33cb7
+    m_Address: Assets/_Project/Prefabs/UI/Bootstrap/SceneLoadSlider
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 78ca7375a6e85ba40a44782a60eff8dc, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 07b5764e07a754f4e8a50a7dac353453, type: 2}
+    - {fileID: 11400000, guid: b861596a497cdf74f9f29a89dcd7b304, type: 2}

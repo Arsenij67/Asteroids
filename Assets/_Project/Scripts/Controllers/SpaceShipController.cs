@@ -16,12 +16,12 @@ namespace Asteroid.SpaceShip
         public event Action OnPlayerDie;
 
         private IDeviceInput _deviceInput;
+        private IResourceLoaderService _loaderService;
         private ShipStatisticsView _statisticsView;
         private ShipStatisticsController _statisticsController;
         private SpaceShipData _shipData;
         private Rigidbody2D _rigidBody2D;
         private WeaponShip _laserWeaponController;
-        private IResourceLoaderService _loaderService;
 
 
         private void FixedUpdate()

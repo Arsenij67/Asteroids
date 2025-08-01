@@ -25,8 +25,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1deb9489119882c40a6ecf1f397a93a0
-    m_Address: RestartView
+  - m_GUID: 379099edad5cfac49a2bfd5611387077
+    m_Address: ScriptableObjects/EntitiesGenerationData
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -46,12 +46,17 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b353e60dec2b67040a3e72844bd71630
-    m_Address: SpaceShipBase
+    m_Address: Assets/_Project/Prefabs/PlayerShips/spaceship_2 Variant
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bde90569afa499b46a111098ce9f2ea3
     m_Address: BootstrapScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cb3f1961bafe0234aa04c81202857020
+    m_Address: ScriptableObjects/SpaceShipData
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -62,6 +67,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e28212ea638f7f84190f01ecb9839a2e
     m_Address: UFOEnemy
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8bf6be829011fb4fbeecb4fb2df072a
+    m_Address: ScriptableObjects/BootstrapSceneData
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

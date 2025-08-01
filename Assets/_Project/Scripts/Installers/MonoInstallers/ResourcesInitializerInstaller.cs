@@ -9,7 +9,7 @@ public class ResourcesInitializerInstaller : MonoInstaller
     public override void InstallBindings()
     {
         Container.BindInterfacesAndSelfTo<InstanceCreator>().AsSingle();
-        Container.BindInterfacesAndSelfTo<BaseResourceLoaderService>().AsSingle();
+        Container.BindInterfacesAndSelfTo<LocalBundleLoader>().AsSingle();
         Container.BindInterfacesAndSelfTo<FirebaseAnalyticsSender>().AsSingle();
         Container.BindInterfacesAndSelfTo<BootstrapController>().AsSingle();
         Container.Bind<List<UniTask>>().AsTransient();
