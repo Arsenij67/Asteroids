@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6926048066333524873}
   - component: {fileID: 7557963557402377491}
   m_Layer: 3
-  m_Name: LaserPrefab
+  m_Name: RedLiser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

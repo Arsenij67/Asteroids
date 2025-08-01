@@ -17,7 +17,6 @@ public class LocalBundleLoader : IResourceLoaderService
         }
       
         var handle = Addressables.InstantiateAsync(prefab.name, position, rotation).WaitForCompletion();
-        Debug.Log(prefab);
         return handle;
     }
 
@@ -29,14 +28,17 @@ public class LocalBundleLoader : IResourceLoaderService
             return null;
         }
 
-        var handle = Addressables.InstantiateAsync(prefab, parent).WaitForCompletion();
+        var handle = Addressables.InstantiateAsync(prefab.name, parent).WaitForCompletion();
         return handle;
     }
 
-    public UniTask<GameObject> InstantiateAsync<T>(T prefab, Transform parent) where T : Object
+    public async UniTask<GameObject> InstantiateAsync<T>(T prefab, Transform parent) where T : Object
     {
-        AsyncOperationHandle<GameObject> asyncOperation = Addressables.InstantiateAsync(prefab, parent);
-        return asyncOperation.Task.AsUniTask();
+        AsyncOperationHandle<GameObject> asyncOperation = Addressables.InstantiateAsync(prefab.name, parent);
+        GameObject createdObject = await asyncOperation;
+        Addressables.ReleaseInstance(asyncOperation);
+        asyncOperation = default;
+        return createdObject;
     }
 
     public T LoadResource<T>(string path) where T : Object
