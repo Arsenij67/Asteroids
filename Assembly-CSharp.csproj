@@ -83,8 +83,8 @@
     <Compile Include="Assets\_Project\AnimatedCosmos\Example\MouseLook.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\WeaponShip.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IDeviceInput.cs" />
-    <Compile Include="Assets\_Project\Scripts\Interfaces\IAnalytics.cs" />
     <Compile Include="Assets\_Project\Scripts\Analytics\AnallyticsEventHandler.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\IAnalytics.cs" />
     <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapСontroller.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IWeaponStrategy.cs" />
     <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapEntryPoint.cs" />

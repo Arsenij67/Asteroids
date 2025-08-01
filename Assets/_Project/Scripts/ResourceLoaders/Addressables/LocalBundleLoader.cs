@@ -16,8 +16,8 @@ public class LocalBundleLoader : IResourceLoaderService
             return null;
         }
       
-        var handle = Addressables.InstantiateAsync(prefab, position, rotation).WaitForCompletion();
-        Debug.Log(prefab.name);
+        var handle = Addressables.InstantiateAsync(prefab.name, position, rotation).WaitForCompletion();
+        Debug.Log(prefab);
         return handle;
     }
 

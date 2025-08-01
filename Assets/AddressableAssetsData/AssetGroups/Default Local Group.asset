@@ -46,7 +46,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b353e60dec2b67040a3e72844bd71630
-    m_Address: Assets/_Project/Prefabs/PlayerShips/spaceship_2 Variant
+    m_Address: spaceship_2 Variant
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
