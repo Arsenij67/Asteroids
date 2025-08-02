@@ -24,23 +24,23 @@ namespace Asteroid.Generation
         [Header("Space Settings")]
         [Inject]private EntitiesGenerationController _obstaclesGenerationController;
 
-        [Header("Statistic")]
-        [SerializeField] private ShipStatisticsView _shipStatisticView;
-
         [Header("UI")]
         [SerializeField] private GameObject _restartPrefab;
+        [SerializeField] private RectTransform _UIParent;
+        [SerializeField] private ShipStatisticsView _shipStatisticViewPrefab;
+        private ShipStatisticsView _shipStatisticView;
 
         private LaserWeaponController _laserWeaponControl;
         private Transform _shipTransform;
-        private EnemyDeathCounter _allEnemiesDeathCounter;
-        [Inject]private EntitiesGenerationData _entitiesGenerationData;
-        private ShipStatisticsController _shipStatisticController;
-        [Inject]private ShipStatisticsModel _shipStatisticModel;
-        [Inject] private SpaceShipData _spaceShipData;
+        [Inject]private EnemyDeathCounter _allEnemiesDeathCounter;
+        [Inject]private ShipStatisticsController _shipStatisticController;
         private SpaceShipController _shipController;
         private WeaponController _weaponController;
         private WeaponShip _weaponShipLaser;
         private WeaponShip _weaponShipBullet;
+        [Inject]private EntitiesGenerationData _entitiesGenerationData;
+        [Inject]private ShipStatisticsModel _shipStatisticModel;
+        [Inject]private SpaceShipData _spaceShipData;
         [Inject]private IResourceLoaderService _resourceLoader;
         [Inject]private IInstanceLoader _instanceLoader;
         [Inject]private ISceneLoader _sceneLoader;
@@ -49,10 +49,7 @@ namespace Asteroid.Generation
 
         private void Awake()
         {
-            _shipStatisticController = _instanceLoader.CreateInstance<ShipStatisticsController>();
-            _allEnemiesDeathCounter = _instanceLoader.CreateInstance<EnemyDeathCounter>();
-
-
+            _shipStatisticView = _resourceLoader.Instantiate(_shipStatisticViewPrefab.gameObject, _UIParent.transform).GetComponent<ShipStatisticsView>();
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
 

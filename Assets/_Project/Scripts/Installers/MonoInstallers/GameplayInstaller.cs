@@ -15,6 +15,8 @@ namespace Asteroid.Installers
             Container.Bind<AnalyticsEventHandler>().AsSingle();
             Container.Bind<EntitiesGenerationController>().FromNew().AsSingle();
             Container.Bind<ShipStatisticsModel>().FromNew().AsSingle();
+            Container.Bind<EnemyDeathCounter>().FromNew().AsSingle();
+            Container.Bind<ShipStatisticsController>().FromNew().AsSingle();
             Container.Bind<EntitiesGenerationData>().FromNewScriptableObjectResource("ScriptableObjects/EntitiesGenerationData").AsSingle();
             Container.Bind<SpaceShipData>().FromNewScriptableObjectResource("ScriptableObjects/SpaceShipData").AsSingle();
         }
