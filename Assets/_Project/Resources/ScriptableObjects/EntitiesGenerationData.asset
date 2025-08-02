@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd18ff0d7ae22c47868bae763b27dab, type: 3}
+  m_Name: EntitiesGenerationData
+  m_EditorClassIdentifier: 
+  _obstacles:
+  - {fileID: 3038870751785615970, guid: b17953544334993459b349b3f2642c15, type: 3}
+  - {fileID: 1445358723493019074, guid: e28212ea638f7f84190f01ecb9839a2e, type: 3}
+  _playerShips:
+  - {fileID: 2352494245927858696, guid: b353e60dec2b67040a3e72844bd71630, type: 3}
+  <GenerationFrequency>k__BackingField: 2
+  <GenerationVertices>k__BackingField:
+  - {x: -9, y: 5}
+  - {x: 9, y: 5}
+  - {x: 9, y: -5}
+  - {x: -9, y: -5}

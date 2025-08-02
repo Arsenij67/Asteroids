@@ -25,11 +25,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 379099edad5cfac49a2bfd5611387077
-    m_Address: ScriptableObjects/EntitiesGenerationData
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7aedc3d3800e35748a80176f3d49258f
     m_Address: RedLiserPrefab
     m_ReadOnly: 0
@@ -55,11 +50,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cb3f1961bafe0234aa04c81202857020
-    m_Address: ScriptableObjects/SpaceShipData
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dd66b356fa5632d4493b1517b93c2ade
     m_Address: RedLiser
     m_ReadOnly: 0
@@ -67,11 +57,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e28212ea638f7f84190f01ecb9839a2e
     m_Address: UFOEnemy
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f8bf6be829011fb4fbeecb4fb2df072a
-    m_Address: ScriptableObjects/BootstrapSceneData
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -4,11 +4,8 @@ using Asteroid.Services;
 using Asteroid.SpaceShip;
 using Asteroid.Statistic;
 using Asteroid.Weapon;
-using Firebase.Analytics;
 using System;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.UIElements;
 using Zenject;
 
 namespace Asteroid.Generation
@@ -36,9 +33,10 @@ namespace Asteroid.Generation
         private LaserWeaponController _laserWeaponControl;
         private Transform _shipTransform;
         private EnemyDeathCounter _allEnemiesDeathCounter;
-        private EntitiesGenerationData _entitiesGenerationData;
+        [Inject]private EntitiesGenerationData _entitiesGenerationData;
         private ShipStatisticsController _shipStatisticController;
-        private ShipStatisticsModel _shipStatisticModel;
+        [Inject]private ShipStatisticsModel _shipStatisticModel;
+        [Inject] private SpaceShipData _spaceShipData;
         private SpaceShipController _shipController;
         private WeaponController _weaponController;
         private WeaponShip _weaponShipLaser;
@@ -51,10 +49,9 @@ namespace Asteroid.Generation
 
         private void Awake()
         {
-            _entitiesGenerationData = _resourceLoader.LoadResource<EntitiesGenerationData>("ScriptableObjects/EntitiesGenerationData");
-            _shipStatisticModel = _instanceLoader.CreateInstance<ShipStatisticsModel>();
             _shipStatisticController = _instanceLoader.CreateInstance<ShipStatisticsController>();
             _allEnemiesDeathCounter = _instanceLoader.CreateInstance<EnemyDeathCounter>();
+
 
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
@@ -127,7 +124,7 @@ namespace Asteroid.Generation
 
             _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView,_shipStatisticController,_resourceLoader);
             _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView, _shipStatisticController,_resourceLoader);
-            _shipController.Initialize(_shipStatisticView,_deviceInput,_shipStatisticController,_laserWeaponControl,_resourceLoader);
+            _shipController.Initialize(_shipStatisticView,_deviceInput,_shipStatisticController,_laserWeaponControl,_resourceLoader,_spaceShipData);
             _weaponController.Initialize();
             _entitiesGenerationData.Initialize(_shipTransform);
         }

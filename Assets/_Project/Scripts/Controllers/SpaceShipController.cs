@@ -41,7 +41,7 @@ namespace Asteroid.SpaceShip
             }
         }
 
-        public void Initialize(ShipStatisticsView statisticView, IDeviceInput concreteInput, ShipStatisticsController statisticController, WeaponShip laserWeaponController, IResourceLoaderService loader)
+        public void Initialize(ShipStatisticsView statisticView, IDeviceInput concreteInput, ShipStatisticsController statisticController, WeaponShip laserWeaponController, IResourceLoaderService loader, SpaceShipData shipData)
         {
             _rigidBody2D = GetComponent<Rigidbody2D>();
             _deviceInput = concreteInput;
@@ -49,7 +49,7 @@ namespace Asteroid.SpaceShip
             _statisticsController = statisticController;
             _laserWeaponController = laserWeaponController;
             _loaderService = loader;
-            _shipData = _loaderService.LoadResource<SpaceShipData>("ScriptableObjects/SpaceShipData");
+            _shipData = shipData; 
         }
 
         private void TryRotate(float intensityInput)

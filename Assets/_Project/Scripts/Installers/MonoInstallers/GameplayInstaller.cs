@@ -1,7 +1,8 @@
 using Asteroid.Generation;
 using Asteroid.Inputs;
 using Asteroid.Services;
-using UnityEngine;
+using Asteroid.SpaceShip;
+using Asteroid.Statistic;
 using Zenject;
 
 namespace Asteroid.Installers
@@ -13,6 +14,9 @@ namespace Asteroid.Installers
             Container.BindInterfacesAndSelfTo<DesktopInput>().AsSingle();
             Container.Bind<AnalyticsEventHandler>().AsSingle();
             Container.Bind<EntitiesGenerationController>().FromNew().AsSingle();
+            Container.Bind<ShipStatisticsModel>().FromNew().AsSingle();
+            Container.Bind<EntitiesGenerationData>().FromNewScriptableObjectResource("ScriptableObjects/EntitiesGenerationData").AsSingle();
+            Container.Bind<SpaceShipData>().FromNewScriptableObjectResource("ScriptableObjects/SpaceShipData").AsSingle();
         }
     }
 }

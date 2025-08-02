@@ -77,9 +77,9 @@
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\InstanceCreator\InstanceCreator.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\ShipStatisticsModel.cs" />
     <Compile Include="Assets\_Project\Scripts\SaveDataBase\DataSave.cs" />
+    <Compile Include="Assets\_Project\Scripts\Models\Bootstrap\BootstrapSceneData.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\ShipStatisticsController.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\EntitiesGenerationController.cs" />
-    <Compile Include="Assets\_Project\Scripts\Models\BootStrap\BootstrapSceneModel.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\UFOEnemy.cs" />
     <Compile Include="Assets\_Project\AnimatedCosmos\Example\MouseLook.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\WeaponShip.cs" />

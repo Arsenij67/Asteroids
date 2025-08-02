@@ -16,11 +16,9 @@ namespace Asteroid.Generation
         [Inject] private BootstrapUI _bootstrapUI;
         [Inject] private List<UniTask> _loadingTasks;
         [Inject] private ISceneLoader _sceneLoader;
-        [Inject] private IInstanceLoader _instanceLoader;
         [Inject] private IAnalytics _analytics;
-        [Inject] private IResourceLoaderService _resourceLoader;
+        [Inject] private BootstrapSceneData _bootstrapSceneModel;
 
-        private BootstrapSceneModel _bootstrapSceneModel;
         private bool _analyticsReady;
         private bool _sceneLoaded;
         private bool _waitingCompleted;
@@ -28,7 +26,6 @@ namespace Asteroid.Generation
         public object _loadedScene;
         public async void Initialize()
         {
-            _bootstrapSceneModel =_resourceLoader.LoadResource<BootstrapSceneModel>("ScriptableObjects/BootstrapSceneData");
             _loadedScene = await _sceneLoader.ReloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedScene;
             _bootstrapUI.OnPlayerClickButtonStart += () => OnGameStarted?.Invoke();
