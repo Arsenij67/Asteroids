@@ -7,7 +7,6 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class LocalBundleLoader : IResourceLoaderService
 {
-
     public GameObject Instantiate<T>(T prefab, Vector2 position, Quaternion rotation) where T : Object
     {
         if (prefab == null)

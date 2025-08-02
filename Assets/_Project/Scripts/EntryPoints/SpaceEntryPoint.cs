@@ -9,6 +9,7 @@ using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UIElements;
+using Zenject;
 
 namespace Asteroid.Generation
 {
@@ -24,7 +25,7 @@ namespace Asteroid.Generation
         [SerializeField] private FireballBullet _bulletPrefab;
 
         [Header("Space Settings")]
-        private EntitiesGenerationController _obstaclesGenerationController;
+        [Inject]private EntitiesGenerationController _obstaclesGenerationController;
 
         [Header("Statistic")]
         [SerializeField] private ShipStatisticsView _shipStatisticView;
@@ -33,6 +34,7 @@ namespace Asteroid.Generation
         [SerializeField] private GameObject _restartPrefab;
 
         private LaserWeaponController _laserWeaponControl;
+        private Transform _shipTransform;
         private EnemyDeathCounter _allEnemiesDeathCounter;
         private EntitiesGenerationData _entitiesGenerationData;
         private ShipStatisticsController _shipStatisticController;
@@ -41,25 +43,18 @@ namespace Asteroid.Generation
         private WeaponController _weaponController;
         private WeaponShip _weaponShipLaser;
         private WeaponShip _weaponShipBullet;
-        private Transform _shipTransform;
-        private IResourceLoaderService _resourceLoader;
-        private IInstanceLoader _instanceLoader;
-        private ISceneLoader _sceneLoader;
-        private IDeviceInput _deviceInput;
-        private AnalyticsEventHandler _analyticsEventHandler;
+        [Inject]private IResourceLoaderService _resourceLoader;
+        [Inject]private IInstanceLoader _instanceLoader;
+        [Inject]private ISceneLoader _sceneLoader;
+        [Inject]private IDeviceInput _deviceInput;
+        [Inject]private AnalyticsEventHandler _analyticsEventHandler;
 
         private void Awake()
         {
-            _instanceLoader = new InstanceCreator();
-            _resourceLoader = _instanceLoader.CreateInstance<LocalBundleLoader>();
             _entitiesGenerationData = _resourceLoader.LoadResource<EntitiesGenerationData>("ScriptableObjects/EntitiesGenerationData");
             _shipStatisticModel = _instanceLoader.CreateInstance<ShipStatisticsModel>();
             _shipStatisticController = _instanceLoader.CreateInstance<ShipStatisticsController>();
             _allEnemiesDeathCounter = _instanceLoader.CreateInstance<EnemyDeathCounter>();
-            _obstaclesGenerationController = _instanceLoader.CreateInstance<EntitiesGenerationController>();
-            _sceneLoader = _instanceLoader.CreateInstance<LocalBundleSceneLoader>();
-            _analyticsEventHandler = _instanceLoader.CreateInstance<AnalyticsEventHandler>();
-            _deviceInput = _instanceLoader.CreateInstance<DesktopInput>();
 
             InitializeSpaceShipSystems();
             InitializeEnemySystems();

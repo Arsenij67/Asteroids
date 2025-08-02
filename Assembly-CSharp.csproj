@@ -105,6 +105,7 @@
     <Compile Include="Assets\_Project\Scripts\Controllers\SpaceObject.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\BaseEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />
+    <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\GameplayInstaller.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\ResourcesInitializerInstaller.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\LaserWeapon.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\BootsrapUIInstaller.cs" />

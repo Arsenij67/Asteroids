@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace Asteroid.Statistic
 {
-    public class ShipStatisticsModel
+    public struct ShipStatisticsModel
     {
-        public int CountShootsFireball = 0;
-        public int CountShootsLaser = 0;
-        public int CountDestroyedUFO = 0;
-        public int CountDestroyedAsteroids = 0;
-        public int CountDestroyedMeteorites = 0;
+        public int CountShootsFireball;
+        public int CountShootsLaser;
+        public int CountDestroyedUFO;
+        public int CountDestroyedAsteroids;
+        public int CountDestroyedMeteorites;
 
         public int CountShoots => CountShootsFireball + CountShootsLaser;
         public int EnemiesDestroyed => CountDestroyedUFO + CountDestroyedAsteroids + CountDestroyedMeteorites;

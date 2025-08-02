@@ -863,6 +863,7 @@ MonoBehaviour:
   _monoInstallers: []
   _installerPrefabs:
   - {fileID: 2981518263787261932, guid: cf2a0a74d08058b4cb67528e5ef549e5, type: 3}
+  - {fileID: -2950849364982637672, guid: 5b639e8700bb7884798d103f4112c19b, type: 3}
   _autoRun: 1
   OnPreInstall:
     m_PersistentCalls:
@@ -1418,7 +1419,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1489394315}
   m_Layer: 0
-  m_Name: EntitiesGenerationController
+  m_Name: Playground
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0

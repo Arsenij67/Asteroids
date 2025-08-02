@@ -1,15 +1,16 @@
 using Asteroid.Generation;
-using Asteroid.Services;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
-using Zenject;
 
-public class ResourcesInitializerInstaller : BaseResourcesInstaller
+namespace Asteroid.Installers
 {
-    public override void InstallBindings()
+    public class ResourcesInitializerInstaller : BaseResourcesInstaller
     {
-        base.InstallBindings();
-        Container.BindInterfacesAndSelfTo<BootstrapController>().AsSingle();
-        Container.Bind<List<UniTask>>().AsTransient();
+        public override void InstallBindings()
+        {
+            base.InstallBindings();
+            Container.BindInterfacesAndSelfTo<BootstrapController>().AsSingle();
+            Container.Bind<List<UniTask>>().AsTransient();
+        }
     }
 }
