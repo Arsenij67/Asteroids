@@ -7,10 +7,11 @@ using Asteroid.Weapon;
 using System;
 using UnityEngine;
 using Zenject;
+using UnityEngine.Advertisements;
 
 namespace Asteroid.Generation
 {
-    public class SpaceEntryPoint : MonoBehaviour
+    public class SpaceEntryPoint : MonoBehaviour, IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener
     {
         public event Action OnGameStarted;
         public event Action OnPlayerDied;
@@ -47,10 +48,12 @@ namespace Asteroid.Generation
 
         private void Awake()
         {
+            Advertisement.Initialize("5916275",false,this);
+      
             _shipStatisticView = _resourceLoader.Instantiate(_shipStatisticViewPrefab.gameObject, _UIParent.transform).GetComponent<ShipStatisticsView>();
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
-            _analyticsEventHandler.Initialize(this, _shipStatisticModel, _weaponShipLaser as LaserWeaponController);
+            InitializeServicesSystems();
         }
 
         private void Start()
@@ -82,6 +85,11 @@ namespace Asteroid.Generation
 
             _allEnemiesDeathCounter.Initialize(_shipStatisticModel);
 
+        }
+
+        private void InitializeServicesSystems()
+        {
+            _analyticsEventHandler.Initialize(this, _shipStatisticModel, _weaponShipLaser as LaserWeaponController);
         }
 
         private void BulletSpawnedHandler(BaseBullet bullet, Vector2 direction)
@@ -132,6 +140,48 @@ namespace Asteroid.Generation
             _shipStatisticView.Initialize(endPanelView,_sceneLoader);
             _shipStatisticController.Initialize();
 
+        }
+
+        public void OnInitializationComplete()
+        {
+            Debug.Log("Инициализайия прошла успешно!");
+            Advertisement.Load("Interstitial_Android",this);
+            Advertisement.Show("Interstitial_Android",this);
+        }
+
+        public void OnInitializationFailed(UnityAdsInitializationError error, string message)
+        {
+            Debug.Log("Инициализайия прошла безуспешно!");
+        }
+
+        public void OnUnityAdsAdLoaded(string placementId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnUnityAdsShowStart(string placementId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnUnityAdsShowClick(string placementId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
+        {
+            throw new NotImplementedException();
         }
     }
 }

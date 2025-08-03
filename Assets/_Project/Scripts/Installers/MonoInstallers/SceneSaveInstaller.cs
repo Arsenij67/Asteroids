@@ -1,6 +1,5 @@
 using Asteroid.Generation;
 using Zenject;
-using Asteroid.Generation;
 
 namespace Asteroid.Installers.MonInstallers
 {

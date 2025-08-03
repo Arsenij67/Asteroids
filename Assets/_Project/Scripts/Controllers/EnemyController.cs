@@ -27,9 +27,7 @@ namespace Asteroid.Enemies
 
             if (collision.TryGetComponent(out BaseBullet bullet))
             {
-                _enemy.
-                    TakeDamage(bullet.
-                    Damage);
+                _enemy.TakeDamage(bullet.Damage);
             }
 
             if (collision.TryGetComponent(out SpaceShipController ship))
