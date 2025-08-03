@@ -17,11 +17,9 @@ namespace Asteroid.Weapon
             }
         }
 
-        public override void Initialize(Vector2 direction, float speed, float damage)
+        public override void Initialize(Vector2 direction)
         {
             _rigidBody2D = GetComponent<Rigidbody2D>();
-            _speed = speed;
-            _damage = damage;
             _rigidBody2D.linearVelocity = direction.normalized * _speed;
 
             Destroy(gameObject, _lifeTime);

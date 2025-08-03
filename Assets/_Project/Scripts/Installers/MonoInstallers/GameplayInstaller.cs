@@ -3,6 +3,9 @@ using Asteroid.Inputs;
 using Asteroid.Services;
 using Asteroid.SpaceShip;
 using Asteroid.Statistic;
+using Asteroid.Weapon;
+using Unity.VisualScripting;
+using UnityEngine;
 using Zenject;
 
 namespace Asteroid.Installers
@@ -12,13 +15,18 @@ namespace Asteroid.Installers
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<DesktopInput>().AsSingle();
-            Container.Bind<AnalyticsEventHandler>().AsSingle();
+
+            Container.Bind<AnalyticsEventHandler>().FromNew().AsSingle();
             Container.Bind<EntitiesGenerationController>().FromNew().AsSingle();
             Container.Bind<ShipStatisticsModel>().FromNew().AsSingle();
             Container.Bind<EnemyDeathCounter>().FromNew().AsSingle();
             Container.Bind<ShipStatisticsController>().FromNew().AsSingle();
+
             Container.Bind<EntitiesGenerationData>().FromNewScriptableObjectResource("ScriptableObjects/EntitiesGenerationData").AsSingle();
             Container.Bind<SpaceShipData>().FromNewScriptableObjectResource("ScriptableObjects/SpaceShipData").AsSingle();
+
+           var generationController =  Container.Resolve<EntitiesGenerationController>();
+
         }
     }
 }

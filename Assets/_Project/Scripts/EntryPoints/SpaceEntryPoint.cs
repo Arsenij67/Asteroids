@@ -15,45 +15,42 @@ namespace Asteroid.Generation
         public event Action OnGameStarted;
         public event Action OnPlayerDied;
 
-        [Header("Bullet Settings")]
-        [SerializeField] private float _fireBulletSpeed = 15f;
-        [SerializeField] private float _fireBulletDamage = 10f;
-        [SerializeField] private LaserBullet _laserPrefab;
-        [SerializeField] private FireballBullet _bulletPrefab;
-
-        [Header("Space Settings")]
-        [Inject]private EntitiesGenerationController _obstaclesGenerationController;
-
         [Header("UI")]
         [SerializeField] private GameObject _restartPrefab;
         [SerializeField] private RectTransform _UIParent;
         [SerializeField] private ShipStatisticsView _shipStatisticViewPrefab;
-        private ShipStatisticsView _shipStatisticView;
 
-        private LaserWeaponController _laserWeaponControl;
-        private Transform _shipTransform;
+        [Header("Bullet Settings")]
+        [SerializeField] private LaserBullet _laserPrefab;
+        [SerializeField] private FireballBullet _bulletPrefab;
+       
+        [Header("Space Settings")]
+        [Inject]private EntitiesGenerationController _obstaclesGenerationController;
+
         [Inject]private EnemyDeathCounter _allEnemiesDeathCounter;
         [Inject]private ShipStatisticsController _shipStatisticController;
-        private SpaceShipController _shipController;
-        private WeaponController _weaponController;
-        private WeaponShip _weaponShipLaser;
-        private WeaponShip _weaponShipBullet;
         [Inject]private EntitiesGenerationData _entitiesGenerationData;
-        [Inject]private ShipStatisticsModel _shipStatisticModel;
+        [Inject]private AnalyticsEventHandler _analyticsEventHandler;
         [Inject]private SpaceShipData _spaceShipData;
         [Inject]private IResourceLoaderService _resourceLoader;
         [Inject]private IInstanceLoader _instanceLoader;
         [Inject]private ISceneLoader _sceneLoader;
         [Inject]private IDeviceInput _deviceInput;
-        [Inject]private AnalyticsEventHandler _analyticsEventHandler;
+        [Inject]private ShipStatisticsModel _shipStatisticModel;
+
+        private SpaceShipController _shipController;
+        private ShipStatisticsView _shipStatisticView;
+        private Transform _shipTransform;
+        private WeaponController _weaponController;
+        private WeaponShip _weaponShipLaser;
+        private WeaponShip _weaponShipBullet;
 
         private void Awake()
         {
             _shipStatisticView = _resourceLoader.Instantiate(_shipStatisticViewPrefab.gameObject, _UIParent.transform).GetComponent<ShipStatisticsView>();
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
-
-            _analyticsEventHandler.Initialize(this, _shipStatisticModel, _laserWeaponControl);
+            _analyticsEventHandler.Initialize(this, _shipStatisticModel, _weaponShipLaser as LaserWeaponController);
         }
 
         private void Start()
@@ -89,7 +86,7 @@ namespace Asteroid.Generation
 
         private void BulletSpawnedHandler(BaseBullet bullet, Vector2 direction)
         {
-            bullet.Initialize(direction, _fireBulletSpeed, _fireBulletDamage);
+            bullet.Initialize(direction);
         }
 
         private void EnemyInitializedHander(EnemyController enemyController, BaseEnemy currentEnemy)
@@ -111,8 +108,7 @@ namespace Asteroid.Generation
             _shipTransform = playerShip.transform;
             _shipController = playerShip;
             _weaponController = playerShip.GetComponent<WeaponController>();
-            _laserWeaponControl = playerShip.GetComponent<LaserWeaponController>();
-            _weaponShipLaser = _laserWeaponControl;
+            _weaponShipLaser = playerShip.GetComponent<LaserWeaponController>();
             _weaponShipBullet = playerShip.GetComponent<BulletWeaponController>();
 
             _shipController.OnPlayerDie += PanelRestartSpawnedHandler;
@@ -121,7 +117,7 @@ namespace Asteroid.Generation
 
             _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView,_shipStatisticController,_resourceLoader);
             _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView, _shipStatisticController,_resourceLoader);
-            _shipController.Initialize(_shipStatisticView,_deviceInput,_shipStatisticController,_laserWeaponControl,_resourceLoader,_spaceShipData);
+            _shipController.Initialize(_shipStatisticView,_deviceInput,_shipStatisticController,_weaponShipLaser,_resourceLoader,_spaceShipData);
             _weaponController.Initialize();
             _entitiesGenerationData.Initialize(_shipTransform);
         }

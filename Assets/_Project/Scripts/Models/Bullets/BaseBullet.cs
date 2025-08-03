@@ -11,11 +11,9 @@ namespace Asteroid.Weapon
         public virtual float Damage => Mathf.Clamp(_damage, 0, _maxDamage);
         public float Speed => Mathf.Clamp(_speed, 0, _maxSpeed);
 
-        public virtual void Initialize(Vector2 direction, float speed, float damage)
+        public virtual void Initialize(Vector2 direction)
         {
             direction = -transform.up;
-            _speed = speed;
-            _damage = damage;
         }
     }
 }

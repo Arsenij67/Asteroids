@@ -56,10 +56,11 @@ namespace Asteroid.Generation
             }
         }
 
-        private void GenerateShip(SpaceShipController shipController)
+        private SpaceShipController GenerateShip(SpaceShipController shipControllerPrefab)
         {
-            SpaceShipController playerShip = _resourceLoaderService.Instantiate(shipController, _generationData.PointShipToGenerate, Quaternion.identity).GetComponent<SpaceShipController>();
+            SpaceShipController playerShip = _resourceLoaderService.Instantiate(shipControllerPrefab, _generationData.PointShipToGenerate, Quaternion.identity).GetComponent<SpaceShipController>();
             OnShipSpawned?.Invoke(playerShip);
+            return playerShip;
         }
     }
 }
