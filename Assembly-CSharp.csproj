@@ -81,6 +81,7 @@
     <Compile Include="Assets\_Project\Scripts\Controllers\ShipStatisticsController.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\EntitiesGenerationController.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\UFOEnemy.cs" />
+    <Compile Include="Assets\_Project\Scripts\Controllers\AdvertisementController.cs" />
     <Compile Include="Assets\_Project\AnimatedCosmos\Example\MouseLook.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\WeaponShip.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IDeviceInput.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\GameplayInstaller.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\ResourcesInitializerInstaller.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\IAdvertisementService.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\LaserWeapon.cs" />
     <Compile Include="Assets\_Project\Scripts\Ads\UnityAdsAdvertisement.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\BootsrapUIInstaller.cs" />

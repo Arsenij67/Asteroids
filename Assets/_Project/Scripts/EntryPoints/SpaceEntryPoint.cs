@@ -8,10 +8,11 @@ using System;
 using UnityEngine;
 using Zenject;
 using UnityEngine.Advertisements;
+using Asteroid.UnityAdvertisement;
 
 namespace Asteroid.Generation
 {
-    public class SpaceEntryPoint : MonoBehaviour, IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener
+    public class SpaceEntryPoint : MonoBehaviour
     {
         public event Action OnGameStarted;
         public event Action OnPlayerDied;
@@ -37,6 +38,8 @@ namespace Asteroid.Generation
         [Inject]private IInstanceLoader _instanceLoader;
         [Inject]private ISceneLoader _sceneLoader;
         [Inject]private IDeviceInput _deviceInput;
+        [Inject]private IAdvertisementService _advertisementService;
+        [Inject]private AdvertisementController _advertisingController;
         [Inject]private ShipStatisticsModel _shipStatisticModel;
 
         private SpaceShipController _shipController;
@@ -48,7 +51,6 @@ namespace Asteroid.Generation
 
         private void Awake()
         {
-            Advertisement.Initialize("5916275",false,this);
       
             _shipStatisticView = _resourceLoader.Instantiate(_shipStatisticViewPrefab.gameObject, _UIParent.transform).GetComponent<ShipStatisticsView>();
             InitializeSpaceShipSystems();
@@ -74,7 +76,6 @@ namespace Asteroid.Generation
         {
             _obstaclesGenerationController.OnShipSpawned += ShipInitializedHandler;
             _shipStatisticView.OnGameReloadClicked += _sceneLoader.ReloadScene;
-
             _shipStatisticController.Initialize(_shipStatisticView, _shipStatisticModel,_instanceLoader);
             _obstaclesGenerationController.Initialize(_entitiesGenerationData,_resourceLoader,_instanceLoader);
         }
@@ -90,6 +91,7 @@ namespace Asteroid.Generation
         private void InitializeServicesSystems()
         {
             _analyticsEventHandler.Initialize(this, _shipStatisticModel, _weaponShipLaser as LaserWeaponController);
+            _advertisingController.Initialize(_advertisementService);
         }
 
         private void BulletSpawnedHandler(BaseBullet bullet, Vector2 direction)
@@ -108,6 +110,7 @@ namespace Asteroid.Generation
         private void EnemyDestroyedHandler(BaseEnemy enemyDestroy)
         {
             _allEnemiesDeathCounter.OnEnemyDied(enemyDestroy);
+            _advertisingController.PlayerDieHandler();
             enemyDestroy.OnEnemyDestroyed -= EnemyDestroyedHandler;
         }
 
@@ -140,48 +143,6 @@ namespace Asteroid.Generation
             _shipStatisticView.Initialize(endPanelView,_sceneLoader);
             _shipStatisticController.Initialize();
 
-        }
-
-        public void OnInitializationComplete()
-        {
-            Debug.Log("Инициализайия прошла успешно!");
-            Advertisement.Load("Interstitial_Android",this);
-            Advertisement.Show("Interstitial_Android",this);
-        }
-
-        public void OnInitializationFailed(UnityAdsInitializationError error, string message)
-        {
-            Debug.Log("Инициализайия прошла безуспешно!");
-        }
-
-        public void OnUnityAdsAdLoaded(string placementId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnUnityAdsShowStart(string placementId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnUnityAdsShowClick(string placementId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
-        {
-            throw new NotImplementedException();
         }
     }
 }

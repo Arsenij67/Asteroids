@@ -1,5 +1,6 @@
 using Asteroid.Services;
 using Asteroid.UI;
+using Asteroid.UnityAdvertisement;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,13 @@ namespace Asteroid.Generation
         [Inject] private List<UniTask> _loadingTasks;
         [Inject] private ISceneLoader _sceneLoader;
         [Inject] private IAnalytics _analytics;
+        [Inject] private IAdvertisementService _advertisementService;
         [Inject] private BootstrapSceneData _bootstrapSceneModel;
 
         private bool _analyticsReady;
         private bool _sceneLoaded;
         private bool _waitingCompleted;
+        private bool _advertisementReady;
         private float _loadingProgress;
         public object _loadedScene;
         public async void Initialize()
@@ -29,6 +32,7 @@ namespace Asteroid.Generation
             _loadedScene = await _sceneLoader.ReloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedScene;
             _bootstrapUI.OnPlayerClickButtonStart += () => OnGameStarted?.Invoke();
+            _loadingTasks.Add(PrepareAdvertisementAsync());
             _loadingTasks.Add(PrepareAnalyticsAsync());
             _loadingTasks.Add(PrepareGameSceneAsync());
             _loadingTasks.Add(WaitBeforeLoadingSceneAsync(_bootstrapSceneModel.timeWaitLoading));
@@ -61,12 +65,21 @@ namespace Asteroid.Generation
             completedCount += Convert.ToInt16(_analyticsReady);
             completedCount += Convert.ToInt16(_sceneLoaded);
             completedCount += Convert.ToInt16(_waitingCompleted);
+            completedCount += Convert.ToInt16(_advertisementReady);
             _loadingProgress = (float)completedCount / _loadingTasks.Count();
+        }
+
+        private async UniTask PrepareAdvertisementAsync()
+        {
+            _advertisementService.Initialize(false);
+            await UniTask.CompletedTask;
+            _advertisementReady = true;  
         }
 
         private async UniTask PrepareAnalyticsAsync()
         {
-            _analyticsReady = await _analytics.Initialize();
+            await _analytics.Initialize();
+            _analyticsReady = true; 
         }
 
         private async void TickLoading()
