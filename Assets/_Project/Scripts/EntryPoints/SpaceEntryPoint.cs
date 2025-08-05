@@ -110,7 +110,6 @@ namespace Asteroid.Generation
         private void EnemyDestroyedHandler(BaseEnemy enemyDestroy)
         {
             _allEnemiesDeathCounter.OnEnemyDied(enemyDestroy);
-            _advertisingController.PlayerDieHandler();
             enemyDestroy.OnEnemyDestroyed -= EnemyDestroyedHandler;
         }
 
@@ -142,6 +141,8 @@ namespace Asteroid.Generation
 
             _shipStatisticView.Initialize(endPanelView,_sceneLoader);
             _shipStatisticController.Initialize();
+            endPanelView.ButtonShowAd.onClick.AddListener(_advertisingController.ShowRewardedAd);
+            endPanelView.ButtonRestart.onClick.AddListener(_advertisingController.ShowInterstitialAd);
 
         }
     }

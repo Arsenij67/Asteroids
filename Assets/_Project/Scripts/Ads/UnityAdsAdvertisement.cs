@@ -9,8 +9,11 @@ namespace Asteroid.UnityAdvertisement
     public class UnityAdsAdvertisement: IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener, IAdvertisementService
     {
         private const string GAME_ANDROID_ID = "5916275";
+        private const string GAME_IOS_ID = "5916274";
 
         private bool _isLoaded = false;
+
+        private string ApplicationId => Application.platform == RuntimePlatform.IPhonePlayer ? GAME_IOS_ID : GAME_ANDROID_ID;
 
         public bool isInitialized => Advertisement.isInitialized;
 
@@ -65,7 +68,7 @@ namespace Asteroid.UnityAdvertisement
         {
             if (Advertisement.isSupported)
             {
-                Advertisement.Initialize(GAME_ANDROID_ID, (bool)parameters[0], this);
+                Advertisement.Initialize(ApplicationId, (bool)parameters[0], this);
             }
         }
 

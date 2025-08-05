@@ -1,10 +1,16 @@
 using UnityEngine;
+using UnityEngine.Advertisements;
 
 namespace Asteroid.UnityAdvertisement
 {
     public class AdvertisementController 
     {
-        private const string INTERSTITIAL = "Interstitial_Android";
+        private const string INTERSTITIAL_ANDROID = "Interstitial_Android";
+        private const string REWARDED_ANDROID= "Rewarded_Android";
+        private const string BANNER_ANDROID= "Banner_Android";
+        private const string INTERSTITIAL_IOS = "Interstitial_iOS";
+        private const string REWARDED_IOS = "Rewarded_iOS";
+        private const string BANNER_IOS = "Banner_iOS";
 
         private string currentPlatform = string.Empty;
 
@@ -12,20 +18,26 @@ namespace Asteroid.UnityAdvertisement
         public void Initialize(IAdvertisementService advertisementService)
         { 
             _advertisementService = advertisementService;
+            _advertisementService.Load(REWARDED_ANDROID);
         }
 
-        public void PlayerDieHandler()
+        public void ShowRewardedAd()
         {
-            if (_advertisementService.isInitialized)
+            ShowAnyAd(REWARDED_ANDROID);
+        }
+
+        public void ShowInterstitialAd()
+        {
+            ShowAnyAd(INTERSTITIAL_ANDROID);
+        }
+
+        private void ShowAnyAd(string advertisementId)
+        {
+            if (!_advertisementService.isLoaded)
             {
-                _advertisementService.Show(INTERSTITIAL);
+                _advertisementService.Load(advertisementId);
             }
+            _advertisementService.Show(advertisementId);
         }
-
-        private void CheckPlatform()
-        { 
-            
-        }
-
     }
 }
