@@ -1,5 +1,4 @@
-using UnityEngine;
-using UnityEngine.Advertisements;
+using System;
 
 namespace Asteroid.UnityAdvertisement
 {
@@ -12,7 +11,7 @@ namespace Asteroid.UnityAdvertisement
         private const string REWARDED_IOS = "Rewarded_iOS";
         private const string BANNER_IOS = "Banner_iOS";
 
-        private string currentPlatform = string.Empty;
+        public event Action OnPlayerRevived;
 
         private IAdvertisementService _advertisementService;
         public void Initialize(IAdvertisementService advertisementService)
@@ -24,6 +23,7 @@ namespace Asteroid.UnityAdvertisement
         public void ShowRewardedAd()
         {
             ShowAnyAd(REWARDED_ANDROID);
+            OnPlayerRevived?.Invoke();
         }
 
         public void ShowInterstitialAd()

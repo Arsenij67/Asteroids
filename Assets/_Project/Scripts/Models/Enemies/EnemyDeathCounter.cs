@@ -7,12 +7,6 @@ using Asteroid.Enemies;
 
 public class EnemyDeathCounter
 {
-    private ShipStatisticsModel _shipStatisticModel;
-    public void Initialize(ShipStatisticsModel shipStatisticModel)
-    {
-        _shipStatisticModel = shipStatisticModel;
-    }
-
     public void OnEnemyDied(BaseEnemy enemy)
     {
         IncreaseKilledEnemies(enemy);
@@ -22,6 +16,5 @@ public class EnemyDeathCounter
     {
         enemy.AddToStatistic();
     }
-
  
 }

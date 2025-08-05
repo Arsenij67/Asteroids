@@ -828,12 +828,12 @@ GameObject:
   - component: {fileID: 6782530362219194077}
   - component: {fileID: 8461020293197611451}
   m_Layer: 0
-  m_Name: UiParent
+  m_Name: UIGameOver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4441606346315076429
 RectTransform:
   m_ObjectHideFlags: 0

@@ -42,6 +42,7 @@ namespace Asteroid.Generation
         [Inject]private AdvertisementController _advertisingController;
         [Inject]private ShipStatisticsModel _shipStatisticModel;
 
+        private GameOverView ? _endPanelView;
         private SpaceShipController _shipController;
         private ShipStatisticsView _shipStatisticView;
         private Transform _shipTransform;
@@ -83,15 +84,13 @@ namespace Asteroid.Generation
         private void InitializeEnemySystems()
         {
             _obstaclesGenerationController.OnEnemySpawned += EnemyInitializedHander;
-
-            _allEnemiesDeathCounter.Initialize(_shipStatisticModel);
-
         }
 
         private void InitializeServicesSystems()
         {
             _analyticsEventHandler.Initialize(this, _shipStatisticModel, _weaponShipLaser as LaserWeaponController);
             _advertisingController.Initialize(_advertisementService);
+            _advertisingController.OnPlayerRevived += _endPanelView.Close;
         }
 
         private void BulletSpawnedHandler(BaseBullet bullet, Vector2 direction)
@@ -133,16 +132,17 @@ namespace Asteroid.Generation
         }
         private void PanelRestartSpawnedHandler()
         {
-            var endPanelView = _resourceLoader.Instantiate
+            _endPanelView = _resourceLoader.Instantiate
                 (
                 _restartPrefab,
                 _shipStatisticView.transform.parent
                 ).GetComponent<GameOverView>();
 
-            _shipStatisticView.Initialize(endPanelView,_sceneLoader);
+            _endPanelView.Open();
+            _shipStatisticView.Initialize(_endPanelView,_sceneLoader);
             _shipStatisticController.Initialize();
-            endPanelView.ButtonShowAd.onClick.AddListener(_advertisingController.ShowRewardedAd);
-            endPanelView.ButtonRestart.onClick.AddListener(_advertisingController.ShowInterstitialAd);
+            _endPanelView.ButtonShowAd.onClick.AddListener(_advertisingController.ShowRewardedAd);
+            _endPanelView.ButtonRestart.onClick.AddListener(_advertisingController.ShowInterstitialAd);
 
         }
     }
