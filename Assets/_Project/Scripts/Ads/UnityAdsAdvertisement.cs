@@ -12,6 +12,7 @@ namespace Asteroid.UnityAdvertisement
         private const string GAME_IOS_ID = "5916274";
 
         private bool _isLoaded = false;
+        private bool _isShowed = false;
 
         private string ApplicationId => Application.platform == RuntimePlatform.IPhonePlayer ? GAME_IOS_ID : GAME_ANDROID_ID;
 
@@ -19,7 +20,7 @@ namespace Asteroid.UnityAdvertisement
 
         public bool isLoaded => _isLoaded;
 
-        public bool isShowing => Advertisement.isShowing;
+        public bool isShowed => _isShowed;
 
         public void OnInitializationComplete()
         {
@@ -62,6 +63,7 @@ namespace Asteroid.UnityAdvertisement
         {
             Debug.Log($"Показ рекламы {placementId} закончен! Вот состояние рекламы: {showCompletionState}");
             Advertisement.Load(placementId, this);
+            _isShowed = true;
         }
 
         public void Initialize(params object[] parameters)

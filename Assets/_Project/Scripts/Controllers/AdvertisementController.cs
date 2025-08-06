@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Asteroid.UnityAdvertisement
 {
@@ -14,16 +15,20 @@ namespace Asteroid.UnityAdvertisement
         public event Action OnPlayerRevived;
 
         private IAdvertisementService _advertisementService;
+
         public void Initialize(IAdvertisementService advertisementService)
         { 
             _advertisementService = advertisementService;
             _advertisementService.Load(REWARDED_ANDROID);
         }
 
-        public void ShowRewardedAd()
+        public void ShowRewardedAdAfterDead()
         {
-            ShowAnyAd(REWARDED_ANDROID);
-            OnPlayerRevived?.Invoke();
+            if (!_advertisementService.isShowed)
+            {
+                ShowAnyAd(REWARDED_ANDROID);
+                OnPlayerRevived?.Invoke();
+            }
         }
 
         public void ShowInterstitialAd()

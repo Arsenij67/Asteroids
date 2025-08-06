@@ -17,6 +17,7 @@ namespace Asteroid.Generation
         public event Action OnGameStarted;
         public event Action OnPlayerDied;
 
+
         [Header("UI")]
         [SerializeField] private GameObject _restartPrefab;
         [SerializeField] private RectTransform _UIParent;
@@ -70,6 +71,13 @@ namespace Asteroid.Generation
             _obstaclesGenerationController.OnEnemySpawned -= EnemyInitializedHander;
             _shipController.OnPlayerDie -= PanelRestartSpawnedHandler;
             _weaponShipBullet.OnMissalSpawned -= BulletSpawnedHandler;
+            _shipController.OnPlayerDie -= () => _endPanelView.ButtonShowAd.onClick.AddListener(_advertisingController.ShowRewardedAdAfterDead);
+            _shipController.OnPlayerDie -= () => _endPanelView.ButtonRestart.onClick.AddListener(_advertisingController.ShowInterstitialAd);
+            _shipController.OnPlayerDie -= () => OnPlayerDied?.Invoke();
+            _weaponShipBullet.OnMissalSpawned -= BulletSpawnedHandler;
+            _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= _obstaclesGenerationController.ReviveShip;
+            _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= _endPanelView.Close;
+            _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= _endPanelView.DisableButtonShowAd;
 
             _obstaclesGenerationController.OnDestroy();
         }
@@ -90,7 +98,6 @@ namespace Asteroid.Generation
         {
             _analyticsEventHandler.Initialize(this, _shipStatisticModel, _weaponShipLaser as LaserWeaponController);
             _advertisingController.Initialize(_advertisementService);
-            _advertisingController.OnPlayerRevived += _endPanelView.Close;
         }
 
         private void BulletSpawnedHandler(BaseBullet bullet, Vector2 direction)
@@ -121,15 +128,21 @@ namespace Asteroid.Generation
             _weaponShipBullet = playerShip.GetComponent<BulletWeaponController>();
 
             _shipController.OnPlayerDie += PanelRestartSpawnedHandler;
+            _shipController.OnPlayerDie += () => _endPanelView.ButtonShowAd.onClick.AddListener(_advertisingController.ShowRewardedAdAfterDead);
+            _shipController.OnPlayerDie += () => _endPanelView.ButtonRestart.onClick.AddListener(_advertisingController.ShowInterstitialAd);
             _shipController.OnPlayerDie += () => OnPlayerDied?.Invoke();
+            _shipController.OnPlayerDie += () => _advertisingController.OnPlayerRevived += _obstaclesGenerationController.ReviveShip;
+            _shipController.OnPlayerDie += () => _advertisingController.OnPlayerRevived += _endPanelView.Close;
+            _shipController.OnPlayerDie += () => _advertisingController.OnPlayerRevived += _endPanelView.DisableButtonShowAd;
             _weaponShipBullet.OnMissalSpawned += BulletSpawnedHandler;
 
-            _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView,_shipStatisticController,_resourceLoader);
-            _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView, _shipStatisticController,_resourceLoader);
-            _shipController.Initialize(_shipStatisticView,_deviceInput,_shipStatisticController,_weaponShipLaser,_resourceLoader,_spaceShipData);
+            _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader);
+            _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader);
+            _shipController.Initialize(_shipStatisticView, _deviceInput, _shipStatisticController, _weaponShipLaser, _resourceLoader, _spaceShipData);
             _weaponController.Initialize();
             _entitiesGenerationData.Initialize(_shipTransform);
         }
+                                                                
         private void PanelRestartSpawnedHandler()
         {
             _endPanelView = _resourceLoader.Instantiate
@@ -141,9 +154,6 @@ namespace Asteroid.Generation
             _endPanelView.Open();
             _shipStatisticView.Initialize(_endPanelView,_sceneLoader);
             _shipStatisticController.Initialize();
-            _endPanelView.ButtonShowAd.onClick.AddListener(_advertisingController.ShowRewardedAd);
-            _endPanelView.ButtonRestart.onClick.AddListener(_advertisingController.ShowInterstitialAd);
-
         }
     }
 }

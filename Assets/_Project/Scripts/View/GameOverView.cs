@@ -16,4 +16,11 @@ public class GameOverView : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+    public void DisableButtonShowAd()
+    { 
+        ButtonShowAd.interactable = false;
+        Debug.Log(999);
+    }
+    
 }

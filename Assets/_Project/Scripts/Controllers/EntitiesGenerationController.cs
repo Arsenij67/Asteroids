@@ -56,6 +56,11 @@ namespace Asteroid.Generation
             }
         }
 
+        public void ReviveShip()
+        {
+            Debug.Log("Запущено");
+            GenerateShip(_generationData.PlayerShipToGenerateNow);
+        }
         private SpaceShipController GenerateShip(SpaceShipController shipControllerPrefab)
         {
             SpaceShipController playerShip = _resourceLoaderService.Instantiate(shipControllerPrefab, _generationData.PointShipToGenerate, Quaternion.identity).GetComponent<SpaceShipController>();
