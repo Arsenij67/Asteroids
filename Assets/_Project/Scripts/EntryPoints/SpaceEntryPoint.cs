@@ -77,7 +77,6 @@ namespace Asteroid.Generation
             _weaponShipBullet.OnMissalSpawned -= BulletSpawnedHandler;
             _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= _obstaclesGenerationController.ReviveShip;
             _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= _endPanelView.Close;
-            _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= _endPanelView.DisableButtonShowAd;
 
             _obstaclesGenerationController.OnDestroy();
         }
@@ -133,7 +132,7 @@ namespace Asteroid.Generation
             _shipController.OnPlayerDie += () => OnPlayerDied?.Invoke();
             _shipController.OnPlayerDie += () => _advertisingController.OnPlayerRevived += _obstaclesGenerationController.ReviveShip;
             _shipController.OnPlayerDie += () => _advertisingController.OnPlayerRevived += _endPanelView.Close;
-            _shipController.OnPlayerDie += () => _advertisingController.OnPlayerRevived += _endPanelView.DisableButtonShowAd;
+        
             _weaponShipBullet.OnMissalSpawned += BulletSpawnedHandler;
 
             _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader);
@@ -154,6 +153,7 @@ namespace Asteroid.Generation
             _endPanelView.Open();
             _shipStatisticView.Initialize(_endPanelView,_sceneLoader);
             _shipStatisticController.Initialize();
+            _endPanelView.UpdateButtonShowAd(_advertisementService.isShowed);
         }
     }
 }
