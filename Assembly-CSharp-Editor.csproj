@@ -64,13 +64,14 @@
     <Compile Include="Assets\_Project\AnimatedCosmos\Shaders\Editor\CosmosSkyEditor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\ExternalDependencyManager\Editor\1.2.183\Google.IOSResolver.dll" />
+    <None Include="Assets\Firebase\Editor\RemoteConfigDependencies.xml" />
     <None Include="Assets\Firebase\Editor\FirebaseAnalytics_version-12.5.0_manifest.txt" />
     <None Include="Assets\ExternalDependencyManager\Editor\1.2.183\Google.PackageManagerResolver.dll" />
     <None Include="Assets\ExternalDependencyManager\Editor\Google.VersionHandler.dll" />
     <None Include="Assets\ExternalDependencyManager\Editor\external-dependency-manager_version-1.2.183_manifest.txt" />
     <None Include="Assets\Firebase\Editor\AppDependencies.xml" />
     <None Include="Assets\ExternalDependencyManager\Editor\1.2.183\Google.JarResolver.dll" />
+    <None Include="Assets\Firebase\Editor\FirebaseRemoteConfig_version-12.5.0_manifest.txt" />
     <None Include="Assets\ExternalDependencyManager\Editor\1.2.183\Google.VersionHandlerImpl.dll" />
     <None Include="Assets\Firebase\Editor\AnalyticsDependencies.xml" />
     <None Include="Assets\Firebase\Editor\Firebase.Editor.dll" />
@@ -580,10 +581,6 @@
       <HintPath>Assets\Firebase\Plugins\Firebase.App.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Google.IOSResolver">
-      <HintPath>Assets\ExternalDependencyManager\Editor\1.2.183\Google.IOSResolver.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Firebase.TaskExtension">
       <HintPath>Assets\Firebase\Plugins\Firebase.TaskExtension.dll</HintPath>
       <Private>False</Private>
@@ -638,6 +635,14 @@
     </Reference>
     <Reference Include="Zenject.ReflectionBaking.Mono.Cecil">
       <HintPath>Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Firebase.Editor">
+      <HintPath>Assets\Firebase\Editor\Firebase.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Firebase.RemoteConfig">
+      <HintPath>Assets\Firebase\Plugins\Firebase.RemoteConfig.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">

@@ -584,10 +584,6 @@
       <HintPath>Assets\Firebase\Plugins\Firebase.App.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Google.IOSResolver">
-      <HintPath>Assets\ExternalDependencyManager\Editor\1.2.183\Google.IOSResolver.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Firebase.TaskExtension">
       <HintPath>Assets\Firebase\Plugins\Firebase.TaskExtension.dll</HintPath>
       <Private>False</Private>
@@ -642,6 +638,14 @@
     </Reference>
     <Reference Include="Zenject.ReflectionBaking.Mono.Cecil">
       <HintPath>Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Firebase.Editor">
+      <HintPath>Assets\Firebase\Editor\Firebase.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Firebase.RemoteConfig">
+      <HintPath>Assets\Firebase\Plugins\Firebase.RemoteConfig.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">

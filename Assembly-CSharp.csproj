@@ -66,6 +66,7 @@
     <Compile Include="Assets\_Project\Scripts\ScenesManagement\SimpleLoad\SimpleSceneLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\BulletWeapon.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\WeaponController.cs" />
+    <Compile Include="Assets\_Project\Scripts\RemoteConfig\FirebaseRemoteConfigService.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\MeteoriteEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\EnemyController.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\LaserBullet.cs" />
@@ -127,6 +128,7 @@
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\Firebase\Plugins\x86_64\FirebaseCppAnalytics.dll" />
+    <None Include="Assets\Firebase\Plugins\iOS\Firebase.RemoteConfig.dll" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\Firebase\Plugins\Firebase.TaskExtension.dll" />
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-app-unity\maven-metadata.xml" />
@@ -138,6 +140,7 @@
     <None Include="Assets\test.uss" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
     <None Include="Assets\_Project\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+    <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-config-unity\maven-metadata.xml" />
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-analytics-unity\maven-metadata.xml" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\_Project\AnimatedCosmos\Shaders\CosmosAnimatedMesh.shader" />
@@ -145,6 +148,8 @@
     <None Include="Assets\_Project\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\Firebase\Plugins\Firebase.Platform.dll" />
+    <None Include="Assets\Firebase\Plugins\x86_64\FirebaseCppRemoteConfig.dll" />
+    <None Include="Assets\Firebase\Plugins\Firebase.RemoteConfig.dll" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\Firebase\Plugins\Google.MiniJson.dll" />
@@ -652,6 +657,10 @@
     </Reference>
     <Reference Include="Zenject.ReflectionBaking.Mono.Cecil">
       <HintPath>Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Firebase.RemoteConfig">
+      <HintPath>Assets\Firebase\Plugins\Firebase.RemoteConfig.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">
