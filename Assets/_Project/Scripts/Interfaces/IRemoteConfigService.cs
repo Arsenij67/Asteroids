@@ -5,14 +5,13 @@ namespace Asteroid.Services.RemoteConfig
 {
     public interface IRemoteConfigService
     {
+        public event Action OnConfigUpdated;
+
         public bool IsInitialized { get; }
 
-        public UniTask Initialize();
-
-        public event Action OnConfigUpdated;
         public T GetValue<T>(string key);
-
         public UniTask FetchAndActivateAsync();
-
+        public UniTask Initialize();
+        public UniTask SetUserAttributes(string[] attributes);
     }
 }

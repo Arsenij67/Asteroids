@@ -1,123 +1,82 @@
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
+using Firebase;
 using Firebase.Extensions;
 using Firebase.RemoteConfig;
-using Cysharp.Threading.Tasks;
+using Firebase.RemoteConfig;
+using ModestTree;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Asteroid.Services.RemoteConfig
-{ 
-public class FirebaseRemoteConfigService : IRemoteConfigService
 {
-        public bool IsInitialized => throw new NotImplementedException();
-
+    public class FirebaseRemoteConfigService : IRemoteConfigService, IDisposable
+    {
         public event Action OnConfigUpdated;
 
-        // Invoke the listener.
-        private async  void  Start()
-    {
-        System.Collections.Generic.Dictionary<string, object> defaults =
-  new System.Collections.Generic.Dictionary<string, object>();
-        defaults.Add("test_string", "new value");
-        var rc = Firebase.RemoteConfig.FirebaseRemoteConfig.DefaultInstance.SetDefaultsAsync(defaults)
-          .ContinueWithOnMainThread(task => { });
+        private bool _isInitialized = false;
+        public bool IsInitialized => _isInitialized;
 
-        await FetchDataAsync();
-
-        Firebase.RemoteConfig.FirebaseRemoteConfig.DefaultInstance.OnConfigUpdateListener
-          += ConfigUpdateListenerEventHandler;
-        Debug.Log("Start");
-    }
-
-    // Handle real-time Remote Config events.
-   private void ConfigUpdateListenerEventHandler(
-
-       object sender, Firebase.RemoteConfig.ConfigUpdateEventArgs args)
-    {
-        Debug.Log("Обновления замечены");
-
-        if (args.Error != Firebase.RemoteConfig.RemoteConfigError.None)
+        public async UniTask Initialize()
         {
-            Debug.Log(String.Format("Error occurred while listening: {0}", args.Error));
-            return;
+            DependencyStatus statusResult =  await FirebaseApp.CheckAndFixDependenciesAsync().AsUniTask();
+            if (statusResult == DependencyStatus.Available)
+            {
+                FirebaseRemoteConfig.DefaultInstance.OnConfigUpdateListener += HandleConfigUpdate;
+                await FetchAndActivateAsync();
+                _isInitialized = true;
+            }
+            else
+            {
+                Debug.LogError($"Firebase init failed: {statusResult}");
+            }
         }
 
-        Debug.Log("Updated keys: " + string.Join(", ", args.UpdatedKeys));
-        // Activate all fetched values and then display a welcome message.
-        FirebaseRemoteConfig.DefaultInstance.ActivateAsync().ContinueWithOnMainThread(
-          task => {
-              DisplayWelcomeMessage();
-          });
-    }
-
-    private void DisplayWelcomeMessage()
-    {
-        Debug.Log("Обновления замечены");
-    }
-
-    // Stop the listener.
-    void OnDestroy()
-    {
-        Firebase.RemoteConfig.FirebaseRemoteConfig.DefaultInstance.OnConfigUpdateListener
-          -= ConfigUpdateListenerEventHandler;
-    }
-    private async void Awake()
-    {
-
-
- 
-    }
-
- 
-    public UniTask FetchDataAsync()
-    {
-        Debug.Log("Fetching data...");
-        System.Threading.Tasks.Task fetchTask =
-        Firebase.RemoteConfig.FirebaseRemoteConfig.DefaultInstance.FetchAsync(
-            TimeSpan.Zero);
-        return fetchTask.ContinueWithOnMainThread(FetchComplete).AsUniTask(); 
-    }
-    private void FetchComplete(Task fetchTask)
-    {
-        if (!fetchTask.IsCompleted)
+        private void HandleConfigUpdate(object sender, ConfigUpdateEventArgs args)
         {
-            Debug.LogError("Retrieval hasn't finished.");
-            return;
-        }
-
-        var remoteConfig = FirebaseRemoteConfig.DefaultInstance;
-        var info = remoteConfig.Info;
-        if (info.LastFetchStatus != LastFetchStatus.Success)
-        {
-            Debug.LogError($"{nameof(FetchComplete)} was unsuccessful\n{nameof(info.LastFetchStatus)}: {info.LastFetchStatus}");
-            return;
-        }
-
-        // Fetch successful. Parameter values must be activated to use.
-        remoteConfig.ActivateAsync()
-          .ContinueWithOnMainThread(
-            task => {
-                Debug.Log($"Remote data loaded and ready for use. Last fetch time {info.FetchTime}.");
-               ConfigValue configVal =  remoteConfig.GetValue("test_string");
-               ConfigValue five =  remoteConfig.GetValue("five");
-                Debug.Log("ValueRemoteConfig: "+configVal.StringValue);
-                Debug.Log("five: "+five.LongValue);
-            });
-    }
-
-        public UniTask Initialize()
-        {
-            throw new NotImplementedException();
+            if (args.Error != null)
+            {
+                Debug.LogError($"Config update error: {args.Error}");
+                return;
+            }
+            string updatedKeys = args.UpdatedKeys.Join(",");
+            Debug.Log(string.Format($"Remote Config updated in realtime! Updated Keys : {updatedKeys}"));
+            OnConfigUpdated?.Invoke();
         }
 
         public T GetValue<T>(string key)
         {
-            throw new NotImplementedException();
+            if (!_isInitialized)
+            {
+                Debug.LogWarning("Remote Config not initialized. Returning default value.");
+                return default;
+            }
+            ConfigValue configValue = FirebaseRemoteConfig.DefaultInstance.GetValue(key);
+            return (T)Convert.ChangeType(configValue.StringValue, typeof(T));
         }
 
         public UniTask FetchAndActivateAsync()
         {
-            throw new NotImplementedException();
+           return FirebaseRemoteConfig.DefaultInstance.FetchAndActivateAsync().AsUniTask();   
+        }
+
+        public UniTask SetUserAttributes(string[] attributes)
+        {
+            var userProperties = new Dictionary<string, object>();
+            foreach (var attr in attributes)
+            {
+                userProperties[attr] = true;
+            }
+           return FirebaseRemoteConfig.DefaultInstance.SetDefaultsAsync(userProperties).AsUniTask();
+        }
+
+        public void Dispose()
+        {
+            FirebaseRemoteConfig.DefaultInstance.OnConfigUpdateListener -= HandleConfigUpdate;
         }
     }
+}
 
