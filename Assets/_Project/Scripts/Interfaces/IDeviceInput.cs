@@ -4,9 +4,8 @@ namespace Asteroid.Inputs
 {
     public interface IDeviceInput
     {
-        float ScanMove();
-
-        float ScanRotation();
+        public float ScanMove();
+        public float ScanRotation();
 
     }
 }

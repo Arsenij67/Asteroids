@@ -5,19 +5,37 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class FirebaseRemoteConfigService : MonoBehaviour
+namespace Asteroid.Services.RemoteConfig
+{ 
+public class FirebaseRemoteConfigService : IRemoteConfigService
 {
-    // Invoke the listener.
-    void Start()
+        public bool IsInitialized => throw new NotImplementedException();
+
+        public event Action OnConfigUpdated;
+
+        // Invoke the listener.
+        private async  void  Start()
     {
+        System.Collections.Generic.Dictionary<string, object> defaults =
+  new System.Collections.Generic.Dictionary<string, object>();
+        defaults.Add("test_string", "new value");
+        var rc = Firebase.RemoteConfig.FirebaseRemoteConfig.DefaultInstance.SetDefaultsAsync(defaults)
+          .ContinueWithOnMainThread(task => { });
+
+        await FetchDataAsync();
+
         Firebase.RemoteConfig.FirebaseRemoteConfig.DefaultInstance.OnConfigUpdateListener
           += ConfigUpdateListenerEventHandler;
+        Debug.Log("Start");
     }
 
     // Handle real-time Remote Config events.
    private void ConfigUpdateListenerEventHandler(
+
        object sender, Firebase.RemoteConfig.ConfigUpdateEventArgs args)
     {
+        Debug.Log("Обновления замечены");
+
         if (args.Error != Firebase.RemoteConfig.RemoteConfigError.None)
         {
             Debug.Log(String.Format("Error occurred while listening: {0}", args.Error));
@@ -47,21 +65,7 @@ public class FirebaseRemoteConfigService : MonoBehaviour
     {
 
 
-        System.Collections.Generic.Dictionary<string, object> defaults =
-          new System.Collections.Generic.Dictionary<string, object>();
-
-        // These are the values that are used if we haven't fetched data from the
-        // server
-        // yet, or if we ask for values that the server doesn't have:
-        defaults.Add("config_test_string", "new value");
-        //defaults.Add("config_test_int", 1);
-        //defaults.Add("config_test_float", 1.0);
-        //defaults.Add("config_test_bool", false);
-
-        var rc = Firebase.RemoteConfig.FirebaseRemoteConfig.DefaultInstance.SetDefaultsAsync(defaults)
-          .ContinueWithOnMainThread(task => { });
-
-       await FetchDataAsync();
+ 
     }
 
  
@@ -94,9 +98,26 @@ public class FirebaseRemoteConfigService : MonoBehaviour
           .ContinueWithOnMainThread(
             task => {
                 Debug.Log($"Remote data loaded and ready for use. Last fetch time {info.FetchTime}.");
-               ConfigValue configVal =  remoteConfig.GetValue("config_test_string");
+               ConfigValue configVal =  remoteConfig.GetValue("test_string");
+               ConfigValue five =  remoteConfig.GetValue("five");
                 Debug.Log("ValueRemoteConfig: "+configVal.StringValue);
+                Debug.Log("five: "+five.LongValue);
             });
     }
-}
+
+        public UniTask Initialize()
+        {
+            throw new NotImplementedException();
+        }
+
+        public T GetValue<T>(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UniTask FetchAndActivateAsync()
+        {
+            throw new NotImplementedException();
+        }
+    }
 

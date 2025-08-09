@@ -5,7 +5,7 @@ using Firebase.Analytics;
 using System;
 using UnityEngine;
 
-namespace Asteroid.Services
+namespace Asteroid.Services.Analytics
 {
     public class AnalyticsEventHandler
     {
@@ -17,7 +17,7 @@ namespace Asteroid.Services
         public void Initialize(SpaceEntryPoint spaceEntryPoint,ShipStatisticsModel shipStatisticsModel, IWeaponStrategy weaponStrategy)
         {
             _instanceLoader = new InstanceCreator();
-            _analytics = _instanceLoader.CreateInstance<Asteroid.Services.FirebaseAnalyticsSender>();
+            _analytics = _instanceLoader.CreateInstance<FirebaseAnalyticsSender>();
             _spaceEntryPoint = spaceEntryPoint;
             _shipStatisticModel = shipStatisticsModel;
             _weaponStrategy = weaponStrategy;

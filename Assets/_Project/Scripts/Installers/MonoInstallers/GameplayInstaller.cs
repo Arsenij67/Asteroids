@@ -1,11 +1,8 @@
 using Asteroid.Generation;
 using Asteroid.Inputs;
-using Asteroid.Services;
+using Asteroid.Services.Analytics;
 using Asteroid.SpaceShip;
 using Asteroid.Statistic;
-using Asteroid.Weapon;
-using Unity.VisualScripting;
-using UnityEngine;
 using Zenject;
 
 namespace Asteroid.Installers
@@ -24,8 +21,6 @@ namespace Asteroid.Installers
 
             Container.Bind<EntitiesGenerationData>().FromNewScriptableObjectResource("ScriptableObjects/EntitiesGenerationData").AsSingle();
             Container.Bind<SpaceShipData>().FromNewScriptableObjectResource("ScriptableObjects/SpaceShipData").AsSingle();
-
-           var generationController =  Container.Resolve<EntitiesGenerationController>();
 
         }
     }

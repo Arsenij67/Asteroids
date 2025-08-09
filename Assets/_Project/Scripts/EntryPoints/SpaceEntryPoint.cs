@@ -1,14 +1,13 @@
 using Asteroid.Enemies;
 using Asteroid.Inputs;
-using Asteroid.Services;
+using Asteroid.Services.Analytics;
 using Asteroid.SpaceShip;
 using Asteroid.Statistic;
 using Asteroid.Weapon;
 using System;
 using UnityEngine;
 using Zenject;
-using UnityEngine.Advertisements;
-using Asteroid.UnityAdvertisement;
+using Asteroid.Services.UnityAdvertisement;
 
 namespace Asteroid.Generation
 {

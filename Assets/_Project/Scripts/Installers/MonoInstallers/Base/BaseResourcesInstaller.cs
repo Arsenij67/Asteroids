@@ -1,6 +1,6 @@
 using Asteroid.Generation;
-using Asteroid.Services;
-using Asteroid.UnityAdvertisement;
+using Asteroid.Services.Analytics;
+using Asteroid.Services.UnityAdvertisement;
 using Zenject;
 
 namespace Asteroid.Installers

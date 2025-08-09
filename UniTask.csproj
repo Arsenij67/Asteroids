@@ -622,6 +622,10 @@
       <HintPath>Assets\Firebase\Plugins\Firebase.App.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Firebase.RemoteConfig">
+      <HintPath>Assets\Firebase\Plugins\Firebase.RemoteConfig.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Firebase.TaskExtension">
       <HintPath>Assets\Firebase\Plugins\Firebase.TaskExtension.dll</HintPath>
       <Private>False</Private>
@@ -680,10 +684,6 @@
     </Reference>
     <Reference Include="Firebase.Editor">
       <HintPath>Assets\Firebase\Editor\Firebase.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Firebase.RemoteConfig">
-      <HintPath>Assets\Firebase\Plugins\Firebase.RemoteConfig.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">

@@ -4,7 +4,7 @@ using Firebase.Analytics;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 
-namespace Asteroid.Services
+namespace Asteroid.Services.Analytics
 {
     public class FirebaseAnalyticsSender : IAnalytics
     {

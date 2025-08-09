@@ -83,6 +83,7 @@
     <Compile Include="Assets\_Project\Scripts\Controllers\EntitiesGenerationController.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\UFOEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\AdvertisementController.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\IRemoteConfigService.cs" />
     <Compile Include="Assets\_Project\AnimatedCosmos\Example\MouseLook.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\WeaponShip.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IDeviceInput.cs" />
@@ -627,6 +628,10 @@
       <HintPath>Assets\Firebase\Plugins\Firebase.App.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Firebase.RemoteConfig">
+      <HintPath>Assets\Firebase\Plugins\Firebase.RemoteConfig.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Firebase.TaskExtension">
       <HintPath>Assets\Firebase\Plugins\Firebase.TaskExtension.dll</HintPath>
       <Private>False</Private>
@@ -657,10 +662,6 @@
     </Reference>
     <Reference Include="Zenject.ReflectionBaking.Mono.Cecil">
       <HintPath>Assets\Plugins\Zenject\OptionalExtras\ReflectionBaking\Lib\Zenject.ReflectionBaking.Mono.Cecil.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Firebase.RemoteConfig">
-      <HintPath>Assets\Firebase\Plugins\Firebase.RemoteConfig.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">

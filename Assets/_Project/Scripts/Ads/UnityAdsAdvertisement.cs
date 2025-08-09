@@ -1,10 +1,7 @@
-using System;
-using UnityEditor.PackageManager;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-namespace Asteroid.UnityAdvertisement
+namespace Asteroid.Services.UnityAdvertisement
 {
     public class UnityAdsAdvertisement: IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener, IAdvertisementService
     {
@@ -24,12 +21,12 @@ namespace Asteroid.UnityAdvertisement
 
         public void OnInitializationComplete()
         {
-            Debug.Log("Инициализайия прошла успешно!");
+            Debug.Log("Инициализация прошла успешно!");
         }
 
         public void OnInitializationFailed(UnityAdsInitializationError error, string message)
         {
-            Debug.Log("Инициализайия прошла безуспешно!");
+            Debug.Log("Инициализация прошла безуспешно!");
         }
 
         public void OnUnityAdsAdLoaded(string placementId)

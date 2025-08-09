@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Asteroid.Services
+namespace Asteroid.Services.Analytics
 {
     public interface  IAnalytics 
     {

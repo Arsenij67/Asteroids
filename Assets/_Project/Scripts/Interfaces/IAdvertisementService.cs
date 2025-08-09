@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Asteroid.UnityAdvertisement
+namespace Asteroid.Services.UnityAdvertisement
 {
     public interface IAdvertisementService 
     {

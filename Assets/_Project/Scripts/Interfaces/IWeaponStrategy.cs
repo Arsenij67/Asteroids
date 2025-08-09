@@ -4,9 +4,9 @@ namespace Asteroid.Weapon
     
     public interface IWeaponStrategy
     {
-        void Fire();
+        public void Fire();
         
-        short UniqueNumber { get; }
+        public short UniqueNumber { get; }
 
     }
 }
