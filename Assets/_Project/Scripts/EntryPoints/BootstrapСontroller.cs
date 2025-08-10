@@ -27,7 +27,6 @@ namespace Asteroid.Generation
         private bool _analyticsReady;
         private bool _remoteConfigReady;
         private bool _sceneLoaded;
-        private bool _waitingCompleted;
         private bool _advertisementReady;
         private float _loadingProgress;
         public object _loadedScene;
@@ -40,7 +39,6 @@ namespace Asteroid.Generation
             _loadingTasks.Add(PrepareAnalyticsAsync());
             _loadingTasks.Add(PrepareGameSceneAsync());
             _loadingTasks.Add(PrepareRemoteConfigAsync());
-            _loadingTasks.Add(WaitBeforeLoadingSceneAsync(_bootstrapSceneModel.timeWaitLoading));
             TickLoading();
             await UniTask.WhenAll(_loadingTasks);
             if (_bootstrapUI != null)
@@ -69,7 +67,6 @@ namespace Asteroid.Generation
             int completedCount = 0;
             completedCount += Convert.ToInt16(_analyticsReady);
             completedCount += Convert.ToInt16(_sceneLoaded);
-            completedCount += Convert.ToInt16(_waitingCompleted);
             completedCount += Convert.ToInt16(_advertisementReady);
             completedCount += Convert.ToInt16(_remoteConfigReady);
             _loadingProgress = (float)completedCount / _loadingTasks.Count();
@@ -112,12 +109,6 @@ namespace Asteroid.Generation
         {
             await _remoteConfigService.Initialize();
             _remoteConfigReady = true;
-        }
-
-        private async UniTask WaitBeforeLoadingSceneAsync(float seconds)
-        {
-            await UniTask.Delay(TimeSpan.FromSeconds(seconds));
-            _waitingCompleted = true;
         }
 
         private void UpdateBootstrapUI()

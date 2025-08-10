@@ -56,11 +56,9 @@ namespace Asteroid.Generation
         {
       
             _shipStatisticView = _resourceLoader.Instantiate(_shipStatisticViewPrefab.gameObject, _UIParent.transform).GetComponent<ShipStatisticsView>();
-            Debug.Log(_remoteConfigService.IsInitialized + " awake");
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
             InitializeServicesSystems();
-
         }
 
         private void Start()
@@ -77,7 +75,6 @@ namespace Asteroid.Generation
             _shipController.OnPlayerDie -= () => _endPanelView.ButtonShowAd.onClick.AddListener(_advertisingController.ShowRewardedAdAfterDead);
             _shipController.OnPlayerDie -= () => _endPanelView.ButtonRestart.onClick.AddListener(_advertisingController.ShowInterstitialAd);
             _shipController.OnPlayerDie -= () => OnPlayerDied?.Invoke();
-            _weaponShipBullet.OnMissalSpawned -= BulletSpawnedHandler;
             _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= _obstaclesGenerationController.ReviveShip;
             _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= _endPanelView.Close;
 
@@ -141,6 +138,7 @@ namespace Asteroid.Generation
 
             _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader);
             _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader);
+            _spaceShipData.Initialize(_remoteConfigService);
             _shipController.Initialize(_shipStatisticView, _deviceInput, _shipStatisticController, _weaponShipLaser, _resourceLoader, _spaceShipData);
             _weaponController.Initialize();
             _entitiesGenerationData.Initialize(_shipTransform,_remoteConfigService);
