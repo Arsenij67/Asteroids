@@ -278,13 +278,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6e2082f8cefd884f966ecd141c6c664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fireBulletSpeed: 20
-  _fireBulletDamage: 50
-  _laserPrefab: {fileID: 7557963557402377491, guid: dd66b356fa5632d4493b1517b93c2ade, type: 3}
-  _bulletPrefab: {fileID: 4627742481004242442, guid: 0b0c27137eb4d504096874b80ace66bd, type: 3}
   _restartPrefab: {fileID: 8417194731950465201, guid: 1deb9489119882c40a6ecf1f397a93a0, type: 3}
   _UIParent: {fileID: 828259855}
   _shipStatisticViewPrefab: {fileID: 8461020293197611451, guid: db3681d7733b8a84d920c9d328d3a4cc, type: 3}
+  _laserPrefab: {fileID: 7557963557402377491, guid: dd66b356fa5632d4493b1517b93c2ade, type: 3}
+  _bulletPrefab: {fileID: 4627742481004242442, guid: 0b0c27137eb4d504096874b80ace66bd, type: 3}
 --- !u!4 &416978516
 Transform:
   m_ObjectHideFlags: 0

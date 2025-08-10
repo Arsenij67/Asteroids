@@ -8,6 +8,7 @@ using System;
 using UnityEngine;
 using Zenject;
 using Asteroid.Services.UnityAdvertisement;
+using Asteroid.Services.RemoteConfig;
 
 namespace Asteroid.Generation
 {
@@ -41,6 +42,7 @@ namespace Asteroid.Generation
         [Inject]private IAdvertisementService _advertisementService;
         [Inject]private AdvertisementController _advertisingController;
         [Inject]private ShipStatisticsModel _shipStatisticModel;
+        [Inject]private IRemoteConfigService _remoteConfigService;
 
         private GameOverView ? _endPanelView;
         private SpaceShipController _shipController;
@@ -54,9 +56,11 @@ namespace Asteroid.Generation
         {
       
             _shipStatisticView = _resourceLoader.Instantiate(_shipStatisticViewPrefab.gameObject, _UIParent.transform).GetComponent<ShipStatisticsView>();
+            Debug.Log(_remoteConfigService.IsInitialized + " awake");
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
             InitializeServicesSystems();
+
         }
 
         private void Start()
@@ -84,6 +88,7 @@ namespace Asteroid.Generation
             _obstaclesGenerationController.OnShipSpawned += ShipInitializedHandler;
             _shipStatisticView.OnGameReloadClicked += _sceneLoader.ReloadScene;
             _shipStatisticController.Initialize(_shipStatisticView, _shipStatisticModel,_instanceLoader);
+            _entitiesGenerationData.Initialize(_remoteConfigService);
             _obstaclesGenerationController.Initialize(_entitiesGenerationData,_resourceLoader,_instanceLoader);
         }
 
@@ -138,7 +143,7 @@ namespace Asteroid.Generation
             _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader);
             _shipController.Initialize(_shipStatisticView, _deviceInput, _shipStatisticController, _weaponShipLaser, _resourceLoader, _spaceShipData);
             _weaponController.Initialize();
-            _entitiesGenerationData.Initialize(_shipTransform);
+            _entitiesGenerationData.Initialize(_shipTransform,_remoteConfigService);
         }
                                                                 
         private void PanelRestartSpawnedHandler()

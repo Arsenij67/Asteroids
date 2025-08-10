@@ -5,6 +5,7 @@ using Asteroid.Services.Analytics;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using Asteroid.Services.RemoteConfig;
 using System.Linq;
 using UnityEngine;
 using Zenject;
@@ -20,9 +21,11 @@ namespace Asteroid.Generation
         [Inject] private ISceneLoader _sceneLoader;
         [Inject] private IAnalytics _analytics;
         [Inject] private IAdvertisementService _advertisementService;
+        [Inject] private IRemoteConfigService  _remoteConfigService;
         [Inject] private BootstrapSceneData _bootstrapSceneModel;
 
         private bool _analyticsReady;
+        private bool _remoteConfigReady;
         private bool _sceneLoaded;
         private bool _waitingCompleted;
         private bool _advertisementReady;
@@ -36,6 +39,7 @@ namespace Asteroid.Generation
             _loadingTasks.Add(PrepareAdvertisementAsync());
             _loadingTasks.Add(PrepareAnalyticsAsync());
             _loadingTasks.Add(PrepareGameSceneAsync());
+            _loadingTasks.Add(PrepareRemoteConfigAsync());
             _loadingTasks.Add(WaitBeforeLoadingSceneAsync(_bootstrapSceneModel.timeWaitLoading));
             TickLoading();
             await UniTask.WhenAll(_loadingTasks);
@@ -67,6 +71,7 @@ namespace Asteroid.Generation
             completedCount += Convert.ToInt16(_sceneLoaded);
             completedCount += Convert.ToInt16(_waitingCompleted);
             completedCount += Convert.ToInt16(_advertisementReady);
+            completedCount += Convert.ToInt16(_remoteConfigReady);
             _loadingProgress = (float)completedCount / _loadingTasks.Count();
         }
 
@@ -101,6 +106,12 @@ namespace Asteroid.Generation
         {
             await _sceneLoader.LoadSceneAdditiveAsync(_bootstrapSceneModel.ScenePreLoad, false);
             _sceneLoaded = true;
+        }
+
+        private async UniTask PrepareRemoteConfigAsync()
+        {
+            await _remoteConfigService.Initialize();
+            _remoteConfigReady = true;
         }
 
         private async UniTask WaitBeforeLoadingSceneAsync(float seconds)

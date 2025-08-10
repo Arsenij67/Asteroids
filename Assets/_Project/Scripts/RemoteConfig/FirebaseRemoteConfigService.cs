@@ -1,19 +1,16 @@
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using Firebase;
-using Firebase.Extensions;
-using Firebase.RemoteConfig;
 using Firebase.RemoteConfig;
 using ModestTree;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
+using Zenject;
 
 namespace Asteroid.Services.RemoteConfig
 {
-    public class FirebaseRemoteConfigService : IRemoteConfigService, IDisposable
+    public class FirebaseRemoteConfigService : IRemoteConfigService, IDisposable, ITickable
     {
         public event Action OnConfigUpdated;
 
@@ -28,6 +25,7 @@ namespace Asteroid.Services.RemoteConfig
                 FirebaseRemoteConfig.DefaultInstance.OnConfigUpdateListener += HandleConfigUpdate;
                 await FetchAndActivateAsync();
                 _isInitialized = true;
+                Debug.Log("Remote Config Initialized!");
             }
             else
             {
@@ -76,6 +74,11 @@ namespace Asteroid.Services.RemoteConfig
         public void Dispose()
         {
             FirebaseRemoteConfig.DefaultInstance.OnConfigUpdateListener -= HandleConfigUpdate;
+        }
+
+        public void Tick()
+        {
+            Debug.Log("RC - "+ _isInitialized);
         }
     }
 }

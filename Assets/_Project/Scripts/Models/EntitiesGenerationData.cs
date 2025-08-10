@@ -1,6 +1,7 @@
 using UnityEngine;
 using Asteroid.Enemies;
 using Asteroid.SpaceShip;
+using Asteroid.Services.RemoteConfig;
 
 namespace Asteroid.Generation
 {
@@ -10,12 +11,27 @@ namespace Asteroid.Generation
         [SerializeField] private GameObject[] _obstacles;
         [SerializeField] private GameObject[] _playerShips;
 
+        private IRemoteConfigService _remoteConfigService;
+        private RemoteConfigData _remoteConfigData;
         [field: SerializeField] public int GenerationFrequency { get; private set; }
         [field: SerializeField] public Vector2[] GenerationVertices { get; private set; }
 
         public Transform EndPointToFly { get; private set; }
         public BaseEnemy ObstacleToGenerateNow => _obstacles[Random.Range(0, _obstacles.Length)].GetComponent<BaseEnemy>();
-        public SpaceShipController PlayerShipToGenerateNow => _playerShips[0].GetComponent<SpaceShipController>();
+        public SpaceShipController PlayerShipToGenerateNow {
+            get
+            {
+                string shipJson = _remoteConfigService.
+                    GetValue<string>("ship_config");
+                _remoteConfigData =  JsonUtility.FromJson<RemoteConfigData>(shipJson);
+                Debug.Log(shipJson);
+                return _playerShips[_remoteConfigData.ShipVariant].GetComponent<SpaceShipController>();
+            }
+            set
+            { 
+                
+            }
+        }
         public Vector2 PointObstacleToGenerate
         {
             get
@@ -40,9 +56,15 @@ namespace Asteroid.Generation
             }
         }
 
-        public void Initialize(Transform EndPoint)
+        public void Initialize(IRemoteConfigService remoteConfig)
+        {
+            _remoteConfigService = remoteConfig;
+        }
+
+        public void Initialize(Transform EndPoint, IRemoteConfigService remoteConfig)
         {
             EndPointToFly = EndPoint;
+            _remoteConfigService = remoteConfig;
         }
     } 
 }
