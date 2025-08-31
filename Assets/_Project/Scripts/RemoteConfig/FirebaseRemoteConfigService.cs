@@ -10,7 +10,7 @@ using Zenject;
 
 namespace Asteroid.Services.RemoteConfig
 {
-    public class FirebaseRemoteConfigService : IRemoteConfigService, IDisposable, ITickable
+    public class FirebaseRemoteConfigService : IRemoteConfigService, IDisposable
     {
         public event Action OnConfigUpdated;
 
@@ -56,17 +56,19 @@ namespace Asteroid.Services.RemoteConfig
             return (T)Convert.ChangeType(configValue.StringValue, typeof(T));
         }
 
-        public UniTask FetchAndActivateAsync()
+        public async UniTask FetchAndActivateAsync()
         {
-           return FirebaseRemoteConfig.DefaultInstance.FetchAndActivateAsync().AsUniTask();   
+            await FirebaseRemoteConfig.DefaultInstance.FetchAsync(TimeSpan.Zero);
+            await FirebaseRemoteConfig.DefaultInstance.ActivateAsync();
         }
 
-        public UniTask SetUserAttributes(string[] attributes)
+        public UniTask SetUserAttributes(string[] keys, string[] values)
         {
             var userProperties = new Dictionary<string, object>();
-            foreach (var attr in attributes)
+            short indexValue = 0;
+            foreach (var attr in keys)
             {
-                userProperties[attr] = true;
+                userProperties[attr] = values[indexValue++];
             }
            return FirebaseRemoteConfig.DefaultInstance.SetDefaultsAsync(userProperties).AsUniTask();
         }
@@ -74,11 +76,6 @@ namespace Asteroid.Services.RemoteConfig
         public void Dispose()
         {
             FirebaseRemoteConfig.DefaultInstance.OnConfigUpdateListener -= HandleConfigUpdate;
-        }
-
-        public void Tick()
-        {
-            Debug.Log("RC - "+ _isInitialized);
         }
     }
 }

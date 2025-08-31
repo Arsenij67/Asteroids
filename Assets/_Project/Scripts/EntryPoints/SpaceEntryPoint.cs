@@ -71,7 +71,6 @@ namespace Asteroid.Generation
             _shipStatisticView.OnGameReloadClicked -= _sceneLoader.ReloadScene;
             _obstaclesGenerationController.OnEnemySpawned -= EnemyInitializedHander;
             _shipController.OnPlayerDie -= PanelRestartSpawnedHandler;
-            _weaponShipBullet.OnMissalSpawned -= BulletSpawnedHandler;
             _shipController.OnPlayerDie -= () => _endPanelView.ButtonShowAd.onClick.AddListener(_advertisingController.ShowRewardedAdAfterDead);
             _shipController.OnPlayerDie -= () => _endPanelView.ButtonRestart.onClick.AddListener(_advertisingController.ShowInterstitialAd);
             _shipController.OnPlayerDie -= () => OnPlayerDied?.Invoke();
@@ -100,15 +99,9 @@ namespace Asteroid.Generation
             _advertisingController.Initialize(_advertisementService);
         }
 
-        private void BulletSpawnedHandler(BaseBullet bullet, Vector2 direction)
-        {
-            bullet.Initialize(direction);
-        }
-
         private void EnemyInitializedHander(EnemyController enemyController, BaseEnemy currentEnemy)
         {
             currentEnemy.OnEnemyDestroyed += EnemyDestroyedHandler;
-
             currentEnemy.Initialize(_shipTransform,_shipStatisticController);
             enemyController.Initialize(_shipTransform);
         }
@@ -133,11 +126,9 @@ namespace Asteroid.Generation
             _shipController.OnPlayerDie += () => OnPlayerDied?.Invoke();
             _shipController.OnPlayerDie += () => _advertisingController.OnPlayerRevived += _obstaclesGenerationController.ReviveShip;
             _shipController.OnPlayerDie += () => _advertisingController.OnPlayerRevived += _endPanelView.Close;
-        
-            _weaponShipBullet.OnMissalSpawned += BulletSpawnedHandler;
 
-            _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader);
-            _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader);
+            _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader,_remoteConfigService);
+            _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader,_remoteConfigService);
             _spaceShipData.Initialize(_remoteConfigService);
             _shipController.Initialize(_shipStatisticView, _deviceInput, _shipStatisticController, _weaponShipLaser, _resourceLoader, _spaceShipData);
             _weaponController.Initialize();

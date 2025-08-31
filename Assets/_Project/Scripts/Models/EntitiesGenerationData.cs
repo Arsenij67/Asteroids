@@ -2,6 +2,7 @@ using UnityEngine;
 using Asteroid.Enemies;
 using Asteroid.SpaceShip;
 using Asteroid.Services.RemoteConfig;
+using Asteroid.Database;
 
 namespace Asteroid.Generation
 {
@@ -12,8 +13,17 @@ namespace Asteroid.Generation
         [SerializeField] private GameObject[] _playerShips;
 
         private IRemoteConfigService _remoteConfigService;
-        private RemoteConfigData _remoteConfigData;
-        [field: SerializeField] public int GenerationFrequency { get; private set; }
+        public float GenerationFrequency 
+        {
+            get
+            {
+                string shipJson = _remoteConfigService.GetValue<string>("obstacles_config");
+                RemoteConfigObstacle _remoteConfigObstacle = JsonUtility.FromJson<RemoteConfigObstacle>(shipJson);
+                return _remoteConfigObstacle.GenerationFrequency;
+            }
+            
+            
+        }
         [field: SerializeField] public Vector2[] GenerationVertices { get; private set; }
 
         public Transform EndPointToFly { get; private set; }
@@ -21,15 +31,9 @@ namespace Asteroid.Generation
         public SpaceShipController PlayerShipToGenerateNow {
             get
             {
-                string shipJson = _remoteConfigService.
-                    GetValue<string>("ship_config");
-                _remoteConfigData =  JsonUtility.FromJson<RemoteConfigData>(shipJson);
-                Debug.Log(shipJson);
-                return _playerShips[_remoteConfigData.ShipVariant].GetComponent<SpaceShipController>();
-            }
-            set
-            { 
-                
+                string shipJson = _remoteConfigService.GetValue<string>("ship_config");
+                RemoteConfigShip _remoteConfigShip = JsonUtility.FromJson<RemoteConfigShip>(shipJson);
+                return _playerShips[_remoteConfigShip.ShipVariant].GetComponent<SpaceShipController>();
             }
         }
         public Vector2 PointObstacleToGenerate
@@ -66,5 +70,6 @@ namespace Asteroid.Generation
             EndPointToFly = EndPoint;
             _remoteConfigService = remoteConfig;
         }
+
     } 
 }

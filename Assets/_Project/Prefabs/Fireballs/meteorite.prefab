@@ -180,8 +180,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DownLeftBorder>k__BackingField: {x: -9, y: -5}
   <UpRightBorder>k__BackingField: {x: 9, y: 5}
-  _rb2dEnemy: {fileID: 0}
   _health: 50
-  _damage: 100
   _speed: 200
-  _rotationSpeed: 10
+  _rotationSpeed: 100

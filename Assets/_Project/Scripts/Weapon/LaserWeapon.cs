@@ -1,4 +1,5 @@
 using Asteroid.Generation;
+using Asteroid.Services.RemoteConfig;
 using Asteroid.SpaceShip;
 using Asteroid.Statistic;
 using System;
@@ -21,14 +22,14 @@ namespace Asteroid.Weapon
 
         public bool LaserTurned => _laserTurned;
 
-        public override void Initialize(BaseBullet concreteBullet, ShipStatisticsView shipStView, ShipStatisticsController controllerStatistics, IResourceLoaderService resourceLoader)
+        public override void Initialize(BaseBullet concreteBullet, ShipStatisticsView shipStView, ShipStatisticsController controllerStatistics, IResourceLoaderService resourceLoader, IRemoteConfigService remoteConfigService)
         {
-            base.Initialize(concreteBullet, shipStView,controllerStatistics, resourceLoader);
-
+            base.Initialize(concreteBullet, shipStView,controllerStatistics, resourceLoader,remoteConfigService);
             _waitSecondsGlow = new WaitForSeconds(_glowDuration);
             _laserObject = _resourceLoaderService.Instantiate(_concreteBulletPrefab, transform).GetComponent<LaserBullet>();
             _laserObject.gameObject.SetActive(false);
             _laserObject.transform.position = (Vector2)transform.position + _laserObject.SpawnOffset;
+            _laserObject.Initialize(remoteConfigService);
         }
 
          public void Fire()

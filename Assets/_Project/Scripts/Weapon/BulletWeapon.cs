@@ -14,6 +14,7 @@ namespace Asteroid.Weapon
                 var bullet = _resourceLoaderService.Instantiate(_concreteBulletPrefab, transform.position, Quaternion.identity).GetComponent<FireballBullet>();
                 OnMissalSpawned?.Invoke(bullet, -transform.up);
                 _countShoots--;
+                bullet.Initialize(-transform.up,_remoteConfigService);
                 UpdateViewWeapon();
                 _controllerStatistics.IncreaseCountBulletShoots();
             }

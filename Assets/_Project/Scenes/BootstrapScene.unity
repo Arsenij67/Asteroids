@@ -500,6 +500,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1204769970}
     m_Modifications:
+    - target: {fileID: 2292088046781918510, guid: e752df1efe1d52c4897bad972d48c10f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3443061874783413575, guid: e752df1efe1d52c4897bad972d48c10f, type: 3}
       propertyPath: m_Name
       value: BootstrapUI
