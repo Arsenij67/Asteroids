@@ -8,6 +8,6 @@ namespace Asteroid.Database
         public float LifeTime;
         public float Speed;
         public float Damage;
-        public float TimeBuletRecovery;
+        public float TimeBulletRecovery;
     }
 }

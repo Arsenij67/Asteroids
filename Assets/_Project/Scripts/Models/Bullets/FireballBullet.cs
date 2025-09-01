@@ -38,7 +38,6 @@ namespace Asteroid.Weapon
                 {
                     string jsonConfig = _remoteConfigService.GetValue<string>("weapon_bullet_config");
                     RemoteConfigFireball _remoteConfigFireball = JsonUtility.FromJson<RemoteConfigFireball>(jsonConfig);
-                    Debug.Log("speed "+ _remoteConfigFireball.Speed);    
                     return _remoteConfigFireball.Speed;
                 }
 

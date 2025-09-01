@@ -130,7 +130,7 @@ namespace Asteroid.Generation
             _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader,_remoteConfigService);
             _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader,_remoteConfigService);
             _spaceShipData.Initialize(_remoteConfigService);
-            _shipController.Initialize(_shipStatisticView, _deviceInput, _shipStatisticController, _weaponShipLaser, _resourceLoader, _spaceShipData);
+            _shipController.Initialize(_shipStatisticView, _deviceInput, _shipStatisticController, _weaponShipLaser, _spaceShipData);
             _weaponController.Initialize();
             _entitiesGenerationData.Initialize(_shipTransform,_remoteConfigService);
         }

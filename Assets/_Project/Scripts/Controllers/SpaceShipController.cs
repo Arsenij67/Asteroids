@@ -16,7 +16,6 @@ namespace Asteroid.SpaceShip
         public event Action OnPlayerDie;
 
         private IDeviceInput _deviceInput;
-        private IResourceLoaderService _loaderService;
         private ShipStatisticsView _statisticsView;
         private ShipStatisticsController _statisticsController;
         private SpaceShipData _shipData;
@@ -41,14 +40,13 @@ namespace Asteroid.SpaceShip
             }
         }
 
-        public void Initialize(ShipStatisticsView statisticView, IDeviceInput concreteInput, ShipStatisticsController statisticController, WeaponShip laserWeaponController, IResourceLoaderService loader, SpaceShipData shipData)
+        public void Initialize(ShipStatisticsView statisticView, IDeviceInput concreteInput, ShipStatisticsController statisticController, WeaponShip laserWeaponController, SpaceShipData shipData)
         {
             _rigidBody2D = GetComponent<Rigidbody2D>();
             _deviceInput = concreteInput;
             _statisticsView = statisticView;
             _statisticsController = statisticController;
             _laserWeaponController = laserWeaponController;
-            _loaderService = loader;
             _shipData = shipData; 
         }
 
