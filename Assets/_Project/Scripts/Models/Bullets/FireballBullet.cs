@@ -15,7 +15,7 @@ namespace Asteroid.Weapon
         {
             get
             {
-                if (AssignmentMode.RemoteConfig.Equals(AssignmentMode))
+                if (AssignmentMode.RemoteConfig.Equals(_assignmentMode))
                 {    
                     string jsonConfig = _remoteConfigService.GetValue<string>("weapon_bullet_config");
                     RemoteConfigFireball _remoteConfigFireball =  JsonUtility.FromJson<RemoteConfigFireball>(jsonConfig);
@@ -34,7 +34,7 @@ namespace Asteroid.Weapon
         {
             get 
             {
-                if (AssignmentMode.RemoteConfig.Equals(AssignmentMode))
+                if (AssignmentMode.RemoteConfig.Equals(_assignmentMode))
                 {
                     string jsonConfig = _remoteConfigService.GetValue<string>("weapon_bullet_config");
                     RemoteConfigFireball _remoteConfigFireball = JsonUtility.FromJson<RemoteConfigFireball>(jsonConfig);
@@ -52,7 +52,7 @@ namespace Asteroid.Weapon
         {
             get
             {
-                if (AssignmentMode.RemoteConfig.Equals(AssignmentMode))
+                if (AssignmentMode.RemoteConfig.Equals(_assignmentMode))
                 {
                     string jsonConfig = _remoteConfigService.GetValue<string>("weapon_bullet_config");
                     RemoteConfigFireball _remoteConfigFireball = JsonUtility.FromJson<RemoteConfigFireball>(jsonConfig);

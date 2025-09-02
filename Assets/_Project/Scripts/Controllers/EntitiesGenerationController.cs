@@ -18,7 +18,6 @@ namespace Asteroid.Generation
         private CancellationTokenSource _cancellationTokenSource;
         public void Initialize(EntitiesGenerationData entitiesGenData,IResourceLoaderService resourceLoader,IInstanceLoader instanceLoader)
         {
-
             _generationData = entitiesGenData;
             _resourceLoaderService = resourceLoader;
             _instanceLoader = instanceLoader;

@@ -7,6 +7,10 @@ namespace Asteroid.SpaceShip
     [CreateAssetMenu(fileName = "SpaceShipData", menuName = "ScriptableObjects/SpaceShipData")]
     public class SpaceShipData:ScriptableObject
     {
+        [SerializeField] private AssignmentMode _assignmentMode;
+        [SerializeField] private float _angularSpeed;
+        [SerializeField] private float _speed;
+
         private RemoteConfigShip _remoteConfigShip;
         private IRemoteConfigService _remoteConfigService;
         public float AngularSpeed 
@@ -14,19 +18,37 @@ namespace Asteroid.SpaceShip
 
             get
             {
-                string shipJson = _remoteConfigService.GetValue<string>("ship_config");
-               _remoteConfigShip = JsonUtility.FromJson<RemoteConfigShip>(shipJson);
-                return _remoteConfigShip.AngularSpeed;
+                if (_assignmentMode.Equals(AssignmentMode.RemoteConfig))
+                {
+                    string shipJson = _remoteConfigService.GetValue<string>("ship_config");
+                    _remoteConfigShip = JsonUtility.FromJson<RemoteConfigShip>(shipJson);
+                    return _remoteConfigShip.AngularSpeed;
+                }
+                else
+                {
+
+                    return _angularSpeed;
+                }
             }
         }
+
         public float Speed 
         {
 
             get
             {
-                string shipJson = _remoteConfigService.GetValue<string>("ship_config");
-                _remoteConfigShip = JsonUtility.FromJson<RemoteConfigShip>(shipJson);
-                return _remoteConfigShip.AngularSpeed;
+                if (_assignmentMode.Equals(AssignmentMode.RemoteConfig))
+                { 
+                    string shipJson = _remoteConfigService.GetValue<string>("ship_config");
+                    _remoteConfigShip = JsonUtility.FromJson<RemoteConfigShip>(shipJson);
+                    return _remoteConfigShip.Speed;
+                }
+
+                else
+                {
+
+                    return _speed;
+                }
             }
     
         }

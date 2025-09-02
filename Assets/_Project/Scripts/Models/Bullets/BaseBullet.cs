@@ -6,7 +6,7 @@ namespace Asteroid.Weapon
 {
     public class BaseBullet : MonoBehaviour
     {
-        [SerializeField] protected AssignmentMode AssignmentMode;
+        [SerializeField] protected AssignmentMode _assignmentMode;
         [SerializeField] protected float _speed;
         [SerializeField] protected float _damage;
         [SerializeField] protected readonly float _maxDamage = Mathf.Infinity;

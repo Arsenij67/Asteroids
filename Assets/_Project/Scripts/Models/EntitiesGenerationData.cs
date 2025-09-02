@@ -9,20 +9,27 @@ namespace Asteroid.Generation
     [CreateAssetMenu(fileName = "EntitiesGenerationData", menuName = "ScriptableObjects/EntitiesGenerationData")]
     public class EntitiesGenerationData : ScriptableObject
     {
+        [SerializeField] private AssignmentMode _assignmentMode;
         [SerializeField] private GameObject[] _obstacles;
         [SerializeField] private GameObject[] _playerShips;
+        [SerializeField] private float _generationFrequency;
 
         private IRemoteConfigService _remoteConfigService;
         public float GenerationFrequency 
         {
             get
             {
-                string shipJson = _remoteConfigService.GetValue<string>("obstacles_config");
-                RemoteConfigObstacle _remoteConfigObstacle = JsonUtility.FromJson<RemoteConfigObstacle>(shipJson);
-                return _remoteConfigObstacle.GenerationFrequency;
-            }
-            
-            
+                if (_assignmentMode.Equals(AssignmentMode.RemoteConfig))
+                {
+                    string shipJson = _remoteConfigService.GetValue<string>("obstacles_config");
+                    RemoteConfigObstacle _remoteConfigObstacle = JsonUtility.FromJson<RemoteConfigObstacle>(shipJson);
+                    return _remoteConfigObstacle.GenerationFrequency;
+                }
+                else
+                {
+                    return _generationFrequency;
+                }
+            } 
         }
         [field: SerializeField] public Vector2[] GenerationVertices { get; private set; }
 
@@ -31,9 +38,18 @@ namespace Asteroid.Generation
         public SpaceShipController PlayerShipToGenerateNow {
             get
             {
-                string shipJson = _remoteConfigService.GetValue<string>("ship_config");
-                RemoteConfigShip _remoteConfigShip = JsonUtility.FromJson<RemoteConfigShip>(shipJson);
-                return _playerShips[_remoteConfigShip.ShipVariant].GetComponent<SpaceShipController>();
+                if (_assignmentMode.Equals(AssignmentMode.RemoteConfig))
+                {
+                    string shipJson = _remoteConfigService.GetValue<string>("ship_config");
+                    RemoteConfigShip _remoteConfigShip = JsonUtility.FromJson<RemoteConfigShip>(shipJson);
+                    return _playerShips[_remoteConfigShip.ShipVariant].GetComponent<SpaceShipController>();
+                }
+
+                else
+                {
+                    return _playerShips[0].GetComponent<SpaceShipController>();
+                }
+
             }
         }
         public Vector2 PointObstacleToGenerate

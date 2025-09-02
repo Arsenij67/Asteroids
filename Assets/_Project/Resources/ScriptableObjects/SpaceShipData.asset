@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaaf45a6230eca64b80c460116df5839, type: 3}
   m_Name: SpaceShipData
   m_EditorClassIdentifier: 
-  <AngularSpeed>k__BackingField: 400
-  <Speed>k__BackingField: 400
+  _assignmentMode: 1
+  _angularSpeed: 250
+  _speed: 300
