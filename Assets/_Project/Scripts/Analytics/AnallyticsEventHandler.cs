@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Asteroid.Services.Analytics
 {
-    public class AnalyticsEventHandler
+    public class AnalyticsEventHandler: IDisposable
     {
         private IInstanceLoader _instanceLoader;
         private IAnalytics _analytics;
@@ -58,5 +58,11 @@ namespace Asteroid.Services.Analytics
             if (!_analytics.AnalyticsEnabled) return;
         }
 
+        public void Dispose()
+        {
+            _spaceEntryPoint.OnGameStarted -= SendEventGameStart;
+            _spaceEntryPoint.OnPlayerDied -= SendEventGameEnd;
+            (_weaponStrategy as LaserWeaponController).OnLaserTurned -= SendEventLaserUsed;
+        }
     }
 }

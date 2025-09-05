@@ -35,7 +35,7 @@ namespace Asteroid.Services.RemoteConfig
 
         private void HandleConfigUpdate(object sender, ConfigUpdateEventArgs args)
         {
-            if (args.Error != null)
+            if (args.Error != RemoteConfigError.None)
             {
                 Debug.LogError($"Config update error: {args.Error}");
                 return;
