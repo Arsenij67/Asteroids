@@ -20,8 +20,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 217f36e8ee669ce48b05beb9247fc240
-    m_Address: Assets/_Project/Prefabs/UI/Bootstrap/StartGamePanel
+  - m_GUID: 2f445512d9b623f4fb07a783363d81b7
+    m_Address: Assets/_Project/Prefabs/UI/Bootstrap/StartGameButton
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

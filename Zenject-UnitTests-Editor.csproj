@@ -66,8 +66,8 @@
     <Compile Include="Assets\Plugins\Zenject\OptionalExtras\UnitTests\Editor\BindFeatures\TestMultipleContractTypes3.cs" />
     <Compile Include="Assets\Plugins\Zenject\OptionalExtras\UnitTests\Editor\Factories\Bindings\TestFactoryFromFactory1.cs" />
     <Compile Include="Assets\Plugins\Zenject\OptionalExtras\UnitTests\Editor\BindFeatures\TestBindingInheritanceMethod.cs" />
-    <Compile Include="Assets\Plugins\Zenject\OptionalExtras\UnitTests\Editor\Injection\TestConstructorInjection.cs" />
     <Compile Include="Assets\Plugins\Zenject\OptionalExtras\UnitTests\Editor\Conventions\TestConvention2.cs" />
+    <Compile Include="Assets\Plugins\Zenject\OptionalExtras\UnitTests\Editor\Injection\TestConstructorInjection.cs" />
     <Compile Include="Assets\Plugins\Zenject\OptionalExtras\UnitTests\Editor\Conventions\TestConvention.cs" />
     <Compile Include="Assets\Plugins\Zenject\OptionalExtras\UnitTests\Editor\MemoryPool\TestFromPoolableMemoryPoolSix.cs" />
     <Compile Include="Assets\Plugins\Zenject\OptionalExtras\UnitTests\Editor\Injection\TestPostInjectCall.cs" />

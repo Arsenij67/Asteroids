@@ -1,9 +1,7 @@
 using Asteroid.Generation;
-using Asteroid.Services.Analytics;
-using Asteroid.Services.RemoteConfig;
-using Asteroid.Services.UnityAdvertisement;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using Asteroid.Services;
 
 namespace Asteroid.Installers
 {
