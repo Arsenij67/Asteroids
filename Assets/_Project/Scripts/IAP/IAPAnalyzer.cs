@@ -26,13 +26,13 @@ namespace Asteroid.Services.IAP
             _catalog = new CatalogProvider();
             _dataSave = dataSave;
             _bootstrapUI.OnPlayerClickBuyNoAds += BuyNoAds;
-
+          
             _storeController.OnPurchasePending += OnPurchasePendingHandler;
             _storeController.OnProductsFetched += OnProductsFetchedHandler;
             _storeController.OnProductsFetchFailed += OnProductsFailedHandler;
-            _storeController.OnPurchasesFetched += OnPurchasesFetchedHandler;
             _storeController.OnStoreDisconnected += OnStroreDisconnectedHandler;
             _storeController.OnPurchaseFailed += OnPurchaseFailedHandler;
+            _storeController.OnPurchaseConfirmed += OnPurchasesConfirmedHandler;
 
             await _storeController.Connect();
 
@@ -49,7 +49,6 @@ namespace Asteroid.Services.IAP
         {
             _storeController.OnProductsFetched -= OnProductsFetchedHandler;
             _storeController.OnProductsFetchFailed -= OnProductsFailedHandler;
-            _storeController.OnPurchasesFetched -= OnPurchasesFetchedHandler;
             _storeController.OnStoreDisconnected -= OnStroreDisconnectedHandler;
             _storeController.OnPurchaseFailed -= OnPurchaseFailedHandler;
             _storeController.OnPurchasePending -= OnPurchasePendingHandler;
@@ -83,9 +82,8 @@ namespace Asteroid.Services.IAP
 
         {
             Debug.Log("PENDING");
-            // тут логика разблокировки покупки
+            
             _storeController.ConfirmPurchase(order);
-        
         }
 
         void OnProductsFetchedHandler(List<Product> products)
@@ -99,16 +97,13 @@ namespace Asteroid.Services.IAP
             _storeController.FetchPurchases();
         }
 
-        private void OnPurchasesFetchedHandler(Orders orders)
+        private void OnPurchasesConfirmedHandler(Order order)
         {
-            Debug.Log("Purchases fetched!");
-            foreach (var order in orders.ConfirmedOrders)
-            {
+            Debug.Log("Purchases Confirmed!");
                 foreach (var product in order.CartOrdered.Items())
                 {
                     Debug.Log($"Order: {product.Product.definition.id}, Status: Confirmed");
                 }
-            }
         }
 
         private void OnPurchaseFailedHandler(FailedOrder failedOrder)
