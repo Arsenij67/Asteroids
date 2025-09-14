@@ -13,12 +13,14 @@ namespace Asteroid.SpaceShip
         private ShipStatisticsModel _shipStatisticModel;
         private ShipStatisticsView _shipStatisticView;
         private IInstanceLoader _resourceLoaderService;
+        private DataSave _playerSave;
 
-        public void Initialize(ShipStatisticsView shipStatisticView, ShipStatisticsModel shipStatisticModel, IInstanceLoader instanceLoader)
+        public void Initialize(ShipStatisticsView shipStatisticView, ShipStatisticsModel shipStatisticModel, IInstanceLoader instanceLoader, DataSave dataSave)
         {
             _shipStatisticView = shipStatisticView;
             _shipStatisticModel = shipStatisticModel;
             _resourceLoaderService = instanceLoader;
+            _playerSave = dataSave;
         }
 
         public void Initialize()
@@ -57,9 +59,8 @@ namespace Asteroid.SpaceShip
         }
         private void UpdateDataSave()
         {
-            DataSave playerSave = _resourceLoaderService.CreateInstance<DataSave>();
-            playerSave.EnemiesDestroyed = _shipStatisticModel.EnemiesDestroyed;
-            string jsonData = JsonUtility.ToJson(playerSave);
+            _playerSave.EnemiesDestroyed = _shipStatisticModel.EnemiesDestroyed;
+            string jsonData = JsonUtility.ToJson(_playerSave);
             PlayerPrefs.SetString("statsSave", jsonData);
         }
     }

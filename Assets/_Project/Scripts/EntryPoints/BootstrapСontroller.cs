@@ -1,11 +1,12 @@
-using Asteroid.Services;
-using Asteroid.UI;
-using Asteroid.Services.UnityAdvertisement;
+using Asteroid.Database;
 using Asteroid.Services.Analytics;
+using Asteroid.Services.IAP;
+using Asteroid.Services.RemoteConfig;
+using Asteroid.Services.UnityAdvertisement;
+using Asteroid.UI;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
-using Asteroid.Services.RemoteConfig;
 using System.Linq;
 using UnityEngine;
 using Zenject;
@@ -24,13 +25,14 @@ namespace Asteroid.Generation
         [Inject] private IRemoteConfigService  _remoteConfigService;
         [Inject] private BootstrapSceneData _bootstrapSceneModel;
         [Inject] private IAPAnalyzer _purchaseAnalyzer;
+        [Inject] private DataSave _dataForSave;
 
         private bool _analyticsReady;
         private bool _remoteConfigReady;
         private bool _sceneLoaded;
         private bool _advertisementReady;
         private float _loadingProgress;
-        public object _loadedScene;
+        private object _loadedScene;
         private bool _purchaseLoaded;
 
         public async void Initialize()
@@ -118,7 +120,7 @@ namespace Asteroid.Generation
 
         private async UniTask PreparePurchasingAsync()
         { 
-            await _purchaseAnalyzer.Initialize();
+            await _purchaseAnalyzer.Initialize(_bootstrapUI,_dataForSave);
             _purchaseLoaded = true;
         }
 

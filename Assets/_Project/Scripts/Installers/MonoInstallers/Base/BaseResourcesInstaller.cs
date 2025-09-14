@@ -1,7 +1,7 @@
 using Asteroid.Generation;
 using Asteroid.Services;
 using Asteroid.Services.Analytics;
-using Asteroid.Services.RemoteConfig;
+using Asteroid.Services.IAP;
 using Asteroid.Services.UnityAdvertisement;
 using Zenject;
 

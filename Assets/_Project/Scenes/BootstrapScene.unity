@@ -5212,7 +5212,6 @@ GameObject:
   - component: {fileID: 6399314344769058807}
   - component: {fileID: 3222949702982645626}
   - component: {fileID: 6929222777355842822}
-  - component: {fileID: 6929222777355842823}
   m_Layer: 5
   m_Name: DisableAdsButton
   m_TagString: Untagged
@@ -5565,52 +5564,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &6929222777355842823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5537398058388128190}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b79b5624d944058bd39aad2b90fb275, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  productId: NO ADS
-  buttonType: 0
-  automaticallyConfirmTransaction: 1
-  onProductFetched:
-    m_PersistentCalls:
-      m_Calls: []
-  onProductFetchFailed:
-    m_PersistentCalls:
-      m_Calls: []
-  onPurchaseFetched:
-    m_PersistentCalls:
-      m_Calls: []
-  onTransactionsRestored:
-    m_PersistentCalls:
-      m_Calls: []
-  onOrderPending:
-    m_PersistentCalls:
-      m_Calls: []
-  onOrderConfirmed:
-    m_PersistentCalls:
-      m_Calls: []
-  onPurchaseFailed:
-    m_PersistentCalls:
-      m_Calls: []
-  onOrderDeferred:
-    m_PersistentCalls:
-      m_Calls: []
-  onPurchaseCompleteLegacy:
-    m_PersistentCalls:
-      m_Calls: []
-  onPurchaseFailedLegacy:
-    m_PersistentCalls:
-      m_Calls: []
-  button: {fileID: 6929222777355842822}
 --- !u!114 &6991006895007433868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5624,7 +5577,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slider: {fileID: 605444919705075849}
-  _button: {fileID: 1800425551}
+  _buttonStart: {fileID: 1800425551}
+  _buttonBuyNoAds: {fileID: 6929222777355842822}
   UIParent: {fileID: 1035357064}
 --- !u!224 &7733131751270313428
 RectTransform:

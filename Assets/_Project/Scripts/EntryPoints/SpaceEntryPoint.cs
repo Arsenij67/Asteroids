@@ -9,6 +9,8 @@ using UnityEngine;
 using Zenject;
 using Asteroid.Services.UnityAdvertisement;
 using Asteroid.Services.RemoteConfig;
+using UnityEditor.Overlays;
+using Asteroid.Database;
 
 namespace Asteroid.Generation
 {
@@ -42,7 +44,8 @@ namespace Asteroid.Generation
         [Inject]private IAdvertisementService _advertisementService;
         [Inject]private AdvertisementController _advertisingController;
         [Inject]private ShipStatisticsModel _shipStatisticModel;
-        [Inject]private IRemoteConfigService _remoteConfigService;
+        [Inject] private IRemoteConfigService _remoteConfigService;
+        [Inject]private DataSave _dataForSave;
 
         private GameOverView ? _endPanelView;
         private SpaceShipController _shipController;
@@ -54,7 +57,6 @@ namespace Asteroid.Generation
 
         private void Awake()
         {
-      
             _shipStatisticView = _resourceLoader.Instantiate(_shipStatisticViewPrefab.gameObject, _UIParent.transform).GetComponent<ShipStatisticsView>();
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
@@ -83,7 +85,7 @@ namespace Asteroid.Generation
         {
             _obstaclesGenerationController.OnShipSpawned += ShipInitializedHandler;
             _shipStatisticView.OnGameReloadClicked += _sceneLoader.ReloadScene;
-            _shipStatisticController.Initialize(_shipStatisticView, _shipStatisticModel,_instanceLoader);
+            _shipStatisticController.Initialize(_shipStatisticView, _shipStatisticModel,_instanceLoader,_dataForSave);
             _entitiesGenerationData.Initialize(_remoteConfigService);
             _obstaclesGenerationController.Initialize(_entitiesGenerationData,_resourceLoader,_instanceLoader);
         }

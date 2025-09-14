@@ -20,7 +20,6 @@ namespace Asteroid.Services.Analytics
             {
                 _isInitialized = true;
                 Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
-                Debug.Log("Firebase Analytics initialized successfully");
             }
             else
             {
