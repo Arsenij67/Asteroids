@@ -148,7 +148,7 @@ namespace Asteroid.Generation
             _endPanelView.Open();
             _shipStatisticView.Initialize(_endPanelView,_sceneLoader);
             _shipStatisticController.Initialize();
-            _endPanelView.UpdateButtonShowAd(_advertisementService.isShowed);
+            _endPanelView.UpdateButtonShowAd(_advertisementService.IsShowed);
         }
     }
 }

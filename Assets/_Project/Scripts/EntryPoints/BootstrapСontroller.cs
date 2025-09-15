@@ -51,7 +51,6 @@ namespace Asteroid.Generation
             {
                 _bootstrapUI.ActivateButtonStart();
             }
-
         }
 
         public void Dispose()
@@ -81,7 +80,7 @@ namespace Asteroid.Generation
 
         private async UniTask PrepareAdvertisementAsync()
         {
-            _advertisementService.Initialize(false);
+            _advertisementService.Initialize(false,_dataForSave);
             await UniTask.CompletedTask;
             _advertisementReady = true;  
         }

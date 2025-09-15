@@ -1,3 +1,4 @@
+using Asteroid.Database;
 using Asteroid.Generation;
 using Asteroid.Services;
 using Asteroid.Services.Analytics;
@@ -15,6 +16,7 @@ namespace Asteroid.Installers
             Container.Bind<AdvertisementController>().AsSingle();
             Container.BindInterfacesAndSelfTo<LocalBundleLoader>().AsSingle();
             Container.BindInterfacesAndSelfTo<FirebaseAnalyticsSender>().AsSingle();
+            Container.Bind<DataSave>().FromNew().AsSingle();
             Container.BindInterfacesAndSelfTo<UnityAdsAdvertisement>().AsSingle();
             Container.BindInterfacesAndSelfTo<IAPAnalyzer>().FromNew().AsSingle();
         }

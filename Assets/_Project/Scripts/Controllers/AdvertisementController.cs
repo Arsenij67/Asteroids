@@ -24,7 +24,7 @@ namespace Asteroid.Services.UnityAdvertisement
 
         public void ShowRewardedAdAfterDead()
         {
-            if (!_advertisementService.isShowed)
+            if (!_advertisementService.IsShowed)
             {
                 ShowAnyAd(REWARDED_ANDROID);
                 OnPlayerRevived?.Invoke();
@@ -38,7 +38,7 @@ namespace Asteroid.Services.UnityAdvertisement
 
         private void ShowAnyAd(string advertisementId)
         {
-            if (!_advertisementService.isLoaded)
+            if (!_advertisementService.IsLoaded)
             {
                 _advertisementService.Load(advertisementId);
             }

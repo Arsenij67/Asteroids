@@ -1,8 +1,6 @@
 using Asteroid.Generation;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
-using Asteroid.Services;
-using Asteroid.Database;
 
 namespace Asteroid.Installers
 {
@@ -13,7 +11,6 @@ namespace Asteroid.Installers
             base.InstallBindings();
             Container.BindInterfacesAndSelfTo<BootstrapController>().AsSingle();
             Container.Bind<List<UniTask>>().AsTransient();
-            Container.Bind<DataSave>().AsSingle();
 
         }
     }

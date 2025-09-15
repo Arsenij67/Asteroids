@@ -1,23 +1,28 @@
+using Asteroid.Database;
 using UnityEngine;
 using UnityEngine.Advertisements;
+using Zenject;
 
 namespace Asteroid.Services.UnityAdvertisement
 {
-    public class UnityAdsAdvertisement: IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener, IAdvertisementService
+    public class UnityAdsAdvertisement: IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener, IAdvertisementService, ITickable
     {
         private const string GAME_ANDROID_ID = "5916275";
         private const string GAME_IOS_ID = "5916274";
 
         private bool _isLoaded = false;
         private bool _isShowed = false;
+        private DataSave _playerSave;
 
         private string ApplicationId => Application.platform == RuntimePlatform.IPhonePlayer ? GAME_IOS_ID : GAME_ANDROID_ID;
 
-        public bool isInitialized => Advertisement.isInitialized;
+        public bool IsInitialized => Advertisement.isInitialized;
 
-        public bool isLoaded => _isLoaded;
+        public bool IsLoaded => _isLoaded;
 
-        public bool isShowed => _isShowed;
+        public bool IsShowed => _isShowed;
+
+        public bool IsEnabled => !_playerSave.AdsDisabled;
 
         public void OnInitializationComplete()
         {
@@ -69,6 +74,8 @@ namespace Asteroid.Services.UnityAdvertisement
             {
                 Advertisement.Initialize(ApplicationId, (bool)parameters[0], this);
             }
+            _playerSave = (DataSave)parameters[1];
+         
         }
 
         public void Load(params object[] parameters)
@@ -78,7 +85,16 @@ namespace Asteroid.Services.UnityAdvertisement
 
         public void Show(params object[] parameters)
         {
-            Advertisement.Show(parameters[0].ToString(), this);
+            Debug.Log("Реклама включена? "+ IsEnabled);
+            if (IsEnabled)
+            {
+                Advertisement.Show(parameters[0].ToString(), this);
+            }
+        }
+
+        public void Tick()
+        {
+            Debug.Log(this + "AAAAAA " + _playerSave.AdsDisabled);
         }
     }
 }
