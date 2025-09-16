@@ -19,6 +19,7 @@ namespace Asteroid.Installers.MonoInstallers
             Container.Bind<Button>().WithId("buttonStart").FromInstance(_buttonStart);
             Container.Bind<Button>().WithId("buttonBuyNoAds").FromInstance(_buttonBuyNoAds);
             Container.Bind<BootstrapUI>().FromNewComponentOn(gameObject).AsSingle();
+            Container.BindInterfacesAndSelfTo<BootstrapController>().AsSingle();
             Container.Bind<RectTransform>().FromInstance(UIParent).AsSingle();
             
         }

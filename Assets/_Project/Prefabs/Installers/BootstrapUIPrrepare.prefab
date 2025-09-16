@@ -154,7 +154,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slider: {fileID: 605444918342931687}
-  _button: {fileID: 0}
+  _buttonStart: {fileID: 5534452573598826699}
+  _buttonBuyNoAds: {fileID: 0}
   UIParent: {fileID: 0}
 --- !u!1 &3728144358849066853
 GameObject:
@@ -479,3 +480,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6647362696145258977, guid: 2f445512d9b623f4fb07a783363d81b7, type: 3}
   m_PrefabInstance: {fileID: 6263561844061005508}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5534452573598826699 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1883339196323112463, guid: 2f445512d9b623f4fb07a783363d81b7, type: 3}
+  m_PrefabInstance: {fileID: 6263561844061005508}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

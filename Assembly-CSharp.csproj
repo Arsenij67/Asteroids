@@ -132,7 +132,6 @@
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\GameplayInstaller.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\Obstacle.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\Part.cs" />
-    <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\ResourcesInitializerInstaller.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\AnimationController.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\Pause.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\Highscore.cs" />

@@ -101,7 +101,6 @@ namespace Asteroid.Services.IAP
 
             else if (order != null && pendedAdd100Coins)
             {
-
                 _dataSave.CountCoins += ADDED_100_COINS;
             }
             _storeController.ConfirmPurchase(order);

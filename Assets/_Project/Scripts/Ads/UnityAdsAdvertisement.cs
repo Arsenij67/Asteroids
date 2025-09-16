@@ -1,11 +1,12 @@
 using Asteroid.Database;
 using UnityEngine;
 using UnityEngine.Advertisements;
+using Unity;
 using Zenject;
 
 namespace Asteroid.Services.UnityAdvertisement
 {
-    public class UnityAdsAdvertisement: IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener, IAdvertisementService, ITickable
+    public class UnityAdsAdvertisement:IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener, IAdvertisementService, ITickable
     {
         private const string GAME_ANDROID_ID = "5916275";
         private const string GAME_IOS_ID = "5916274";
@@ -24,6 +25,15 @@ namespace Asteroid.Services.UnityAdvertisement
 
         public bool IsEnabled => !_playerSave.AdsDisabled;
 
+        public void Initialize(params object[] parameters)
+        {
+           
+            if (Advertisement.isSupported)
+            {
+                Advertisement.Initialize(ApplicationId, (bool)parameters[0], this);
+            }
+            _playerSave = (DataSave)parameters[1];
+        }
         public void OnInitializationComplete()
         {
             Debug.Log("Инициализация прошла успешно!");
@@ -68,16 +78,6 @@ namespace Asteroid.Services.UnityAdvertisement
             _isShowed = true;
         }
 
-        public void Initialize(params object[] parameters)
-        {
-            if (Advertisement.isSupported)
-            {
-                Advertisement.Initialize(ApplicationId, (bool)parameters[0], this);
-            }
-            _playerSave = (DataSave)parameters[1];
-         
-        }
-
         public void Load(params object[] parameters)
         {
             Advertisement.Load(parameters[0].ToString() , this);
@@ -94,7 +94,7 @@ namespace Asteroid.Services.UnityAdvertisement
 
         public void Tick()
         {
-            Debug.Log(this + "AAAAAA " + _playerSave.AdsDisabled);
+            Debug.Log($"Adver {(_playerSave == null)}");
         }
     }
-}
+} 
