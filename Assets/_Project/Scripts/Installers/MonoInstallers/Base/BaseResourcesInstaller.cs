@@ -21,7 +21,7 @@ namespace Asteroid.Installers
             Container.BindInterfacesAndSelfTo<LocalBundleLoader>().AsSingle();
             Container.BindInterfacesAndSelfTo<FirebaseAnalyticsSender>().AsSingle();
             Container.Bind<DataSave>().FromNew().AsSingle();
-            Container.BindInterfacesAndSelfTo<IAPAnalyzer>().FromNew().AsSingle();
+            Container.BindInterfacesAndSelfTo<IAPSeller>().FromNew().AsSingle();
         }
     }
 }

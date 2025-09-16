@@ -24,7 +24,7 @@ namespace Asteroid.Generation
         [Inject] private IAdvertisementService _advertisementService;
         [Inject] private IRemoteConfigService  _remoteConfigService;
         [Inject] private BootstrapSceneData _bootstrapSceneModel;
-        [Inject] private IAPAnalyzer _purchaseAnalyzer;
+        [Inject] private IPurchasingService _purchasingService;
         [Inject] private DataSave _dataForSave;
 
         private bool _analyticsReady;
@@ -119,7 +119,7 @@ namespace Asteroid.Generation
 
         private async UniTask PreparePurchasingAsync()
         { 
-            await _purchaseAnalyzer.Initialize(_bootstrapUI,_dataForSave);
+            await _purchasingService.Initialize(_bootstrapUI,_dataForSave);
             _purchaseLoaded = true;
         }
 
