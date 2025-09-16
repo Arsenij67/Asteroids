@@ -9,7 +9,7 @@ using UnityEngine.Purchasing;
 
 namespace Asteroid.Services.IAP
 {
-    public class IAPSeller: IDisposable, IPurchasingService
+    public class IAPAnalyzer: IDisposable, IPurchasingService
     {
         private const string NO_ADS_ID = "NO ADS";
         private const string COINS_100_ID = "COINS 100";
@@ -35,10 +35,15 @@ namespace Asteroid.Services.IAP
             _storeController.OnPurchaseFailed += OnPurchaseFailedHandler;
             _storeController.OnPurchaseConfirmed += OnPurchasesConfirmedHandler;
 
-            _catalog.AddProduct(NO_ADS_ID, ProductType.NonConsumable);
-            _catalog.AddProduct(COINS_100_ID, ProductType.Consumable);
+            // Р—РђР“Р РЈР—РљРђ РР— UNITY IAP CATALOG
+            var unityCatalog = ProductCatalog.LoadDefaultCatalog();
+            foreach (var item in unityCatalog.allProducts)
+            {
+                var defaultId = item.id;
+                var productType = item.type;
+                _catalog.AddProduct(defaultId, productType);
+            }
             _catalog.FetchProducts(UnityIAPServices.DefaultProduct().FetchProductsWithNoRetries);
-
             return _storeController.Connect().AsUniTask();
         }
 
@@ -96,7 +101,7 @@ namespace Asteroid.Services.IAP
             {
                 _dataSave.AdsDisabled = true;
                 Debug.ClearDeveloperConsole();
-                Debug.Log("Реклама куплена: "+_dataSave.AdsDisabled);
+                Debug.Log("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: "+_dataSave.AdsDisabled);
             }
 
             else if (order != null && pendedAdd100Coins)
@@ -131,6 +136,7 @@ namespace Asteroid.Services.IAP
         {
             Debug.LogError($"Purchase failed: {failedOrder.FailureReason}, Details: {failedOrder.Details}");
         }
+
 
     }
 }

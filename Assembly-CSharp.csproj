@@ -82,10 +82,10 @@
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\Base\BaseResourcesInstaller.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\Garage.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\Wallet.cs" />
+    <Compile Include="Assets\_Project\Scripts\IAP\IAPAnalyzer.cs" />
     <Compile Include="Assets\_Project\Content\AnimatedCosmos\Example\MaterialSwitch.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\ObstaclesLine.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\ISceneLoader.cs" />
-    <Compile Include="Assets\_Project\Scripts\IAP\IAPSeller.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\SpaceShipController.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\InstanceCreator\InstanceCreator.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\ShipStatisticsModel.cs" />
