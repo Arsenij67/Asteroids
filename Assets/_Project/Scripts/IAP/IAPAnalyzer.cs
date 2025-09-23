@@ -28,6 +28,7 @@ namespace Asteroid.Services.IAP
             _dataSave = dataSave;
 
             _bootstrapUI.OnPlayerClickBuyNoAds += BuyNoAds;
+            _bootstrapUI.OnPlayerClickBuy100Coins += Buy100Coins;
             _storeController.OnPurchasePending += OnPurchasePendingHandler;
             _storeController.OnProductsFetched += OnProductsFetchedHandler;
             _storeController.OnProductsFetchFailed += OnProductsFailedHandler;
@@ -35,7 +36,6 @@ namespace Asteroid.Services.IAP
             _storeController.OnPurchaseFailed += OnPurchaseFailedHandler;
             _storeController.OnPurchaseConfirmed += OnPurchasesConfirmedHandler;
 
-            // ЗАГРУЗКА ИЗ UNITY IAP CATALOG
             var unityCatalog = ProductCatalog.LoadDefaultCatalog();
             foreach (var item in unityCatalog.allProducts)
             {
@@ -107,6 +107,7 @@ namespace Asteroid.Services.IAP
             else if (order != null && pendedAdd100Coins)
             {
                 _dataSave.CountCoins += ADDED_100_COINS;
+                _bootstrapUI.UpdaaeCountCoins(_dataSave.CountCoins);
             }
             _storeController.ConfirmPurchase(order);
         }
