@@ -1,5 +1,6 @@
 
 using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -21,7 +22,8 @@ namespace Asteroid.Generation
         public async void LoadScene(string name)
         {
             _lastSceneName = name;
-            await LoadSceneAsync(name);
+            var loadHandle = Addressables.LoadSceneAsync(name, activateOnLoad: true);
+            await loadHandle;
         }
 
         public void LoadSceneAdditive(string name)

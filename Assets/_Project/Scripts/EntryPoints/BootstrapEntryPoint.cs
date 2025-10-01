@@ -10,7 +10,6 @@ namespace Asteroid.Generation
 
         private void Start()
         {
-            SetUpUI(_userInterface);
             _bootstrapController.OnGameStarted += () => Debug.Log("BootstrapEntryPoint в курсе");
         }
 

@@ -77,6 +77,7 @@
     <Compile Include="Assets\_Project\Scripts\Models\SpaceShipData.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\RocketController.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\RemoteConfigDatas\RemoteConfigFireball.cs" />
+    <Compile Include="Assets\_Project\Scripts\View\Shop\ShopUI.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\RemoteConfigDatas\AssignmentMode.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\EntitiesGenerationData.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\Base\BaseResourcesInstaller.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\ObstaclesLine.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\ISceneLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\SpaceShipController.cs" />
+    <Compile Include="Assets\_Project\Scripts\EntryPoints\ShopEntryPoint.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\InstanceCreator\InstanceCreator.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\ShipStatisticsModel.cs" />
     <Compile Include="Assets\_Project\Scripts\SaveDataBase\DataSave.cs" />
@@ -128,6 +130,7 @@
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\GameOver.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\LoadBar.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\BaseEnemy.cs" />
+    <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\ShopUIInstaller.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\ExitGame.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\GameplayInstaller.cs" />

@@ -6,7 +6,7 @@ using Zenject;
 
 namespace Asteroid.Services.UnityAdvertisement
 {
-    public class UnityAdsAdvertisement:IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener, IAdvertisementService, ITickable
+    public class UnityAdsAdvertisement:IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener, IAdvertisementService
     {
         private const string GAME_ANDROID_ID = "5916275";
         private const string GAME_IOS_ID = "5916274";
@@ -90,11 +90,6 @@ namespace Asteroid.Services.UnityAdvertisement
             {
                 Advertisement.Show(parameters[0].ToString(), this);
             }
-        }
-
-        public void Tick()
-        {
-            Debug.Log($"Adver {(_playerSave == null)}");
         }
     }
 } 

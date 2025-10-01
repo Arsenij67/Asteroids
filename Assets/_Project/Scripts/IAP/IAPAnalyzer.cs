@@ -9,7 +9,7 @@ using UnityEngine.Purchasing;
 
 namespace Asteroid.Services.IAP
 {
-    public class IAPAnalyzer: IDisposable, IPurchasingService
+    public class IAPAnalyzer : IDisposable, IPurchasingService
     {
         private const string NO_ADS_ID = "NO ADS";
         private const string COINS_100_ID = "COINS 100";
@@ -17,22 +17,20 @@ namespace Asteroid.Services.IAP
 
         private StoreController _storeController;
         private CatalogProvider _catalog;
-        private BootstrapUI _bootstrapUI;
-        private DataSave    _dataSave;
+        private ShopUI _shopUI;
+        private DataSave _dataSave;
 
-        public UniTask Initialize(BootstrapUI bootstrapUI, DataSave dataSave)
+        public UniTask Initialize(DataSave dataSave)
         {
-            _bootstrapUI = bootstrapUI;
+            Debug.Log(this.GetHashCode());
             _storeController = UnityIAPServices.StoreController();
             _catalog = new CatalogProvider();
             _dataSave = dataSave;
 
-            _bootstrapUI.OnPlayerClickBuyNoAds += BuyNoAds;
-            _bootstrapUI.OnPlayerClickBuy100Coins += Buy100Coins;
             _storeController.OnPurchasePending += OnPurchasePendingHandler;
             _storeController.OnProductsFetched += OnProductsFetchedHandler;
             _storeController.OnProductsFetchFailed += OnProductsFailedHandler;
-            _storeController.OnStoreDisconnected += OnStroreDisconnectedHandler;
+            _storeController.OnStoreDisconnected += OnStoreDisconnectedHandler;
             _storeController.OnPurchaseFailed += OnPurchaseFailedHandler;
             _storeController.OnPurchaseConfirmed += OnPurchasesConfirmedHandler;
 
@@ -47,13 +45,18 @@ namespace Asteroid.Services.IAP
             return _storeController.Connect().AsUniTask();
         }
 
+        public void Initialize(ShopUI shopUI)
+        {
+            _shopUI = shopUI;
+        }
+
         public void Buy100Coins()
-        { 
+        {
             BuyProduct(COINS_100_ID);
         }
 
         public void BuyNoAds()
-        { 
+        {
             BuyProduct(NO_ADS_ID);
         }
 
@@ -61,11 +64,10 @@ namespace Asteroid.Services.IAP
         {
             _storeController.OnProductsFetched -= OnProductsFetchedHandler;
             _storeController.OnProductsFetchFailed -= OnProductsFailedHandler;
-            _storeController.OnStoreDisconnected -= OnStroreDisconnectedHandler;
+            _storeController.OnStoreDisconnected -= OnStoreDisconnectedHandler;
             _storeController.OnPurchaseFailed -= OnPurchaseFailedHandler;
             _storeController.OnPurchasePending -= OnPurchasePendingHandler;
             _storeController.OnPurchaseConfirmed -= OnPurchasesConfirmedHandler;
-            _bootstrapUI.OnPlayerClickBuyNoAds -= BuyNoAds;
         }
 
         private void BuyProduct(string productId)
@@ -81,9 +83,9 @@ namespace Asteroid.Services.IAP
             }
         }
 
-        private void OnStroreDisconnectedHandler(StoreConnectionFailureDescription description)
+        private void OnStoreDisconnectedHandler(StoreConnectionFailureDescription description)
         {
-            Debug.Log("Disconnected "+ description.message);
+            Debug.Log("Disconnected " + description.message);
         }
 
         private void OnProductsFailedHandler(ProductFetchFailed failed)
@@ -94,20 +96,21 @@ namespace Asteroid.Services.IAP
         private void OnPurchasePendingHandler(PendingOrder order)
         {
             Debug.Log("PENDING");
-            bool pendedAdvertisements = order.CartOrdered.Items().Contains(order.CartOrdered.Items().Where(predicate => predicate.Product.definition.id == NO_ADS_ID).FirstOrDefault());
-            bool pendedAdd100Coins = order.CartOrdered.Items().Contains(order.CartOrdered.Items().Where(predicate => predicate.Product.definition.id == COINS_100_ID).FirstOrDefault());
-           
+            var items = order.CartOrdered.Items().ToList();
+            bool pendedAdvertisements = items.Any(item => item.Product.definition.id == NO_ADS_ID);
+            bool pendedAdd100Coins = items.Any(item => item.Product.definition.id == COINS_100_ID);
+
             if (order != null && pendedAdvertisements)
             {
                 _dataSave.AdsDisabled = true;
                 Debug.ClearDeveloperConsole();
-                Debug.Log("������� �������: "+_dataSave.AdsDisabled);
+                Debug.Log("������� �������: " + _dataSave.AdsDisabled);
             }
 
             else if (order != null && pendedAdd100Coins)
             {
                 _dataSave.CountCoins += ADDED_100_COINS;
-                _bootstrapUI.UpdaaeCountCoins(_dataSave.CountCoins);
+                _shopUI.UpdateCountCoins(_dataSave.CountCoins);
             }
             _storeController.ConfirmPurchase(order);
         }
@@ -126,11 +129,11 @@ namespace Asteroid.Services.IAP
         private void OnPurchasesConfirmedHandler(Order order)
         {
             Debug.Log("Purchases Confirmed!");
-          
+
             foreach (var product in order.CartOrdered.Items())
-                {
-                    Debug.Log($"Order: {product.Product.definition.id}, Status: Confirmed ");
-                }
+            {
+                Debug.Log($"Order: {product.Product.definition.id}, Status: Confirmed ");
+            }
         }
 
         private void OnPurchaseFailedHandler(FailedOrder failedOrder)

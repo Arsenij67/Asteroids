@@ -40,6 +40,8 @@ namespace Asteroid.Generation
             _loadedScene = await _sceneLoader.ReloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedScene;
             _bootstrapUI.OnPlayerClickButtonStart += () => OnGameStarted?.Invoke();
+            _bootstrapUI.OnPlayerClickButtonShop += LoadSceneShop;
+
             _loadingTasks.Add(PrepareAdvertisementAsync());
             _loadingTasks.Add(PrepareAnalyticsAsync());
             _loadingTasks.Add(PrepareGameSceneAsync());
@@ -53,9 +55,16 @@ namespace Asteroid.Generation
             }
         }
 
+        private void LoadSceneShop()
+        {
+           _sceneLoader.LoadScene("Shop");
+    
+        }
+
         public void Dispose()
         {
             _bootstrapUI.OnPlayerClickButtonStart -= OpenLoadedScene;
+            _bootstrapUI.OnPlayerClickButtonShop -= LoadSceneShop;
         }
 
         public void SetUpUI(RectTransform parent)
@@ -119,7 +128,7 @@ namespace Asteroid.Generation
 
         private async UniTask PreparePurchasingAsync()
         { 
-            await _purchasingService.Initialize(_bootstrapUI,_dataForSave);
+            await _purchasingService.Initialize(_dataForSave);
             _purchaseLoaded = true;
         }
 
