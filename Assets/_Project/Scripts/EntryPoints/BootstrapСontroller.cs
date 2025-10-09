@@ -15,7 +15,7 @@ namespace Asteroid.Generation
 {
     public class BootstrapController : IInitializable, IDisposable
     {
-        public event Action OnGameStarted;
+       
 
         [Inject] private BootstrapUI _bootstrapUI;
         [Inject] private List<UniTask> _loadingTasks;
@@ -32,39 +32,48 @@ namespace Asteroid.Generation
         private bool _sceneLoaded;
         private bool _advertisementReady;
         private float _loadingProgress;
-        private object _loadedScene;
         private bool _purchaseLoaded;
+        private bool _shopLoaded;
 
         public async void Initialize()
         {
-            _loadedScene = await _sceneLoader.ReloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);
-            _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedScene;
-            _bootstrapUI.OnPlayerClickButtonStart += () => OnGameStarted?.Invoke();
-            _bootstrapUI.OnPlayerClickButtonShop += LoadSceneShop;
+             await _sceneLoader.ReloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);
+            _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
+            _bootstrapUI.OnPlayerClickButtonShop += OpenSceneShop;
 
             _loadingTasks.Add(PrepareAdvertisementAsync());
             _loadingTasks.Add(PrepareAnalyticsAsync());
             _loadingTasks.Add(PrepareGameSceneAsync());
+            _loadingTasks.Add(PrepareShopSceneAsync());
             _loadingTasks.Add(PrepareRemoteConfigAsync());
             _loadingTasks.Add(PreparePurchasingAsync());
             TickLoading();
-            await UniTask.WhenAll(_loadingTasks);
+             await UniTask.WhenAll(_loadingTasks);
+            
             if (_bootstrapUI != null)
             {
                 _bootstrapUI.ActivateButtonStart();
             }
         }
 
-        private void LoadSceneShop()
+        private async UniTask PrepareShopSceneAsync()
         {
-           _sceneLoader.LoadScene("Shop");
-    
+             await _sceneLoader.LoadSceneAdditiveAsync("Shop",false);
+            _shopLoaded = true;
+            Debug.Log("С магазином заебись!");
+
+        }
+
+        private async void OpenSceneShop()
+        {
+          await _sceneLoader.SwitchSceneActivation("Shop",true);
+          await _sceneLoader.UnloadSceneAsync("Shop");
         }
 
         public void Dispose()
         {
-            _bootstrapUI.OnPlayerClickButtonStart -= OpenLoadedScene;
-            _bootstrapUI.OnPlayerClickButtonShop -= LoadSceneShop;
+            _bootstrapUI.OnPlayerClickButtonStart -= OpenLoadedGameScene;
+            _bootstrapUI.OnPlayerClickButtonShop -= OpenSceneShop;
         }
 
         public void SetUpUI(RectTransform parent)
@@ -76,7 +85,7 @@ namespace Asteroid.Generation
 
         }
 
-        private void UpdateProgress()
+        private float UpdateProgress()
         {
             int completedCount = 0;
             completedCount += Convert.ToInt16(_analyticsReady);
@@ -84,20 +93,21 @@ namespace Asteroid.Generation
             completedCount += Convert.ToInt16(_advertisementReady);
             completedCount += Convert.ToInt16(_remoteConfigReady);
             completedCount += Convert.ToInt16(_purchaseLoaded);
-            _loadingProgress = (float)completedCount / _loadingTasks.Count();
+            completedCount += Convert.ToInt16(_shopLoaded);
+            return _loadingProgress = (float)completedCount / _loadingTasks.Count();
         }
 
         private async UniTask PrepareAdvertisementAsync()
         {
             _advertisementService.Initialize(false,_dataForSave);
             await UniTask.CompletedTask;
-            _advertisementReady = true;  
+            _advertisementReady = true;
         }
 
         private async UniTask PrepareAnalyticsAsync()
         {
             await _analytics.Initialize();
-            _analyticsReady = true; 
+            _analyticsReady = true;
         }
 
         private async void TickLoading()
@@ -140,10 +150,10 @@ namespace Asteroid.Generation
             }
         }
 
-        private async void OpenLoadedScene()
+        private async void OpenLoadedGameScene()
         {
-            await _sceneLoader.SwitchSceneActivation(true);
-            await _sceneLoader.UnloadSceneAsync(_loadedScene);
+            await _sceneLoader.SwitchSceneActivation(_bootstrapSceneModel.ScenePreLoad,true);
+            await _sceneLoader.UnloadSceneAsync(_bootstrapSceneModel.ScenePreLoad);
 
         }
     }

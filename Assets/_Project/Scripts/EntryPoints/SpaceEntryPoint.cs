@@ -70,7 +70,7 @@ namespace Asteroid.Generation
         private void OnDestroy()
         {
             _obstaclesGenerationController.OnShipSpawned -= ShipInitializedHandler;
-            _shipStatisticView.OnGameReloadClicked -= _sceneLoader.ReloadScene;
+            _shipStatisticView.OnGameReloadClicked -= _sceneLoader.ReloadCurrentScene;
             _obstaclesGenerationController.OnEnemySpawned -= EnemyInitializedHander;
             _shipController.OnPlayerDie -= PanelRestartSpawnedHandler;
             _shipController.OnPlayerDie -= () => _endPanelView.ButtonShowAd.onClick.AddListener(_advertisingController.ShowRewardedAdAfterDead);
@@ -84,7 +84,7 @@ namespace Asteroid.Generation
         private void InitializeSpaceShipSystems()
         {
             _obstaclesGenerationController.OnShipSpawned += ShipInitializedHandler;
-            _shipStatisticView.OnGameReloadClicked += _sceneLoader.ReloadScene;
+            _shipStatisticView.OnGameReloadClicked += _sceneLoader.ReloadCurrentScene;
             _shipStatisticController.Initialize(_shipStatisticView, _shipStatisticModel,_instanceLoader,_dataForSave);
             _entitiesGenerationData.Initialize(_remoteConfigService);
             _obstaclesGenerationController.Initialize(_entitiesGenerationData,_resourceLoader,_instanceLoader);

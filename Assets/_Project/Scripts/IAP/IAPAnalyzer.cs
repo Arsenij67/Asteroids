@@ -22,7 +22,6 @@ namespace Asteroid.Services.IAP
 
         public UniTask Initialize(DataSave dataSave)
         {
-            Debug.Log(this.GetHashCode());
             _storeController = UnityIAPServices.StoreController();
             _catalog = new CatalogProvider();
             _dataSave = dataSave;

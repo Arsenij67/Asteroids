@@ -30,11 +30,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e353d18c76250f44fa5c11547674ad16
-    m_Address: Shop
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e7432cbcc284f1a4495e442dfdf33cb7
     m_Address: Assets/_Project/Prefabs/UI/Bootstrap/SceneLoadSlider
     m_ReadOnly: 0

@@ -1,8 +1,6 @@
 using Asteroid.Services.IAP;
-using Asteroid.UI;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Purchasing;
 using UnityEngine.UI;
 using Zenject;
 
