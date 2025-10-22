@@ -939,4 +939,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buttonRestart: {fileID: 7458209412306818368}
   _buttonShowAd: {fileID: 7592276340658418162}
+  _buttonGoHome: {fileID: 8929523122699193282}
   _enemiesDestroyedText: {fileID: 9041604724486463898}

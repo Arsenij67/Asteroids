@@ -1,7 +1,10 @@
+using Asteroid.Statistic;
+using System;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System;
+using Asteroid.Generation;
 public class GameOverView : MonoBehaviour
 {
     public event Action OnGameReloadClicked;
@@ -13,21 +16,23 @@ public class GameOverView : MonoBehaviour
     [SerializeField] private Button  _buttonGoHome;
     [SerializeField] private TMP_Text _enemiesDestroyedText;
 
-    public void Initialize()
+    private IResourceLoaderService _resourceLoaderService;
+    private Transform _placeMounting;
+    public void Initialize(IResourceLoaderService resourceLoaderService, Transform placeMounting)
     {
         _buttonRestart.onClick.AddListener(() => { OnGameReloadClicked.Invoke(); });
         _buttonShowAd.onClick.AddListener(() =>  { OnButtonShowClicked.Invoke(); });
         _buttonGoHome.onClick.AddListener(() =>  { OnButtonGoHomeClicked.Invoke(); });
+
+        _placeMounting  = placeMounting;
+        _resourceLoaderService = resourceLoaderService;
     }
 
-    public void Open()
-    { 
-        gameObject.SetActive(true);   
-    }
+    
 
     public void Close()
     {
-        gameObject.SetActive(false);    
+       Destroy(gameObject); 
     }
 
     public void UpdateButtonShowAd(bool adsShowed)

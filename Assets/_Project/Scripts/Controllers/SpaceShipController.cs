@@ -74,7 +74,6 @@ namespace Asteroid.SpaceShip
         private void Die()
         {
             OnPlayerDie?.Invoke();
-            _statisticsController.UpdateDestroyedEnemies();
             Destroy(gameObject);
             
         }
