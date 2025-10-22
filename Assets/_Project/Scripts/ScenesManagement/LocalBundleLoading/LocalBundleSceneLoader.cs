@@ -19,7 +19,7 @@ namespace Asteroid.Generation
         public async void LoadScene(string name)
         {
             var loadHandle = Addressables.LoadSceneAsync(name, activateOnLoad: true);
-            _loadedScenes.Add(name, loadHandle);
+            _loadedScenes[name] = loadHandle;
             await loadHandle;
         }
 
@@ -34,14 +34,13 @@ namespace Asteroid.Generation
             {
                 _loadedScenes[name] = Addressables.LoadSceneAsync(name, LoadSceneMode.Additive, allowSceneActivate);
                 await _loadedScenes[name].ToUniTask();
-                Debug.Log("Сцена загружена!" + name);
             }
         }
 
         public void ReloadCurrentScene()
         {
             Scene sceneData = SceneManager.GetActiveScene();
-            _loadedScenes.Add(sceneData.name, default);
+            _loadedScenes[sceneData.name] =  default;
             LoadScene(sceneData.name);
         }
         public UniTask SwitchSceneActivation(string name, bool allowSceneBeActive)
@@ -71,14 +70,11 @@ namespace Asteroid.Generation
         {
             if ((_loadedScenes.ContainsKey(name) && _loadedScenes[name].IsValid()))
             {
-                Debug.Log("сцена найдена " + name);
                 return UniTask.CompletedTask;
 
             }
 
             _loadedScenes[name] = Addressables.LoadSceneAsync(name, LoadSceneMode.Single, activateOnLoad);
-       
-            Debug.Log("Сцена загружена!" + name + " " + _loadedScenes[name].IsValid());
            return _loadedScenes[name].ToUniTask();
         }
 
@@ -105,8 +101,6 @@ namespace Asteroid.Generation
                 _loadedScenes.Remove(name);
                 return default;
             }
-        
-            Debug.Log($"Unloading scene: {name}, isValid: {sceneHandle.IsValid()}");
 
             var handler = Addressables.UnloadSceneAsync(sceneHandle, false);
 
@@ -114,7 +108,6 @@ namespace Asteroid.Generation
             {
                 if (handler.Status == AsyncOperationStatus.Succeeded)
                 {
-                    Debug.Log($"Выгрузка успешная: {name}");
                     _loadedScenes.Remove(name);
                     Addressables.Release(handler);
                 }
@@ -122,8 +115,7 @@ namespace Asteroid.Generation
                 {
                     Debug.LogError($"Unload failed for scene: {name}, Status: {handler.Status}");
                 }
-
                 return default(object);
             });
-        }   }
+    }   }
 }

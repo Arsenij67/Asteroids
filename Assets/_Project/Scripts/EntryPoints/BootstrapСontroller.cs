@@ -37,7 +37,6 @@ namespace Asteroid.Generation
         {
              await _sceneLoader.ReloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
-            _bootstrapUI.OnPlayerClickButtonShop += OpenSceneShop;
 
             _loadingTasks.Add(PrepareAdvertisementAsync());
             _loadingTasks.Add(PrepareAnalyticsAsync());
@@ -58,25 +57,16 @@ namespace Asteroid.Generation
         {
              await _sceneLoader.LoadSceneAdditiveAsync("Shop",false);
             _shopLoaded = true;
-            Debug.Log("С магазином заебись!");
-
         }
 
         private async void OpenSceneShop()
         {
-          
-            Debug.Log("Нажали на магазин");
-            // Активируем сцену магазина
             await _sceneLoader.SwitchSceneActivation("Shop", true);
-            await UniTask.Delay(2000);
-            Debug.Log("Нажали на магазин");
-
         }
 
         public void Dispose()
         {
             _bootstrapUI.OnPlayerClickButtonStart -= OpenLoadedGameScene;
-            _bootstrapUI.OnPlayerClickButtonShop -= OpenSceneShop;
         }
 
         public void SetUpUI(RectTransform parent)
@@ -125,6 +115,7 @@ namespace Asteroid.Generation
                 }
                 await UniTask.Delay(TimeSpan.FromSeconds(TICK_TIME));
             }
+            OpenSceneShop();
         }
 
         private async UniTask PrepareGameSceneAsync()
@@ -155,9 +146,10 @@ namespace Asteroid.Generation
 
         private async void OpenLoadedGameScene()
         {
-            Debug.Log("открываем " + _bootstrapSceneModel.SceneGame);
+            Debug.Log(" open " + _bootstrapSceneModel.SceneGame);
             await _sceneLoader.SwitchSceneActivation(_bootstrapSceneModel.SceneGame, true);
             await _sceneLoader.UnloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);
+            Debug.Log(" end open " + _bootstrapSceneModel.SceneGame);
 
         }
     }

@@ -85,7 +85,6 @@ namespace Asteroid.Services.UnityAdvertisement
 
         public void Show(params object[] parameters)
         {
-            Debug.Log("Реклама включена? "+ IsEnabled);
             if (IsEnabled)
             {
                 Advertisement.Show(parameters[0].ToString(), this);

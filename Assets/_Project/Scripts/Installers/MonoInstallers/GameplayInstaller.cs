@@ -13,7 +13,6 @@ namespace Asteroid.Installers
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<DesktopInput>().AsSingle();
-
             Container.Bind<AnalyticsEventHandler>().FromNew().AsSingle();
             Container.Bind<EntitiesGenerationController>().FromNew().AsSingle();
             Container.Bind<ShipStatisticsModel>().FromNew().AsSingle();

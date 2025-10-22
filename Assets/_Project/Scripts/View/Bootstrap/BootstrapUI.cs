@@ -11,20 +11,12 @@ namespace Asteroid.UI
     public class BootstrapUI : MonoBehaviour
     {
         public event Action OnPlayerClickButtonStart;
-        public event Action OnPlayerClickButtonShop;
 
-        [Inject(Id = "buttonToShop")] private Button _shopButton;
         [Inject(Id = "loadingSlider")] private Slider _sliderLoading;
         [Inject(Id = "buttonStart")] private Button _buttonStartGame;
         private void Start()
         {
             _buttonStartGame.onClick.AddListener(NotifyButtonStartPressed);
-            _shopButton.onClick.AddListener(NotifyShopButtonPressed);
-        }
-        private void NotifyShopButtonPressed()
-        {
-            Debug.Log("Нажали на магазин");
-            OnPlayerClickButtonShop?.Invoke();
         }
 
         private void NotifyButtonStartPressed()
