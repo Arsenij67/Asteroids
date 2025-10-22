@@ -22,6 +22,7 @@ namespace Asteroid.Generation
         [Inject] private IAdvertisementService _advertisementService;
         [Inject] private IRemoteConfigService  _remoteConfigService;
         [Inject] private BootstrapSceneData _bootstrapSceneModel;
+        [Inject] private ShopSceneData _shopData;
         [Inject] private IPurchasingService _purchasingService;
         [Inject] private DataSave _dataForSave;
 
@@ -35,7 +36,7 @@ namespace Asteroid.Generation
 
         public async void Initialize()
         {
-             await _sceneLoader.ReloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);
+             await _sceneLoader.ReloadSceneAsync(_bootstrapSceneModel.SceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
 
             _loadingTasks.Add(PrepareAdvertisementAsync());
@@ -55,13 +56,13 @@ namespace Asteroid.Generation
 
         private async UniTask PrepareShopSceneAsync()
         {
-             await _sceneLoader.LoadSceneAdditiveAsync("Shop",false);
+             await _sceneLoader.LoadSceneAdditiveAsync(_shopData.SceneName,false);
             _shopLoaded = true;
         }
 
         private async void OpenSceneShop()
         {
-            await _sceneLoader.SwitchSceneActivation("Shop", true);
+            await _sceneLoader.SwitchSceneActivation(_shopData.SceneName, true);
         }
 
         public void Dispose()
@@ -148,7 +149,7 @@ namespace Asteroid.Generation
         {
             Debug.Log(" open " + _bootstrapSceneModel.SceneGame);
             await _sceneLoader.SwitchSceneActivation(_bootstrapSceneModel.SceneGame, true);
-            await _sceneLoader.UnloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);
+            await _sceneLoader.UnloadSceneAsync(_bootstrapSceneModel.SceneName);
             Debug.Log(" end open " + _bootstrapSceneModel.SceneGame);
 
         }

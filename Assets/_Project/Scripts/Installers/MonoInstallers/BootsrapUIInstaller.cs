@@ -13,7 +13,6 @@ namespace Asteroid.Installers.MonoInstallers
         [SerializeField] private Slider _slider;
         [SerializeField] private Button _buttonStart;
         [SerializeField] private RectTransform UIParent;
-  
 
         public override void InstallBindings()
         {

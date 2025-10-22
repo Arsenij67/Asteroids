@@ -14,6 +14,7 @@ namespace Asteroid.UI
 
         [Inject(Id = "loadingSlider")] private Slider _sliderLoading;
         [Inject(Id = "buttonStart")] private Button _buttonStartGame;
+
         private void Start()
         {
             _buttonStartGame.onClick.AddListener(NotifyButtonStartPressed);

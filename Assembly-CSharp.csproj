@@ -66,6 +66,7 @@
     <Compile Include="Assets\_Project\Scripts\ScenesManagement\SimpleLoad\SimpleSceneLoader.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\CameraController.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\BulletWeapon.cs" />
+    <Compile Include="Assets\_Project\Scripts\Models\BaseSceneData.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\RemoteConfigDatas\RemoteConfigShip.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\RateGame.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\WeaponController.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\BaseBullet.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\SpaceObject.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\GameOver.cs" />
+    <Compile Include="Assets\_Project\Scripts\Models\Shop\ShopSceneData.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\LoadBar.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\BaseEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\ShopUIInstaller.cs" />
