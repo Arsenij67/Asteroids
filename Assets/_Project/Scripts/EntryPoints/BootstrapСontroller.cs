@@ -41,8 +41,8 @@ namespace Asteroid.Generation
 
             _loadingTasks.Add(PrepareAdvertisementAsync());
             _loadingTasks.Add(PrepareAnalyticsAsync());
-            _loadingTasks.Add(PrepareGameSceneAsync());
             _loadingTasks.Add(PrepareShopSceneAsync());
+            _loadingTasks.Add(PrepareGameSceneAsync());
             _loadingTasks.Add(PrepareRemoteConfigAsync());
             _loadingTasks.Add(PreparePurchasingAsync());
             TickLoading();
