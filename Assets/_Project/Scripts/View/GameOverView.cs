@@ -8,7 +8,7 @@ using Asteroid.Generation;
 public class GameOverView : MonoBehaviour
 {
     public event Action OnGameReloadClicked;
-    public event Action OnButtonShowClicked;
+    public event Action OnButtonShowAdsClicked;
     public event Action OnButtonGoHomeClicked;
 
     [SerializeField] private Button _buttonRestart;
@@ -21,7 +21,7 @@ public class GameOverView : MonoBehaviour
     public void Initialize(IResourceLoaderService resourceLoaderService, Transform placeMounting)
     {
         _buttonRestart.onClick.AddListener(() => { OnGameReloadClicked.Invoke(); });
-        _buttonShowAd.onClick.AddListener(() =>  { OnButtonShowClicked.Invoke(); });
+        _buttonShowAd.onClick.AddListener(() =>  { OnButtonShowAdsClicked.Invoke(); });
         _buttonGoHome.onClick.AddListener(() =>  { OnButtonGoHomeClicked.Invoke(); });
 
         _placeMounting  = placeMounting;
@@ -51,7 +51,7 @@ public class GameOverView : MonoBehaviour
     private void OnDestroy()
     {
         _buttonRestart.onClick.RemoveListener(() => { OnGameReloadClicked.Invoke(); });
-        _buttonShowAd.onClick.RemoveListener(() => { OnButtonShowClicked.Invoke(); });
+        _buttonShowAd.onClick.RemoveListener(() => { OnButtonShowAdsClicked.Invoke(); });
         _buttonGoHome.onClick.RemoveListener(() => { OnButtonGoHomeClicked.Invoke(); });
     }
 
