@@ -51,7 +51,7 @@ public class SimpleSceneLoader : ISceneLoader
         }
     }
 
-    public UniTask<object> ReloadSceneAsync(string name)
+    public UniTask  ReloadSceneAsync(string name)
     {
         Scene sceneData = SceneManager.GetSceneByName(name);
         if (!sceneData.isLoaded)
@@ -63,9 +63,10 @@ public class SimpleSceneLoader : ISceneLoader
         return UniTask.FromResult<object>(name);
     }
 
-    public UniTask<object> LoadSceneAsync(string name)
+    public UniTask LoadSceneAsync(string name, bool activateOnLoad)
     {
         asyncLoading = SceneManager.LoadSceneAsync(name, LoadSceneMode.Single);
+        asyncLoading.allowSceneActivation = activateOnLoad;
         return asyncLoading.ToUniTask().ContinueWith(() => { return (object) name; });
       
     }

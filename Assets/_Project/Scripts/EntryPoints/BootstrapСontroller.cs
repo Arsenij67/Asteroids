@@ -15,8 +15,6 @@ namespace Asteroid.Generation
 {
     public class BootstrapController : IInitializable, IDisposable
     {
-       
-
         [Inject] private BootstrapUI _bootstrapUI;
         [Inject] private List<UniTask> _loadingTasks;
         [Inject] private ISceneLoader _sceneLoader;
@@ -66,8 +64,13 @@ namespace Asteroid.Generation
 
         private async void OpenSceneShop()
         {
-          await _sceneLoader.SwitchSceneActivation("Shop",true);
-          await _sceneLoader.UnloadSceneAsync("Shop");
+          
+            Debug.Log("Нажали на магазин");
+            // Активируем сцену магазина
+            await _sceneLoader.SwitchSceneActivation("Shop", true);
+            await UniTask.Delay(2000);
+            Debug.Log("Нажали на магазин");
+
         }
 
         public void Dispose()
@@ -126,7 +129,7 @@ namespace Asteroid.Generation
 
         private async UniTask PrepareGameSceneAsync()
         {
-            await _sceneLoader.LoadSceneAdditiveAsync(_bootstrapSceneModel.ScenePreLoad, false);
+            await _sceneLoader.LoadSceneAsync(_bootstrapSceneModel.SceneGame,false);
             _sceneLoaded = true;
         }
 
@@ -152,8 +155,9 @@ namespace Asteroid.Generation
 
         private async void OpenLoadedGameScene()
         {
-            await _sceneLoader.SwitchSceneActivation(_bootstrapSceneModel.ScenePreLoad,true);
-            await _sceneLoader.UnloadSceneAsync(_bootstrapSceneModel.ScenePreLoad);
+            Debug.Log("открываем " + _bootstrapSceneModel.SceneGame);
+            await _sceneLoader.SwitchSceneActivation(_bootstrapSceneModel.SceneGame, true);
+            await _sceneLoader.UnloadSceneAsync(_bootstrapSceneModel.BootstrapSceneName);
 
         }
     }

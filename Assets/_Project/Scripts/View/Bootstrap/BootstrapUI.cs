@@ -23,6 +23,7 @@ namespace Asteroid.UI
         }
         private void NotifyShopButtonPressed()
         {
+            Debug.Log("Нажали на магазин");
             OnPlayerClickButtonShop?.Invoke();
         }
 

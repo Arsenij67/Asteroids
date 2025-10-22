@@ -1,5 +1,6 @@
 
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -17,23 +18,20 @@ namespace Asteroid.Generation
         private Dictionary<string, AsyncOperationHandle<SceneInstance>> _loadedScenes = new();
         public async void LoadScene(string name)
         {
-          
             var loadHandle = Addressables.LoadSceneAsync(name, activateOnLoad: true);
-            _loadedScenes.Add(name,loadHandle);
+            _loadedScenes.Add(name, loadHandle);
             await loadHandle;
         }
 
         public void LoadSceneAdditive(string name)
         {
-             
             LoadSceneAdditiveAsync(name).Forget();
         }
 
         public async UniTask LoadSceneAdditiveAsync(string name, bool allowSceneActivate = true)
         {
             if (!_loadedScenes.ContainsKey(name))
-            { 
-
+            {
                 _loadedScenes[name] = Addressables.LoadSceneAsync(name, LoadSceneMode.Additive, allowSceneActivate);
                 await _loadedScenes[name].ToUniTask();
                 Debug.Log("Сцена загружена!" + name);
@@ -43,7 +41,7 @@ namespace Asteroid.Generation
         public void ReloadCurrentScene()
         {
             Scene sceneData = SceneManager.GetActiveScene();
-            _loadedScenes.Add(sceneData.name,default);
+            _loadedScenes.Add(sceneData.name, default);
             LoadScene(sceneData.name);
         }
         public UniTask SwitchSceneActivation(string name, bool allowSceneBeActive)
@@ -64,46 +62,68 @@ namespace Asteroid.Generation
             UnloadSceneAsync(name).Forget();
         }
 
-        public UniTask<object> ReloadSceneAsync(string name)
+        public UniTask ReloadSceneAsync(string name)
         {
-            return LoadSceneAsync(name);   
+            return LoadSceneAsync(name);
         }
 
-        public async UniTask<object> LoadSceneAsync(string name)
+        public UniTask LoadSceneAsync(string name, bool activateOnLoad = true)
         {
-            if ((_loadedScenes.ContainsKey(name)&&_loadedScenes[name].IsValid()))
+            if ((_loadedScenes.ContainsKey(name) && _loadedScenes[name].IsValid()))
             {
-                 
-                await UnloadSceneAsync(name);
-                _loadedScenes.Remove(name);
+                Debug.Log("сцена найдена " + name);
                 return UniTask.CompletedTask;
+
             }
 
-            Debug.Log("Сцена загружена!" + name);
-
-            _loadedScenes[name]= Addressables.LoadSceneAsync(name, LoadSceneMode.Single);
-            await _loadedScenes[name];
-            return _loadedScenes[name];
+            _loadedScenes[name] = Addressables.LoadSceneAsync(name, LoadSceneMode.Single, activateOnLoad);
+       
+            Debug.Log("Сцена загружена!" + name + " " + _loadedScenes[name].IsValid());
+           return _loadedScenes[name].ToUniTask();
         }
 
-        public async UniTask<object> UnloadSceneAsync(string name)
+        public UniTask<object> UnloadSceneAsync(string name)
         {
-            if (string.IsNullOrEmpty(name) || !_loadedScenes.ContainsKey(name))
+            
+            if (string.IsNullOrEmpty(name))
             {
-                Debug.LogWarning("Attempted to unload null scene");
+                Debug.LogWarning("Scene name is null or empty");
+                return default;
             }
 
-            else
+            if (!_loadedScenes.ContainsKey(name))
             {
-                var handler = Addressables.UnloadSceneAsync(_loadedScenes[name], autoReleaseHandle: false);
-                await handler.ToUniTask();
+                Debug.LogWarning($"Scene '{name}' not found in loaded scenes dictionary");
+                Debug.LogWarning($"Available scenes: {string.Join(", ", _loadedScenes.Keys)}");
+                return default;
+            }
+
+            var sceneHandle = _loadedScenes[name];
+            if (!sceneHandle.IsValid())
+            {
+                Debug.LogWarning($"Scene handle for '{name}' is invalid");
+                _loadedScenes.Remove(name);
+                return default;
+            }
+        
+            Debug.Log($"Unloading scene: {name}, isValid: {sceneHandle.IsValid()}");
+
+            var handler = Addressables.UnloadSceneAsync(sceneHandle, false);
+
+            return handler.ToUniTask().ContinueWith((f) =>
+            {
                 if (handler.Status == AsyncOperationStatus.Succeeded)
                 {
+                    Debug.Log($"Выгрузка успешная: {name}");
                     _loadedScenes.Remove(name);
                     Addressables.Release(handler);
                 }
-            }
-            return default;
-        }
-    }
+                else
+                {
+                    Debug.LogError($"Unload failed for scene: {name}, Status: {handler.Status}");
+                }
+
+                return default(object);
+            });
+        }   }
 }
