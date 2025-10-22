@@ -1,11 +1,24 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 public class GameOverView : MonoBehaviour
 {
-    [field: SerializeField] public Button ButtonRestart { get; private set; }
-    [field: SerializeField] public Button ButtonShowAd { get;  private set; }
-    [field: SerializeField] public TMP_Text EnemiesDestroyedText { get; private set; }
+    public event Action OnGameReloadClicked;
+    public event Action OnButtonShowClicked;
+    public event Action OnButtonGoHomeClicked;
+
+    [SerializeField] private Button _buttonRestart;
+    [SerializeField] private Button _buttonShowAd;
+    [SerializeField] private Button  _buttonGoHome;
+    [SerializeField] private TMP_Text _enemiesDestroyedText;
+
+    public void Initialize()
+    {
+        _buttonRestart.onClick.AddListener(() => { OnGameReloadClicked.Invoke(); });
+        _buttonShowAd.onClick.AddListener(() =>  { OnButtonShowClicked.Invoke(); });
+        _buttonGoHome.onClick.AddListener(() =>  { OnButtonGoHomeClicked.Invoke(); });
+    }
 
     public void Open()
     { 
@@ -14,12 +27,27 @@ public class GameOverView : MonoBehaviour
 
     public void Close()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);    
     }
 
     public void UpdateButtonShowAd(bool adsShowed)
     {
-        ButtonShowAd.interactable = !adsShowed;
+        _buttonShowAd.interactable = !adsShowed;
     }
-    
+
+    public void UpdateDestroyedEnemies(int count)
+    {
+        if (_enemiesDestroyedText != null)
+        {
+            _enemiesDestroyedText.text = $"Enemies destroyed: {count:D1} units";
+        }
+    }
+
+    private void OnDestroy()
+    {
+        _buttonRestart.onClick.RemoveListener(() => { OnGameReloadClicked.Invoke(); });
+        _buttonShowAd.onClick.RemoveListener(() => { OnButtonShowClicked.Invoke(); });
+        _buttonGoHome.onClick.RemoveListener(() => { OnButtonGoHomeClicked.Invoke(); });
+    }
+
 }

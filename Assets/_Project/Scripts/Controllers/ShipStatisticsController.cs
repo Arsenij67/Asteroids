@@ -11,26 +11,21 @@ namespace Asteroid.SpaceShip
     public class ShipStatisticsController
     {
         private ShipStatisticsModel _shipStatisticModel;
-        private ShipStatisticsView _shipStatisticView;
+        private GameOverView _gameOverView;
         private IInstanceLoader _resourceLoaderService;
         private DataSave _playerSave;
 
-        public void Initialize(ShipStatisticsView shipStatisticView, ShipStatisticsModel shipStatisticModel, IInstanceLoader instanceLoader, DataSave dataSave)
+        public void Initialize(GameOverView gameOverView, ShipStatisticsModel shipStatisticModel, IInstanceLoader instanceLoader, DataSave dataSave)
         {
-            _shipStatisticView = shipStatisticView;
+            _gameOverView = gameOverView;
             _shipStatisticModel = shipStatisticModel;
             _resourceLoaderService = instanceLoader;
             _playerSave = dataSave;
         }
 
-        public void Initialize()
-        {
-            _shipStatisticView.UpdateDestroyedEnemies(_shipStatisticModel.EnemiesDestroyed);
-        }
-
         public void UpdateDestroyedEnemies()
         {
-            _shipStatisticView.UpdateDestroyedEnemies(_shipStatisticModel.EnemiesDestroyed);
+            _gameOverView.UpdateDestroyedEnemies(_shipStatisticModel.EnemiesDestroyed);
             UpdateDataSave();
         }
 

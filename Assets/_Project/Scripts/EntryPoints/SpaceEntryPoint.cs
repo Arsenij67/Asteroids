@@ -11,6 +11,7 @@ using Asteroid.Services.UnityAdvertisement;
 using Asteroid.Services.RemoteConfig;
 using UnityEditor.Overlays;
 using Asteroid.Database;
+using Unity.VisualScripting;
 
 namespace Asteroid.Generation
 {
@@ -57,7 +58,7 @@ namespace Asteroid.Generation
 
         private void Awake()
         {
-            _shipStatisticView = _resourceLoader.Instantiate(_shipStatisticViewPrefab.gameObject, _UIParent.transform).GetComponent<ShipStatisticsView>();
+            InitializeUI();
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
             InitializeServicesSystems();
@@ -70,22 +71,34 @@ namespace Asteroid.Generation
         private void OnDestroy()
         {
             _obstaclesGenerationController.OnShipSpawned -= ShipInitializedHandler;
-            _shipStatisticView.OnGameReloadClicked -= _sceneLoader.ReloadCurrentScene;
+            _endPanelView.OnGameReloadClicked -= _sceneLoader.ReloadCurrentScene;
             _obstaclesGenerationController.OnEnemySpawned -= EnemyInitializedHander;
-            _shipController.OnPlayerDie -= PanelRestartSpawnedHandler;
-            _shipController.OnPlayerDie -= () => _endPanelView.ButtonShowAd.onClick.AddListener(_advertisingController.ShowRewardedAdAfterDead);
-            _shipController.OnPlayerDie -= () => _endPanelView.ButtonRestart.onClick.AddListener(_advertisingController.ShowInterstitialAd);
+            _shipController.OnPlayerDie -= () => _endPanelView.OnButtonShowClicked-=(_advertisingController.ShowRewardedAdAfterDead);
+            _shipController.OnPlayerDie -= () => _endPanelView.OnGameReloadClicked-=(_advertisingController.ShowInterstitialAd);
             _shipController.OnPlayerDie -= () => OnPlayerDied?.Invoke();
             _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= _obstaclesGenerationController.ReviveShip;
             _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= _endPanelView.Close;
 
             _obstaclesGenerationController.OnDestroy();
         }
+
+        private void InitializeUI()
+        {
+            _shipStatisticView = _resourceLoader.Instantiate(_shipStatisticViewPrefab.gameObject, _UIParent.transform).GetComponent<ShipStatisticsView>();
+            _endPanelView = _resourceLoader.Instantiate
+                (
+                _restartPrefab,
+                _shipStatisticView.transform.parent
+                ).GetComponent<GameOverView>();
+            _endPanelView.Close();
+            _endPanelView.UpdateButtonShowAd(_advertisementService.IsShowed);
+        }
+
         private void InitializeSpaceShipSystems()
         {
             _obstaclesGenerationController.OnShipSpawned += ShipInitializedHandler;
-            _shipStatisticView.OnGameReloadClicked += _sceneLoader.ReloadCurrentScene;
-            _shipStatisticController.Initialize(_shipStatisticView, _shipStatisticModel,_instanceLoader,_dataForSave);
+            _endPanelView.OnGameReloadClicked += _sceneLoader.ReloadCurrentScene;
+            _shipStatisticController.Initialize(_endPanelView, _shipStatisticModel,_instanceLoader,_dataForSave);
             _entitiesGenerationData.Initialize(_remoteConfigService);
             _obstaclesGenerationController.Initialize(_entitiesGenerationData,_resourceLoader,_instanceLoader);
         }
@@ -122,9 +135,8 @@ namespace Asteroid.Generation
             _weaponShipLaser = playerShip.GetComponent<LaserWeaponController>();
             _weaponShipBullet = playerShip.GetComponent<BulletWeaponController>();
 
-            _shipController.OnPlayerDie += PanelRestartSpawnedHandler;
-            _shipController.OnPlayerDie += () => _endPanelView.ButtonShowAd.onClick.AddListener(_advertisingController.ShowRewardedAdAfterDead);
-            _shipController.OnPlayerDie += () => _endPanelView.ButtonRestart.onClick.AddListener(_advertisingController.ShowInterstitialAd);
+            _shipController.OnPlayerDie += () => _endPanelView.OnButtonShowClicked+=(_advertisingController.ShowRewardedAdAfterDead);
+            _shipController.OnPlayerDie += () => _endPanelView.OnGameReloadClicked+=(_advertisingController.ShowInterstitialAd);
             _shipController.OnPlayerDie += () => OnPlayerDied?.Invoke();
             _shipController.OnPlayerDie += () => _advertisingController.OnPlayerRevived += _obstaclesGenerationController.ReviveShip;
             _shipController.OnPlayerDie += () => _advertisingController.OnPlayerRevived += _endPanelView.Close;
@@ -136,19 +148,6 @@ namespace Asteroid.Generation
             _weaponController.Initialize();
             _entitiesGenerationData.Initialize(_shipTransform,_remoteConfigService);
         }
-                                                                
-        private void PanelRestartSpawnedHandler()
-        {
-            _endPanelView = _resourceLoader.Instantiate
-                (
-                _restartPrefab,
-                _shipStatisticView.transform.parent
-                ).GetComponent<GameOverView>();
 
-            _endPanelView.Open();
-            _shipStatisticView.Initialize(_endPanelView,_sceneLoader);
-            _shipStatisticController.Initialize();
-            _endPanelView.UpdateButtonShowAd(_advertisementService.IsShowed);
-        }
     }
 }

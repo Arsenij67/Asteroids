@@ -9,32 +9,12 @@ namespace Asteroid.Statistic
 {
     public class ShipStatisticsView : MonoBehaviour
     {
-        public event Action OnGameReloadClicked;
-
-        [Header("UI References")]
         [SerializeField] private TMP_Text _fireballCountText;
         [SerializeField] private TMP_Text _laserCountText;
         [SerializeField] private TMP_Text _coordinatesText;
         [SerializeField] private TMP_Text _angleRotationText;
         [SerializeField] private TMP_Text _rollbackTimeText;
         [SerializeField] private TMP_Text _spaceShipVelocityText;
-        
-        private TMP_Text _enemiesDestroyedText;
-        private Button _buttonRestart;
-        private ISceneLoader _sceneLoader;
-
-        public void OnDestroy()
-        {
-            _buttonRestart?.onClick.RemoveAllListeners();
-        }
-
-        public void Initialize(GameOverView gameOverView, ISceneLoader sceneLoader)
-        {
-            _enemiesDestroyedText = gameOverView.EnemiesDestroyedText;
-            _buttonRestart = gameOverView.ButtonRestart;
-            _sceneLoader = sceneLoader;
-            _buttonRestart.onClick.AddListener(() => { OnGameReloadClicked.Invoke(); });
-        }
 
         public void UpdateFireballCount(int count)
         {
@@ -82,12 +62,5 @@ namespace Asteroid.Statistic
             }
         }
 
-        public void UpdateDestroyedEnemies(int count)
-        {
-            if (_enemiesDestroyedText != null)
-            {
-                _enemiesDestroyedText.text = $"Enemies destroyed: {count:D1} units";
-            }
-        }
     }
 }
