@@ -1,4 +1,5 @@
 using Asteroid.Database;
+using Asteroid.Exit;
 using Asteroid.Generation;
 using Asteroid.Services;
 using Asteroid.Services.Analytics;
@@ -14,6 +15,7 @@ namespace Asteroid.Installers
     {
         public override void InstallBindings()
         {
+            Container.Bind<IApplicationQuitter>().To<PCApplicationQuitter>().AsSingle();
             Container.BindInterfacesAndSelfTo<UnityAdsAdvertisement>().AsSingle();
             Container.Bind<List<UniTask>>().AsTransient();
             Container.BindInterfacesAndSelfTo<InstanceCreator>().AsSingle();

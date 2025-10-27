@@ -115,6 +115,7 @@
     <Compile Include="Assets\_Project\Scripts\View\GameOverView.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\Addressables\LocalBundleLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\BaseResourceLoaderService.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\IApplicationQuitter.cs" />
     <Compile Include="Assets\_Project\Scripts\View\Bootstrap\BootstrapUI.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\SceneSaveInstaller.cs" />
     <Compile Include="Assets\_Project\Scripts\ScenesManagement\LocalBundleLoading\LocalBundleSceneLoader.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\BaseEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\ShopUIInstaller.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />
+    <Compile Include="Assets\_Project\Scripts\ScenesManagement\Exiter\PCApplicationExiter.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\ExitGame.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\GameplayInstaller.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\Obstacle.cs" />

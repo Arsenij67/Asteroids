@@ -1,4 +1,5 @@
 using Asteroid.Database;
+using Asteroid.Exit;
 using Asteroid.Services.Analytics;
 using Asteroid.Services.IAP;
 using Asteroid.Services.RemoteConfig;
@@ -25,6 +26,7 @@ namespace Asteroid.Generation
         [Inject] private ShopSceneData _shopData;
         [Inject] private IPurchasingService _purchasingService;
         [Inject] private DataSave _dataForSave;
+        [Inject] private IApplicationQuitter _applicationQuitter;
 
         private bool _analyticsReady;
         private bool _remoteConfigReady;
@@ -52,6 +54,7 @@ namespace Asteroid.Generation
             {
                 _bootstrapUI.ActivateButtonStart();
             }
+            _bootstrapUI.OnPlayerClickButtonExit += _applicationQuitter.Quit;
         }
 
         private async UniTask PrepareShopSceneAsync()
@@ -68,6 +71,7 @@ namespace Asteroid.Generation
         public void Dispose()
         {
             _bootstrapUI.OnPlayerClickButtonStart -= OpenLoadedGameScene;
+            _bootstrapUI.OnPlayerClickButtonExit -= _applicationQuitter.Quit;
         }
 
         public void SetUpUI(RectTransform parent)
