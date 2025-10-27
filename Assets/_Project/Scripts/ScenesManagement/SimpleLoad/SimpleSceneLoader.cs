@@ -58,7 +58,7 @@ public class SimpleSceneLoader : ISceneLoader
         {
           AsyncOperation sceneHandler = SceneManager.LoadSceneAsync(sceneData.name);
           sceneHandler.allowSceneActivation = activateOnLoad;
-          return sceneHandler.ToUniTask().ContinueWith(() => { return (object) name; });
+            return sceneHandler.ToUniTask();
         }
         name = sceneData.name;
         return UniTask.FromResult<object>(name);
@@ -68,7 +68,7 @@ public class SimpleSceneLoader : ISceneLoader
     {
         asyncLoading = SceneManager.LoadSceneAsync(name, LoadSceneMode.Single);
         asyncLoading.allowSceneActivation = activateOnLoad;
-        return asyncLoading.ToUniTask().ContinueWith(() => { return (object) name; });
+        return asyncLoading.ToUniTask();
       
     }
 

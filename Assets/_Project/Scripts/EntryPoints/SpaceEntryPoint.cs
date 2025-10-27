@@ -8,11 +8,8 @@ using Asteroid.SpaceShip;
 using Asteroid.Statistic;
 using Asteroid.Weapon;
 using System;
-using Unity.VisualScripting;
-using UnityEditor.Overlays;
 using UnityEngine;
 using Zenject;
-using Zenject.ReflectionBaking.Mono.Cecil.Cil;
 
 namespace Asteroid.Generation
 {

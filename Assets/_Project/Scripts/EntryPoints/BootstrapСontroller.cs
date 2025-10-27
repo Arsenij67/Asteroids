@@ -147,10 +147,8 @@ namespace Asteroid.Generation
 
         private async void OpenLoadedGameScene()
         {
-            Debug.Log(" open " + _bootstrapSceneModel.SceneGame);
             await _sceneLoader.SwitchSceneActivation(_bootstrapSceneModel.SceneGame, true);
             await _sceneLoader.UnloadSceneAsync(_bootstrapSceneModel.SceneName);
-            Debug.Log(" end open " + _bootstrapSceneModel.SceneGame);
 
         }
     }

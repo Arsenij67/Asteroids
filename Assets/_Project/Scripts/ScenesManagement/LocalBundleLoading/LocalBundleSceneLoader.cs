@@ -39,7 +39,7 @@ namespace Asteroid.Generation
 
         public async UniTask LoadSceneAdditiveAsync(string name, bool allowSceneActivate = true)
         {
-            if (!_loadedScenes.ContainsKey(name))
+            if (!_loadedScenes.ContainsKey(name) || !_loadedScenes[name].IsValid())
             {
                 _loadedScenes[name] = Addressables.LoadSceneAsync(name, LoadSceneMode.Additive, allowSceneActivate);
                 await _loadedScenes[name].ToUniTask();
