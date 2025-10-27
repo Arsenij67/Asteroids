@@ -32,6 +32,7 @@ namespace Asteroid.Generation
             } 
         }
         [field: SerializeField] public Vector2[] GenerationVertices { get; private set; }
+        [field: SerializeField] public string HomeSceneName { get; private set; }
 
         public Transform EndPointToFly { get; private set; }
         public BaseEnemy ObstacleToGenerateNow => _obstacles[Random.Range(0, _obstacles.Length)].GetComponent<BaseEnemy>();

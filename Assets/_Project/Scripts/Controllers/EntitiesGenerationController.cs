@@ -4,10 +4,11 @@ using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using System.Threading;
+using Unity.VisualScripting;
 
 namespace Asteroid.Generation
 {
-    public class EntitiesGenerationController
+    public class EntitiesGenerationController 
     {
         public event Action<EnemyController, BaseEnemy> OnEnemySpawned;
         public event Action<SpaceShipController> OnShipSpawned;
@@ -15,12 +16,14 @@ namespace Asteroid.Generation
         private EntitiesGenerationData _generationData;
         private IResourceLoaderService _resourceLoaderService;
         private IInstanceLoader _instanceLoader;
+        private ISceneLoader _sceneLoader;
         private CancellationTokenSource _cancellationTokenSource;
-        public void Initialize(EntitiesGenerationData entitiesGenData,IResourceLoaderService resourceLoader,IInstanceLoader instanceLoader)
+        public void Initialize(EntitiesGenerationData entitiesGenData,IResourceLoaderService resourceLoader,IInstanceLoader instanceLoader, ISceneLoader sceneLoader)
         {
             _generationData = entitiesGenData;
             _resourceLoaderService = resourceLoader;
             _instanceLoader = instanceLoader;
+            _sceneLoader = sceneLoader;
             _cancellationTokenSource = _instanceLoader.CreateInstance<CancellationTokenSource>();
             GenerateShip(_generationData.PlayerShipToGenerateNow);
             WaitForNextGeneration(_cancellationTokenSource.Token);
@@ -31,6 +34,16 @@ namespace Asteroid.Generation
         {
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource?.Dispose();
+        }
+
+        public void ReviveShip()
+        {
+            GenerateShip(_generationData.PlayerShipToGenerateNow);
+        }
+
+        public async void ReloadGameScene()
+        {
+            await _sceneLoader.ReloadSceneAsync(_generationData.HomeSceneName,true);
         }
 
         private async UniTask WaitForNextGeneration(CancellationToken tokenStop)
@@ -55,10 +68,6 @@ namespace Asteroid.Generation
             }
         }
 
-        public void ReviveShip()
-        {
-            GenerateShip(_generationData.PlayerShipToGenerateNow);
-        }
         private SpaceShipController GenerateShip(SpaceShipController shipControllerPrefab)
         {
             SpaceShipController playerShip = _resourceLoaderService.Instantiate(shipControllerPrefab, _generationData.PointShipToGenerate, Quaternion.identity).GetComponent<SpaceShipController>();

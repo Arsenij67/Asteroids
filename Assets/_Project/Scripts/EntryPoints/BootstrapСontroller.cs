@@ -36,7 +36,7 @@ namespace Asteroid.Generation
 
         public async void Initialize()
         {
-             await _sceneLoader.ReloadSceneAsync(_bootstrapSceneModel.SceneName);
+             await _sceneLoader.ReloadStartSceneAsync(_bootstrapSceneModel.SceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
 
             _loadingTasks.Add(PrepareAdvertisementAsync());

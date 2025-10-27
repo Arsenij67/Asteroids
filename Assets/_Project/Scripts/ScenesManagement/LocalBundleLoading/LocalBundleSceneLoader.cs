@@ -28,6 +28,15 @@ namespace Asteroid.Generation
             LoadSceneAdditiveAsync(name).Forget();
         }
 
+        public UniTask ReloadStartSceneAsync(string name)
+        {
+            if (_loadedScenes.ContainsKey(name) && _loadedScenes[name].IsValid())
+            {
+                 return UniTask.CompletedTask;
+            }
+            return LoadSceneAsync(name);
+        }
+
         public async UniTask LoadSceneAdditiveAsync(string name, bool allowSceneActivate = true)
         {
             if (!_loadedScenes.ContainsKey(name))
@@ -61,9 +70,10 @@ namespace Asteroid.Generation
             UnloadSceneAsync(name).Forget();
         }
 
-        public UniTask ReloadSceneAsync(string name)
+        public UniTask ReloadSceneAsync(string name, bool activateOnLoad = true)
         {
-            return LoadSceneAsync(name);
+            _loadedScenes[name] = Addressables.LoadSceneAsync(name, LoadSceneMode.Single, activateOnLoad);
+            return _loadedScenes[name].ToUniTask();
         }
 
         public UniTask LoadSceneAsync(string name, bool activateOnLoad = true)

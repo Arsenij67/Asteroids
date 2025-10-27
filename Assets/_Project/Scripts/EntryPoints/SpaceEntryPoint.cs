@@ -80,7 +80,7 @@ namespace Asteroid.Generation
             _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= _obstaclesGenerationController.ReviveShip;
             _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= _endPanelView.Close;
             _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= PanelRestartSpawnedHandler;
-
+            _endPanelView.OnButtonGoHomeClicked -= _obstaclesGenerationController.ReloadGameScene;
             _obstaclesGenerationController.OnDestroy();
         }
 
@@ -95,7 +95,7 @@ namespace Asteroid.Generation
             _obstaclesGenerationController.OnShipSpawned += ShipInitializedHandler;
             _shipStatisticController.Initialize(_shipStatisticModel,_instanceLoader,_dataForSave);
             _entitiesGenerationData.Initialize(_remoteConfigService);
-            _obstaclesGenerationController.Initialize(_entitiesGenerationData,_resourceLoader,_instanceLoader);
+            _obstaclesGenerationController.Initialize(_entitiesGenerationData,_resourceLoader,_instanceLoader,_sceneLoader);
         }
 
         private void InitializeEnemySystems()
@@ -145,11 +145,12 @@ namespace Asteroid.Generation
         {
 
             _endPanelView = _resourceLoader.Instantiate(_restartPrefab, _UIParent).GetComponent<GameOverView>();
-            _endPanelView.Initialize(_resourceLoader, _shipStatisticView.transform);
+            _endPanelView.Initialize();
 
             _advertisingController.OnPlayerRevived += _endPanelView.Close;
             _endPanelView.OnGameReloadClicked += _sceneLoader.ReloadCurrentScene;
             _shipController.OnPlayerDie += () => _endPanelView.OnGameReloadClicked += (_advertisingController.ShowInterstitialAd);
+            _endPanelView.OnButtonGoHomeClicked += _obstaclesGenerationController.ReloadGameScene;
 
             _endPanelView.OnButtonShowAdsClicked += (_advertisingController.ShowRewardedAdAfterDead);
             _endPanelView.UpdateButtonShowAd(_advertisementService.IsShowed);
