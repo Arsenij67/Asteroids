@@ -23,6 +23,7 @@ namespace Asteroid.Services.IAP
         public void Initialize()
         {
             _storeController = UnityIAPServices.StoreController();
+
             _storeController.OnPurchasePending += OnPurchasePendingHandler;
             _storeController.OnProductsFetched += OnProductsFetchedHandler;
             _storeController.OnProductsFetchFailed += OnProductsFailedHandler;

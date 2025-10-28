@@ -29,8 +29,8 @@ namespace Asteroid.Services.Analytics
         public void SendEventGameStart()
         {
             CheckActivation();
-            _analytics.PushEvent(Firebase.Analytics.FirebaseAnalytics.EventLogin, Firebase.Analytics.FirebaseAnalytics.ParameterStartDate, DateTime.UtcNow);
-            Debug.Log($"Отправлено уведомление о начале игры: {Firebase.Analytics.FirebaseAnalytics.EventLogin} {Firebase.Analytics.FirebaseAnalytics.ParameterStartDate} {DateTime.UtcNow}");
+            _analytics.PushEvent(Firebase.Analytics.FirebaseAnalytics.EventLogin, Firebase.Analytics.FirebaseAnalytics.ParameterStartDate, DateTime.Now);
+            Debug.Log($"Отправлено уведомление о начале игры: {Firebase.Analytics.FirebaseAnalytics.EventLogin} {Firebase.Analytics.FirebaseAnalytics.ParameterStartDate} {DateTime.Now}");
         }
 
         public void SendEventGameEnd()
