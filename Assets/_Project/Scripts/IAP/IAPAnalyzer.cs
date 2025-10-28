@@ -1,38 +1,40 @@
 using Asteroid.Database;
-using Asteroid.UI;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Zenject;
 using UnityEngine;
 using UnityEngine.Purchasing;
 
 namespace Asteroid.Services.IAP
 {
-    public class IAPAnalyzer : IDisposable, IPurchasingService
+    public class IAPAnalyzer : IDisposable, IPurchasingService, IInitializable
     {
         private const string NO_ADS_ID = "NO ADS";
         private const string COINS_100_ID = "COINS 100";
-        private const short ADDED_100_COINS = 100;
+        private const short ADDED_100_COINS = 100; 
 
         private StoreController _storeController;
         private CatalogProvider _catalog;
         private ShopUI _shopUI;
         private DataSave _dataSave;
 
-        public UniTask Initialize(DataSave dataSave)
+        public void Initialize()
         {
             _storeController = UnityIAPServices.StoreController();
-            _catalog = new CatalogProvider();
-            _dataSave = dataSave;
-
             _storeController.OnPurchasePending += OnPurchasePendingHandler;
             _storeController.OnProductsFetched += OnProductsFetchedHandler;
             _storeController.OnProductsFetchFailed += OnProductsFailedHandler;
             _storeController.OnStoreDisconnected += OnStoreDisconnectedHandler;
             _storeController.OnPurchaseFailed += OnPurchaseFailedHandler;
             _storeController.OnPurchaseConfirmed += OnPurchasesConfirmedHandler;
+        }
 
+        public UniTask Initialize(DataSave dataSave)
+        {
+            _catalog = new CatalogProvider();
+            _dataSave = dataSave;
             var unityCatalog = ProductCatalog.LoadDefaultCatalog();
             foreach (var item in unityCatalog.allProducts)
             {
