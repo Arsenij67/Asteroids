@@ -43,7 +43,7 @@ namespace Asteroid.Generation
         [Inject]private IAdvertisementService _advertisementService;
         [Inject]private AdvertisementController _advertisingController;
         [Inject]private ShipStatisticsModel _shipStatisticModel;
-        [Inject] private IRemoteConfigService _remoteConfigService;
+        [Inject]private IRemoteConfigService _remoteConfigService;
         [Inject]private DataSave _dataForSave;
         [Inject]private IRemoteSavable _remoteSave;
 
@@ -71,24 +71,35 @@ namespace Asteroid.Generation
         private void OnDestroy()
         {
             _obstaclesGenerationController.OnShipSpawned -= ShipInitializedHandler;
-            _endPanelView.OnGameReloadClicked -= _sceneLoader.ReloadCurrentScene;
             _obstaclesGenerationController.OnEnemySpawned -= EnemyInitializedHander;
-            _shipController.OnPlayerDie -= () => _endPanelView.OnButtonShowAdsClicked-=(_advertisingController.ShowRewardedAdAfterDead);
-            _shipController.OnPlayerDie -= () => _endPanelView.OnGameReloadClicked-=(_advertisingController.ShowInterstitialAd);
-            _shipController.OnPlayerDie -= () => OnPlayerDied?.Invoke();
-            _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= _obstaclesGenerationController.ReviveShip;
-            _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= _endPanelView.Close;
-            _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= PanelRestartSpawnedHandler;
-            _endPanelView.OnButtonGoHomeClicked -= _obstaclesGenerationController.ReloadGameScene;
+
+            if (_endPanelView != null)
+            {
+                _endPanelView.OnGameReloadClicked -= _sceneLoader.ReloadCurrentScene;
+                _endPanelView.OnButtonGoHomeClicked -= _obstaclesGenerationController.LoadMainMenuScene;
+                _endPanelView.OnButtonShowAdsClicked -= _advertisingController.ShowRewardedAdAfterDead;
+            }
+
+            if (_shipController != null)
+            {
+                _shipController.OnPlayerDie -= PlayerDieHandler;
+            }
+
             _obstaclesGenerationController.OnDestroy();
         }
 
+        private void PlayerDieHandler()
+        {
+            OnPlayerDied?.Invoke();
+            PanelRestartSpawnedHandler();
+        }
         private async void Update()
         {
             if (Input.GetKey(KeyCode.S))
             {
                 await _remoteSave.SaveKey(CloudKeyData.COINS_COUNT, 800);
-                Debug.Log("Сохранено!");
+                await _remoteSave.SaveKey(CloudKeyData.DEAD_ENEMIES_COUNT, _shipStatisticModel.EnemiesDestroyed);
+                Debug.Log("Сохранено!"+_shipStatisticModel.EnemiesDestroyed);
             
             }
         }
@@ -114,7 +125,7 @@ namespace Asteroid.Generation
 
         private void InitializeServicesSystems()
         {
-            _analyticsEventHandler.Initialize(this, _shipStatisticModel, _weaponShipLaser as LaserWeaponController);
+            _analyticsEventHandler.Initialize(this,_shipStatisticModel, _weaponShipLaser as LaserWeaponController);
             _advertisingController.Initialize(_advertisementService);
         }
 
@@ -159,12 +170,11 @@ namespace Asteroid.Generation
             _advertisingController.OnPlayerRevived += _endPanelView.Close;
             _endPanelView.OnGameReloadClicked += _sceneLoader.ReloadCurrentScene;
             _shipController.OnPlayerDie += () => _endPanelView.OnGameReloadClicked += (_advertisingController.ShowInterstitialAd);
-            _endPanelView.OnButtonGoHomeClicked += _obstaclesGenerationController.ReloadGameScene;
+            _endPanelView.OnButtonGoHomeClicked += _obstaclesGenerationController.LoadMainMenuScene;
+            _endPanelView.OnButtonShowAdsClicked += _advertisingController.ShowRewardedAdAfterDead;
 
-            _endPanelView.OnButtonShowAdsClicked += (_advertisingController.ShowRewardedAdAfterDead);
             _endPanelView.UpdateButtonShowAd(_advertisementService.IsShowed);
             _shipStatisticController.UpdateDestroyedEnemies(_endPanelView);
-         
         }
 
     }

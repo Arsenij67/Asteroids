@@ -10,6 +10,7 @@ namespace Asteroid.Database
         public bool IsLaserUsed;
         public int CountCoins;
         public bool AdsDisabled = false;
+
         public object this[string key]
         {
             get

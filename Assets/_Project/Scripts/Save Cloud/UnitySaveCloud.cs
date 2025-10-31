@@ -33,7 +33,7 @@ namespace Asteroid.Database
             var dictionaryToSave = new Dictionary<string, object>()
             {
                 { CloudKeyData.DEAD_ENEMIES_COUNT, dataSave.CountEnemiesDestroyed.ToString() },
-                { CloudKeyData.COINS_COUNT, dataSave.CountCoins.ToString() }
+                { CloudKeyData.COINS_COUNT, dataSave.CountCoins }
 
             };
             return CloudSaveService.Instance.Data.Player.SaveAsync(dictionaryToSave).AsUniTask();
@@ -56,11 +56,19 @@ namespace Asteroid.Database
 
         private UniTask SigIn()
         {
+            if (AuthenticationService.Instance.IsSignedIn)
+            {
+                return UniTask.CompletedTask;
+            }
             return AuthenticationService.Instance.SignInAnonymouslyAsync().AsUniTask().ContinueWith(() => SaveDataAsync(_dataSave));
         }
 
         private UniTask SetUp()
         {
+            if (UnityServices.State.Equals(ServicesInitializationState.Initialized))
+            {
+                return UniTask.CompletedTask;
+            }
             return UnityServices.InitializeAsync().AsUniTask();
         }
         

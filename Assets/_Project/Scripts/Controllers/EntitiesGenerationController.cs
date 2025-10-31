@@ -41,7 +41,7 @@ namespace Asteroid.Generation
             GenerateShip(_generationData.PlayerShipToGenerateNow);
         }
 
-        public async void ReloadGameScene()
+        public async void LoadMainMenuScene()
         {
             await _sceneLoader.ReloadSceneAsync(_generationData.HomeSceneName,true);
         }

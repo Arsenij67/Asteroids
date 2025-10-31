@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Asteroid.Statistic
 {
-    public struct ShipStatisticsModel
+    public class ShipStatisticsModel
     {
         public int CountShootsFireball;
         public int CountShootsLaser;
@@ -13,7 +13,7 @@ namespace Asteroid.Statistic
         public int CountDestroyedMeteorites;
 
         public int CountShoots => CountShootsFireball + CountShootsLaser;
-        public int EnemiesDestroyed => CountDestroyedUFO + CountDestroyedAsteroids + CountDestroyedMeteorites;
+        public int EnemiesDestroyed { get { Debug.Log(CountDestroyedUFO + CountDestroyedAsteroids + CountDestroyedMeteorites); return CountDestroyedUFO + CountDestroyedAsteroids + CountDestroyedMeteorites; } }
         public bool LaserWasUsed => Convert.ToBoolean(CountShootsLaser);
 
     }
