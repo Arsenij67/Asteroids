@@ -45,6 +45,7 @@ namespace Asteroid.Generation
         [Inject]private ShipStatisticsModel _shipStatisticModel;
         [Inject] private IRemoteConfigService _remoteConfigService;
         [Inject]private DataSave _dataForSave;
+        [Inject]private IRemoteSavable _remoteSave;
 
         private GameOverView ? _endPanelView;
         private SpaceShipController _shipController;
@@ -62,8 +63,9 @@ namespace Asteroid.Generation
             InitializeServicesSystems();
         }
 
-        private void Start()
+        private async void Start()
         {
+            await _remoteSave.Initialize(_dataForSave);
             OnGameStarted?.Invoke();
         }
         private void OnDestroy()
@@ -79,6 +81,16 @@ namespace Asteroid.Generation
             _shipController.OnPlayerDie -= () => _advertisingController.OnPlayerRevived -= PanelRestartSpawnedHandler;
             _endPanelView.OnButtonGoHomeClicked -= _obstaclesGenerationController.ReloadGameScene;
             _obstaclesGenerationController.OnDestroy();
+        }
+
+        private async void Update()
+        {
+            if (Input.GetKey(KeyCode.S))
+            {
+                await _remoteSave.SaveKey(CloudKeyData.COINS_COUNT, 800);
+                Debug.Log("Сохранено!");
+            
+            }
         }
 
         private void InitializeUI()

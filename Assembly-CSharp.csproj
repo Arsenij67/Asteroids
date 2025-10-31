@@ -63,45 +63,30 @@
   <ItemGroup>
     <Compile Include="Assets\_Project\Scripts\EntryPoints\SpaceEntryPoint.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IResourceLoaderService.cs" />
-    <Compile Include="Assets\_Project\Scripts\ScenesManagement\SimpleLoad\SimpleSceneLoader.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\CameraController.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\BulletWeapon.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\BaseSceneData.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\RemoteConfigDatas\RemoteConfigShip.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\RateGame.cs" />
-    <Compile Include="Assets\_Project\Scripts\Controllers\WeaponController.cs" />
-    <Compile Include="Assets\_Project\Scripts\RemoteConfig\FirebaseRemoteConfigService.cs" />
-    <Compile Include="Assets\_Project\Scripts\Models\Enemies\MeteoriteEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\EnemyController.cs" />
     <Compile Include="Assets\_Project\Content\AnimatedCosmos\Example\MouseLook.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\LaserBullet.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\SpaceShipData.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\RocketController.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\RemoteConfigDatas\RemoteConfigFireball.cs" />
-    <Compile Include="Assets\_Project\Scripts\View\Shop\ShopUI.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\RemoteConfigDatas\AssignmentMode.cs" />
-    <Compile Include="Assets\_Project\Scripts\Models\EntitiesGenerationData.cs" />
-    <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\Base\BaseResourcesInstaller.cs" />
-    <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\Garage.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\Wallet.cs" />
     <Compile Include="Assets\_Project\Scripts\IAP\IAPAnalyzer.cs" />
-    <Compile Include="Assets\_Project\Content\AnimatedCosmos\Example\MaterialSwitch.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\ObstaclesLine.cs" />
-    <Compile Include="Assets\_Project\Scripts\Interfaces\ISceneLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\SpaceShipController.cs" />
     <Compile Include="Assets\_Project\Scripts\EntryPoints\ShopEntryPoint.cs" />
-    <Compile Include="Assets\_Project\Scripts\ResourceLoaders\InstanceCreator\InstanceCreator.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\ShipStatisticsModel.cs" />
     <Compile Include="Assets\_Project\Scripts\SaveDataBase\DataSave.cs" />
-    <Compile Include="Assets\_Project\Scripts\Models\Bootstrap\BootstrapSceneData.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\ShipStatisticsController.cs" />
-    <Compile Include="Assets\_Project\Scripts\Controllers\EntitiesGenerationController.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\UFOEnemy.cs" />
-    <Compile Include="Assets\_Project\Scripts\Controllers\AdvertisementController.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\RemoteConfigDatas\RemoteConfigObstacle.cs" />
-    <Compile Include="Assets\_Project\Scripts\Interfaces\IRemoteConfigService.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\WeaponShip.cs" />
-    <Compile Include="Assets\_Project\Scripts\Interfaces\IDeviceInput.cs" />
+    <Compile Include="Assets\_Project\Scripts\Save Cloud\UnitySaveCloud.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IPurchasingService.cs" />
     <Compile Include="Assets\_Project\Scripts\Analytics\AnallyticsEventHandler.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IAnalytics.cs" />
@@ -112,41 +97,59 @@
     <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapEntryPoint.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\ObstacleLineSpawner.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\LevelLoader.cs" />
-    <Compile Include="Assets\_Project\Scripts\View\GameOverView.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\Addressables\LocalBundleLoader.cs" />
-    <Compile Include="Assets\_Project\Scripts\ResourceLoaders\BaseResourceLoaderService.cs" />
-    <Compile Include="Assets\_Project\Scripts\Interfaces\IApplicationQuitter.cs" />
     <Compile Include="Assets\_Project\Scripts\View\Bootstrap\BootstrapUI.cs" />
-    <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\SceneSaveInstaller.cs" />
     <Compile Include="Assets\_Project\Scripts\ScenesManagement\LocalBundleLoading\LocalBundleSceneLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\AsteroidEnemy.cs" />
-    <Compile Include="Assets\Scripts\UnityPurchasing\generated\GooglePlayTangle.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\Score.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\RemoteConfigDatas\RemoteConfigLaser.cs" />
-    <Compile Include="Assets\_Project\Scripts\Interfaces\IInstanceLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\EnemyDeathCounter.cs" />
     <Compile Include="Assets\_Project\Scripts\Analytics\FirebaseAnalyticsSender.cs" />
     <Compile Include="Assets\_Project\Scripts\View\ShipStatisticView.cs" />
+    <Compile Include="Assets\_Project\Scripts\Models\UnityCloud\CloudKeyData.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\BaseBullet.cs" />
+    <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\LoadBar.cs" />
+    <Compile Include="Assets\_Project\Scripts\Models\Enemies\BaseEnemy.cs" />
+    <Compile Include="Assets\_Project\Scripts\ScenesManagement\Exiter\PCApplicationExiter.cs" />
+    <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\ExitGame.cs" />
+    <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\Obstacle.cs" />
+    <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\Part.cs" />
+    <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\Pause.cs" />
+    <Compile Include="Assets\_Project\Scripts\Ads\UnityAdsAdvertisement.cs" />
+    <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\BootsrapUIInstaller.cs" />
+    <Compile Include="Assets\_Project\Scripts\ScenesManagement\SimpleLoad\SimpleSceneLoader.cs" />
+    <Compile Include="Assets\_Project\Scripts\Controllers\WeaponController.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\IRemoteSavable.cs" />
+    <Compile Include="Assets\_Project\Scripts\RemoteConfig\FirebaseRemoteConfigService.cs" />
+    <Compile Include="Assets\_Project\Scripts\Models\Enemies\MeteoriteEnemy.cs" />
+    <Compile Include="Assets\_Project\Scripts\View\Shop\ShopUI.cs" />
+    <Compile Include="Assets\_Project\Scripts\Models\EntitiesGenerationData.cs" />
+    <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\Base\BaseResourcesInstaller.cs" />
+    <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\Garage.cs" />
+    <Compile Include="Assets\_Project\Content\AnimatedCosmos\Example\MaterialSwitch.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\ISceneLoader.cs" />
+    <Compile Include="Assets\_Project\Scripts\ResourceLoaders\InstanceCreator\InstanceCreator.cs" />
+    <Compile Include="Assets\_Project\Scripts\Models\Bootstrap\BootstrapSceneData.cs" />
+    <Compile Include="Assets\_Project\Scripts\Controllers\EntitiesGenerationController.cs" />
+    <Compile Include="Assets\_Project\Scripts\Controllers\AdvertisementController.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\IRemoteConfigService.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\IDeviceInput.cs" />
+    <Compile Include="Assets\_Project\Scripts\View\GameOverView.cs" />
+    <Compile Include="Assets\_Project\Scripts\ResourceLoaders\BaseResourceLoaderService.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\IApplicationQuitter.cs" />
+    <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\SceneSaveInstaller.cs" />
+    <Compile Include="Assets\Scripts\UnityPurchasing\generated\GooglePlayTangle.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\IInstanceLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\SpaceObject.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\GameOver.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Shop\ShopSceneData.cs" />
-    <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\LoadBar.cs" />
-    <Compile Include="Assets\_Project\Scripts\Models\Enemies\BaseEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\ShopUIInstaller.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />
-    <Compile Include="Assets\_Project\Scripts\ScenesManagement\Exiter\PCApplicationExiter.cs" />
-    <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\ExitGame.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\GameplayInstaller.cs" />
-    <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\Obstacle.cs" />
-    <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\Part.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\AnimationController.cs" />
-    <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\Pause.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\Highscore.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IAdvertisementService.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\LaserWeapon.cs" />
-    <Compile Include="Assets\_Project\Scripts\Ads\UnityAdsAdvertisement.cs" />
-    <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\BootsrapUIInstaller.cs" />
     <Compile Include="Assets\_Project\Scripts\DeviceInputs\DesktopInput.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1266,6 +1269,10 @@
       <HintPath>Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Services.Authentication.PlayerAccounts">
+      <HintPath>Library\ScriptAssemblies\Unity.Services.Authentication.PlayerAccounts.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.ScriptableBuildPipeline">
       <HintPath>Library\ScriptAssemblies\Unity.ScriptableBuildPipeline.dll</HintPath>
       <Private>False</Private>
@@ -1280,6 +1287,14 @@
     </Reference>
     <Reference Include="Unity.VisualScripting.Core">
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.CloudSave.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Services.CloudSave.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.Authentication.Editor.Shared">
+      <HintPath>Library\ScriptAssemblies\Unity.Services.Authentication.Editor.Shared.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Profiling.Core">
@@ -1326,8 +1341,16 @@
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Services.Authentication">
+      <HintPath>Library\ScriptAssemblies\Unity.Services.Authentication.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Mathematics">
       <HintPath>Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.CloudSave">
+      <HintPath>Library\ScriptAssemblies\Unity.Services.CloudSave.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VisualScripting.State">

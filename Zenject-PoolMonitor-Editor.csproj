@@ -61,10 +61,10 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.50f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Plugins\Zenject\OptionalExtras\MemoryPoolMonitor\Editor\DebugWindow\MpmWindow.cs" />
-    <Compile Include="Assets\Plugins\Zenject\OptionalExtras\MemoryPoolMonitor\Editor\DebugWindow\MpmView.cs" />
     <Compile Include="Assets\Plugins\Zenject\OptionalExtras\MemoryPoolMonitor\Editor\DebugWindow\InPlaceStableSort.cs" />
     <Compile Include="Assets\Plugins\Zenject\OptionalExtras\MemoryPoolMonitor\Editor\MpmSettingsInstaller.cs" />
+    <Compile Include="Assets\Plugins\Zenject\OptionalExtras\MemoryPoolMonitor\Editor\DebugWindow\MpmWindow.cs" />
+    <Compile Include="Assets\Plugins\Zenject\OptionalExtras\MemoryPoolMonitor\Editor\DebugWindow\MpmView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Plugins\Zenject\OptionalExtras\MemoryPoolMonitor\Editor\Zenject-PoolMonitor-Editor.asmdef" />

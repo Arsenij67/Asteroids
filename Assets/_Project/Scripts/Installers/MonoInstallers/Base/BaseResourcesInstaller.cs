@@ -24,6 +24,8 @@ namespace Asteroid.Installers
             Container.BindInterfacesAndSelfTo<FirebaseAnalyticsSender>().AsSingle();
             Container.Bind<DataSave>().FromNew().AsSingle();
             Container.BindInterfacesAndSelfTo<IAPAnalyzer>().FromNew().AsSingle();
+            Container.BindInterfacesAndSelfTo<UnitySaveCloud>().FromNew().AsCached();
+            Container.BindInterfacesAndSelfTo<CloudKeyData>().FromNew().AsCached();
         }
     }
 }
