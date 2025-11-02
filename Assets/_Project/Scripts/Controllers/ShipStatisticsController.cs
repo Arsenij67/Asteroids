@@ -21,7 +21,7 @@ namespace Asteroid.SpaceShip
 
         public void UpdateDestroyedEnemies(GameOverView gameOverView)
         {
-            gameOverView.UpdateDestroyedEnemies(_shipStatisticModel.EnemiesDestroyed);
+            gameOverView.UpdateDestroyedEnemies(_shipStatisticModel.CountEnemiesDestroyed);
             UpdateDataSave();
         }
 
@@ -50,7 +50,7 @@ namespace Asteroid.SpaceShip
         }
         private void UpdateDataSave()
         {
-            _playerSave.CountEnemiesDestroyed = _shipStatisticModel.EnemiesDestroyed;
+            _playerSave.CountSummaryEnemiesDestroyed = _shipStatisticModel.CountEnemiesDestroyed;
             string jsonData = JsonUtility.ToJson(_playerSave);
             PlayerPrefs.SetString("statsSave", jsonData);
         }

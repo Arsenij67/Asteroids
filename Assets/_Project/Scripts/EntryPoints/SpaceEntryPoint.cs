@@ -4,10 +4,12 @@ using Asteroid.Inputs;
 using Asteroid.Services.Analytics;
 using Asteroid.Services.RemoteConfig;
 using Asteroid.Services.UnityAdvertisement;
+using Asteroid.Services.UnityCloud;
 using Asteroid.SpaceShip;
 using Asteroid.Statistic;
 using Asteroid.Weapon;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -46,6 +48,7 @@ namespace Asteroid.Generation
         [Inject]private IRemoteConfigService _remoteConfigService;
         [Inject]private DataSave _dataForSave;
         [Inject]private IRemoteSavable _remoteSave;
+        [Inject]private CloudDataController _cloudController;
 
         private GameOverView ? _endPanelView;
         private SpaceShipController _shipController;
@@ -65,7 +68,6 @@ namespace Asteroid.Generation
 
         private async void Start()
         {
-            await _remoteSave.Initialize(_dataForSave);
             OnGameStarted?.Invoke();
         }
         private void OnDestroy()
@@ -93,21 +95,10 @@ namespace Asteroid.Generation
             OnPlayerDied?.Invoke();
             PanelRestartSpawnedHandler();
         }
-        private async void Update()
-        {
-            if (Input.GetKey(KeyCode.S))
-            {
-                await _remoteSave.SaveKey(CloudKeyData.COINS_COUNT, 800);
-                await _remoteSave.SaveKey(CloudKeyData.DEAD_ENEMIES_COUNT, _shipStatisticModel.EnemiesDestroyed);
-                Debug.Log("Сохранено!"+_shipStatisticModel.EnemiesDestroyed);
-            
-            }
-        }
 
         private void InitializeUI()
         {
             _shipStatisticView = _resourceLoader.Instantiate(_shipStatisticViewPrefab.gameObject, _UIParent.transform).GetComponent<ShipStatisticsView>();
-           
         }
 
         private void InitializeSpaceShipSystems()
@@ -123,10 +114,12 @@ namespace Asteroid.Generation
             _obstaclesGenerationController.OnEnemySpawned += EnemyInitializedHander;
         }
 
-        private void InitializeServicesSystems()
+        private async void InitializeServicesSystems()
         {
+             await _remoteSave.Initialize(_dataForSave);
             _analyticsEventHandler.Initialize(this,_shipStatisticModel, _weaponShipLaser as LaserWeaponController);
             _advertisingController.Initialize(_advertisementService);
+            _cloudController.Initialize(_remoteSave);
         }
 
         private void EnemyInitializedHander(EnemyController enemyController, BaseEnemy currentEnemy)
@@ -168,13 +161,14 @@ namespace Asteroid.Generation
             _endPanelView.Initialize();
 
             _advertisingController.OnPlayerRevived += _endPanelView.Close;
-            _endPanelView.OnGameReloadClicked += _sceneLoader.ReloadCurrentScene;
-            _shipController.OnPlayerDie += () => _endPanelView.OnGameReloadClicked += (_advertisingController.ShowInterstitialAd);
+            _endPanelView.OnGameReloadClicked += _sceneLoader.ReloadCurrentScene; 
             _endPanelView.OnButtonGoHomeClicked += _obstaclesGenerationController.LoadMainMenuScene;
             _endPanelView.OnButtonShowAdsClicked += _advertisingController.ShowRewardedAdAfterDead;
+            _endPanelView.OnGameReloadClicked += _advertisingController.ShowInterstitialAd;
 
             _endPanelView.UpdateButtonShowAd(_advertisementService.IsShowed);
             _shipStatisticController.UpdateDestroyedEnemies(_endPanelView);
+            _cloudController.AddCountDeadEnemies(_shipStatisticModel.CountEnemiesDestroyed);
         }
 
     }

@@ -13,7 +13,7 @@ namespace Asteroid.Statistic
         public int CountDestroyedMeteorites;
 
         public int CountShoots => CountShootsFireball + CountShootsLaser;
-        public int EnemiesDestroyed { get { Debug.Log(CountDestroyedUFO + CountDestroyedAsteroids + CountDestroyedMeteorites); return CountDestroyedUFO + CountDestroyedAsteroids + CountDestroyedMeteorites; } }
+        public int CountEnemiesDestroyed { get { return CountDestroyedUFO + CountDestroyedAsteroids + CountDestroyedMeteorites; } }
         public bool LaserWasUsed => Convert.ToBoolean(CountShootsLaser);
 
     }

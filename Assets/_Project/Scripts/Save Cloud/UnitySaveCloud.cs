@@ -1,11 +1,11 @@
+using Asteroid.Database;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
 using Unity.Services.Core;
 
-namespace Asteroid.Database
+namespace Asteroid.Services.UnityCloud
 {
     public class  UnitySaveCloud : IRemoteSavable
     {
@@ -19,40 +19,31 @@ namespace Asteroid.Database
         public UniTask SaveKey (string key, object value)
         {
             _dataSave[key] = value;
-            return SaveDataAsync(_dataSave);
-        }
-
-        public async UniTask<object> GetKey(string key)
-        {
-            var loadedDictionary = await GetDataAsync();
-            return loadedDictionary[key];
-        }
-
-        private UniTask SaveDataAsync(DataSave dataSave)
-        {
             var dictionaryToSave = new Dictionary<string, object>()
             {
-                { CloudKeyData.DEAD_ENEMIES_COUNT, dataSave.CountEnemiesDestroyed.ToString() },
-                { CloudKeyData.COINS_COUNT, dataSave.CountCoins }
-
+                { key, value }
             };
             return CloudSaveService.Instance.Data.Player.SaveAsync(dictionaryToSave).AsUniTask();
         }
 
-        private async UniTask<Dictionary<string, object>> GetDataAsync()
+        public async UniTask<T> GetKey<T>(string key)
         {
-            HashSet<string> keysHash = new HashSet<string>() 
+            HashSet<string> keysHash = new HashSet<string>()
             {
-              CloudKeyData.COINS_COUNT,
-              CloudKeyData.DEAD_ENEMIES_COUNT
+                key
             };
+            var stringDict = await CloudSaveService.Instance.Data.Player.LoadAsync(keysHash).AsUniTask();
 
-           var stringDict = await CloudSaveService.Instance.Data.Player.LoadAsync(keysHash).AsUniTask();
-           Dictionary<string, object> objectDict = stringDict.ToDictionary( x => x.Key,x => (object)x.Value);
-           return objectDict;
+            if (stringDict.TryGetValue(key, out var keyName))
+            {
+                return keyName.Value.GetAs<T>();
+            }
 
+            else
+            {
+                return default(T);
+            }
         }
-
 
         private UniTask SigIn()
         {
@@ -60,7 +51,7 @@ namespace Asteroid.Database
             {
                 return UniTask.CompletedTask;
             }
-            return AuthenticationService.Instance.SignInAnonymouslyAsync().AsUniTask().ContinueWith(() => SaveDataAsync(_dataSave));
+            return AuthenticationService.Instance.SignInAnonymouslyAsync().AsUniTask();
         }
 
         private UniTask SetUp()
@@ -71,6 +62,5 @@ namespace Asteroid.Database
             }
             return UnityServices.InitializeAsync().AsUniTask();
         }
-        
     }
 }

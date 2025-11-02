@@ -1,10 +1,10 @@
 using Asteroid.Database;
 using Asteroid.Exit;
 using Asteroid.Generation;
-using Asteroid.Services;
 using Asteroid.Services.Analytics;
 using Asteroid.Services.IAP;
 using Asteroid.Services.UnityAdvertisement;
+using Asteroid.Services.UnityCloud;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using Zenject;
@@ -26,6 +26,7 @@ namespace Asteroid.Installers
             Container.BindInterfacesAndSelfTo<IAPAnalyzer>().FromNew().AsSingle();
             Container.BindInterfacesAndSelfTo<UnitySaveCloud>().FromNew().AsCached();
             Container.BindInterfacesAndSelfTo<CloudKeyData>().FromNew().AsCached();
+            Container.Bind<CloudDataController>().FromNew().AsCached();
         }
     }
 }

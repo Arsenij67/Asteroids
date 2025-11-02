@@ -6,7 +6,7 @@ namespace Asteroid.Database
     public class DataSave
     {
         public string Name;
-        public int CountEnemiesDestroyed;
+        public int CountSummaryEnemiesDestroyed;
         public bool IsLaserUsed;
         public int CountCoins;
         public bool AdsDisabled = false;
@@ -17,7 +17,7 @@ namespace Asteroid.Database
             {
                 return key switch
                 {
-                    CloudKeyData.DEAD_ENEMIES_COUNT => CountEnemiesDestroyed,
+                    CloudKeyData.DEAD_ENEMIES_COUNT_SUMMARY => CountSummaryEnemiesDestroyed,
                     CloudKeyData.COINS_COUNT => CountCoins,
                     _ => throw new ArgumentException($"Invalid key: {key}")
                 };
@@ -26,8 +26,8 @@ namespace Asteroid.Database
             {
                 switch (key)
                 {
-                    case CloudKeyData.DEAD_ENEMIES_COUNT:
-                        CountEnemiesDestroyed = (int)value;
+                    case CloudKeyData.DEAD_ENEMIES_COUNT_SUMMARY:
+                        CountSummaryEnemiesDestroyed = (int)value;
                         break;
                     case CloudKeyData.COINS_COUNT:
                         CountCoins = (int)value;

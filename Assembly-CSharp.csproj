@@ -79,6 +79,7 @@
     <Compile Include="Assets\_Project\Scripts\IAP\IAPAnalyzer.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\ObstaclesLine.cs" />
     <Compile Include="Assets\_Project\Scripts\Controllers\SpaceShipController.cs" />
+    <Compile Include="Assets\_Project\Scripts\Controllers\CloudDataController.cs" />
     <Compile Include="Assets\_Project\Scripts\EntryPoints\ShopEntryPoint.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\ShipStatisticsModel.cs" />
     <Compile Include="Assets\_Project\Scripts\SaveDataBase\DataSave.cs" />

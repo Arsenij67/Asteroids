@@ -40,10 +40,10 @@ namespace Asteroid.Services.Analytics
 {
             new Parameter("count_shoots", _shipStatisticModel.CountShoots),
             new Parameter("count_laser_shoots", _shipStatisticModel.CountShootsLaser.ToString()),
-            new Parameter("enemies_destroyed", _shipStatisticModel.EnemiesDestroyed)
+            new Parameter("enemies_destroyed", _shipStatisticModel.CountEnemiesDestroyed)
             };
             _analytics.PushEvent(Firebase.Analytics.FirebaseAnalytics.EventLevelEnd, Firebase.Analytics.FirebaseAnalytics.ParameterLevelName, parametersValue);
-            Debug.Log($"Отправлено уведомление о конце игры: {_shipStatisticModel.CountShoots} {_shipStatisticModel.CountShootsLaser.ToString()} {_shipStatisticModel.EnemiesDestroyed}");
+            Debug.Log($"Отправлено уведомление о конце игры: {_shipStatisticModel.CountShoots} {_shipStatisticModel.CountShootsLaser.ToString()} {_shipStatisticModel.CountEnemiesDestroyed}");
         }
 
         public void SendEventLaserUsed()
