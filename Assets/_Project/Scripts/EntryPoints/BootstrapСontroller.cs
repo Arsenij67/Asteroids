@@ -27,6 +27,7 @@ namespace Asteroid.Generation
         [Inject] private IPurchasingService _purchasingService;
         [Inject] private DataSave _dataForSave;
         [Inject] private IApplicationQuitter _applicationQuitter;
+        [Inject] private IRemoteSavable _remoteSave;
 
         private bool _analyticsReady;
         private bool _remoteConfigReady;
@@ -34,6 +35,7 @@ namespace Asteroid.Generation
         private bool _advertisementReady;
         private float _loadingProgress;
         private bool _purchaseLoaded;
+        private bool _cloudSaveLoaded;
         private bool _shopLoaded;
 
         public async void Initialize()
@@ -47,6 +49,7 @@ namespace Asteroid.Generation
             _loadingTasks.Add(PrepareGameSceneAsync());
             _loadingTasks.Add(PrepareRemoteConfigAsync());
             _loadingTasks.Add(PreparePurchasingAsync());
+            _loadingTasks.Add(PrepareCloudSaveServiceAsync());
             TickLoading();
              await UniTask.WhenAll(_loadingTasks);
             
@@ -92,6 +95,7 @@ namespace Asteroid.Generation
             completedCount += Convert.ToInt16(_remoteConfigReady);
             completedCount += Convert.ToInt16(_purchaseLoaded);
             completedCount += Convert.ToInt16(_shopLoaded);
+            completedCount += Convert.ToInt16(_cloudSaveLoaded);
             return _loadingProgress = (float)completedCount / _loadingTasks.Count();
         }
 
@@ -147,6 +151,12 @@ namespace Asteroid.Generation
             {
                 _bootstrapUI.UpdateSlider(_loadingProgress);
             }
+        }
+
+        private async UniTask PrepareCloudSaveServiceAsync()
+        { 
+            _remoteSave.Initialize(_dataForSave);
+            _cloudSaveLoaded = true;
         }
 
         private async void OpenLoadedGameScene()

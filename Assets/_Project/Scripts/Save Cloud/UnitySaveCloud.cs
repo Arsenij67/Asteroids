@@ -1,23 +1,67 @@
 using Asteroid.Database;
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
+using Unity.Services.CloudSave.Models;
 using Unity.Services.Core;
+using UnityEngine;
 
 namespace Asteroid.Services.UnityCloud
 {
-    public class  UnitySaveCloud : IRemoteSavable
+    public class UnitySaveCloud : IRemoteSavable
     {
         private DataSave _dataSave;
-        public UniTask Initialize(DataSave dataSave)
+        private static bool _isInitializing = false;
+        private static bool _isInitialized = false;
+
+        public async UniTask Initialize(DataSave dataSave)
         {
+            if (_isInitialized || _isInitializing)
+                return;
+
+            _isInitializing = true;
             _dataSave = dataSave;
-            return SetUp().ContinueWith(() => SigIn());
+
+            try
+            {
+                await SetUp();
+                await SignIn();
+                _isInitialized = true;
+                UnityEngine.Debug.Log("Unity Cloud Save инициализирован успешно!");
+            }
+            catch (System.Exception ex)
+            {
+                UnityEngine.Debug.LogError($"Ошибка инициализации Unity Cloud Save: {ex.Message}");
+                throw;
+            }
+            finally
+            {
+                _isInitializing = false;
+            }
+            await DownloadAllData();
         }
 
-        public UniTask SaveKey (string key, object value)
+        private async UniTask DownloadAllData()
         {
+           Dictionary<string,Item> data =  await CloudSaveService.Instance.Data.Player.LoadAllAsync();
+
+            foreach (string key in data.Keys)
+            {
+                _dataSave[key] = data[key].Value.GetAsString();
+            }
+        }
+
+        public UniTask SaveKey(string key, object value)
+        {
+            if (!_isInitialized)
+            {
+                UnityEngine.Debug.LogWarning("Попытка сохранить данные до инициализации Cloud Save");
+                return UniTask.CompletedTask;
+            }
+
             _dataSave[key] = value;
             var dictionaryToSave = new Dictionary<string, object>()
             {
@@ -28,6 +72,12 @@ namespace Asteroid.Services.UnityCloud
 
         public async UniTask<T> GetKey<T>(string key)
         {
+            if (!_isInitialized)
+            {
+                UnityEngine.Debug.LogWarning("Попытка загрузить данные до инициализации Cloud Save");
+                return default(T);
+            }
+
             HashSet<string> keysHash = new HashSet<string>()
             {
                 key
@@ -38,29 +88,55 @@ namespace Asteroid.Services.UnityCloud
             {
                 return keyName.Value.GetAs<T>();
             }
-
             else
             {
                 return default(T);
             }
         }
 
-        private UniTask SigIn()
+        private async UniTask SignIn()
         {
             if (AuthenticationService.Instance.IsSignedIn)
             {
-                return UniTask.CompletedTask;
+                UnityEngine.Debug.Log("Пользователь уже аутентифицирован");
+                return;
             }
-            return AuthenticationService.Instance.SignInAnonymouslyAsync().AsUniTask();
+
+            while (AuthenticationService.Instance.IsAuthorized && !AuthenticationService.Instance.IsSignedIn)
+            {
+                await UniTask.NextFrame();
+            }
+
+            if (AuthenticationService.Instance.IsSignedIn)
+                return;
+
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            UnityEngine.Debug.Log("Анонимная аутентификация завершена успешно!");
         }
 
-        private UniTask SetUp()
+        private async UniTask SetUp()
         {
-            if (UnityServices.State.Equals(ServicesInitializationState.Initialized))
+            if (UnityServices.State == ServicesInitializationState.Initialized)
             {
-                return UniTask.CompletedTask;
+                return;
             }
-            return UnityServices.InitializeAsync().AsUniTask();
+
+            // Если уже выполняется инициализация, ждем ее завершения
+            if (UnityServices.State == ServicesInitializationState.Initializing)
+            {
+                while (UnityServices.State == ServicesInitializationState.Initializing)
+                {
+                    await UniTask.Delay(100);
+                }
+
+                if (UnityServices.State == ServicesInitializationState.Initialized)
+                {
+                    return;
+                }
+            }
+
+            await UnityServices.InitializeAsync();
+            UnityEngine.Debug.Log("Инициализация Unity Services завершена успешно!");
         }
     }
 }

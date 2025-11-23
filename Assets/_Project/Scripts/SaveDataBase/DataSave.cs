@@ -27,10 +27,10 @@ namespace Asteroid.Database
                 switch (key)
                 {
                     case CloudKeyData.DEAD_ENEMIES_COUNT_SUMMARY:
-                        CountSummaryEnemiesDestroyed = (int)value;
+                        CountSummaryEnemiesDestroyed = Convert.ToInt32(value);
                         break;
                     case CloudKeyData.COINS_COUNT:
-                        CountCoins = (int)value;
+                        CountCoins = Convert.ToInt32(value);
                         break;
                     default:
                         throw new ArgumentException($"Invalid key: {key}");

@@ -114,9 +114,8 @@ namespace Asteroid.Generation
             _obstaclesGenerationController.OnEnemySpawned += EnemyInitializedHander;
         }
 
-        private async void InitializeServicesSystems()
+        private void InitializeServicesSystems()
         {
-             await _remoteSave.Initialize(_dataForSave);
             _analyticsEventHandler.Initialize(this,_shipStatisticModel, _weaponShipLaser as LaserWeaponController);
             _advertisingController.Initialize(_advertisementService);
             _cloudController.Initialize(_remoteSave);

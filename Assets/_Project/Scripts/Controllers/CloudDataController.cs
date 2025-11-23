@@ -1,5 +1,6 @@
 
 using Asteroid.Database;
+using Cysharp.Threading.Tasks;
 
 namespace Asteroid.Services.UnityCloud
 {
@@ -26,5 +27,6 @@ namespace Asteroid.Services.UnityCloud
             int oldCoins = await _remoteSavable.GetKey<int>(CloudKeyData.COINS_COUNT);
             await _remoteSavable.SaveKey(CloudKeyData.COINS_COUNT, oldCoins - coinsToRemove);
         }
+
     }
 }
