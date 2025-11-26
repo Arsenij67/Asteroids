@@ -13,6 +13,7 @@ public class ShopEntryPoint : MonoBehaviour
 
     [Inject] private ShopUI _shopUI;
     [Inject] private IPurchasingService _purchaseService;
+    [Inject] private IRemoteSavable _remoteSave;
     [Inject] private CloudDataController _cloudDataController;
     [Inject] private TMP_Text _textCoins;
     [Inject] private DataSave _dataSave;
@@ -23,6 +24,7 @@ public class ShopEntryPoint : MonoBehaviour
     {
         _shopUI.Initialize(_buttonBuyNoAds, _buttonBuy100Coins, _textCoins);
         _purchaseService.Initialize(_shopUI);
+        _cloudDataController.Initialize(_remoteSave);
         _shopUI.UpdateCountCoins(_dataSave.CountCoins);
         _shopUI.OnPlayerClickBuyNoAds += _purchaseService.BuyNoAds;
         _shopUI.OnPlayerClickBuy100Coins += _purchaseService.Buy100Coins;
