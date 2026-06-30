@@ -17,7 +17,6 @@ namespace Asteroid.Services.IAP
 
         private StoreController _storeController;
         private CatalogProvider _catalog;
-        private ShopUI _shopUI;
         private DataSave _dataSave;
 
         public void Initialize()
@@ -45,11 +44,6 @@ namespace Asteroid.Services.IAP
             }
             _catalog.FetchProducts(UnityIAPServices.DefaultProduct().FetchProductsWithNoRetries);
             return _storeController.Connect().AsUniTask();
-        }
-
-        public void Initialize(ShopUI shopUI)
-        {
-            _shopUI = shopUI;
         }
 
         public void Buy100Coins()
@@ -104,15 +98,13 @@ namespace Asteroid.Services.IAP
 
             if (order != null && pendedAdvertisements)
             {
-                _dataSave.AdsDisabled = true;
+                _dataSave[CloudKeyData.ADS_DISABLED] = true;
                 Debug.ClearDeveloperConsole();
-                Debug.Log("������� �������: " + _dataSave.AdsDisabled);
             }
 
             else if (order != null && pendedAdd100Coins)
             {
-                _dataSave.CountCoins += ADDED_100_COINS;
-                _shopUI.UpdateCountCoins(_dataSave.CountCoins);
+                _dataSave[CloudKeyData.COINS_COUNT]= (int)_dataSave[CloudKeyData.COINS_COUNT]+ ADDED_100_COINS;
             }
             _storeController.ConfirmPurchase(order);
         }
@@ -130,7 +122,6 @@ namespace Asteroid.Services.IAP
 
         private void OnPurchasesConfirmedHandler(Order order)
         {
-            Debug.Log("Purchases Confirmed!");
 
             foreach (var product in order.CartOrdered.Items())
             {

@@ -24,6 +24,7 @@ public class ShopUI : MonoBehaviour
 
     public void UpdateCountCoins(int endValue)
     {
+        Debug.Log("UpdateCountCoins CALLED");
         _textCoins.text = endValue.ToString();
     }
 
@@ -40,7 +41,6 @@ public class ShopUI : MonoBehaviour
 
     private void NotifyButtonAdd100CoinsPressed()
     {
-        Debug.Log("Update");
         OnPlayerClickBuy100Coins?.Invoke();
     }
 }

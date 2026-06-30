@@ -17,7 +17,7 @@ namespace Asteroid.UI
         [Inject(Id = "buttonStart")] private Button _buttonStartGame;
         [Inject(Id = "buttonExit")] private Button _buttonExitGame;
 
-        private void Start()
+        private void Awake()
         {
             _buttonStartGame.onClick.AddListener(NotifyButtonStartPressed);
             _buttonExitGame.onClick.AddListener(NotifyButtonExitPressed);

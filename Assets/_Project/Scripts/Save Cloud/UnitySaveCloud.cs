@@ -2,12 +2,10 @@ using Asteroid.Database;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
 using Unity.Services.CloudSave.Models;
 using Unity.Services.Core;
-using UnityEngine;
 
 namespace Asteroid.Services.UnityCloud
 {
@@ -62,7 +60,6 @@ namespace Asteroid.Services.UnityCloud
                 return UniTask.CompletedTask;
             }
 
-            _dataSave[key] = value;
             var dictionaryToSave = new Dictionary<string, object>()
             {
                 { key, value }

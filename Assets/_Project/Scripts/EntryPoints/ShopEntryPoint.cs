@@ -23,12 +23,15 @@ public class ShopEntryPoint : MonoBehaviour
     private void Start()
     {
         _shopUI.Initialize(_buttonBuyNoAds, _buttonBuy100Coins, _textCoins);
-        _purchaseService.Initialize(_shopUI);
-        _cloudDataController.Initialize(_remoteSave);
-        _shopUI.UpdateCountCoins(_dataSave.CountCoins);
+        _purchaseService.Initialize(_dataSave);
+        _cloudDataController.Initialize(_remoteSave,_dataSave);
+
+        _shopUI.OnPlayerClickBuy100Coins += () => _shopUI.UpdateCountCoins((int)_dataSave[CloudKeyData.COINS_COUNT]);
         _shopUI.OnPlayerClickBuyNoAds += _purchaseService.BuyNoAds;
         _shopUI.OnPlayerClickBuy100Coins += _purchaseService.Buy100Coins;
-        _shopUI.OnPlayerClickBuy100Coins +=  () =>_cloudDataController.AddCountCoins(ADDED_100_COINS);
+        _shopUI.OnPlayerClickBuy100Coins += () =>_cloudDataController.AddCountCoins(ADDED_100_COINS);
+
+        _shopUI.UpdateCountCoins((int)_dataSave[CloudKeyData.COINS_COUNT]);
     }
 
     private void OnDestroy()
@@ -36,5 +39,6 @@ public class ShopEntryPoint : MonoBehaviour
         _shopUI.OnPlayerClickBuy100Coins -= () => _cloudDataController.AddCountCoins(ADDED_100_COINS);
         _shopUI.OnPlayerClickBuyNoAds -= _purchaseService.BuyNoAds;
         _shopUI.OnPlayerClickBuy100Coins -= _purchaseService.Buy100Coins;
+        _shopUI.OnPlayerClickBuy100Coins -= () => _shopUI.UpdateCountCoins((int)_dataSave[CloudKeyData.COINS_COUNT]);
     }
 }

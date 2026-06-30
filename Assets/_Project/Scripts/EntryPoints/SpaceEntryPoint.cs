@@ -118,7 +118,7 @@ namespace Asteroid.Generation
         {
             _analyticsEventHandler.Initialize(this,_shipStatisticModel, _weaponShipLaser as LaserWeaponController);
             _advertisingController.Initialize(_advertisementService);
-            _cloudController.Initialize(_remoteSave);
+            _cloudController.Initialize(_remoteSave,_dataForSave);
         }
 
         private void EnemyInitializedHander(EnemyController enemyController, BaseEnemy currentEnemy)
