@@ -11,13 +11,14 @@ namespace Asteroid.Services.IAP
 {
     public class IAPAnalyzer : IDisposable, IPurchasingService, IInitializable
     {
+        public event Action OnPlayerBought100Coins;
+        public event Action OnPlayerBoughtNoAds;
+
         private const string NO_ADS_ID = "NO ADS";
         private const string COINS_100_ID = "COINS 100";
-        private const short ADDED_100_COINS = 100; 
 
         private StoreController _storeController;
         private CatalogProvider _catalog;
-        private DataSave _dataSave;
 
         public void Initialize()
         {
@@ -34,7 +35,6 @@ namespace Asteroid.Services.IAP
         public UniTask Initialize(DataSave dataSave)
         {
             _catalog = new CatalogProvider();
-            _dataSave = dataSave;
             var unityCatalog = ProductCatalog.LoadDefaultCatalog();
             foreach (var item in unityCatalog.allProducts)
             {
@@ -96,17 +96,11 @@ namespace Asteroid.Services.IAP
             bool pendedAdvertisements = items.Any(item => item.Product.definition.id == NO_ADS_ID);
             bool pendedAdd100Coins = items.Any(item => item.Product.definition.id == COINS_100_ID);
 
-            if (order != null && pendedAdvertisements)
+            if (order != null && (pendedAdvertisements || pendedAdd100Coins))
             {
-                _dataSave[CloudKeyData.ADS_DISABLED] = true;
-                Debug.ClearDeveloperConsole();
+                _storeController.ConfirmPurchase(order);
             }
-
-            else if (order != null && pendedAdd100Coins)
-            {
-                _dataSave[CloudKeyData.COINS_COUNT]= (int)_dataSave[CloudKeyData.COINS_COUNT]+ ADDED_100_COINS;
-            }
-            _storeController.ConfirmPurchase(order);
+         
         }
 
         private void OnProductsFetchedHandler(List<Product> products)
@@ -125,8 +119,18 @@ namespace Asteroid.Services.IAP
 
             foreach (var product in order.CartOrdered.Items())
             {
+                if (product.Product.definition.id.Equals(COINS_100_ID))
+                {
+                    OnPlayerBought100Coins?.Invoke();
+                }
+                else if (product.Product.definition.id.Equals(NO_ADS_ID))
+                {
+                    OnPlayerBoughtNoAds?.Invoke();
+                }
                 Debug.Log($"Order: {product.Product.definition.id}, Status: Confirmed ");
             }
+ 
+        
         }
 
         private void OnPurchaseFailedHandler(FailedOrder failedOrder)

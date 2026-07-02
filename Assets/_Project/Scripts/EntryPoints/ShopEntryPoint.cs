@@ -2,7 +2,6 @@ using Asteroid.Database;
 using Asteroid.Services.IAP;
 using Asteroid.Services.UnityCloud;
 using TMPro;
-using Unity.Services.Core;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -20,25 +19,27 @@ public class ShopEntryPoint : MonoBehaviour
     [Inject(Id = "buttonBuyNoAds")] private Button _buttonBuyNoAds;
     [Inject(Id = "buttonBuy100Coins")] private Button _buttonBuy100Coins;
 
-    private void Start()
+    private async void Start()
     {
         _shopUI.Initialize(_buttonBuyNoAds, _buttonBuy100Coins, _textCoins);
-        _purchaseService.Initialize(_dataSave);
+        await _purchaseService.Initialize(_dataSave);
         _cloudDataController.Initialize(_remoteSave,_dataSave);
 
-        _shopUI.OnPlayerClickBuy100Coins += () => _shopUI.UpdateCountCoins((int)_dataSave[CloudKeyData.COINS_COUNT]);
         _shopUI.OnPlayerClickBuyNoAds += _purchaseService.BuyNoAds;
         _shopUI.OnPlayerClickBuy100Coins += _purchaseService.Buy100Coins;
-        _shopUI.OnPlayerClickBuy100Coins += () =>_cloudDataController.AddCountCoins(ADDED_100_COINS);
+        _purchaseService.OnPlayerBought100Coins += async () => await _cloudDataController.AddCountCoins(ADDED_100_COINS);
+        _purchaseService.OnPlayerBought100Coins += () => _shopUI.UpdateCountCoins(_cloudDataController.GetCountCoins()+ ADDED_100_COINS);
 
-        _shopUI.UpdateCountCoins((int)_dataSave[CloudKeyData.COINS_COUNT]);
+        // _purchaseService.OnPlayerBoughtNoAds+= () =>_shopUI.UpdateCountCoins((int)_dataSave[CloudKeyData.COINS_COUNT]);
+
+        _shopUI.UpdateCountCoins(_cloudDataController.GetCountCoins());
     }
 
     private void OnDestroy()
     {
-        _shopUI.OnPlayerClickBuy100Coins -= () => _cloudDataController.AddCountCoins(ADDED_100_COINS);
         _shopUI.OnPlayerClickBuyNoAds -= _purchaseService.BuyNoAds;
         _shopUI.OnPlayerClickBuy100Coins -= _purchaseService.Buy100Coins;
         _shopUI.OnPlayerClickBuy100Coins -= () => _shopUI.UpdateCountCoins((int)_dataSave[CloudKeyData.COINS_COUNT]);
+        _purchaseService.OnPlayerBought100Coins -= async () => await _cloudDataController.AddCountCoins(ADDED_100_COINS);
     }
 }
