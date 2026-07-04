@@ -8,6 +8,9 @@ namespace Asteroid.Services.UnityCloud
 {
     public class CloudDataController
     {
+        public int CountCoins=> _dataSave[CloudKeyData.COINS_COUNT]!=null ? (int)_dataSave[CloudKeyData.COINS_COUNT] : 0;
+        public bool NoAdsStatus => (bool)_dataSave[CloudKeyData.ADS_DISABLED];
+
         private IRemoteSavable _remoteSavable;
         private DataSave _dataSave;
         public void Initialize(IRemoteSavable remoteSavable, DataSave dataSave)
@@ -26,17 +29,16 @@ namespace Asteroid.Services.UnityCloud
             int oldCoins = await _remoteSavable.GetKey<int>(CloudKeyData.COINS_COUNT);
             _dataSave[CloudKeyData.COINS_COUNT] = oldCoins + coinsToAdd;
             await _remoteSavable.SaveKey(CloudKeyData.COINS_COUNT, _dataSave[CloudKeyData.COINS_COUNT]);
-            UnityEngine.Debug.Log("AddCountCoins" + _dataSave[CloudKeyData.COINS_COUNT]);
         }
-
+        public void UpdateNoAdsStatus(bool adsDisabled)
+        {
+            _dataSave[CloudKeyData.ADS_DISABLED] = adsDisabled;
+            _remoteSavable.SaveKey(CloudKeyData.ADS_DISABLED, _dataSave[CloudKeyData.ADS_DISABLED]);
+        }
         public async void RemoveCountCoins(int coinsToRemove)
         {
             int oldCoins = await _remoteSavable.GetKey<int>(CloudKeyData.COINS_COUNT);
             await _remoteSavable.SaveKey(CloudKeyData.COINS_COUNT, oldCoins - coinsToRemove);
-        }
-        public int GetCountCoins()
-        {
-            return (int)_dataSave[CloudKeyData.COINS_COUNT];
         }
 
     }

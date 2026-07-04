@@ -129,13 +129,12 @@ namespace Asteroid.Services.IAP
                 }
                 Debug.Log($"Order: {product.Product.definition.id}, Status: Confirmed ");
             }
- 
         
         }
 
         private void OnPurchaseFailedHandler(FailedOrder failedOrder)
         {
-            Debug.LogError($"Purchase failed: {failedOrder.FailureReason}, Details: {failedOrder.Details}");
+            Debug.Log($"Purchase failed: {failedOrder.FailureReason}, Details: {failedOrder.Details}");
         }
 
 

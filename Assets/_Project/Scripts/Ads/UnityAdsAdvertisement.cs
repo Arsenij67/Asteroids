@@ -85,10 +85,7 @@ namespace Asteroid.Services.UnityAdvertisement
 
         public void Show(params object[] parameters)
         {
-            if (IsEnabled)
-            {
-                Advertisement.Show(parameters[0].ToString(), this);
-            }
+            Advertisement.Show(parameters[0].ToString(), this);
         }
     }
 } 

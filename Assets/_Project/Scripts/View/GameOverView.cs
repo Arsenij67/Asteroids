@@ -15,9 +15,9 @@ public class GameOverView : MonoBehaviour
     [SerializeField] private TMP_Text _enemiesDestroyedText;
     public void Initialize()
     {
-        _buttonRestart.onClick.AddListener(() => { OnGameReloadClicked.Invoke(); });
-        _buttonShowAd.onClick.AddListener(() =>  { OnButtonShowAdsClicked.Invoke(); });
-        _buttonGoHome.onClick.AddListener(() =>  { OnButtonGoHomeClicked.Invoke(); });
+        _buttonRestart.onClick.AddListener(() => { OnGameReloadClicked?.Invoke(); });
+        _buttonShowAd.onClick.AddListener(() =>  { OnButtonShowAdsClicked?.Invoke(); });
+        _buttonGoHome.onClick.AddListener(() =>  { OnButtonGoHomeClicked?.Invoke(); });
     }
 
     public void Close()

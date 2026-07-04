@@ -91,10 +91,10 @@
     <Compile Include="Assets\_Project\Scripts\Interfaces\IPurchasingService.cs" />
     <Compile Include="Assets\_Project\Scripts\Analytics\AnallyticsEventHandler.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IAnalytics.cs" />
-    <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapСontroller.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\Coin.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\Settings.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IWeaponStrategy.cs" />
+    <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapEntryPoint.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\ObstacleLineSpawner.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\LevelLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\Addressables\LocalBundleLoader.cs" />

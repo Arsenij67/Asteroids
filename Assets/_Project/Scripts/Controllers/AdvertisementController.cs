@@ -31,9 +31,12 @@ namespace Asteroid.Services.UnityAdvertisement
             }
         }
 
-        public void ShowInterstitialAd()
+        public void ShowInterstitialAdBeforeRestart()
         {
-            ShowAnyAd(INTERSTITIAL_ANDROID);
+            if (_advertisementService.IsEnabled)
+            {
+                ShowAnyAd(INTERSTITIAL_ANDROID);
+            }
         }
 
         private void ShowAnyAd(string advertisementId)
@@ -42,7 +45,7 @@ namespace Asteroid.Services.UnityAdvertisement
             {
                 _advertisementService.Load(advertisementId);
             }
-            _advertisementService.Show(advertisementId);
+                _advertisementService.Show(advertisementId);
         }
     }
 }

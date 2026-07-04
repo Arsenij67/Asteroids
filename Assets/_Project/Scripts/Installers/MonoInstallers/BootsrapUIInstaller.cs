@@ -21,7 +21,7 @@ namespace Asteroid.Installers.MonoInstallers
             Container.Bind<Button>().WithId("buttonStart").FromInstance(_buttonStart);
             Container.Bind<Button>().WithId("buttonExit").FromInstance(_buttonExit);
             Container.Bind<BootstrapUI>().FromComponentOn(gameObject).AsSingle();
-            Container.BindInterfacesAndSelfTo<BootstrapController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<BootstrapEntryPoint>().AsSingle();
             Container.Bind<RectTransform>().FromInstance(UIParent).AsSingle();
             
         }

@@ -163,7 +163,7 @@ namespace Asteroid.Generation
             _endPanelView.OnGameReloadClicked += _sceneLoader.ReloadCurrentScene; 
             _endPanelView.OnButtonGoHomeClicked += _obstaclesGenerationController.LoadMainMenuScene;
             _endPanelView.OnButtonShowAdsClicked += _advertisingController.ShowRewardedAdAfterDead;
-            _endPanelView.OnGameReloadClicked += _advertisingController.ShowInterstitialAd;
+            _endPanelView.OnGameReloadClicked += _advertisingController.ShowInterstitialAdBeforeRestart;
 
             _endPanelView.UpdateButtonShowAd(_advertisementService.IsShowed);
             _shipStatisticController.UpdateDestroyedEnemies(_endPanelView);

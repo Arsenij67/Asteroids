@@ -52,6 +52,5 @@ namespace Asteroid.UI
                 _buttonStartGame.gameObject.SetActive(true);
             }
         }
-
     }
 }
