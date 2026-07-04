@@ -1,7 +1,6 @@
 using Asteroid.Database;
 using Asteroid.Services.IAP;
 using Asteroid.Services.UnityCloud;
-using Asteroid.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

@@ -11,6 +11,7 @@ namespace Asteroid.Services.UnityCloud
 {
     public class UnitySaveCloud : IRemoteSavable
     {
+        private Dictionary<string, Item> _data;
         private DataSave _dataSave;
         private static bool _isInitializing = false;
         private static bool _isInitialized = false;
@@ -44,11 +45,11 @@ namespace Asteroid.Services.UnityCloud
 
         private async UniTask DownloadAllData()
         {
-           Dictionary<string,Item> data =  await CloudSaveService.Instance.Data.Player.LoadAllAsync();
+            _data =  await CloudSaveService.Instance.Data.Player.LoadAllAsync();
 
-            foreach (string key in data.Keys)
+            foreach (string key in _data.Keys)
             {
-                _dataSave[key] = data[key].Value.GetAsString();
+                _dataSave[key] = _data[key].Value.GetAsString();
             }
         }
 
@@ -89,6 +90,16 @@ namespace Asteroid.Services.UnityCloud
             {
                 return default(T);
             }
+        }
+
+        public DateTime? GetKeyLastModified(string key)
+        {
+            if (!_isInitialized)
+            {
+                UnityEngine.Debug.LogWarning("Попытка получить время обновления до инициализации Cloud Save");
+                return null;
+            }
+            return _data[key]?.Modified.Value.ToLocalTime();
         }
 
         private async UniTask SignIn()

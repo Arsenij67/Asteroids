@@ -454,11 +454,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6779045970315867848, guid: dd7a0b2e80f705c459a17eb8762dfe10, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 284.8657
+      value: 285
       objectReference: {fileID: 0}
     - target: {fileID: 6779045970315867848, guid: dd7a0b2e80f705c459a17eb8762dfe10, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 165.50879
+      value: 165
       objectReference: {fileID: 0}
     - target: {fileID: 6779045970315867848, guid: dd7a0b2e80f705c459a17eb8762dfe10, type: 3}
       propertyPath: m_LocalPosition.x
@@ -511,10 +511,6 @@ PrefabInstance:
     - target: {fileID: 8425645783815909742, guid: dd7a0b2e80f705c459a17eb8762dfe10, type: 3}
       propertyPath: m_Name
       value: ExitButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 8425645783815909742, guid: dd7a0b2e80f705c459a17eb8762dfe10, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1761,7 +1757,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1045972840}
   - component: {fileID: 1045972842}
-  - component: {fileID: 1045972841}
   m_Layer: 5
   m_Name: Spaceship
   m_TagString: Untagged
@@ -1791,18 +1786,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 424.8}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1045972841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1045972839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b35ced0f0ceed940b49a5c998d44592, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!111 &1045972842
 Animation:
   m_ObjectHideFlags: 0

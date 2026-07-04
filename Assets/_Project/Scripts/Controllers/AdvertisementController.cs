@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace Asteroid.Services.UnityAdvertisement
 {
@@ -45,7 +44,7 @@ namespace Asteroid.Services.UnityAdvertisement
             {
                 _advertisementService.Load(advertisementId);
             }
-                _advertisementService.Show(advertisementId);
+            _advertisementService.Show(advertisementId);
         }
     }
 }
