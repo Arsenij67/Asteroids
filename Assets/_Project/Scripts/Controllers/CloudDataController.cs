@@ -30,7 +30,7 @@ namespace Asteroid.Services.UnityCloud
             _dataSave[CloudKeyData.COINS_COUNT] = oldCoins + coinsToAdd;
             await _remoteSavable.SaveKey(CloudKeyData.COINS_COUNT, _dataSave[CloudKeyData.COINS_COUNT]);
         }
-        public void UpdateNoAdsStatus(bool adsDisabled)
+        public void UpdateNoAdsStatusCloud(bool adsDisabled)
         {
             _dataSave[CloudKeyData.ADS_DISABLED] = adsDisabled;
             _remoteSavable.SaveKey(CloudKeyData.ADS_DISABLED, _dataSave[CloudKeyData.ADS_DISABLED]);

@@ -6,13 +6,14 @@ using System.Linq;
 using Zenject;
 using UnityEngine;
 using UnityEngine.Purchasing;
+using UnityEngine.Events;
 
 namespace Asteroid.Services.IAP
 {
     public class IAPAnalyzer : IDisposable, IPurchasingService, IInitializable
     {
-        public event Action OnPlayerBought100Coins;
-        public event Action OnPlayerBoughtNoAds;
+        public event UnityAction OnPlayerBought100Coins;
+        public event UnityAction OnPlayerBoughtNoAds;
 
         private const string NO_ADS_ID = "NO ADS";
         private const string COINS_100_ID = "COINS 100";
@@ -93,14 +94,26 @@ namespace Asteroid.Services.IAP
         {
             Debug.Log("PENDING");
             var items = order.CartOrdered.Items().ToList();
-            bool pendedAdvertisements = items.Any(item => item.Product.definition.id == NO_ADS_ID);
-            bool pendedAdd100Coins = items.Any(item => item.Product.definition.id == COINS_100_ID);
+            CartItem pendedAdvertisement = items.Find(item => item.Product.definition.id == NO_ADS_ID);
+            CartItem pendedAdd100Coins = items.Find(item => item.Product.definition.id == COINS_100_ID);
 
-            if (order != null && (pendedAdvertisements || pendedAdd100Coins))
+            if (order == null) return;
+
+            if (pendedAdd100Coins!=null && pendedAdd100Coins.Product.definition.id == COINS_100_ID)
             {
                 _storeController.ConfirmPurchase(order);
             }
+            if (pendedAdvertisement!=null && IsProductOwned(pendedAdvertisement.Product.definition.id))
+            {
+                Debug.Log("Реклама не куплена повторно! Вы ее уже покупали");
+            }
          
+        }
+
+        private bool IsProductOwned(string productId)
+        {
+            var product = _storeController.GetProducts().ToList().Find(item => item.definition.id == productId);
+            return product != null && product.hasReceipt;
         }
 
         private void OnProductsFetchedHandler(List<Product> products)

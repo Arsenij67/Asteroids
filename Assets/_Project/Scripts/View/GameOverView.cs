@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Asteroid.Generation;
+
 public class GameOverView : MonoBehaviour
 {
     public event Action OnGameReloadClicked;
@@ -11,18 +12,35 @@ public class GameOverView : MonoBehaviour
 
     [SerializeField] private Button _buttonRestart;
     [SerializeField] private Button _buttonShowAd;
-    [SerializeField] private Button  _buttonGoHome;
+    [SerializeField] private Button _buttonGoHome;
     [SerializeField] private TMP_Text _enemiesDestroyedText;
+
     public void Initialize()
     {
-        _buttonRestart.onClick.AddListener(() => { OnGameReloadClicked?.Invoke(); });
-        _buttonShowAd.onClick.AddListener(() =>  { OnButtonShowAdsClicked?.Invoke(); });
-        _buttonGoHome.onClick.AddListener(() =>  { OnButtonGoHomeClicked?.Invoke(); });
+        _buttonRestart.onClick.AddListener(OnRestartClicked);
+        _buttonShowAd.onClick.AddListener(OnShowAdClicked);
+        _buttonGoHome.onClick.AddListener(OnGoHomeClicked);
+    }
+
+    // ✅ Обычные методы для обработки нажатий
+    private void OnRestartClicked()
+    {
+        OnGameReloadClicked?.Invoke();
+    }
+
+    private void OnShowAdClicked()
+    {
+        OnButtonShowAdsClicked?.Invoke();
+    }
+
+    private void OnGoHomeClicked()
+    {
+        OnButtonGoHomeClicked?.Invoke();
     }
 
     public void Close()
     {
-       Destroy(gameObject); 
+        Destroy(gameObject);
     }
 
     public void UpdateButtonShowAd(bool adsShowed)
@@ -40,9 +58,19 @@ public class GameOverView : MonoBehaviour
 
     private void OnDestroy()
     {
-        _buttonRestart.onClick.RemoveListener(() => { OnGameReloadClicked.Invoke(); });
-        _buttonShowAd.onClick.RemoveListener(() => { OnButtonShowAdsClicked.Invoke(); });
-        _buttonGoHome.onClick.RemoveListener(() => { OnButtonGoHomeClicked.Invoke(); });
-    }
+        if (_buttonRestart != null)
+        {  
+            _buttonRestart.onClick.RemoveListener(OnRestartClicked);
+        }
 
+        if (_buttonShowAd != null)
+        {
+            _buttonShowAd.onClick.RemoveListener(OnShowAdClicked);
+        }
+
+        if (_buttonGoHome != null)
+        {
+            _buttonGoHome.onClick.RemoveListener(OnGoHomeClicked);
+        }
+    }
 }

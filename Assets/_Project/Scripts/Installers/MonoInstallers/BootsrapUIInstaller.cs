@@ -23,6 +23,7 @@ namespace Asteroid.Installers.MonoInstallers
             Container.Bind<BootstrapUI>().FromComponentOn(gameObject).AsSingle();
             Container.BindInterfacesAndSelfTo<BootstrapEntryPoint>().AsSingle();
             Container.Bind<RectTransform>().FromInstance(UIParent).AsSingle();
+
             
         }
     }

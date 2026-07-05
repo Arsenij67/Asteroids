@@ -1,9 +1,8 @@
-using Asteroid.Services.IAP;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
-using Zenject;
 
 public class ShopUI : MonoBehaviour
 {
@@ -36,7 +35,6 @@ public class ShopUI : MonoBehaviour
     }
     public void UpdateViewNoAds(bool adsDisabled)
     {
-        Debug.Log(adsDisabled);
         _imageNoAds.enabled = adsDisabled;
     }
 
