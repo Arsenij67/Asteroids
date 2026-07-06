@@ -87,10 +87,10 @@
     <Compile Include="Assets\_Project\Scripts\Models\RemoteConfigDatas\RemoteConfigObstacle.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\WeaponShip.cs" />
     <Compile Include="Assets\_Project\Scripts\Save Cloud\UnitySaveCloud.cs" />
-    <Compile Include="Assets\_Project\Scripts\Interfaces\IPurchasingService.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\WeaponCotroller.cs" />
     <Compile Include="Assets\_Project\Scripts\Analytics\AnallyticsEventHandler.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IAnalytics.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\IPurchasingService.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\Coin.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\Settings.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IWeaponStrategy.cs" />

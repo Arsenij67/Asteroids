@@ -92,28 +92,8 @@ namespace Asteroid.Services.IAP
 
         private void OnPurchasePendingHandler(PendingOrder order)
         {
-            Debug.Log("PENDING");
-            var items = order.CartOrdered.Items().ToList();
-            CartItem pendedAdvertisement = items.Find(item => item.Product.definition.id == NO_ADS_ID);
-            CartItem pendedAdd100Coins = items.Find(item => item.Product.definition.id == COINS_100_ID);
-
             if (order == null) return;
-
-            if (pendedAdd100Coins!=null && pendedAdd100Coins.Product.definition.id == COINS_100_ID)
-            {
-                _storeController.ConfirmPurchase(order);
-            }
-            if (pendedAdvertisement!=null && IsProductOwned(pendedAdvertisement.Product.definition.id))
-            {
-                Debug.Log("Реклама не куплена повторно! Вы ее уже покупали");
-            }
-         
-        }
-
-        private bool IsProductOwned(string productId)
-        {
-            var product = _storeController.GetProducts().ToList().Find(item => item.definition.id == productId);
-            return product != null && product.hasReceipt;
+            _storeController.ConfirmPurchase(order);
         }
 
         private void OnProductsFetchedHandler(List<Product> products)

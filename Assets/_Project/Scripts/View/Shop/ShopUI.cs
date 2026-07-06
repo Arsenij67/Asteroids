@@ -36,6 +36,7 @@ public class ShopUI : MonoBehaviour
     public void UpdateViewNoAds(bool adsDisabled)
     {
         _imageNoAds.enabled = adsDisabled;
+        _buttonBuyNoAds.interactable = !adsDisabled;
     }
 
     private void NotifyButtonTryBuyNoAds()

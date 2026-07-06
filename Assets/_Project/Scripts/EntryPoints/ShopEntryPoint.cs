@@ -11,9 +11,6 @@ namespace Asteroid.EntryPoints
 {
     public class ShopEntryPoint : MonoBehaviour
     {
-        private const int ADDED_100_COINS = 100;
-        private const bool ADVERTISEMENT_IS_CANCELED = true;
-
         [Inject] private ShopUI _shopUI;
         [Inject] private IPurchasingService _purchaseService;
         [Inject] private IRemoteSavable _remoteSave;
@@ -28,7 +25,7 @@ namespace Asteroid.EntryPoints
         {
             _shopUI.Initialize(_buttonBuyNoAds, _buttonBuy100Coins, _textCoins, _imageNoAds);
             await _purchaseService.Initialize(_dataSave);
-            _cloudDataController.Initialize(_remoteSave, _dataSave);
+            _cloudDataController.Initialize(_remoteSave, _dataSave,_shopUI);
 
             _purchaseService.OnPlayerBought100Coins += UpdateCoinsAfterPurchase;
             _purchaseService.OnPlayerBought100Coins += UpdateCoinsUI;
@@ -53,22 +50,22 @@ namespace Asteroid.EntryPoints
 
         private void UpdateNoAdsCloudAfterPurchase()
         {
-            _cloudDataController.UpdateNoAdsStatusCloud(ADVERTISEMENT_IS_CANCELED);
+            _cloudDataController.UpdateNoAdsStatusCloud();
         }
 
         private void UpdateNoAdsUI()
         {
-            _shopUI.UpdateViewNoAds(ADVERTISEMENT_IS_CANCELED);
+            _cloudDataController.UpdateUINoAds();
         }
 
         private async void UpdateCoinsAfterPurchase()
         {
-            await _cloudDataController.AddCountCoins(ADDED_100_COINS);
+            await _cloudDataController.AddCountCoins(_cloudDataController.ADDED_100_COINS);
         }
 
         private void UpdateCoinsUI()
         {
-            _shopUI.UpdateCountCoins(_cloudDataController.CountCoins + ADDED_100_COINS);
+            _shopUI.UpdateCountCoins(_cloudDataController.CountCoins + _cloudDataController.ADDED_100_COINS);
         }
 
     }
