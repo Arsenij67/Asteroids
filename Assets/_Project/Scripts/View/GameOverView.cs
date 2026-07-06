@@ -22,7 +22,6 @@ public class GameOverView : MonoBehaviour
         _buttonGoHome.onClick.AddListener(OnGoHomeClicked);
     }
 
-    // ✅ Обычные методы для обработки нажатий
     private void OnRestartClicked()
     {
         OnGameReloadClicked?.Invoke();

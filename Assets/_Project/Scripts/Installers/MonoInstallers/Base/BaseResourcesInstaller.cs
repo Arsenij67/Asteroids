@@ -19,14 +19,15 @@ namespace Asteroid.Installers
             Container.BindInterfacesAndSelfTo<UnityAdsAdvertisement>().AsSingle();
             Container.Bind<List<UniTask>>().AsTransient();
             Container.BindInterfacesAndSelfTo<InstanceCreator>().AsSingle();
-            Container.Bind<AdvertisementController>().AsSingle();
+            Container.Bind<AdvertisementPresenter>().AsSingle();
             Container.BindInterfacesAndSelfTo<LocalBundleLoader>().AsSingle();
             Container.BindInterfacesAndSelfTo<FirebaseAnalyticsSender>().AsSingle();
             Container.Bind<DataSave>().FromNew().AsSingle();
             Container.BindInterfacesAndSelfTo<IAPAnalyzer>().FromNew().AsSingle();
             Container.BindInterfacesAndSelfTo<UnitySaveCloud>().FromNew().AsSingle();
             Container.BindInterfacesAndSelfTo<CloudKeyData>().FromNew().AsCached();
-            Container.Bind<CloudDataController>().FromNew().AsCached();
+            Container.Bind<CloudDataPresenter>().FromNew().AsCached();
+            Container.Bind<SavingModeDeterminer>().FromNew().AsSingle();
         }
     }
 }

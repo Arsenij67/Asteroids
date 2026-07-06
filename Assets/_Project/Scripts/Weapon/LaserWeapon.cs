@@ -50,7 +50,7 @@ namespace Asteroid.Weapon
             }
         }
 
-        public override void Initialize(BaseBullet concreteBullet, ShipStatisticsView shipStView, ShipStatisticsController controllerStatistics, IResourceLoaderService resourceLoader, IRemoteConfigService remoteConfigService)
+        public override void Initialize(BaseBullet concreteBullet, ShipStatisticsView shipStView, ShipStatisticsPresenter controllerStatistics, IResourceLoaderService resourceLoader, IRemoteConfigService remoteConfigService)
         {
             base.Initialize(concreteBullet, shipStView,controllerStatistics, resourceLoader,remoteConfigService);
             _waitSecondsGlow = new WaitForSeconds(AttackTime);

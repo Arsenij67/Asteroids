@@ -29,6 +29,7 @@ namespace Asteroid.Generation
         [Inject] private DataSave _dataForSave;
         [Inject] private IApplicationQuitter _applicationQuitter;
         [Inject] private IRemoteSavable _remoteSave;
+        [Inject] private SavingModeDeterminer _savingDeterminer;
 
         private bool _analyticsReady;
         private bool _remoteConfigReady;
@@ -38,12 +39,15 @@ namespace Asteroid.Generation
         private bool _purchaseLoaded;
         private bool _cloudSaveLoaded;
         private bool _shopLoaded;
+        private bool _internetConnected;
 
         public async void Initialize()
         {
+            _savingDeterminer.Initialize();
+
              await _sceneLoader.ReloadStartSceneAsync(_bootstrapSceneModel.SceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
-
+            _loadingTasks.Add(PrepareInternetConnection());
             _loadingTasks.Add(PrepareAdvertisementAsync());
             _loadingTasks.Add(PrepareAnalyticsAsync());
             _loadingTasks.Add(PrepareShopSceneAsync());
@@ -54,8 +58,12 @@ namespace Asteroid.Generation
             TickLoading();
             await UniTask.WhenAll(_loadingTasks);
             _bootstrapUI.ActivateButtonStart();
-   
             _bootstrapUI.OnPlayerClickButtonExit += _applicationQuitter.Quit;
+        }
+
+        private async UniTask PrepareInternetConnection()
+        {
+            _internetConnected = await _savingDeterminer.CheckInternetConnection();
         }
 
         private async UniTask PrepareShopSceneAsync()
@@ -64,9 +72,9 @@ namespace Asteroid.Generation
             _shopLoaded = true;
         }
 
-        private async void OpenSceneShop()
+        private UniTask OpenSceneShop()
         {
-            await _sceneLoader.SwitchSceneActivation(_shopData.SceneName, true);
+           return _sceneLoader.SwitchSceneActivation(_shopData.SceneName, true);
         }
 
         public void Dispose()
@@ -94,6 +102,7 @@ namespace Asteroid.Generation
             completedCount += Convert.ToInt16(_purchaseLoaded);
             completedCount += Convert.ToInt16(_shopLoaded);
             completedCount += Convert.ToInt16(_cloudSaveLoaded);
+            completedCount += Convert.ToInt16(_internetConnected);
             return _loadingProgress = (float)completedCount / _loadingTasks.Count();
         }
 
@@ -110,7 +119,7 @@ namespace Asteroid.Generation
             _analyticsReady = true;
         }
 
-        private async void TickLoading()
+        private async UniTask TickLoading()
         {
             const float TICK_TIME = 0.2f;
             while (_loadingProgress < _bootstrapSceneModel.finalProgressTasks)

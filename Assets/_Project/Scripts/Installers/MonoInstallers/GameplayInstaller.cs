@@ -14,10 +14,10 @@ namespace Asteroid.Installers
         {
             Container.BindInterfacesAndSelfTo<DesktopInput>().AsSingle();
             Container.Bind<AnalyticsEventHandler>().FromNew().AsSingle();
-            Container.Bind<EntitiesGenerationController>().FromNew().AsSingle();
+            Container.Bind<EntitiesGenerationPresenter>().FromNew().AsSingle();
             Container.Bind<ShipStatisticsModel>().FromNew().AsSingle();
             Container.Bind<EnemyDeathCounter>().FromNew().AsSingle();
-            Container.Bind<ShipStatisticsController>().FromNew().AsSingle();
+            Container.Bind<ShipStatisticsPresenter>().FromNew().AsSingle();
             Container.Bind<EntitiesGenerationData>().FromNewScriptableObjectResource("ScriptableObjects/EntitiesGenerationData").AsSingle();
             Container.Bind<SpaceShipData>().FromNewScriptableObjectResource("ScriptableObjects/SpaceShipData").AsSingle();
 

@@ -129,7 +129,6 @@ namespace Asteroid.Services.UnityCloud
                 return;
             }
 
-            // Если уже выполняется инициализация, ждем ее завершения
             if (UnityServices.State == ServicesInitializationState.Initializing)
             {
                 while (UnityServices.State == ServicesInitializationState.Initializing)

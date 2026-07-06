@@ -36,19 +36,19 @@ namespace Asteroid.Generation
 
         public Transform EndPointToFly { get; private set; }
         public BaseEnemy ObstacleToGenerateNow => _obstacles[Random.Range(0, _obstacles.Length)].GetComponent<BaseEnemy>();
-        public SpaceShipController PlayerShipToGenerateNow {
+        public SpaceShipPresenter PlayerShipToGenerateNow {
             get
             {
                 if (_assignmentMode.Equals(AssignmentMode.RemoteConfig))
                 {
                     string shipJson = _remoteConfigService.GetValue<string>("ship_config");
                     RemoteConfigShip _remoteConfigShip = JsonUtility.FromJson<RemoteConfigShip>(shipJson);
-                    return _playerShips[_remoteConfigShip.ShipVariant].GetComponent<SpaceShipController>();
+                    return _playerShips[_remoteConfigShip.ShipVariant].GetComponent<SpaceShipPresenter>();
                 }
 
                 else
                 {
-                    return _playerShips[0].GetComponent<SpaceShipController>();
+                    return _playerShips[0].GetComponent<SpaceShipPresenter>();
                 }
 
             }

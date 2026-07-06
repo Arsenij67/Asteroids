@@ -42,9 +42,9 @@ namespace Asteroid.Generation
         [SerializeField] private FireballBullet _bulletPrefab;
 
         [Header("Space Settings")]
-        [Inject] private EntitiesGenerationController _obstaclesGenerationController;
+        [Inject] private EntitiesGenerationPresenter _obstaclesGenerationController;
         [Inject] private EnemyDeathCounter _allEnemiesDeathCounter;
-        [Inject] private ShipStatisticsController _shipStatisticController;
+        [Inject] private ShipStatisticsPresenter _shipStatisticController;
         [Inject] private EntitiesGenerationData _entitiesGenerationData;
         [Inject] private AnalyticsEventHandler _analyticsEventHandler;
         [Inject] private SpaceShipData _spaceShipData;
@@ -53,15 +53,15 @@ namespace Asteroid.Generation
         [Inject] private ISceneLoader _sceneLoader;
         [Inject] private IDeviceInput _deviceInput;
         [Inject] private IAdvertisementService _advertisementService;
-        [Inject] private AdvertisementController _advertisingController;
+        [Inject] private AdvertisementPresenter _advertisingController;
         [Inject] private ShipStatisticsModel _shipStatisticModel;
         [Inject] private IRemoteConfigService _remoteConfigService;
         [Inject] private DataSave _dataForSave;
         [Inject] private IRemoteSavable _remoteSave;
-        [Inject] private CloudDataController _cloudController;
+        [Inject] private CloudDataPresenter _cloudController;
 
         private GameOverView _endPanelView;
-        private SpaceShipController _shipController;
+        private SpaceShipPresenter _shipController;
         private ShipStatisticsView _shipStatisticView;
         private Transform _shipTransform;
         private WeaponController _weaponController;
@@ -157,7 +157,7 @@ namespace Asteroid.Generation
             enemyDestroy.OnEnemyDestroyed -= _enemyDestroyedHandler;
         }
 
-        private void ShipInitializedHandler(SpaceShipController playerShip)
+        private void ShipInitializedHandler(SpaceShipPresenter playerShip)
         {
             _shipTransform = playerShip.transform;
             _shipController = playerShip;

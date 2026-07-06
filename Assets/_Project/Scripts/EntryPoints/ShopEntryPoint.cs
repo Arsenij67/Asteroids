@@ -17,7 +17,7 @@ namespace Asteroid.EntryPoints
         [Inject] private ShopUI _shopUI;
         [Inject] private IPurchasingService _purchaseService;
         [Inject] private IRemoteSavable _remoteSave;
-        [Inject] private CloudDataController _cloudDataController;
+        [Inject] private CloudDataPresenter _cloudDataController;
         [Inject] private TMP_Text _textCoins;
         [Inject] private DataSave _dataSave;
         [Inject] private Image _imageNoAds;
