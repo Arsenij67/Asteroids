@@ -1,4 +1,5 @@
 ﻿using Asteroid.Database;
+using Asteroid.Generation;
 using Asteroid.Services.IAP;
 using Asteroid.Services.UnityCloud;
 using TMPro;
@@ -11,6 +12,8 @@ namespace Asteroid.EntryPoints
 {
     public class ShopEntryPoint : MonoBehaviour
     {
+       
+
         [Inject] private ShopUI _shopUI;
         [Inject] private IPurchasingService _purchaseService;
         [Inject] private IRemoteSavable _remoteSave;
@@ -25,12 +28,12 @@ namespace Asteroid.EntryPoints
         {
             _shopUI.Initialize(_buttonBuyNoAds, _buttonBuy100Coins, _textCoins, _imageNoAds);
             await _purchaseService.Initialize(_dataSave);
-            _cloudDataController.Initialize(_remoteSave, _dataSave,_shopUI);
+            _cloudDataController.Initialize(_dataSave,_shopUI, _remoteSave);
 
             _purchaseService.OnPlayerBought100Coins += UpdateCoinsAfterPurchase;
-            _purchaseService.OnPlayerBought100Coins += UpdateCoinsUI;
-            _purchaseService.OnPlayerBoughtNoAds += UpdateNoAdsCloudAfterPurchase;
-            _purchaseService.OnPlayerBoughtNoAds += UpdateNoAdsUI;
+            _purchaseService.OnPlayerBought100Coins += _cloudDataController.UpdateUICountCoins; 
+            _purchaseService.OnPlayerBoughtNoAds += _cloudDataController.UpdateNoAdsStatus;
+            _purchaseService.OnPlayerBoughtNoAds += _cloudDataController.UpdateUINoAds;
             _shopUI.OnPlayerClickBuy100Coins += _purchaseService.Buy100Coins;
             _shopUI.OnPlayerClickBuyNoAds += _purchaseService.BuyNoAds;
 
@@ -41,31 +44,16 @@ namespace Asteroid.EntryPoints
         private void OnDestroy()
         {
             _purchaseService.OnPlayerBought100Coins -= UpdateCoinsAfterPurchase;
-            _purchaseService.OnPlayerBought100Coins -= UpdateCoinsUI;
-            _purchaseService.OnPlayerBoughtNoAds -= UpdateNoAdsCloudAfterPurchase;
-            _purchaseService.OnPlayerBoughtNoAds -= UpdateNoAdsUI;
+            _purchaseService.OnPlayerBought100Coins -= _cloudDataController.UpdateUICountCoins;
+            _purchaseService.OnPlayerBoughtNoAds -= _cloudDataController.UpdateNoAdsStatus;
+            _purchaseService.OnPlayerBoughtNoAds -= _cloudDataController.UpdateUINoAds;
             _shopUI.OnPlayerClickBuy100Coins -= _purchaseService.Buy100Coins;
             _shopUI.OnPlayerClickBuyNoAds -= _purchaseService.BuyNoAds;
         }
 
-        private void UpdateNoAdsCloudAfterPurchase()
+        private async void UpdateCoinsAfterPurchase(int countCoins)
         {
-            _cloudDataController.UpdateNoAdsStatusCloud();
-        }
-
-        private void UpdateNoAdsUI()
-        {
-            _cloudDataController.UpdateUINoAds();
-        }
-
-        private async void UpdateCoinsAfterPurchase()
-        {
-            await _cloudDataController.AddCountCoins(_cloudDataController.ADDED_100_COINS);
-        }
-
-        private void UpdateCoinsUI()
-        {
-            _shopUI.UpdateCountCoins(_cloudDataController.CountCoins + _cloudDataController.ADDED_100_COINS);
+            await _cloudDataController.AddCountCoins(countCoins);
         }
 
     }

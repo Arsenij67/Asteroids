@@ -39,7 +39,6 @@ namespace Asteroid.Generation
         private bool _purchaseLoaded;
         private bool _cloudSaveLoaded;
         private bool _shopLoaded;
-        private bool _internetConnected;
 
         public async void Initialize()
         {
@@ -47,7 +46,6 @@ namespace Asteroid.Generation
 
              await _sceneLoader.ReloadStartSceneAsync(_bootstrapSceneModel.SceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
-            _loadingTasks.Add(PrepareInternetConnection());
             _loadingTasks.Add(PrepareAdvertisementAsync());
             _loadingTasks.Add(PrepareAnalyticsAsync());
             _loadingTasks.Add(PrepareShopSceneAsync());
@@ -59,11 +57,6 @@ namespace Asteroid.Generation
             await UniTask.WhenAll(_loadingTasks);
             _bootstrapUI.ActivateButtonStart();
             _bootstrapUI.OnPlayerClickButtonExit += _applicationQuitter.Quit;
-        }
-
-        private async UniTask PrepareInternetConnection()
-        {
-            _internetConnected = await _savingDeterminer.CheckInternetConnection();
         }
 
         private async UniTask PrepareShopSceneAsync()
@@ -102,7 +95,6 @@ namespace Asteroid.Generation
             completedCount += Convert.ToInt16(_purchaseLoaded);
             completedCount += Convert.ToInt16(_shopLoaded);
             completedCount += Convert.ToInt16(_cloudSaveLoaded);
-            completedCount += Convert.ToInt16(_internetConnected);
             return _loadingProgress = (float)completedCount / _loadingTasks.Count();
         }
 

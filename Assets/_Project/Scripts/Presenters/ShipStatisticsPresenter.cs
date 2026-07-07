@@ -50,7 +50,7 @@ namespace Asteroid.SpaceShip
         }
         private void UpdateDataSave()
         {
-            _playerSave[CloudKeyData.DEAD_ENEMIES_COUNT_SUMMARY] = _shipStatisticModel.CountEnemiesDestroyed;
+            _playerSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = _shipStatisticModel.CountEnemiesDestroyed;
             string jsonData = JsonUtility.ToJson(_playerSave);
             PlayerPrefs.SetString("statsSave", jsonData);
         }

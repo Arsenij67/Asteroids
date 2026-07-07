@@ -25,7 +25,7 @@ namespace Asteroid.Installers
             Container.Bind<DataSave>().FromNew().AsSingle();
             Container.BindInterfacesAndSelfTo<IAPAnalyzer>().FromNew().AsSingle();
             Container.BindInterfacesAndSelfTo<UnitySaveCloud>().FromNew().AsSingle();
-            Container.BindInterfacesAndSelfTo<CloudKeyData>().FromNew().AsCached();
+            Container.BindInterfacesAndSelfTo<KeyData>().FromNew().AsCached();
             Container.Bind<CloudDataPresenter>().FromNew().AsCached();
             Container.Bind<SavingModeDeterminer>().FromNew().AsSingle();
         }

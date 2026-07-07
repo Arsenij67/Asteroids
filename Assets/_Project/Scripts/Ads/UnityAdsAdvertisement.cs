@@ -23,7 +23,7 @@ namespace Asteroid.Services.UnityAdvertisement
 
         public bool IsShowed => _isShowed;
 
-        public bool IsEnabled => !(bool)_playerSave[CloudKeyData.ADS_DISABLED];
+        public bool IsEnabled => !(bool)_playerSave[KeyData.ADS_DISABLED];
 
         public void Initialize(params object[] parameters)
         {

@@ -1,61 +1,64 @@
 
 using Asteroid.Database;
+using Asteroid.Generation;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Diagnostics;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Asteroid.Services.UnityCloud
 {
-    public class CloudDataPresenter
+    public class CloudDataPresenter: BaseSaveDataPresenter, ISaveStrategy
     {
-        public readonly int ADDED_100_COINS = 100;
-        public readonly bool ADVERTISEMENT_IS_CANCELED = true;
-        public int CountCoins=> _dataSave[CloudKeyData.COINS_COUNT]!=null ? (int)_dataSave[CloudKeyData.COINS_COUNT] : 0;
-        public bool NoAdsStatus => (bool)_dataSave[CloudKeyData.ADS_DISABLED];
+        public bool NoAdsStatus => (bool)(_dataSave[KeyData.ADS_DISABLED] ?? false);
+        public int CountCoins => (int)(_dataSave[KeyData.COINS_COUNT] ?? 0);
 
         private IRemoteSavable _remoteSavable;
-        private DataSave _dataSave;
-        private ShopUI _shopUI; 
-        public void Initialize(IRemoteSavable remoteSavable, DataSave dataSave, ShopUI shopUI=null)
-        { 
-            _remoteSavable = remoteSavable;   
-            _dataSave = dataSave;
-            _shopUI= shopUI;
-        }
-        public async void AddCountDeadEnemies(int enemiesToAdd)
+        public void Initialize(DataSave dataSave, ShopUI shopUI=null, IRemoteSavable remoteSavable = null)
         {
-            int oldEnemies = await _remoteSavable.GetKey<int>(CloudKeyData.DEAD_ENEMIES_COUNT_SUMMARY);
-            _dataSave[CloudKeyData.DEAD_ENEMIES_COUNT_SUMMARY] = oldEnemies + enemiesToAdd;
-            await _remoteSavable.SaveKey(CloudKeyData.DEAD_ENEMIES_COUNT_SUMMARY, _dataSave[CloudKeyData.DEAD_ENEMIES_COUNT_SUMMARY]);
+            base.Initialize(dataSave,shopUI);
+            _remoteSavable = remoteSavable;   
         }
+
+        public async UniTask AddCountDeadEnemies(int enemiesToAdd)
+        {
+            int oldEnemies = await _remoteSavable.GetKey<int>(KeyData.DEAD_ENEMIES_COUNT_SUMMARY);
+            _dataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = oldEnemies + enemiesToAdd;
+            await _remoteSavable.SaveKey(KeyData.DEAD_ENEMIES_COUNT_SUMMARY, _dataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY]);
+            UpdateLastSaveTime(KeyData.DEAD_ENEMIES_COUNT_SUMMARY);
+        }
+
         public async UniTask AddCountCoins(int coinsToAdd)
         {
-            int oldCoins = await _remoteSavable.GetKey<int>(CloudKeyData.COINS_COUNT);
-            _dataSave[CloudKeyData.COINS_COUNT] = oldCoins + coinsToAdd;
-            await _remoteSavable.SaveKey(CloudKeyData.COINS_COUNT, _dataSave[CloudKeyData.COINS_COUNT]);
-        }
-        public void UpdateNoAdsStatusCloud()
-        {
-            _dataSave[CloudKeyData.ADS_DISABLED] = NoAdsStatus;
-            _remoteSavable.SaveKey(CloudKeyData.ADS_DISABLED, _dataSave[CloudKeyData.ADS_DISABLED]);
-        }
-        public async void RemoveCountCoins(int coinsToRemove)
-        {
-            int oldCoins = await _remoteSavable.GetKey<int>(CloudKeyData.COINS_COUNT);
-            await _remoteSavable.SaveKey(CloudKeyData.COINS_COUNT, oldCoins - coinsToRemove);
+            int oldCoins = await _remoteSavable.GetKey<int>(KeyData.COINS_COUNT);
+            _dataSave[KeyData.COINS_COUNT] = oldCoins + coinsToAdd;
+            await _remoteSavable.SaveKey(KeyData.COINS_COUNT, _dataSave[KeyData.COINS_COUNT]);
+            UpdateLastSaveTime(KeyData.COINS_COUNT);
         }
 
-        public void UpdateUINoAds()
+        public void UpdateNoAdsStatus(bool advertisementIsCanceled)
         {
-            _shopUI.UpdateViewNoAds(NoAdsStatus);  
+            _dataSave[KeyData.ADS_DISABLED] = advertisementIsCanceled;
+            _remoteSavable.SaveKey(KeyData.ADS_DISABLED, _dataSave[KeyData.ADS_DISABLED]);
         }
 
-        public void UpdateUICountCoins()
+        public async UniTask RemoveCountCoins(int coinsToRemove)
         {
-            _shopUI.UpdateCountCoins(CountCoins);
+            int oldCoins = await _remoteSavable.GetKey<int>(KeyData.COINS_COUNT);
+            await _remoteSavable.SaveKey(KeyData.COINS_COUNT, oldCoins - coinsToRemove);
+            UpdateLastSaveTime(KeyData.COINS_COUNT);
         }
+
+        public SaveChoice GetMode()
+        {
+            return SaveChoice.UseCloud;
+        }
+
+        public void UpdateLastSaveTime(string key)
+        {
+            _dataSave[KeyData.LAST_SAVE_TIME] = (DateTime)_remoteSavable.GetKeyLastModified(key);
+        }
+
     }
 }

@@ -12,11 +12,15 @@ namespace Asteroid.Services.IAP
 {
     public class IAPAnalyzer : IDisposable, IPurchasingService, IInitializable
     {
-        public event UnityAction OnPlayerBought100Coins;
-        public event UnityAction OnPlayerBoughtNoAds;
 
         private const string NO_ADS_ID = "NO ADS";
         private const string COINS_100_ID = "COINS 100";
+
+        public event UnityAction<int> OnPlayerBought100Coins;
+        public event UnityAction<bool> OnPlayerBoughtNoAds;
+
+        private readonly int ADDED_100_COINS = 100;
+        private readonly bool ADVERTISEMENT_IS_CANCELED = true;
 
         private StoreController _storeController;
         private CatalogProvider _catalog;
@@ -114,11 +118,11 @@ namespace Asteroid.Services.IAP
             {
                 if (product.Product.definition.id.Equals(COINS_100_ID))
                 {
-                    OnPlayerBought100Coins?.Invoke();
+                   OnPlayerBought100Coins?.Invoke(ADDED_100_COINS);
                 }
                 else if (product.Product.definition.id.Equals(NO_ADS_ID))
                 {
-                    OnPlayerBoughtNoAds?.Invoke();
+                    OnPlayerBoughtNoAds?.Invoke(ADVERTISEMENT_IS_CANCELED);
                 }
                 Debug.Log($"Order: {product.Product.definition.id}, Status: Confirmed ");
             }
