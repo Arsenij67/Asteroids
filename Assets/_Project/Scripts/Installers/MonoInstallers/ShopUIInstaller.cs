@@ -21,7 +21,7 @@ public class ShopUIInstaller : MonoInstaller
         Container.Bind<Button>().WithId("buttonBuy100Coins").FromInstance(_buttonBuy100Coins).AsCached();
         Container.Bind<Image>().FromInstance(_imageNoAds).AsCached();
         Container.Bind<TMP_Text>().FromInstance(_textCoins).AsCached();
-        Container.Bind<SaveStrategy>().To<CloudDataPresenter>().AsCached();
+        Container.Bind<LocalSaveStrategyPresenter>().To<LocalSaveStrategyPresenter>().AsCached();
     }
 }
 }

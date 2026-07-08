@@ -166,7 +166,7 @@ namespace Asteroid.Generation
             _weaponShipBullet = playerShip.GetComponent<BulletWeaponController>();
 
             _onPlayerDiedAction = () => OnPlayerDied?.Invoke();
-            _reviveShipAction = () => _obstaclesGenerationController.ReviveShip();
+            _reviveShipAction = _obstaclesGenerationController.ReviveShip;
             _panelRestartHandler = PanelRestartSpawnedHandler;
 
             _shipDieHandler = null;
@@ -184,7 +184,7 @@ namespace Asteroid.Generation
             _entitiesGenerationData.Initialize(_shipTransform, _remoteConfigService);
         }
 
-        private void PanelRestartSpawnedHandler()
+        private async void PanelRestartSpawnedHandler()
         {
             _endPanelView = _resourceLoader.Instantiate(_restartPrefab, _UIParent).GetComponent<GameOverView>();
             _endPanelView.Initialize();
@@ -203,7 +203,7 @@ namespace Asteroid.Generation
 
             _endPanelView.UpdateButtonShowAd(_advertisementService.IsShowed);
             _shipStatisticController.UpdateDestroyedEnemies(_endPanelView);
-            _cloudController.AddCountDeadEnemies(_shipStatisticModel.CountEnemiesDestroyed);
+            await _cloudController.AddCountDeadEnemies(_shipStatisticModel.CountEnemiesDestroyed);
         }
     }
 }

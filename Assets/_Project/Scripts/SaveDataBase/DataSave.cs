@@ -1,27 +1,20 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Asteroid.Database
 {
     [Serializable]
     public class DataSave
     {
-        private string _name;
-        private int _countSummaryEnemiesDestroyed;
-        private bool _isLaserUsed;
-        private int _countCoins;
-        private bool _adsDisabled;
-        private DateTime _lastSaveTime;
-
-        [NonSerialized]
-        private List<object> _dataValues;
-        public DataSave()
-        {
-            _dataValues = new List<object>() { _name,_countSummaryEnemiesDestroyed,_countSummaryEnemiesDestroyed,_isLaserUsed,_countCoins,_adsDisabled,_lastSaveTime };
-        }
-        
+        [SerializeField] private string _name;
+        [SerializeField] private int _countSummaryEnemiesDestroyed;
+        [SerializeField] private bool _isLaserUsed;
+        [SerializeField] private int _countCoins;
+        [SerializeField] private bool _adsDisabled;
+        [SerializeField] private DateTime _lastSaveTime;
 
         public object this[string key]
         {

@@ -12,14 +12,14 @@ namespace Asteroid.Database
         protected ShopUI ShopUI;
         protected DataSave DataSave;
 
-        public virtual void Initialize(DataSave dataSave, ShopUI shopUI = null,IRemoteSavable remoteSavable=null)
+        public void Initialize(DataSave dataSave, ShopUI shopUI = null)
         {
             ShopUI = shopUI;
             DataSave = dataSave;
         }
         public abstract UniTask AddCountDeadEnemies(int enemiesToAdd);
         public abstract UniTask AddCountCoins(int coinsToAdd);
-        public abstract  void UpdateNoAdsStatus(bool adevertisementIsCanceled);
+        public abstract  UniTask UpdateNoAdsStatus(bool adevertisementIsCanceled);
         public abstract UniTask RemoveCountCoins(int coinsToRemove);
         public abstract SaveChoice GetMode();
         public abstract void UpdateLastSaveTime(string key);

@@ -13,7 +13,7 @@ namespace Asteroid.Services.UnityCloud
     {
         private IRemoteSavable _remoteSavable;
 
-        public override void Initialize(DataSave dataSave, ShopUI shopUI = null,IRemoteSavable remoteSavable=null)
+        public void Initialize(DataSave dataSave, ShopUI shopUI = null, IRemoteSavable remoteSavable = null)
         {
             base.Initialize(dataSave, shopUI);
             _remoteSavable = remoteSavable;
@@ -35,10 +35,10 @@ namespace Asteroid.Services.UnityCloud
             UpdateLastSaveTime(KeyData.COINS_COUNT);
         }
 
-        public override void UpdateNoAdsStatus(bool advertisementIsCanceled)
+        public override UniTask UpdateNoAdsStatus(bool advertisementIsCanceled)
         {
             DataSave[KeyData.ADS_DISABLED] = advertisementIsCanceled;
-            _remoteSavable.SaveKey(KeyData.ADS_DISABLED, DataSave[KeyData.ADS_DISABLED]);
+            return _remoteSavable.SaveKey(KeyData.ADS_DISABLED, DataSave[KeyData.ADS_DISABLED]);
         }
 
         public override async UniTask RemoveCountCoins(int coinsToRemove)

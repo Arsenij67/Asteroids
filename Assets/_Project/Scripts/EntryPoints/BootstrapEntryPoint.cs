@@ -29,7 +29,6 @@ namespace Asteroid.Generation
         [Inject] private DataSave _dataForSave;
         [Inject] private IApplicationQuitter _applicationQuitter;
         [Inject] private IRemoteSavable _remoteSave;
-        [Inject] private SavingModeDeterminer _savingDeterminer;
 
         private bool _analyticsReady;
         private bool _remoteConfigReady;
@@ -42,8 +41,6 @@ namespace Asteroid.Generation
 
         public async void Initialize()
         {
-            _savingDeterminer.Initialize();
-
              await _sceneLoader.ReloadStartSceneAsync(_bootstrapSceneModel.SceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
             _loadingTasks.Add(PrepareAdvertisementAsync());
