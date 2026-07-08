@@ -1,3 +1,5 @@
+using Asteroid.Database;
+using Asteroid.Services.UnityCloud;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,11 +16,12 @@ public class ShopUIInstaller : MonoInstaller
     [SerializeField] private Image _imageNoAds;
     public override void InstallBindings()
     {
-        Container.Bind<ShopUI>().FromComponentOn(gameObject).AsSingle();
-        Container.Bind<Button>().WithId("buttonBuyNoAds").FromInstance(_buttonBuyNoAds);
-        Container.Bind<Button>().WithId("buttonBuy100Coins").FromInstance(_buttonBuy100Coins);
-        Container.Bind<Image>().FromInstance(_imageNoAds);
-        Container.Bind<TMP_Text>().FromInstance(_textCoins);
+        Container.Bind<ShopUI>().FromComponentOn(gameObject).AsCached();
+        Container.Bind<Button>().WithId("buttonBuyNoAds").FromInstance(_buttonBuyNoAds).AsCached();
+        Container.Bind<Button>().WithId("buttonBuy100Coins").FromInstance(_buttonBuy100Coins).AsCached();
+        Container.Bind<Image>().FromInstance(_imageNoAds).AsCached();
+        Container.Bind<TMP_Text>().FromInstance(_textCoins).AsCached();
+        Container.Bind<SaveStrategy>().To<CloudDataPresenter>().AsCached();
     }
 }
 }

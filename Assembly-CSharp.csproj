@@ -76,6 +76,7 @@
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\RocketController.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\RemoteConfigDatas\RemoteConfigFireball.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\RemoteConfigDatas\AssignmentMode.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\SaveStrategy.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\Wallet.cs" />
     <Compile Include="Assets\_Project\Scripts\IAP\IAPAnalyzer.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\ObstaclesLine.cs" />
@@ -88,7 +89,6 @@
     <Compile Include="Assets\_Project\Scripts\Models\RemoteConfigDatas\RemoteConfigObstacle.cs" />
     <Compile Include="Assets\_Project\Scripts\Weapon\WeaponShip.cs" />
     <Compile Include="Assets\_Project\Scripts\Save Cloud\UnitySaveCloud.cs" />
-    <Compile Include="Assets\_Project\Scripts\Interfaces\ISaveStrategy.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IPurchasingService.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\WeaponCotroller.cs" />
     <Compile Include="Assets\_Project\Scripts\Analytics\AnallyticsEventHandler.cs" />

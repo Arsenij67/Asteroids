@@ -12,7 +12,6 @@ namespace Asteroid.Services.IAP
 {
     public class IAPAnalyzer : IDisposable, IPurchasingService, IInitializable
     {
-
         private const string NO_ADS_ID = "NO ADS";
         private const string COINS_100_ID = "COINS 100";
 
