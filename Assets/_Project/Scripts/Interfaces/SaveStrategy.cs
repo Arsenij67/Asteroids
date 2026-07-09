@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -22,7 +23,7 @@ namespace Asteroid.Database
         public abstract  UniTask UpdateNoAdsStatus(bool adevertisementIsCanceled);
         public abstract UniTask RemoveCountCoins(int coinsToRemove);
         public abstract SaveChoice GetMode();
-        public abstract void UpdateLastSaveTime(string key);
+        protected abstract void UpdateLastSaveTime(string key);
 
         public void UpdateUINoAds(bool isAdvertisementCanceled)
         {
@@ -63,6 +64,7 @@ namespace Asteroid.Database
                 }
             }
             return isConnected;
+
         }
     }
 }

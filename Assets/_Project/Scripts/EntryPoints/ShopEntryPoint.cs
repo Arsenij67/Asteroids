@@ -1,10 +1,8 @@
 ﻿using Asteroid.Database;
 using Asteroid.Generation;
 using Asteroid.Services.IAP;
-using Asteroid.Services.UnityCloud;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using Zenject;
 
@@ -14,7 +12,6 @@ namespace Asteroid.EntryPoints
     {
         [Inject] private ShopUI _shopUI;
         [Inject] private IPurchasingService _purchaseService;
-        [Inject] private IRemoteSavable _remoteSave;
         [Inject] private IInstanceLoader _instanceLoader;
         [Inject] private LocalSaveStrategyPresenter _currentSaveStrategy;
         [Inject] private TMP_Text _textCoins;

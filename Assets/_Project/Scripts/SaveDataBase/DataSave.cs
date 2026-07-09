@@ -1,20 +1,17 @@
-﻿using NUnit.Framework;
+﻿using Newtonsoft.Json;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Asteroid.Database
 {
     [Serializable]
     public class DataSave
     {
-        [SerializeField] private string _name;
-        [SerializeField] private int _countSummaryEnemiesDestroyed;
-        [SerializeField] private bool _isLaserUsed;
-        [SerializeField] private int _countCoins;
-        [SerializeField] private bool _adsDisabled;
-        [SerializeField] private DateTime _lastSaveTime;
+        [JsonProperty] private string _name;
+        [JsonProperty] private int _countSummaryEnemiesDestroyed;
+        [JsonProperty] private bool _isLaserUsed;
+        [JsonProperty] private int _countCoins;
+        [JsonProperty] private bool _adsDisabled;
+        [JsonProperty] private DateTime _lastSaveTime;
 
         public object this[string key]
         {

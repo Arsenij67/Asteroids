@@ -4,6 +4,8 @@ using System.IO;
 using Asteroid.Generation;
 using UnityEditor.Overlays;
 using System.Text;
+using System;
+using Newtonsoft.Json;
 
 namespace Asteroid.Database
 {
@@ -23,22 +25,22 @@ namespace Asteroid.Database
                 File.Create(_localSaveData.FullPath);
             }
             string jsonData = await LoadDataFromFileAsync(_localSaveData.FullPath);
-            DataSave = JsonUtility.FromJson<DataSave>(jsonData) ?? _instanceLoader.CreateInstance<DataSave>();
+            DataSave = JsonConvert.DeserializeObject<DataSave>(jsonData) ?? _instanceLoader.CreateInstance<DataSave>();
         }
 
         public override UniTask AddCountCoins(int coinsToAdd)
         {
             DataSave[KeyData.COINS_COUNT] = (int)DataSave[KeyData.COINS_COUNT] + coinsToAdd;
-            string jsonData= JsonUtility.ToJson(DataSave);
             UpdateLastSaveTime(KeyData.LAST_SAVE_TIME);
+            string jsonData = JsonConvert.SerializeObject(DataSave);
             return WriteDataFromFileAsync(_localSaveData.FullPath,jsonData);
         }
 
         public override UniTask AddCountDeadEnemies(int enemiesToAdd)
         {
             DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = (int)DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] + enemiesToAdd;
-            string jsonData = JsonUtility.ToJson(DataSave);
             UpdateLastSaveTime(KeyData.LAST_SAVE_TIME);
+            string jsonData = JsonConvert.SerializeObject(DataSave);
             return WriteDataFromFileAsync(_localSaveData.FullPath, jsonData);
         }
 
@@ -49,20 +51,22 @@ namespace Asteroid.Database
 
         public override UniTask RemoveCountCoins(int coinsToRemove)
         {
-            Debug.Log("минус монетки " + coinsToRemove);
-            return UniTask.CompletedTask;
+            DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = (int)DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] - coinsToRemove;
+            UpdateLastSaveTime(KeyData.LAST_SAVE_TIME);
+            string jsonData = JsonConvert.SerializeObject(DataSave);
+            return WriteDataFromFileAsync(_localSaveData.FullPath, jsonData);
         }
 
-        public override void UpdateLastSaveTime(string key)
+        protected override void UpdateLastSaveTime(string key)
         {
-            Debug.Log("UpdateLastSaveTime " + key);
+            DataSave[key] = DateTime.Now;
         }
 
         public override UniTask UpdateNoAdsStatus(bool adevertisementIsCanceled)
         {
             DataSave[KeyData.ADS_DISABLED] = (bool)adevertisementIsCanceled;
-            string jsonData = JsonUtility.ToJson(DataSave);
             UpdateLastSaveTime(KeyData.LAST_SAVE_TIME);
+            string jsonData = JsonConvert.SerializeObject(DataSave);
             return WriteDataFromFileAsync(_localSaveData.FullPath, jsonData);
         }
 
@@ -92,9 +96,9 @@ namespace Asteroid.Database
                 Debug.Log(string.Format($"Файла по пути {filePath} не существует. Создается новый и записывается в него инфа"));
             }
 
-            using (StreamWriter streamWtiter = new StreamWriter(filePath,false,encoding:Encoding.UTF8))
+            using (StreamWriter streamWriter = new StreamWriter(filePath,false,encoding:Encoding.UTF8))
             {
-                return streamWtiter.WriteAsync(jsonData).AsUniTask();
+                return streamWriter.WriteAsync(jsonData).AsUniTask();
             }
 
         }

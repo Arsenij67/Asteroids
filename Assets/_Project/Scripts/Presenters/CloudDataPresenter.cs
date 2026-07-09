@@ -53,7 +53,7 @@ namespace Asteroid.Services.UnityCloud
             return SaveChoice.UseCloud;
         }
 
-        public override void UpdateLastSaveTime(string key)
+        protected override void UpdateLastSaveTime(string key)
         {
             DataSave[KeyData.LAST_SAVE_TIME] = (DateTime)_remoteSavable.GetKeyLastModified(key);
         }
