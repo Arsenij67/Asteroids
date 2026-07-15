@@ -1,3 +1,4 @@
+using Asteroid.Database.Connection;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using Firebase;
@@ -10,15 +11,16 @@ using Zenject;
 
 namespace Asteroid.Services.RemoteConfig
 {
-    public class FirebaseRemoteConfigService : IRemoteConfigService, IDisposable
+    public class FirebaseRemoteConfigService : Connector, IRemoteConfigService, IDisposable
     {
         public event Action OnConfigUpdated;
 
         private bool _isInitialized = false;
-        public bool IsInitialized => _isInitialized;
+        public bool IsInitialized => _isInitialized && IsConnected;
 
         public async UniTask Initialize()
         {
+            await IsConnectionAvailable();
             DependencyStatus statusResult =  await FirebaseApp.CheckAndFixDependenciesAsync().AsUniTask();
             if (statusResult == DependencyStatus.Available)
             {
@@ -31,18 +33,6 @@ namespace Asteroid.Services.RemoteConfig
             {
                 Debug.LogError($"Firebase init failed: {statusResult}");
             }
-        }
-
-        private void HandleConfigUpdate(object sender, ConfigUpdateEventArgs args)
-        {
-            if (args.Error != RemoteConfigError.None)
-            {
-                Debug.LogError($"Config update error: {args.Error}");
-                return;
-            }
-            string updatedKeys = args.UpdatedKeys.Join(",");
-            Debug.Log(string.Format($"Remote Config updated in realtime! Updated Keys : {updatedKeys}"));
-            OnConfigUpdated?.Invoke();
         }
 
         public T GetValue<T>(string key)
@@ -58,13 +48,18 @@ namespace Asteroid.Services.RemoteConfig
 
         public async UniTask FetchAndActivateAsync()
         {
-            await FirebaseRemoteConfig.DefaultInstance.FetchAsync(TimeSpan.Zero);
-            await FirebaseRemoteConfig.DefaultInstance.ActivateAsync();
+            if (IsInitialized)
+            {
+                await FirebaseRemoteConfig.DefaultInstance.FetchAsync(TimeSpan.Zero);
+                await FirebaseRemoteConfig.DefaultInstance.ActivateAsync();
+            }
         }
 
         public UniTask SetUserAttributes(string[] keys, string[] values)
         {
-            var userProperties = new Dictionary<string, object>();
+            if (!IsInitialized) return UniTask.CompletedTask;
+
+                var userProperties = new Dictionary<string, object>();
             short indexValue = 0;
             foreach (var attr in keys)
             {
@@ -76,6 +71,18 @@ namespace Asteroid.Services.RemoteConfig
         public void Dispose()
         {
             FirebaseRemoteConfig.DefaultInstance.OnConfigUpdateListener -= HandleConfigUpdate;
+        }
+
+        private void HandleConfigUpdate(object sender, ConfigUpdateEventArgs args)
+        {
+            if (args.Error != RemoteConfigError.None)
+            {
+                Debug.LogError($"Config update error: {args.Error}");
+                return;
+            }
+            string updatedKeys = args.UpdatedKeys.Join(",");
+            Debug.Log(string.Format($"Remote Config updated in realtime! Updated Keys : {updatedKeys}"));
+            OnConfigUpdated?.Invoke();
         }
     }
 }

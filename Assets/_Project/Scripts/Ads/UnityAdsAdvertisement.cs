@@ -3,10 +3,12 @@ using UnityEngine;
 using UnityEngine.Advertisements;
 using Unity;
 using Zenject;
+using Asteroid.Database.Connection;
+using Cysharp.Threading.Tasks;
 
 namespace Asteroid.Services.UnityAdvertisement
 {
-    public class UnityAdsAdvertisement:IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener, IAdvertisementService
+    public class UnityAdsAdvertisement: Connector, IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener, IAdvertisementService
     {
         private const string GAME_ANDROID_ID = "5916275";
         private const string GAME_IOS_ID = "5916274";
@@ -17,7 +19,7 @@ namespace Asteroid.Services.UnityAdvertisement
 
         private string ApplicationId => Application.platform == RuntimePlatform.IPhonePlayer ? GAME_IOS_ID : GAME_ANDROID_ID;
 
-        public bool IsInitialized => Advertisement.isInitialized;
+        public bool IsInitialized => Advertisement.isInitialized && IsConnected;
 
         public bool IsLoaded => _isLoaded;
 
@@ -25,9 +27,9 @@ namespace Asteroid.Services.UnityAdvertisement
 
         public bool IsEnabled => !(bool)_playerSave[KeyData.ADS_DISABLED];
 
-        public void Initialize(params object[] parameters)
+        public async UniTask Initialize(params object[] parameters)
         {
-           
+            await IsConnectionAvailable();
             if (Advertisement.isSupported)
             {
                 Advertisement.Initialize(ApplicationId, (bool)parameters[0], this);

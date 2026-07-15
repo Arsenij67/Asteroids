@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Asteroid.Services.UnityAdvertisement
@@ -8,7 +9,7 @@ namespace Asteroid.Services.UnityAdvertisement
         public bool IsLoaded {  get; }
         public bool IsShowed {  get; }
         public bool IsEnabled { get; }  
-        public void Initialize(params object [] parameters);
+        public UniTask Initialize(params object [] parameters);
         public void Load(params object[] parameters);
         public void Show(params object[] parameters);
     }

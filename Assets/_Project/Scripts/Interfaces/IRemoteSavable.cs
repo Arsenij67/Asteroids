@@ -11,6 +11,6 @@ namespace Asteroid.Database
         UniTask Initialize(DataSave dataSave);
         UniTask SaveKey(string key, object value);
         UniTask<T> GetKey<T>(string key);
-        DateTime? GetKeyLastModified(string key);
+        DateTime GetKeyLastModified(string key);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Asteroid.Database;
 using Asteroid.Generation;
 using Asteroid.Services.IAP;
+using Asteroid.Services.UnityCloud;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +14,9 @@ namespace Asteroid.EntryPoints
         [Inject] private ShopUI _shopUI;
         [Inject] private IPurchasingService _purchaseService;
         [Inject] private IInstanceLoader _instanceLoader;
-        [Inject] private LocalSaveStrategyPresenter _currentSaveStrategy;
+        [Inject] private LocalSaveStrategyPresenter _localSaveStrategy;
+        [Inject] private CloudDataPresenter _cloudSaveStrategy;
+        [Inject] private SaveDataStrategyController _saveDataStrategy;
         [Inject] private TMP_Text _textCoins;
         [Inject] private DataSave _dataSave;
         [Inject] private LocalSaveData _localSave;
@@ -25,36 +28,37 @@ namespace Asteroid.EntryPoints
         {
             _shopUI.Initialize(_buttonBuyNoAds, _buttonBuy100Coins, _textCoins, _imageNoAds);
             await _purchaseService.Initialize(_dataSave);
-            await _currentSaveStrategy.Initialize(_dataSave,_localSave, _instanceLoader,_shopUI);
+            await _localSaveStrategy.Initialize(_dataSave,_localSave, _instanceLoader,_shopUI);
+            await _saveDataStrategy.Initialize(_cloudSaveStrategy, _localSaveStrategy);
 
             _purchaseService.OnPlayerBought100Coins += UpdateCoinsAfterPurchase;
-            _purchaseService.OnPlayerBought100Coins += _currentSaveStrategy.UpdateUICountCoins; 
+            _purchaseService.OnPlayerBought100Coins += _localSaveStrategy.UpdateUICountCoins; 
             _purchaseService.OnPlayerBoughtNoAds += UpdateNoAdsAfterPurchase;
-            _purchaseService.OnPlayerBoughtNoAds += _currentSaveStrategy.UpdateUINoAds;
+            _purchaseService.OnPlayerBoughtNoAds += _localSaveStrategy.UpdateUINoAds;
             _shopUI.OnPlayerClickBuy100Coins += _purchaseService.Buy100Coins;
             _shopUI.OnPlayerClickBuyNoAds += _purchaseService.BuyNoAds;
 
-            _shopUI.UpdateViewNoAds(_currentSaveStrategy.NoAdsStatus);
-            _shopUI.UpdateCountCoins(_currentSaveStrategy.CountCoins);
+            _shopUI.UpdateViewNoAds(_localSaveStrategy.NoAdsStatus);
+            _shopUI.UpdateCountCoins(_localSaveStrategy.CountCoins);
         }
 
         private void OnDestroy()
         {
             _purchaseService.OnPlayerBought100Coins -= UpdateCoinsAfterPurchase;
-            _purchaseService.OnPlayerBought100Coins -= _currentSaveStrategy.UpdateUICountCoins;
+            _purchaseService.OnPlayerBought100Coins -= _localSaveStrategy.UpdateUICountCoins;
             _purchaseService.OnPlayerBoughtNoAds -= UpdateNoAdsAfterPurchase;
-            _purchaseService.OnPlayerBoughtNoAds -= _currentSaveStrategy.UpdateUINoAds;
+            _purchaseService.OnPlayerBoughtNoAds -= _localSaveStrategy.UpdateUINoAds;
             _shopUI.OnPlayerClickBuy100Coins -= _purchaseService.Buy100Coins;
             _shopUI.OnPlayerClickBuyNoAds -= _purchaseService.BuyNoAds;
         }
 
         private async void UpdateNoAdsAfterPurchase(bool isCanceled)
         {
-            await _currentSaveStrategy.UpdateNoAdsStatus(isCanceled);
+            await _localSaveStrategy.UpdateNoAdsStatus(isCanceled);
         }
         private async void UpdateCoinsAfterPurchase(int countCoins)
         {
-            await _currentSaveStrategy.AddCountCoins(countCoins);
+            await _localSaveStrategy.AddCountCoins(countCoins);
         }
 
     }

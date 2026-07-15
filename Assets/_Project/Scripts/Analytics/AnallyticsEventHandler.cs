@@ -28,14 +28,12 @@ namespace Asteroid.Services.Analytics
         }
         public void SendEventGameStart()
         {
-            CheckActivation();
             _analytics.PushEvent(Firebase.Analytics.FirebaseAnalytics.EventLogin, Firebase.Analytics.FirebaseAnalytics.ParameterStartDate, DateTime.Now);
             Debug.Log($"Отправлено уведомление о начале игры: {Firebase.Analytics.FirebaseAnalytics.EventLogin} {Firebase.Analytics.FirebaseAnalytics.ParameterStartDate} {DateTime.Now}");
         }
 
         public void SendEventGameEnd()
         {
-            CheckActivation();
             Parameter[] parametersValue =
 {
             new Parameter("count_shoots", _shipStatisticModel.CountShoots),
@@ -48,14 +46,8 @@ namespace Asteroid.Services.Analytics
 
         public void SendEventLaserUsed()
         {
-            CheckActivation();
             _analytics.PushEvent(Firebase.Analytics.FirebaseAnalytics.EventSelectItem, "laser_used_now", DateTime.UtcNow);
             Debug.Log($"Отправлено уведомление об использовании лазера: !");
-        }
-
-        private void CheckActivation()
-        {
-            if (!_analytics.AnalyticsEnabled) return;
         }
 
         public void Dispose()

@@ -7,10 +7,12 @@ using Zenject;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Events;
+using Asteroid.Database.Connection;
+using System.Threading.Tasks;
 
 namespace Asteroid.Services.IAP
 {
-    public class IAPAnalyzer : IDisposable, IPurchasingService, IInitializable
+    public class IAPAnalyzer : Connector, IDisposable, IPurchasingService
     {
         private const string NO_ADS_ID = "NO ADS";
         private const string COINS_100_ID = "COINS 100";
@@ -24,8 +26,12 @@ namespace Asteroid.Services.IAP
         private StoreController _storeController;
         private CatalogProvider _catalog;
 
-        public void Initialize()
+        public async UniTask Initialize(DataSave dataSave)
         {
+            await IsConnectionAvailable();
+           
+            if(!IsConnected) return;
+
             _storeController = UnityIAPServices.StoreController();
 
             _storeController.OnPurchasePending += OnPurchasePendingHandler;
@@ -34,10 +40,7 @@ namespace Asteroid.Services.IAP
             _storeController.OnStoreDisconnected += OnStoreDisconnectedHandler;
             _storeController.OnPurchaseFailed += OnPurchaseFailedHandler;
             _storeController.OnPurchaseConfirmed += OnPurchasesConfirmedHandler;
-        }
 
-        public UniTask Initialize(DataSave dataSave)
-        {
             _catalog = new CatalogProvider();
             var unityCatalog = ProductCatalog.LoadDefaultCatalog();
             foreach (var item in unityCatalog.allProducts)
@@ -47,7 +50,7 @@ namespace Asteroid.Services.IAP
                 _catalog.AddProduct(defaultId, productType);
             }
             _catalog.FetchProducts(UnityIAPServices.DefaultProduct().FetchProductsWithNoRetries);
-            return _storeController.Connect().AsUniTask();
+            await _storeController.Connect().AsUniTask();
         }
 
         public void Buy100Coins()
@@ -62,30 +65,34 @@ namespace Asteroid.Services.IAP
 
         public void Dispose()
         {
+            _storeController.OnPurchasePending -= OnPurchasePendingHandler;
             _storeController.OnProductsFetched -= OnProductsFetchedHandler;
             _storeController.OnProductsFetchFailed -= OnProductsFailedHandler;
             _storeController.OnStoreDisconnected -= OnStoreDisconnectedHandler;
             _storeController.OnPurchaseFailed -= OnPurchaseFailedHandler;
-            _storeController.OnPurchasePending -= OnPurchasePendingHandler;
             _storeController.OnPurchaseConfirmed -= OnPurchasesConfirmedHandler;
         }
 
         private void BuyProduct(string productId)
         {
-            var product = _storeController.GetProducts().ToList().Find(p => p.definition.id == productId);
-            if (product != null)
+            if (IsConnected)
             {
-                _storeController.PurchaseProduct(product);
-            }
-            else
-            {
-                Debug.LogError($"Product {productId} not found!");
+                var product = _storeController.GetProducts().ToList().Find(p => p.definition.id == productId);
+                if (product != null)
+                {
+                    _storeController.PurchaseProduct(product);
+                }
+                else
+                {
+                    Debug.LogError($"Product {productId} not found!");
+                }
             }
         }
 
         private void OnStoreDisconnectedHandler(StoreConnectionFailureDescription description)
         {
             Debug.Log("Disconnected " + description.message);
+            IsConnected = false;
         }
 
         private void OnProductsFailedHandler(ProductFetchFailed failed)

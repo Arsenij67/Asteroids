@@ -25,6 +25,10 @@ namespace Asteroid.Database
         public abstract SaveChoice GetMode();
         protected abstract void UpdateLastSaveTime(string key);
 
+        public DataSave GetDataSave()
+        { 
+            return DataSave ?? new DataSave();
+        }
         public void UpdateUINoAds(bool isAdvertisementCanceled)
         {
             ShopUI.UpdateViewNoAds(isAdvertisementCanceled);
@@ -32,39 +36,8 @@ namespace Asteroid.Database
 
         public void UpdateUICountCoins(int countToAdd)
         {
-            ShopUI.UpdateCountCoins((int)DataSave[KeyData.COINS_COUNT] + countToAdd);
+            ShopUI.UpdateCountCoins((int)DataSave[KeyData.COINS_COUNT]);
         }
 
-        public async UniTask<bool> IsAvailable()
-        {
-            string[] _dnsAddresses = new string[] { "https://yandex.ru", "1.1.1.1", "www.microsoft.com" };
-            bool isConnected = false;
-            const int TIME_WAIT_CALLBACK = 2;
-            foreach (string adress in _dnsAddresses)
-            {
-                try
-                {
-                    using (UnityWebRequest request = UnityWebRequest.Head(adress))
-                    {
-                        request.timeout = TIME_WAIT_CALLBACK;
-                        await request.SendWebRequest();
-
-                        if (request.result == UnityWebRequest.Result.Success)
-                        {
-                            isConnected = true;
-                            UnityEngine.Debug.Log("Интернет подключен (проверка через HTTP)");
-                            break;
-                        }
-
-                    }
-                }
-                catch (UnityWebRequestException)
-                {
-                    Debug.LogError("нет подключения к интернету");
-                }
-            }
-            return isConnected;
-
-        }
     }
 }

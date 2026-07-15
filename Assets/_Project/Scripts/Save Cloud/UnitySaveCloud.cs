@@ -1,4 +1,5 @@
 using Asteroid.Database;
+using Asteroid.Database.Connection;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
@@ -9,19 +10,21 @@ using Unity.Services.Core;
 
 namespace Asteroid.Services.UnityCloud
 {
-    public class UnitySaveCloud : IRemoteSavable
+    public class UnitySaveCloud : Connector, IRemoteSavable
     {
         private Dictionary<string, Item> _data;
         private DataSave _dataSave;
-        private static bool _isInitializing = false;
-        private static bool _isInitialized = false;
+
+        private bool IsInitialized => IsConnected && _isInitialized;
+
+        private bool _isInitialized = false;
 
         public async UniTask Initialize(DataSave dataSave)
         {
-            if (_isInitialized || _isInitializing)
-                return;
+            await IsConnectionAvailable();
 
-            _isInitializing = true;
+            if (!IsInitialized) return;
+
             _dataSave = dataSave;
 
             try
@@ -33,14 +36,14 @@ namespace Asteroid.Services.UnityCloud
             }
             catch (System.Exception ex)
             {
-                UnityEngine.Debug.LogError($"Ошибка инициализации Unity Cloud Save: {ex.Message}");
+                UnityEngine.Debug.Log($"Ошибка инициализации Unity Cloud Save: {ex.Message}");
                 throw;
             }
             finally
             {
-                _isInitializing = false;
+                _isInitialized = false;
             }
-            await DownloadAllData();
+                await DownloadAllData();
         }
 
         private async UniTask DownloadAllData()
@@ -92,14 +95,14 @@ namespace Asteroid.Services.UnityCloud
             }
         }
 
-        public DateTime? GetKeyLastModified(string key)
+        public DateTime GetKeyLastModified(string key)
         {
-            if (!_isInitialized)
+            if (!IsInitialized)
             {
-                UnityEngine.Debug.LogWarning("Попытка получить время обновления до инициализации Cloud Save");
-                return null;
+                UnityEngine.Debug.Log("Попытка получить время обновления до инициализации Cloud Save");
+                return DateTime.MinValue;
             }
-            return _data[key]?.Modified.Value.ToLocalTime();
+            return _data[key].Modified.Value.ToLocalTime();
         }
 
         private async UniTask SignIn()
@@ -118,8 +121,8 @@ namespace Asteroid.Services.UnityCloud
             if (AuthenticationService.Instance.IsSignedIn)
                 return;
 
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
-            UnityEngine.Debug.Log("Анонимная аутентификация завершена успешно!");
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                UnityEngine.Debug.Log("Анонимная аутентификация завершена успешно!");
         }
 
         private async UniTask SetUp()

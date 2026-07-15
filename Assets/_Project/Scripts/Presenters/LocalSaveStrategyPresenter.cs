@@ -2,7 +2,6 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.IO;
 using Asteroid.Generation;
-using UnityEditor.Overlays;
 using System.Text;
 using System;
 using Newtonsoft.Json;
