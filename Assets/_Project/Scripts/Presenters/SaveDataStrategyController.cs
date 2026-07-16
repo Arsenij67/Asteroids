@@ -1,5 +1,6 @@
-
+п»ї
 using Asteroid.Database.Connection;
+using Asteroid.Generation;
 using Asteroid.Weapon;
 using Cysharp.Threading.Tasks;
 using System;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 namespace Asteroid.Database
 {
-    public class SaveDataStrategyController : Connector
+    public class SaveDataStrategyController : Connector, IDisposable
     {
         public bool NoAdsStatus => _currentSaveStrategy.NoAdsStatus;
         public int CountCoins => _currentSaveStrategy.CountCoins;
@@ -22,10 +23,10 @@ namespace Asteroid.Database
         //public SaveChoice CurrentStrategyType => _currentSaveStrategy?.GetMode() ?? SaveChoice.UseLocal;
         //public bool IsOnline => _isOnline;
 
-        public async UniTask Initialize(params SaveStrategy[] saveStrategies)
+        public async UniTask Initialize(IInstanceLoader instanceLoader, params SaveStrategy[] saveStrategies)
         {
             _saveStrategies = saveStrategies;
-
+            base.Initialize(instanceLoader);   
             await DefineStrategy(SaveChoice.UseCloud);
         }
 
@@ -33,18 +34,25 @@ namespace Asteroid.Database
         {
             _currentSaveStrategy = _saveStrategies[0];
 
-            if ( await IsConnectionAvailable())
+            if (await IsConnectionAvailable())
             {
-                Debug.Log($"Стратегия уже {_currentSaveStrategy.GetMode()}, изменений не требуется");
+                Debug.Log($"РЎС‚СЂР°С‚РµРіРёСЏ СѓР¶Рµ {_currentSaveStrategy.GetMode()}, РёР·РјРµРЅРµРЅРёР№ РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ");
                 return;
             }
 
             else
             {
+                OnInternetConnected += SuggestChangingSaveModeWindow;
                 _currentSaveStrategy = _saveStrategies[1];
-                Debug.Log($"Стратегия изменена на: {_currentSaveStrategy.GetMode()}");
+                Debug.Log($"РЎС‚СЂР°С‚РµРіРёСЏ РёР·РјРµРЅРµРЅР° РЅР°: {_currentSaveStrategy.GetMode()}");
+     
             }
          
+        }
+
+        private void SuggestChangingSaveModeWindow()
+        {
+            Debug.Log("РџРѕСЏРІРёР»СЃСЏ РёРЅС‚РµСЂРЅРµС‚. РҐРѕС‚РёС‚Рµ СЃРјРµРЅРёС‚СЊ СЂРµР¶РёРј СЃРѕС…СЂР°РЅРµРЅРёСЏ?");
         }
 
         public async void UpdateCoinsAfterPurchase(int countCoins)
@@ -67,38 +75,11 @@ namespace Asteroid.Database
             _currentSaveStrategy.UpdateUICountCoins(countToAdd);
         }
 
-        /// <summary>
-        /// Переключает стратегию принудительно
-        /// </summary>
-        //public void SetStrategy(SaveChoice choice)
-        //{
-        //    var strategy = GetStrategy(choice);
-
-        //    if (strategy == null)
-        //    {
-        //        Debug.LogError($"Стратегия {choice} не найдена!");
-        //        return;
-        //    }
-
-        //    _currentSaveStrategy = strategy;
-        //    _isOnline = choice == SaveChoice.UseCloud;
-        //    OnStrategyChanged?.Invoke(choice);
-
-        //    Debug.Log($"Стратегия принудительно установлена: {choice}");
-        //}
-
-        /// <summary>
-        /// Получает стратегию по типу
-        /// </summary>
-        private SaveStrategy GetStrategy(SaveChoice choice)
+        public new void Dispose()
         {
-            return _saveStrategies?.FirstOrDefault(s => s.GetMode() == choice);
+            OnInternetConnected -= SuggestChangingSaveModeWindow;
+            base.Dispose();
+   
         }
-
- 
-
-     
-
-       
     }
 }
