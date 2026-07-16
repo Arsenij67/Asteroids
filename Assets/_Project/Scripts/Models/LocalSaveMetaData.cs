@@ -2,7 +2,7 @@ using System.IO;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LocalSaveData", menuName = "ScriptableObjects/LocalSaveData")]
-public class LocalSaveData : ScriptableObject
+public class LocalSaveMetaData : ScriptableObject
 {
     public const string FileName = "PlayerProgress.json";
 

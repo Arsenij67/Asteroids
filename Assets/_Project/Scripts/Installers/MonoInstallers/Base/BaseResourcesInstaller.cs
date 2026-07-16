@@ -27,7 +27,7 @@ namespace Asteroid.Installers
             Container.BindInterfacesAndSelfTo<UnitySaveCloud>().FromNew().AsSingle();
             Container.BindInterfacesAndSelfTo<KeyData>().FromNew().AsCached();
             Container.Bind<CloudDataPresenter>().FromNew().AsCached();
-            Container.Bind<LocalSaveData>().FromMethod((context) => context.Container.Resolve<BaseResourceLoaderService>().LoadResource<LocalSaveData>("ScriptableObjects/LocalSaveData")).AsSingle();
+            Container.Bind<LocalSaveMetaData>().FromMethod((context) => context.Container.Resolve<BaseResourceLoaderService>().LoadResource<LocalSaveMetaData>("ScriptableObjects/LocalSaveMetaData")).AsSingle();
             Container.Bind<SaveDataStrategyController>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<SaveDataStrategyController>()).AsSingle();
         }
     }

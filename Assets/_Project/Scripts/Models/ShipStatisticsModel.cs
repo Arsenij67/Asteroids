@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Asteroid.Statistic
 {
-    public class ShipStatisticsModel
+    public struct ShipStatisticsModel
     {
         public int CountShootsFireball;
         public int CountShootsLaser;

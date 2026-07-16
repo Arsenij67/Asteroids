@@ -140,7 +140,7 @@ namespace Asteroid.Generation
         {
             _analyticsEventHandler.Initialize(this, _shipStatisticModel, _weaponShipLaser as LaserWeaponController);
             _advertisingController.Initialize(_advertisementService);
-            _cloudController.Initialize(_dataForSave,remoteSavable:_remoteSave);
+            _cloudController.Initialize(_dataForSave,_instanceLoader,null,remoteSavable:_remoteSave);
         }
 
         private void EnemyInitializedHandler(EnemyController enemyController, BaseEnemy currentEnemy)

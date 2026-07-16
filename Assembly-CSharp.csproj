@@ -136,10 +136,10 @@
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\InstanceCreator\InstanceCreator.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\EnemyController.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\Connector.cs" />
-    <Compile Include="Assets\_Project\Scripts\Models\LocalSaveData.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bootstrap\BootstrapSceneData.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IRemoteConfigService.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IDeviceInput.cs" />
+    <Compile Include="Assets\_Project\Scripts\Models\LocalSaveMetaData.cs" />
     <Compile Include="Assets\_Project\Scripts\View\GameOverView.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\BaseResourceLoaderService.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IApplicationQuitter.cs" />

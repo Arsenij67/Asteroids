@@ -10,12 +10,12 @@ namespace Asteroid.Database
 {
     public class LocalSaveStrategyPresenter : SaveStrategy
     {
-        private LocalSaveData _localSaveData;
+        private LocalSaveMetaData _localSaveData;
         private IInstanceLoader _instanceLoader;
 
-        public async UniTask Initialize(DataSave dataSave, LocalSaveData localSaveData, IInstanceLoader instanceLoader, ShopUI shopUI = null)
+        public async UniTask Initialize(DataSave dataSave, LocalSaveMetaData localSaveData, IInstanceLoader instanceLoader, ShopUI shopUI = null)
         {
-            base.Initialize(dataSave, shopUI);
+            base.Initialize(dataSave,_instanceLoader, shopUI);
             _localSaveData = localSaveData;
             _instanceLoader = instanceLoader;
 
@@ -29,17 +29,17 @@ namespace Asteroid.Database
 
         public override UniTask AddCountCoins(int coinsToAdd)
         {
-            DataSave[KeyData.COINS_COUNT] = (int)DataSave[KeyData.COINS_COUNT] + coinsToAdd;
+            DataForSave[KeyData.COINS_COUNT] = (int)DataForSave[KeyData.COINS_COUNT] + coinsToAdd;
             UpdateLastSaveTime(KeyData.LAST_SAVE_TIME);
-            string jsonData = JsonConvert.SerializeObject(DataSave);
+            string jsonData = JsonConvert.SerializeObject(DataForSave);
             return WriteDataFromFileAsync(_localSaveData.FullPath,jsonData);
         }
 
         public override UniTask AddCountDeadEnemies(int enemiesToAdd)
         {
-            DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = (int)DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] + enemiesToAdd;
+            DataForSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = (int)DataForSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] + enemiesToAdd;
             UpdateLastSaveTime(KeyData.LAST_SAVE_TIME);
-            string jsonData = JsonConvert.SerializeObject(DataSave);
+            string jsonData = JsonConvert.SerializeObject(DataForSave);
             return WriteDataFromFileAsync(_localSaveData.FullPath, jsonData);
         }
 
@@ -50,22 +50,22 @@ namespace Asteroid.Database
 
         public override UniTask RemoveCountCoins(int coinsToRemove)
         {
-            DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = (int)DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] - coinsToRemove;
+            DataForSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = (int)DataForSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] - coinsToRemove;
             UpdateLastSaveTime(KeyData.LAST_SAVE_TIME);
-            string jsonData = JsonConvert.SerializeObject(DataSave);
+            string jsonData = JsonConvert.SerializeObject(DataForSave);
             return WriteDataFromFileAsync(_localSaveData.FullPath, jsonData);
         }
 
         protected override void UpdateLastSaveTime(string key)
         {
-            DataSave[key] = DateTime.Now;
+            DataForSave[key] = DateTime.Now;
         }
 
         public override UniTask UpdateNoAdsStatus(bool adevertisementIsCanceled)
         {
-            DataSave[KeyData.ADS_DISABLED] = (bool)adevertisementIsCanceled;
+            DataForSave[KeyData.ADS_DISABLED] = (bool)adevertisementIsCanceled;
             UpdateLastSaveTime(KeyData.LAST_SAVE_TIME);
-            string jsonData = JsonConvert.SerializeObject(DataSave);
+            string jsonData = JsonConvert.SerializeObject(DataForSave);
             return WriteDataFromFileAsync(_localSaveData.FullPath, jsonData);
         }
 

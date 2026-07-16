@@ -11,7 +11,7 @@ namespace Asteroid.Installers.MonInstallers
         {
             Container.Bind<BaseResourceLoaderService>().To<BaseResourceLoaderService>().AsTransient();
             Container.BindInterfacesAndSelfTo<LocalBundleSceneLoader>().AsSingle();
-            Container.BindInterfacesAndSelfTo<FirebaseRemoteConfigService>().FromNew().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<FirebaseRemoteConfigService>().FromNew().AsSingle();
             Container.Bind<BootstrapSceneData>().FromMethod((context)=>context.Container.Resolve<BaseResourceLoaderService>().LoadResource<BootstrapSceneData>("ScriptableObjects/BootstrapSceneData")).AsSingle();
             Container.Bind<ShopSceneData>().FromMethod((context)=>context.Container.Resolve<BaseResourceLoaderService>().LoadResource<ShopSceneData>("ScriptableObjects/ShopSceneData")).AsSingle();
         }

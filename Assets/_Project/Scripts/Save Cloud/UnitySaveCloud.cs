@@ -7,24 +7,28 @@ using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
 using Unity.Services.CloudSave.Models;
 using Unity.Services.Core;
+using UnityEngine;
+using Zenject;
 
 namespace Asteroid.Services.UnityCloud
 {
     public class UnitySaveCloud : Connector, IRemoteSavable
     {
-        private Dictionary<string, Item> _data;
-        private DataSave _dataSave;
+        private static bool _isInitialized = false;
+        private static bool _isInitializing = false;
 
         private bool IsInitialized => IsConnected && _isInitialized;
 
-        private bool _isInitialized = false;
+        private Dictionary<string, Item> _data;
+        private DataSave _dataSave;
 
         public async UniTask Initialize(DataSave dataSave)
         {
             await IsConnectionAvailable();
 
-            if (!IsInitialized) return;
+            if (!IsConnected || _isInitialized || _isInitializing) return;
 
+            _isInitializing = true;
             _dataSave = dataSave;
 
             try
@@ -37,11 +41,6 @@ namespace Asteroid.Services.UnityCloud
             catch (System.Exception ex)
             {
                 UnityEngine.Debug.Log($"Ошибка инициализации Unity Cloud Save: {ex.Message}");
-                throw;
-            }
-            finally
-            {
-                _isInitialized = false;
             }
                 await DownloadAllData();
         }
@@ -58,7 +57,7 @@ namespace Asteroid.Services.UnityCloud
 
         public UniTask SaveKey(string key, object value)
         {
-            if (!_isInitialized)
+            if (!IsInitialized)
             {
                 UnityEngine.Debug.LogWarning("Попытка сохранить данные до инициализации Cloud Save");
                 return UniTask.CompletedTask;
@@ -73,7 +72,7 @@ namespace Asteroid.Services.UnityCloud
 
         public async UniTask<T> GetKey<T>(string key)
         {
-            if (!_isInitialized)
+            if (!IsInitialized)
             {
                 UnityEngine.Debug.LogWarning("Попытка загрузить данные до инициализации Cloud Save");
                 return default(T);
@@ -118,11 +117,12 @@ namespace Asteroid.Services.UnityCloud
                 await UniTask.NextFrame();
             }
 
-            if (AuthenticationService.Instance.IsSignedIn)
-                return;
+            if (!AuthenticationService.Instance.IsSignedIn)
+            {
 
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
                 UnityEngine.Debug.Log("Анонимная аутентификация завершена успешно!");
+            }
         }
 
         private async UniTask SetUp()

@@ -10,6 +10,9 @@ namespace Asteroid.Database
 {
     public class SaveDataStrategyController : Connector
     {
+        public bool NoAdsStatus => _currentSaveStrategy.NoAdsStatus;
+        public int CountCoins => _currentSaveStrategy.CountCoins;
+
         private SaveStrategy[] _saveStrategies;
         private SaveStrategy _currentSaveStrategy;
 
@@ -23,10 +26,10 @@ namespace Asteroid.Database
         {
             _saveStrategies = saveStrategies;
 
-            await SetStrategy(SaveChoice.UseCloud);
+            await DefineStrategy(SaveChoice.UseCloud);
         }
 
-        private async UniTask SetStrategy(SaveChoice saveChoice)
+        private async UniTask DefineStrategy(SaveChoice saveChoice)
         {
             _currentSaveStrategy = _saveStrategies[0];
 
@@ -42,6 +45,26 @@ namespace Asteroid.Database
                 Debug.Log($"Стратегия изменена на: {_currentSaveStrategy.GetMode()}");
             }
          
+        }
+
+        public async void UpdateCoinsAfterPurchase(int countCoins)
+        { 
+            await _currentSaveStrategy.AddCountCoins(countCoins);
+        }
+
+        public async void UpdateNoAdsAfterPurchase(bool isCanceled)
+        {
+            await _currentSaveStrategy.UpdateNoAdsStatus(isCanceled);
+        }
+
+        public void UpdateUINoAds(bool isAdvertisementCanceled)
+        {
+            _currentSaveStrategy.UpdateUINoAds(isAdvertisementCanceled);
+        }
+
+        public void UpdateUICountCoins(int countToAdd)
+        {
+            _currentSaveStrategy.UpdateUICountCoins(countToAdd);
         }
 
         /// <summary>

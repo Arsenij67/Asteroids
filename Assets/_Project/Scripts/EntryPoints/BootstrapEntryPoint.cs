@@ -120,7 +120,7 @@ namespace Asteroid.Generation
                 }
                 await UniTask.Delay(TimeSpan.FromSeconds(TICK_TIME));
             }
-            OpenSceneShop();
+            await OpenSceneShop();
         }
 
         private async UniTask PrepareGameSceneAsync()

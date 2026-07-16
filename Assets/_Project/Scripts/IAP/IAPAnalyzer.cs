@@ -29,8 +29,6 @@ namespace Asteroid.Services.IAP
         public async UniTask Initialize(DataSave dataSave)
         {
             await IsConnectionAvailable();
-           
-            if(!IsConnected) return;
 
             _storeController = UnityIAPServices.StoreController();
 
@@ -55,6 +53,7 @@ namespace Asteroid.Services.IAP
 
         public void Buy100Coins()
         {
+            Debug.Log("DDD");
             BuyProduct(COINS_100_ID);
         }
 
@@ -65,6 +64,8 @@ namespace Asteroid.Services.IAP
 
         public void Dispose()
         {
+            if(_storeController == null) return;
+
             _storeController.OnPurchasePending -= OnPurchasePendingHandler;
             _storeController.OnProductsFetched -= OnProductsFetchedHandler;
             _storeController.OnProductsFetchFailed -= OnProductsFailedHandler;
@@ -75,8 +76,6 @@ namespace Asteroid.Services.IAP
 
         private void BuyProduct(string productId)
         {
-            if (IsConnected)
-            {
                 var product = _storeController.GetProducts().ToList().Find(p => p.definition.id == productId);
                 if (product != null)
                 {
@@ -86,7 +85,6 @@ namespace Asteroid.Services.IAP
                 {
                     Debug.LogError($"Product {productId} not found!");
                 }
-            }
         }
 
         private void OnStoreDisconnectedHandler(StoreConnectionFailureDescription description)
