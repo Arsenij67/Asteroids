@@ -40,15 +40,29 @@ public class LocalBundleLoader : IResourceLoaderService
         return createdObject;
     }
 
+    public async UniTask<T> LoadResourceAsync<T>(string path) where T : Object
+    {
+        if (File.Exists(path))
+        {
+            Debug.LogError($"resource is null");
+            return default(T);
+        }
+
+        var resourceHandle = Addressables.LoadAssetAsync<T>(path);
+        T createdResource =  await resourceHandle;
+        Addressables.Release(resourceHandle);
+        return createdResource;
+    }
+
     public T LoadResource<T>(string path) where T : Object
     {
         if (File.Exists(path))
         {
-            Debug.LogError($"Prefab is null");
-            return null;
+            Debug.LogError($"resource is null");
+            return default(T);
         }
 
-        var resourceReference = Addressables.LoadAssetAsync<T>(path).WaitForCompletion();
-        return resourceReference;
+        var resource = Addressables.LoadAssetAsync<T>(path).WaitForCompletion();
+        return resource;
     }
 }

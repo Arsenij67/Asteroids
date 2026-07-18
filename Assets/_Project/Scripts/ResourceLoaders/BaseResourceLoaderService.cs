@@ -63,5 +63,18 @@ namespace Asteroid.Generation
             AsyncInstantiateOperation<GameObject> asyncOperation = Object.InstantiateAsync(prefab.GameObject(), parent);
             return asyncOperation.ToUniTask().ContinueWith(() => asyncOperation.Result.First());
         }
+
+        public async UniTask<T> LoadResourceAsync<T>(string path) where T : Object
+        {
+            var handler = Resources.LoadAsync<T>(path).ToUniTask();
+            T result = await handler as T;
+
+            if (result == null)
+            {
+                Debug.LogError($"Resource not found at path: {path}");
+
+            }
+            return result;
+        }
     }
 }
