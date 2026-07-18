@@ -15,7 +15,7 @@ using Zenject;
 
 namespace Asteroid.Generation
 {
-    public class BootstrapEntryPoint : IInitializable, IDisposable
+    public class BootstrapEntryPoint : MonoBehaviour, IDisposable
     {
         [Inject] private BootstrapUI _bootstrapUI;
         [Inject] private List<UniTask> _loadingTasks;
@@ -30,6 +30,8 @@ namespace Asteroid.Generation
         [Inject] private IApplicationQuitter _applicationQuitter;
         [Inject] private IRemoteSavable _remoteSave;
 
+        [SerializeField] private SaveModeUI _saveModeUI;
+
         private bool _analyticsReady;
         private bool _remoteConfigReady;
         private bool _sceneLoaded;
@@ -39,7 +41,7 @@ namespace Asteroid.Generation
         private bool _cloudSaveLoaded;
         private bool _shopLoaded;
 
-        public async void Initialize()
+        public async void Awake()
         {
             await _sceneLoader.ReloadStartSceneAsync(_bootstrapSceneModel.SceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;

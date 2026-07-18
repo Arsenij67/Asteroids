@@ -8,7 +8,7 @@ using Zenject;
 namespace Asteroid.Installers.MonoInstallers
 {
     [RequireComponent(typeof(BootstrapUI))]
-    public class BootsrapUIInstaller : MonoInstaller
+    public class BootstrapUIInstaller : MonoInstaller
     {
         [SerializeField] private Slider _slider;
         [SerializeField] private Button _buttonStart;
@@ -21,7 +21,6 @@ namespace Asteroid.Installers.MonoInstallers
             Container.Bind<Button>().WithId("buttonStart").FromInstance(_buttonStart);
             Container.Bind<Button>().WithId("buttonExit").FromInstance(_buttonExit);
             Container.Bind<BootstrapUI>().FromComponentOn(gameObject).AsSingle();
-            Container.BindInterfacesAndSelfTo<BootstrapEntryPoint>().AsTransient();
             Container.Bind<RectTransform>().FromInstance(UIParent).AsSingle();
         }
      

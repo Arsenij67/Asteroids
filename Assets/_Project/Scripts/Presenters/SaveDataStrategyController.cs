@@ -1,6 +1,7 @@
 ﻿
 using Asteroid.Database.Connection;
 using Asteroid.Generation;
+using Asteroid.UI;
 using Asteroid.Weapon;
 using Cysharp.Threading.Tasks;
 using System;
@@ -16,16 +17,22 @@ namespace Asteroid.Database
 
         private SaveStrategy[] _saveStrategies;
         private SaveStrategy _currentSaveStrategy;
-
+        private SaveModeUI _saveModeUIPrefab;
+        private RectTransform _parentForUI;
+        private SaveModeUI? _saveModeUI;
+        private IResourceLoaderService _resourceLoaderService;
         //public event Action<SaveChoice> OnStrategyChanged;
         //public event Action<DateTime> OnLastSaveTimeUpdated;
 
         //public SaveChoice CurrentStrategyType => _currentSaveStrategy?.GetMode() ?? SaveChoice.UseLocal;
         //public bool IsOnline => _isOnline;
 
-        public async UniTask Initialize(IInstanceLoader instanceLoader, params SaveStrategy[] saveStrategies)
+        public async UniTask Initialize(IInstanceLoader instanceLoader,IResourceLoaderService resourceLoaderService, SaveModeUI saveModeUIPrefab,RectTransform parentForUI, params SaveStrategy[] saveStrategies)
         {
             _saveStrategies = saveStrategies;
+            _saveModeUIPrefab = saveModeUIPrefab;
+            _resourceLoaderService = resourceLoaderService;
+            _parentForUI = parentForUI; 
             base.Initialize(instanceLoader);   
             await DefineStrategy(SaveChoice.UseCloud);
         }
@@ -50,9 +57,25 @@ namespace Asteroid.Database
          
         }
 
+        private void OpenWindowSaveMode()
+        {
+            _saveModeUI = _resourceLoaderService.Instantiate(_saveModeUIPrefab, _parentForUI).GetComponent<SaveModeUI>();
+            _saveModeUI.Initialize();
+            _saveModeUI.OnButtonClosePressed += CloseWindowSaveMode;
+        }
+
+        private void CloseWindowSaveMode()
+        {
+            _saveModeUI?.CloseWindow();
+            _saveModeUI.OnButtonClosePressed -= CloseWindowSaveMode;
+        }
+
         private void SuggestChangingSaveModeWindow()
         {
             Debug.Log("Появился интернет. Хотите сменить режим сохранения?");
+            OpenWindowSaveMode();
+            OnInternetConnected -= SuggestChangingSaveModeWindow;
+            base.Dispose();
         }
 
         public async void UpdateCoinsAfterPurchase(int countCoins)

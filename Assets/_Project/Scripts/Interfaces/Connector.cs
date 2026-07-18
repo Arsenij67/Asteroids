@@ -18,7 +18,7 @@ namespace Asteroid.Database.Connection
 
         public void Dispose()
         {
-            _cancellationTokenSource?.Cancel();
+            _cancellationTokenSource.Cancel();
         }
 
         protected void Initialize(IInstanceLoader instanceLoader)
@@ -68,15 +68,19 @@ namespace Asteroid.Database.Connection
 
         protected async UniTask WaitForConnection()
         {
+            const int TIME_WAIT_CALLBACK = 1*1000;
 
             while (!_cancellationToken.IsCancellationRequested)
             {
                 if (await IsConnectionAvailable())
                 {
-                    OnInternetConnected();
+                    if (OnInternetConnected != null)
+                    {
+                        OnInternetConnected();
+                    }
                 }
 
-                await UniTask.Delay(1000, cancellationToken: _cancellationToken);
+                await UniTask.Delay(TIME_WAIT_CALLBACK, cancellationToken: _cancellationToken);;
             }
         }
     }
