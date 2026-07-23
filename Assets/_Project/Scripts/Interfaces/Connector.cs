@@ -9,7 +9,8 @@ namespace Asteroid.Database.Connection
 {
     public class Connector : IDisposable
     {
-        protected event Action OnInternetConnected;
+        protected event Func<UniTask> OnInternetConnected;
+        protected event Func<UniTask> OnInternetDisconnected;
         protected bool IsConnected;
 
         private CancellationTokenSource _cancellationTokenSource;
@@ -25,8 +26,6 @@ namespace Asteroid.Database.Connection
         {
             _instanceLoader = instanceLoader;
             _cancellationTokenSource = _instanceLoader.CreateInstance<CancellationTokenSource>();
-            _cancellationToken = _instanceLoader.CreateInstance<CancellationToken>();
-            WaitForConnection();
         }
 
         protected async UniTask<bool> IsConnectionAvailable()
@@ -61,26 +60,42 @@ namespace Asteroid.Database.Connection
                     Debug.LogError($"Ошибка проверки интернета через {address}: {ex.Message}");
                 }
             }
-
-            IsConnected = isConnected;
             return isConnected;
         }
 
         protected async UniTask WaitForConnection()
         {
             const int TIME_WAIT_CALLBACK = 1*1000;
-
+            _cancellationToken = _instanceLoader.CreateInstance<CancellationToken>();
             while (!_cancellationToken.IsCancellationRequested)
             {
+                Debug.Log("Ждем подключения");
                 if (await IsConnectionAvailable())
                 {
-                    if (OnInternetConnected != null)
-                    {
-                        OnInternetConnected();
-                    }
+                    await OnInternetConnected();
+                    Debug.Log("Интерент дали!!!!");
+                    break;
+                }
+              
+                await UniTask.Delay(TIME_WAIT_CALLBACK, cancellationToken:_cancellationToken);
+            }
+        }
+
+        protected async UniTask WaitForDisconnection()
+        {
+            const int TIME_WAIT_CALLBACK = 1 * 1000;
+            _cancellationToken = _instanceLoader.CreateInstance<CancellationToken>();
+            while (!_cancellationToken.IsCancellationRequested)
+            {
+                Debug.Log("Ждем отключения");
+                if (!await IsConnectionAvailable())
+                {
+                    await OnInternetDisconnected();
+                    Debug.Log("Интернет забрали!");
+                   break;
                 }
 
-                await UniTask.Delay(TIME_WAIT_CALLBACK, cancellationToken: _cancellationToken);;
+                await UniTask.Delay(TIME_WAIT_CALLBACK, cancellationToken: _cancellationToken);
             }
         }
     }

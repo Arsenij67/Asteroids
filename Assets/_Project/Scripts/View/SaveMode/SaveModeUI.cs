@@ -1,3 +1,4 @@
+using Asteroid.Database;
 using Asteroid.Generation;
 using TMPro;
 using UnityEngine;
@@ -8,13 +9,16 @@ namespace Asteroid.UI
 {
     public class SaveModeUI : MonoBehaviour
     {
-        public event UnityAction<int> OnActiveItemChanged;
+        public event UnityAction<SaveChoice> OnActiveItemChanged;
         public event UnityAction OnButtonClosePressed;
 
         public int NumberActiveItem => _tmpSaveModeDrop.value;
+        public bool ChoiceIsMade => _choiceIsMade;
 
         [SerializeField] private TMP_Dropdown _tmpSaveModeDrop;
         [SerializeField] private Button _closeButton;
+
+        private bool _choiceIsMade=false;
 
         private void OnDestroy()
         {
@@ -41,7 +45,8 @@ namespace Asteroid.UI
 
         private void SelectFromList(int numberItem)
         {
-            OnActiveItemChanged?.Invoke(numberItem);
+            _choiceIsMade = (SaveChoice) numberItem != SaveChoice.NoChoice;
+            OnActiveItemChanged?.Invoke((SaveChoice)numberItem);
         }
     }
 }

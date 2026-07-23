@@ -24,7 +24,8 @@ namespace Asteroid.Services.UnityCloud
 
         public async UniTask Initialize(DataSave dataSave)
         {
-            await IsConnectionAvailable();
+
+            IsConnected = await IsConnectionAvailable();
 
             if (!IsConnected || _isInitialized || _isInitializing) return;
 

@@ -15,9 +15,13 @@ namespace Asteroid.Database
         public bool NoAdsStatus => _currentSaveStrategy.NoAdsStatus;
         public int CountCoins => _currentSaveStrategy.CountCoins;
 
+        private bool ChoiceIsMade => _saveModeUI?.ChoiceIsMade ?? false;
+
+
+        private SaveChoice _saveModeChoice;
         private SaveStrategy[] _saveStrategies;
         private SaveStrategy _currentSaveStrategy;
-        private SaveModeUI _saveModeUIPrefab;
+        private GameObject _saveModeUIPrefab;
         private RectTransform _parentForUI;
         private SaveModeUI? _saveModeUI;
         private IResourceLoaderService _resourceLoaderService;
@@ -27,59 +31,87 @@ namespace Asteroid.Database
         //public SaveChoice CurrentStrategyType => _currentSaveStrategy?.GetMode() ?? SaveChoice.UseLocal;
         //public bool IsOnline => _isOnline;
 
-        public async UniTask Initialize(IInstanceLoader instanceLoader,IResourceLoaderService resourceLoaderService, SaveModeUI saveModeUIPrefab,RectTransform parentForUI, params SaveStrategy[] saveStrategies)
+        public async UniTask Initialize(IInstanceLoader instanceLoader, IResourceLoaderService resourceLoaderService, GameObject saveModeUIPrefab, RectTransform parentForUI, params SaveStrategy[] saveStrategies)
         {
             _saveStrategies = saveStrategies;
             _saveModeUIPrefab = saveModeUIPrefab;
             _resourceLoaderService = resourceLoaderService;
-            _parentForUI = parentForUI; 
-            base.Initialize(instanceLoader);   
-            await DefineStrategy(SaveChoice.UseCloud);
+            _parentForUI = parentForUI;
+            _saveModeChoice = SaveChoice.NoChoice;
+            base.Initialize(instanceLoader);
+            OnInternetConnected += OpenWindowSaveMode;
+            OnInternetDisconnected += DefineStrategy;
+            await DefineStrategy();
         }
 
-        private async UniTask DefineStrategy(SaveChoice saveChoice)
+        private async UniTask DefineStrategy()
         {
-            _currentSaveStrategy = _saveStrategies[0];
-
-            if (await IsConnectionAvailable())
+            IsConnected = await IsConnectionAvailable();
+            if (IsConnected)
             {
-                Debug.Log($"Стратегия уже {_currentSaveStrategy.GetMode()}, изменений не требуется");
-                return;
+                _currentSaveStrategy = _saveStrategies[0];
+          
+                Debug.Log($"Стратегия уже {_currentSaveStrategy.GetMode()}");
+                WaitForDisconnection();
             }
 
             else
             {
-                OnInternetConnected += SuggestChangingSaveModeWindow;
                 _currentSaveStrategy = _saveStrategies[1];
+             
                 Debug.Log($"Стратегия изменена на: {_currentSaveStrategy.GetMode()}");
-     
+                WaitForConnection();
             }
-         
         }
 
-        private void OpenWindowSaveMode()
+        private async void DefineStrategy(SaveChoice newSaveChoice)
         {
-            _saveModeUI = _resourceLoaderService.Instantiate(_saveModeUIPrefab, _parentForUI).GetComponent<SaveModeUI>();
-            _saveModeUI.Initialize();
-            _saveModeUI.OnButtonClosePressed += CloseWindowSaveMode;
+            _saveModeChoice = newSaveChoice;
+            IsConnected = await IsConnectionAvailable();
+
+            if (newSaveChoice.Equals(SaveChoice.UseCloud) && IsConnected)
+            {
+                _currentSaveStrategy = _saveStrategies[0];
+                await WaitForDisconnection();
+            }
+
+            else if (newSaveChoice.Equals(SaveChoice.UseLocal))
+            {
+                _currentSaveStrategy = _saveStrategies[1];
+                await WaitForConnection();
+            }
+            Debug.Log($"Стратегия : {_currentSaveStrategy.GetMode()}");
+        }
+
+        private async UniTask OpenWindowSaveMode()
+        {
+            if (!ChoiceIsMade)
+            {
+                GameObject saveModeUIGameObject = await _resourceLoaderService.InstantiateAsync(_saveModeUIPrefab, _parentForUI);
+                _saveModeUI = saveModeUIGameObject.GetComponent<SaveModeUI>();
+                _saveModeUI.Initialize();
+                _saveModeUI.OnButtonClosePressed += CloseWindowSaveMode;
+                _saveModeUI.OnActiveItemChanged += DefineStrategy;
+            }
+
+            else
+            { 
+                DefineStrategy(_saveModeChoice);
+            }
         }
 
         private void CloseWindowSaveMode()
         {
-            _saveModeUI?.CloseWindow();
-            _saveModeUI.OnButtonClosePressed -= CloseWindowSaveMode;
-        }
-
-        private void SuggestChangingSaveModeWindow()
-        {
-            Debug.Log("Появился интернет. Хотите сменить режим сохранения?");
-            OpenWindowSaveMode();
-            OnInternetConnected -= SuggestChangingSaveModeWindow;
-            base.Dispose();
+            if (ChoiceIsMade)
+            {
+                _saveModeUI.OnButtonClosePressed -= CloseWindowSaveMode;
+                _saveModeUI.OnActiveItemChanged -= DefineStrategy;
+                _saveModeUI?.CloseWindow();
+            }
         }
 
         public async void UpdateCoinsAfterPurchase(int countCoins)
-        { 
+        {
             await _currentSaveStrategy.AddCountCoins(countCoins);
         }
 
@@ -100,9 +132,10 @@ namespace Asteroid.Database
 
         public new void Dispose()
         {
-            OnInternetConnected -= SuggestChangingSaveModeWindow;
             base.Dispose();
-   
+            OnInternetConnected -= OpenWindowSaveMode;
+            OnInternetDisconnected -= DefineStrategy;
         }
+
     }
 }

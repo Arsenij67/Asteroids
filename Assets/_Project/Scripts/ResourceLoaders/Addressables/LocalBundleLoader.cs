@@ -31,12 +31,10 @@ public class LocalBundleLoader : IResourceLoaderService
         return handle;
     }
 
-    public async UniTask<GameObject> InstantiateAsync<T>(T prefab, Transform parent) where T : Object
+    public async UniTask<GameObject> InstantiateAsync(GameObject prefab, Transform parent)
     {
-        AsyncOperationHandle<GameObject> asyncOperation = Addressables.InstantiateAsync(prefab.name, parent);
+        AsyncOperationHandle<GameObject> asyncOperation = Addressables.InstantiateAsync(prefab.name, parent,trackHandle:true);
         GameObject createdObject = await asyncOperation;
-        Addressables.ReleaseInstance(asyncOperation);
-        asyncOperation = default;
         return createdObject;
     }
 

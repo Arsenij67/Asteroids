@@ -58,7 +58,7 @@ namespace Asteroid.Generation
             }
             return Object.Instantiate(prefab.GameObject(), position, rotation);
         }
-        public UniTask<GameObject> InstantiateAsync<T>(T prefab, Transform parent) where T : Object
+        public UniTask<GameObject> InstantiateAsync(GameObject prefab, Transform parent)
         {
             AsyncInstantiateOperation<GameObject> asyncOperation = Object.InstantiateAsync(prefab.GameObject(), parent);
             return asyncOperation.ToUniTask().ContinueWith(() => asyncOperation.Result.First());

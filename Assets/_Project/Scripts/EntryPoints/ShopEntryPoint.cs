@@ -27,7 +27,7 @@ namespace Asteroid.EntryPoints
         [Inject(Id = "buttonBuyNoAds")] private Button _buttonBuyNoAds;
         [Inject(Id = "buttonBuy100Coins")] private Button _buttonBuy100Coins;
 
-        [SerializeField] private SaveModeUI _saveModeUIPrefab;
+        [SerializeField] private GameObject _saveModeUIPrefab;
         [SerializeField] RectTransform _parentUI;
 
         private async void Start()

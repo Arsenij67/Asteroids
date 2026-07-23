@@ -3,9 +3,9 @@ namespace Asteroid.Database
     public enum SaveChoice
 
     {
-        UseCloud,
-        UseLocal,
-        Merge
+        NoChoice = 0,
+        UseLocal = 1,
+        UseCloud = 2
     }
 }
 
