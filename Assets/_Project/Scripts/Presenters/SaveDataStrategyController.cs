@@ -38,6 +38,33 @@ namespace Asteroid.Database
             await DefineStrategy();
         }
 
+        public async void UpdateCoinsAfterPurchase(int countCoins)
+        {
+            await _currentSaveStrategy.AddCountCoins(countCoins);
+        }
+
+        public async void UpdateNoAdsAfterPurchase(bool isCanceled)
+        {
+            await _currentSaveStrategy.UpdateNoAdsStatus(isCanceled);
+        }
+
+        public void UpdateUINoAds(bool isAdvertisementCanceled)
+        {
+            _currentSaveStrategy.UpdateUINoAds(isAdvertisementCanceled);
+        }
+
+        public void UpdateUICountCoins(int countToAdd)
+        {
+            _currentSaveStrategy.UpdateUICountCoins(countToAdd);
+        }
+
+        public new void Dispose()
+        {
+            base.Dispose();
+            OnInternetConnected -= TryOpenWindowSaveMode;
+            OnInternetDisconnected -= DefineStrategy;
+        }
+
         private async UniTask DefineStrategy()
         {
             IsConnected = await IsConnectionAvailable();
@@ -102,33 +129,5 @@ namespace Asteroid.Database
                 _saveModeUI?.CloseWindow();
             }
         }
-
-        public async void UpdateCoinsAfterPurchase(int countCoins)
-        {
-            await _currentSaveStrategy.AddCountCoins(countCoins);
-        }
-
-        public async void UpdateNoAdsAfterPurchase(bool isCanceled)
-        {
-            await _currentSaveStrategy.UpdateNoAdsStatus(isCanceled);
-        }
-
-        public void UpdateUINoAds(bool isAdvertisementCanceled)
-        {
-            _currentSaveStrategy.UpdateUINoAds(isAdvertisementCanceled);
-        }
-
-        public void UpdateUICountCoins(int countToAdd)
-        {
-            _currentSaveStrategy.UpdateUICountCoins(countToAdd);
-        }
-
-        public new void Dispose()
-        {
-            base.Dispose();
-            OnInternetConnected -= TryOpenWindowSaveMode;
-            OnInternetDisconnected -= DefineStrategy;
-        }
-
     }
 }
