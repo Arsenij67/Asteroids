@@ -17,7 +17,6 @@ namespace Asteroid.Database
 
         private bool ChoiceIsMade => _saveModeUI?.ChoiceIsMade ?? false;
 
-
         private SaveChoice _saveModeChoice;
         private SaveStrategy[] _saveStrategies;
         private SaveStrategy _currentSaveStrategy;
@@ -25,12 +24,6 @@ namespace Asteroid.Database
         private RectTransform _parentForUI;
         private SaveModeUI? _saveModeUI;
         private IResourceLoaderService _resourceLoaderService;
-        //public event Action<SaveChoice> OnStrategyChanged;
-        //public event Action<DateTime> OnLastSaveTimeUpdated;
-
-        //public SaveChoice CurrentStrategyType => _currentSaveStrategy?.GetMode() ?? SaveChoice.UseLocal;
-        //public bool IsOnline => _isOnline;
-
         public async UniTask Initialize(IInstanceLoader instanceLoader, IResourceLoaderService resourceLoaderService, GameObject saveModeUIPrefab, RectTransform parentForUI, params SaveStrategy[] saveStrategies)
         {
             _saveStrategies = saveStrategies;
@@ -39,7 +32,8 @@ namespace Asteroid.Database
             _parentForUI = parentForUI;
             _saveModeChoice = SaveChoice.NoChoice;
             base.Initialize(instanceLoader);
-            OnInternetConnected += OpenWindowSaveMode;
+            OnInternetConnected += TryOpenWindowSaveMode;
+            OnInternetConnected += UpdateFromChoosedSaveMode;
             OnInternetDisconnected += DefineStrategy;
             await DefineStrategy();
         }
@@ -50,21 +44,17 @@ namespace Asteroid.Database
             if (IsConnected)
             {
                 _currentSaveStrategy = _saveStrategies[0];
-          
-                Debug.Log($"Стратегия уже {_currentSaveStrategy.GetMode()}");
                 WaitForDisconnection();
             }
 
             else
             {
                 _currentSaveStrategy = _saveStrategies[1];
-             
-                Debug.Log($"Стратегия изменена на: {_currentSaveStrategy.GetMode()}");
                 WaitForConnection();
             }
         }
 
-        private async void DefineStrategy(SaveChoice newSaveChoice)
+        private async UniTask DefineStrategy(SaveChoice newSaveChoice)
         {
             _saveModeChoice = newSaveChoice;
             IsConnected = await IsConnectionAvailable();
@@ -72,18 +62,17 @@ namespace Asteroid.Database
             if (newSaveChoice.Equals(SaveChoice.UseCloud) && IsConnected)
             {
                 _currentSaveStrategy = _saveStrategies[0];
-                await WaitForDisconnection();
+                WaitForDisconnection();
             }
 
             else if (newSaveChoice.Equals(SaveChoice.UseLocal))
             {
                 _currentSaveStrategy = _saveStrategies[1];
-                await WaitForConnection();
+                WaitForConnection();
             }
-            Debug.Log($"Стратегия : {_currentSaveStrategy.GetMode()}");
         }
 
-        private async UniTask OpenWindowSaveMode()
+        private async UniTask TryOpenWindowSaveMode()
         {
             if (!ChoiceIsMade)
             {
@@ -93,11 +82,15 @@ namespace Asteroid.Database
                 _saveModeUI.OnButtonClosePressed += CloseWindowSaveMode;
                 _saveModeUI.OnActiveItemChanged += DefineStrategy;
             }
+        }
 
-            else
-            { 
-                DefineStrategy(_saveModeChoice);
+        private UniTask UpdateFromChoosedSaveMode()
+        {
+            if (ChoiceIsMade)
+            {
+                return DefineStrategy(_saveModeChoice);
             }
+            return UniTask.CompletedTask;
         }
 
         private void CloseWindowSaveMode()
@@ -133,7 +126,7 @@ namespace Asteroid.Database
         public new void Dispose()
         {
             base.Dispose();
-            OnInternetConnected -= OpenWindowSaveMode;
+            OnInternetConnected -= TryOpenWindowSaveMode;
             OnInternetDisconnected -= DefineStrategy;
         }
 

@@ -1,5 +1,7 @@
 using Asteroid.Database;
 using Asteroid.Generation;
+using Cysharp.Threading.Tasks;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,7 +11,7 @@ namespace Asteroid.UI
 {
     public class SaveModeUI : MonoBehaviour
     {
-        public event UnityAction<SaveChoice> OnActiveItemChanged;
+        public event Func<SaveChoice,UniTask> OnActiveItemChanged;
         public event UnityAction OnButtonClosePressed;
 
         public int NumberActiveItem => _tmpSaveModeDrop.value;
