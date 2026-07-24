@@ -11,11 +11,12 @@ namespace Asteroid.Database.Connection
     {
         protected event Func<UniTask> OnInternetConnected;
         protected event Func<UniTask> OnInternetDisconnected;
+
+        protected IInstanceLoader _instanceLoader;
         protected bool IsConnected;
 
         private CancellationTokenSource _cancellationTokenSource;
         private CancellationToken _cancellationToken;
-        private IInstanceLoader _instanceLoader;
 
         public void Dispose()
         {

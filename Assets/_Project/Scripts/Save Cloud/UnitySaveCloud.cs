@@ -17,7 +17,7 @@ namespace Asteroid.Services.UnityCloud
         private static bool _isInitialized = false;
         private static bool _isInitializing = false;
 
-        private bool IsInitialized => IsConnected && _isInitialized;
+        public bool IsInitialized => IsConnected && _isInitialized;
 
         private Dictionary<string, Item> _data;
         private DataSave _dataSave;

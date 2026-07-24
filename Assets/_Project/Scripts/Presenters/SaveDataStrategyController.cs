@@ -25,7 +25,10 @@ namespace Asteroid.Database
         private GameObject _saveModeUIPrefab;
         private RectTransform _parentForUI;
         private SaveModeUI? _saveModeUI;
+        private LocalSaveStrategyPresenter _localSavePresenter;
+        private CloudDataPresenter _cloudSavePresenter;
         private IResourceLoaderService _resourceLoaderService;
+
         public UniTask Initialize(IInstanceLoader instanceLoader, IResourceLoaderService resourceLoaderService, GameObject saveModeUIPrefab, RectTransform parentForUI, params SaveStrategy[] saveStrategies)
         {
             _saveStrategies = saveStrategies;
@@ -33,6 +36,8 @@ namespace Asteroid.Database
             _resourceLoaderService = resourceLoaderService;
             _parentForUI = parentForUI;
             _saveModeChoice = SaveChoice.NoChoice;
+            _cloudSavePresenter = _saveStrategies.FirstOrDefault((strategy) => strategy is CloudDataPresenter) as CloudDataPresenter;
+            _localSavePresenter = _saveStrategies.FirstOrDefault((strategy) => strategy is LocalSaveStrategyPresenter) as LocalSaveStrategyPresenter;
             base.Initialize(instanceLoader);
 
             if (_isInitialized) return UniTask.CompletedTask;
@@ -42,6 +47,34 @@ namespace Asteroid.Database
             OnInternetDisconnected += DefineStrategy;
             _isInitialized = true;
             return DefineStrategy();
+        }
+
+        private UniTask TrySynchronizeData(SaveStrategy otherStrategy)
+        {
+            DataSave synchronizeData = _instanceLoader.CreateInstance<DataSave>();
+            
+
+            if (_currentSaveStrategy.LastSaveTime < otherStrategy.LastSaveTime)
+            {
+                Debug.Log("обновили текущую ");
+                synchronizeData[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = otherStrategy.CountDeadEnemies;
+                synchronizeData[KeyData.COINS_COUNT] = otherStrategy.CountCoins;
+                synchronizeData[KeyData.ADS_DISABLED] = otherStrategy.NoAdsStatus;
+                synchronizeData[KeyData.LAST_SAVE_TIME] = otherStrategy.LastSaveTime;
+                return _currentSaveStrategy.UpdateAllData(synchronizeData);
+            }
+            else if ( _currentSaveStrategy.LastSaveTime > otherStrategy.LastSaveTime)
+            {
+
+                Debug.Log("обновили другую ");
+                synchronizeData[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = _currentSaveStrategy.CountDeadEnemies;
+                synchronizeData[KeyData.COINS_COUNT] = CountCoins;
+                synchronizeData[KeyData.ADS_DISABLED] = NoAdsStatus;
+                synchronizeData[KeyData.LAST_SAVE_TIME] = _currentSaveStrategy.LastSaveTime;
+                return otherStrategy.UpdateAllData(synchronizeData);
+            }
+
+            return UniTask.CompletedTask;   
         }
 
         public async UniTask UpdateCoinsAfterPurchase(int countCoins)
@@ -66,16 +99,18 @@ namespace Asteroid.Database
 
         private async UniTask DefineStrategy()
         {
-            IsConnected = await IsConnectionAvailable();
+            await IsConnectionAvailable();
             if (IsConnected)
             {
-                _currentSaveStrategy = _saveStrategies.FirstOrDefault((strategy) => strategy is CloudDataPresenter);
+                _currentSaveStrategy = _cloudSavePresenter;
+                await TrySynchronizeData(_localSavePresenter);
                 WaitForDisconnection();
             }
 
             else
             {
-                _currentSaveStrategy = _currentSaveStrategy = _saveStrategies.FirstOrDefault((strategy) => strategy is LocalSaveStrategyPresenter);
+                _currentSaveStrategy = _localSavePresenter;
+                await TrySynchronizeData(_cloudSavePresenter);
                 WaitForConnection();
             }
             _currentSaveStrategy.UpdateAllDataUI(); 
@@ -84,18 +119,20 @@ namespace Asteroid.Database
         private async UniTask DefineStrategy(SaveChoice newSaveChoice)
         {
             _saveModeChoice = newSaveChoice;
-            IsConnected = await IsConnectionAvailable();
+             await IsConnectionAvailable();
 
             if (newSaveChoice.Equals(SaveChoice.UseCloud) && IsConnected)
             {
-                _currentSaveStrategy = _saveStrategies.FirstOrDefault((strategy) => strategy is CloudDataPresenter);
+                _currentSaveStrategy = _cloudSavePresenter;
                 WaitForDisconnection();
+                await TrySynchronizeData(_localSavePresenter);
             }
 
             else if (newSaveChoice.Equals(SaveChoice.UseLocal))
             {
-                _currentSaveStrategy = _currentSaveStrategy = _saveStrategies.FirstOrDefault((strategy) => strategy is LocalSaveStrategyPresenter);
+                _currentSaveStrategy = _localSavePresenter;
                 WaitForConnection();
+                await TrySynchronizeData(_cloudSavePresenter);
             }
             _currentSaveStrategy.UpdateAllDataUI();
         }

@@ -11,13 +11,16 @@ namespace Asteroid.Database
     {
         public bool NoAdsStatus => (bool)(DataSave[KeyData.ADS_DISABLED] ?? false);
         public int CountCoins => (int)(DataSave[KeyData.COINS_COUNT] ?? 0);
+        public DateTime LastSaveTime => (DateTime)(DataSave[KeyData.LAST_SAVE_TIME] ?? DateTime.MinValue);
+
+        public int CountDeadEnemies => (int)(DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] ?? 0);
 
         protected ShopUI ShopUI;
 
         protected DataSave DataSave
         {
-            get => _dataSave;
-            set => _dataSave = value;
+            get => _dataSave ?? _instanceCreator.CreateInstance<DataSave>();
+            set => _dataSave = value;   
         }
 
         private IInstanceLoader _instanceCreator;
@@ -34,7 +37,16 @@ namespace Asteroid.Database
         public abstract  UniTask UpdateNoAdsStatus(bool advertisementIsCanceled);
         public abstract UniTask RemoveCountCoins(int coinsToRemove);
         public abstract SaveChoice GetMode();
-        protected abstract void UpdateLastSaveTime(string key);
+        protected abstract UniTask UpdateLastSaveTime(string key);
+        private async UniTask UpdateCountCoins(int coinsSummary)
+        {
+            await AddCountCoins(coinsSummary-CountCoins);
+        }
+
+        private async UniTask UpdateDeadEnemies(int deadEnemiesSummary)
+        {
+            await AddCountDeadEnemies (deadEnemiesSummary - CountDeadEnemies);
+        }
 
         public void UpdateUINoAds(bool isAdvertisementCanceled)
         {
@@ -50,6 +62,13 @@ namespace Asteroid.Database
         {
             UpdateUINoAds(NoAdsStatus);
             UpdateUICountCoins(CountCoins);
+        }
+
+        public async UniTask UpdateAllData(DataSave dataSave)
+        {
+            await UpdateCountCoins((int)dataSave[KeyData.COINS_COUNT]);
+            await UpdateDeadEnemies((int)dataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY]);
+            await UpdateNoAdsStatus((bool)dataSave[KeyData.ADS_DISABLED]);
         }
 
     }

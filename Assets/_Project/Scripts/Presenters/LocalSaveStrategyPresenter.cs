@@ -56,9 +56,10 @@ namespace Asteroid.Database
             return WriteDataFromFileAsync(_localSaveData.FullPath, jsonData);
         }
 
-        protected override void UpdateLastSaveTime(string key)
+        protected override UniTask UpdateLastSaveTime(string key)
         {
-            DataSave[key] = DateTime.Now;
+            DataSave[key] = File.GetLastWriteTime(_localSaveData.FullPath);
+            return UniTask.CompletedTask;
         }
 
         public override UniTask UpdateNoAdsStatus(bool adevertisementIsCanceled)

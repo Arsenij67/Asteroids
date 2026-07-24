@@ -23,6 +23,10 @@ namespace Asteroid.Services.UnityCloud
         {
             int oldEnemies = await _remoteSavable.GetKey<int>(KeyData.DEAD_ENEMIES_COUNT_SUMMARY);
             DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = oldEnemies + enemiesToAdd;
+            if(!_remoteSavable.IsInitialized)
+            {
+               await _remoteSavable.Initialize(DataSave);
+            }
             await _remoteSavable.SaveKey(KeyData.DEAD_ENEMIES_COUNT_SUMMARY, DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY]);
             UpdateLastSaveTime(KeyData.DEAD_ENEMIES_COUNT_SUMMARY);
         }
@@ -31,21 +35,33 @@ namespace Asteroid.Services.UnityCloud
         {
             int oldCoins = await _remoteSavable.GetKey<int>(KeyData.COINS_COUNT);
             DataSave[KeyData.COINS_COUNT] = oldCoins + coinsToAdd;
+            if (!_remoteSavable.IsInitialized)
+            {
+                await _remoteSavable.Initialize(DataSave);
+            }
             await _remoteSavable.SaveKey(KeyData.COINS_COUNT, DataSave[KeyData.COINS_COUNT]);
             UpdateLastSaveTime(KeyData.COINS_COUNT);
         }
 
-        public override UniTask UpdateNoAdsStatus(bool advertisementIsCanceled)
+        public override async UniTask UpdateNoAdsStatus(bool advertisementIsCanceled)
         {
             DataSave[KeyData.ADS_DISABLED] = advertisementIsCanceled;
-            return _remoteSavable.SaveKey(KeyData.ADS_DISABLED, DataSave[KeyData.ADS_DISABLED]);
+            if (!_remoteSavable.IsInitialized)
+            {
+                await _remoteSavable.Initialize(DataSave);
+            }
+           await _remoteSavable.SaveKey(KeyData.ADS_DISABLED, DataSave[KeyData.ADS_DISABLED]);
         }
 
         public override async UniTask RemoveCountCoins(int coinsToRemove)
         {
+            if (!_remoteSavable.IsInitialized)
+            {
+                await _remoteSavable.Initialize(DataSave);
+            }
             int oldCoins = await _remoteSavable.GetKey<int>(KeyData.COINS_COUNT);
             await _remoteSavable.SaveKey(KeyData.COINS_COUNT, oldCoins - coinsToRemove);
-            UpdateLastSaveTime(KeyData.COINS_COUNT);
+            await UpdateLastSaveTime(KeyData.COINS_COUNT);
         }
 
         public override SaveChoice GetMode()
@@ -53,8 +69,12 @@ namespace Asteroid.Services.UnityCloud
             return SaveChoice.UseCloud;
         }
 
-        protected override void UpdateLastSaveTime(string key)
+        protected override async UniTask UpdateLastSaveTime(string key)
         {
+            if (!_remoteSavable.IsInitialized)
+            {
+                await _remoteSavable.Initialize(DataSave);
+            }
             DataSave[KeyData.LAST_SAVE_TIME] = (DateTime)_remoteSavable.GetKeyLastModified(key);
         }
     }
