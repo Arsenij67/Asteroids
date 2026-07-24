@@ -28,7 +28,6 @@ namespace Asteroid.Database
             ShopUI = shopUI;
             _dataSave = dataSave;
             _instanceCreator = instanceCreator; 
-            Debug.Log(_dataSave==null);
         }
         public abstract UniTask AddCountDeadEnemies(int enemiesToAdd);
         public abstract UniTask AddCountCoins(int coinsToAdd);
@@ -37,19 +36,20 @@ namespace Asteroid.Database
         public abstract SaveChoice GetMode();
         protected abstract void UpdateLastSaveTime(string key);
 
-        public void UpdateAllDataUI()
-        {
-            UpdateUINoAds(NoAdsStatus);
-            UpdateUICountCoins(CountCoins);
-        }
         public void UpdateUINoAds(bool isAdvertisementCanceled)
         {
-            ShopUI.UpdateViewNoAds(isAdvertisementCanceled);
+            ShopUI?.UpdateViewNoAds(isAdvertisementCanceled);
         }
 
         public void UpdateUICountCoins(int countToAdd)
         {
-            ShopUI.UpdateCountCoins((int)DataSave[KeyData.COINS_COUNT]);
+            ShopUI?.UpdateCountCoins((int)DataSave[KeyData.COINS_COUNT]);
+        }
+
+        public void UpdateAllDataUI()
+        {
+            UpdateUINoAds(NoAdsStatus);
+            UpdateUICountCoins(CountCoins);
         }
 
     }

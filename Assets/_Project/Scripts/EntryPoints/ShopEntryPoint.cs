@@ -35,7 +35,7 @@ namespace Asteroid.EntryPoints
             _shopUI.Initialize(_buttonBuyNoAds, _buttonBuy100Coins, _textCoins, _imageNoAds);
             await _purchaseService.Initialize(_dataSave);
             await _localSaveStrategy.Initialize(_dataSave,_localSave, _instanceLoader,_shopUI);
-            _cloudSaveStrategy.Initialize(_dataSave, _instanceLoader, _shopUI, _remoteSavable);
+            _cloudSaveStrategy.Initialize(_dataSave, _instanceLoader, _remoteSavable, _shopUI);
             await _saveDataStrategy.Initialize(_instanceLoader,_resourceLoaderService,_saveModeUIPrefab,_parentUI,_cloudSaveStrategy, _localSaveStrategy);
     
             _purchaseService.OnPlayerBought100Coins += _saveDataStrategy.UpdateCoinsAfterPurchase;

@@ -1,6 +1,7 @@
 ﻿
 using Asteroid.Database.Connection;
 using Asteroid.Generation;
+using Asteroid.Services.UnityCloud;
 using Asteroid.UI;
 using Asteroid.Weapon;
 using Cysharp.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace Asteroid.Database
 
         private bool ChoiceIsMade => _saveModeUI?.ChoiceIsMade ?? false;
 
+        private bool _isInitialized = false; 
         private SaveChoice _saveModeChoice;
         private SaveStrategy[] _saveStrategies;
         private SaveStrategy _currentSaveStrategy;
@@ -24,7 +26,7 @@ namespace Asteroid.Database
         private RectTransform _parentForUI;
         private SaveModeUI? _saveModeUI;
         private IResourceLoaderService _resourceLoaderService;
-        public async UniTask Initialize(IInstanceLoader instanceLoader, IResourceLoaderService resourceLoaderService, GameObject saveModeUIPrefab, RectTransform parentForUI, params SaveStrategy[] saveStrategies)
+        public UniTask Initialize(IInstanceLoader instanceLoader, IResourceLoaderService resourceLoaderService, GameObject saveModeUIPrefab, RectTransform parentForUI, params SaveStrategy[] saveStrategies)
         {
             _saveStrategies = saveStrategies;
             _saveModeUIPrefab = saveModeUIPrefab;
@@ -32,10 +34,14 @@ namespace Asteroid.Database
             _parentForUI = parentForUI;
             _saveModeChoice = SaveChoice.NoChoice;
             base.Initialize(instanceLoader);
+
+            if (_isInitialized) return UniTask.CompletedTask;
+
             OnInternetConnected += TryOpenWindowSaveMode;
             OnInternetConnected += UpdateFromChoosedSaveMode;
             OnInternetDisconnected += DefineStrategy;
-            await DefineStrategy();
+            _isInitialized = true;
+            return DefineStrategy();
         }
 
         public async UniTask UpdateCoinsAfterPurchase(int countCoins)
@@ -63,13 +69,13 @@ namespace Asteroid.Database
             IsConnected = await IsConnectionAvailable();
             if (IsConnected)
             {
-                _currentSaveStrategy = _saveStrategies[0];
+                _currentSaveStrategy = _saveStrategies.FirstOrDefault((strategy) => strategy is CloudDataPresenter);
                 WaitForDisconnection();
             }
 
             else
             {
-                _currentSaveStrategy = _saveStrategies[1];
+                _currentSaveStrategy = _currentSaveStrategy = _saveStrategies.FirstOrDefault((strategy) => strategy is LocalSaveStrategyPresenter);
                 WaitForConnection();
             }
             _currentSaveStrategy.UpdateAllDataUI(); 
@@ -82,13 +88,13 @@ namespace Asteroid.Database
 
             if (newSaveChoice.Equals(SaveChoice.UseCloud) && IsConnected)
             {
-                _currentSaveStrategy = _saveStrategies[0];
+                _currentSaveStrategy = _saveStrategies.FirstOrDefault((strategy) => strategy is CloudDataPresenter);
                 WaitForDisconnection();
             }
 
             else if (newSaveChoice.Equals(SaveChoice.UseLocal))
             {
-                _currentSaveStrategy = _saveStrategies[1];
+                _currentSaveStrategy = _currentSaveStrategy = _saveStrategies.FirstOrDefault((strategy) => strategy is LocalSaveStrategyPresenter);
                 WaitForConnection();
             }
             _currentSaveStrategy.UpdateAllDataUI();

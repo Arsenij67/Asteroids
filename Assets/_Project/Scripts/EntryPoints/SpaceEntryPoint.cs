@@ -8,6 +8,7 @@ using Asteroid.Services.UnityCloud;
 using Asteroid.SpaceShip;
 using Asteroid.Statistic;
 using Asteroid.Weapon;
+using Cysharp.Threading.Tasks;
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -36,6 +37,7 @@ namespace Asteroid.Generation
         [SerializeField] private GameObject _restartPrefab;
         [SerializeField] private RectTransform _UIParent;
         [SerializeField] private ShipStatisticsView _shipStatisticViewPrefab;
+        [SerializeField] private GameObject _saveModeUIPrefab;
 
         [Header("Bullet Settings")]
         [SerializeField] private LaserBullet _laserPrefab;
@@ -59,6 +61,10 @@ namespace Asteroid.Generation
         [Inject] private DataSave _dataForSave;
         [Inject] private IRemoteSavable _remoteSave;
         [Inject] private CloudDataPresenter _cloudController;
+        [Inject] private SaveDataStrategyController _saveDataStrategyController;
+        [Inject] private LocalSaveStrategyPresenter _localSaveStrategy;
+        [Inject] private CloudDataPresenter _cloudSaveStrategy;
+        [Inject] private LocalSaveMetaData _localSaveMetaData;
 
         private GameOverView _endPanelView;
         private SpaceShipPresenter _shipController;
@@ -68,12 +74,12 @@ namespace Asteroid.Generation
         private WeaponShip _weaponShipLaser;
         private WeaponShip _weaponShipBullet;
 
-        private void Awake()
+        private async void Awake()
         {
             InitializeUI();
             InitializeSpaceShipSystems();
             InitializeEnemySystems();
-            InitializeServicesSystems();
+            await InitializeServicesSystems();
         }
 
         private void Start()
@@ -136,11 +142,14 @@ namespace Asteroid.Generation
             _obstaclesGenerationController.OnEnemySpawned += _enemyInitializedHandler;
         }
 
-        private void InitializeServicesSystems()
+        private async UniTask InitializeServicesSystems()
         {
             _analyticsEventHandler.Initialize(this, _shipStatisticModel, _weaponShipLaser as LaserWeaponController);
             _advertisingController.Initialize(_advertisementService);
-            _cloudController.Initialize(_dataForSave,_instanceLoader,null,remoteSavable:_remoteSave);
+            _cloudController.Initialize(_dataForSave,_instanceLoader,_remoteSave);
+            await _localSaveStrategy.Initialize(_dataForSave,_localSaveMetaData, _instanceLoader);
+            _cloudSaveStrategy.Initialize(_dataForSave, _instanceLoader, _remoteSave);
+            await _saveDataStrategyController.Initialize(_instanceLoader,_resourceLoader,_saveModeUIPrefab,_UIParent,_localSaveStrategy,_cloudSaveStrategy);
         }
 
         private void EnemyInitializedHandler(EnemyController enemyController, BaseEnemy currentEnemy)

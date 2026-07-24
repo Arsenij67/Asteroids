@@ -13,7 +13,7 @@ namespace Asteroid.Services.UnityCloud
     {
         private IRemoteSavable _remoteSavable;
 
-        public void Initialize(DataSave dataSave,IInstanceLoader instanceLoader, ShopUI shopUI, IRemoteSavable remoteSavable)
+        public void Initialize(DataSave dataSave,IInstanceLoader instanceLoader, IRemoteSavable remoteSavable, ShopUI shopUI = null)
         {
             base.Initialize(dataSave,instanceLoader,shopUI);
             _remoteSavable = remoteSavable;
@@ -57,6 +57,5 @@ namespace Asteroid.Services.UnityCloud
         {
             DataSave[KeyData.LAST_SAVE_TIME] = (DateTime)_remoteSavable.GetKeyLastModified(key);
         }
-
     }
 }
