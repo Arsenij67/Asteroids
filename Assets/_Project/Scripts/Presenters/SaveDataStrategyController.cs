@@ -38,29 +38,22 @@ namespace Asteroid.Database
             await DefineStrategy();
         }
 
-        public async void UpdateCoinsAfterPurchase(int countCoins)
+        public async UniTask UpdateCoinsAfterPurchase(int countCoins)
         {
             await _currentSaveStrategy.AddCountCoins(countCoins);
+            _currentSaveStrategy.UpdateUICountCoins(countCoins);
         }
 
-        public async void UpdateNoAdsAfterPurchase(bool isCanceled)
+        public async UniTask UpdateNoAdsAfterPurchase(bool isCanceled)
         {
             await _currentSaveStrategy.UpdateNoAdsStatus(isCanceled);
-        }
-
-        public void UpdateUINoAds(bool isAdvertisementCanceled)
-        {
-            _currentSaveStrategy.UpdateUINoAds(isAdvertisementCanceled);
-        }
-
-        public void UpdateUICountCoins(int countToAdd)
-        {
-            _currentSaveStrategy.UpdateUICountCoins(countToAdd);
+            _currentSaveStrategy.UpdateUINoAds(isCanceled);
         }
 
         public new void Dispose()
         {
             base.Dispose();
+            OnInternetConnected -= UpdateFromChoosedSaveMode;
             OnInternetConnected -= TryOpenWindowSaveMode;
             OnInternetDisconnected -= DefineStrategy;
         }
@@ -79,6 +72,7 @@ namespace Asteroid.Database
                 _currentSaveStrategy = _saveStrategies[1];
                 WaitForConnection();
             }
+            _currentSaveStrategy.UpdateAllDataUI(); 
         }
 
         private async UniTask DefineStrategy(SaveChoice newSaveChoice)
@@ -97,6 +91,7 @@ namespace Asteroid.Database
                 _currentSaveStrategy = _saveStrategies[1];
                 WaitForConnection();
             }
+            _currentSaveStrategy.UpdateAllDataUI();
         }
 
         private async UniTask TryOpenWindowSaveMode()

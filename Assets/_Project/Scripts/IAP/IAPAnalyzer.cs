@@ -17,8 +17,8 @@ namespace Asteroid.Services.IAP
         private const string NO_ADS_ID = "NO ADS";
         private const string COINS_100_ID = "COINS 100";
 
-        public event UnityAction<int> OnPlayerBought100Coins;
-        public event UnityAction<bool> OnPlayerBoughtNoAds;
+        public event Func<int, UniTask> OnPlayerBought100Coins;
+        public event Func<bool, UniTask> OnPlayerBoughtNoAds;
 
         private readonly int ADDED_100_COINS = 100;
         private readonly bool ADVERTISEMENT_IS_CANCELED = true;

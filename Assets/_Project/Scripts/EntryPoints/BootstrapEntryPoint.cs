@@ -99,8 +99,7 @@ namespace Asteroid.Generation
 
         private async UniTask PrepareAdvertisementAsync()
         {
-            _advertisementService.Initialize(false,_dataForSave);
-            await UniTask.CompletedTask;
+            await _advertisementService.Initialize(false,_dataForSave);
             _advertisementReady = true;
         }
 

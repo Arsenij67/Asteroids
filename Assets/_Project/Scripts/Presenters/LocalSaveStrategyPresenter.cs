@@ -29,17 +29,17 @@ namespace Asteroid.Database
 
         public override UniTask AddCountCoins(int coinsToAdd)
         {
-            DataForSave[KeyData.COINS_COUNT] = (int)DataForSave[KeyData.COINS_COUNT] + coinsToAdd;
+            DataSave[KeyData.COINS_COUNT] = (int)DataSave[KeyData.COINS_COUNT] + coinsToAdd;
             UpdateLastSaveTime(KeyData.LAST_SAVE_TIME);
-            string jsonData = JsonConvert.SerializeObject(DataForSave);
+            string jsonData = JsonConvert.SerializeObject(DataSave);
             return WriteDataFromFileAsync(_localSaveData.FullPath,jsonData);
         }
 
         public override UniTask AddCountDeadEnemies(int enemiesToAdd)
         {
-            DataForSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = (int)DataForSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] + enemiesToAdd;
+            DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = (int)DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] + enemiesToAdd;
             UpdateLastSaveTime(KeyData.LAST_SAVE_TIME);
-            string jsonData = JsonConvert.SerializeObject(DataForSave);
+            string jsonData = JsonConvert.SerializeObject(DataSave);
             return WriteDataFromFileAsync(_localSaveData.FullPath, jsonData);
         }
 
@@ -50,22 +50,22 @@ namespace Asteroid.Database
 
         public override UniTask RemoveCountCoins(int coinsToRemove)
         {
-            DataForSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = (int)DataForSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] - coinsToRemove;
+            DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = (int)DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] - coinsToRemove;
             UpdateLastSaveTime(KeyData.LAST_SAVE_TIME);
-            string jsonData = JsonConvert.SerializeObject(DataForSave);
+            string jsonData = JsonConvert.SerializeObject(DataSave);
             return WriteDataFromFileAsync(_localSaveData.FullPath, jsonData);
         }
 
         protected override void UpdateLastSaveTime(string key)
         {
-            DataForSave[key] = DateTime.Now;
+            DataSave[key] = DateTime.Now;
         }
 
         public override UniTask UpdateNoAdsStatus(bool adevertisementIsCanceled)
         {
-            DataForSave[KeyData.ADS_DISABLED] = (bool)adevertisementIsCanceled;
+            DataSave[KeyData.ADS_DISABLED] = (bool)adevertisementIsCanceled;
             UpdateLastSaveTime(KeyData.LAST_SAVE_TIME);
-            string jsonData = JsonConvert.SerializeObject(DataForSave);
+            string jsonData = JsonConvert.SerializeObject(DataSave);
             return WriteDataFromFileAsync(_localSaveData.FullPath, jsonData);
         }
 

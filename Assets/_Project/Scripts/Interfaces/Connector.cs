@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 
 namespace Asteroid.Database.Connection
 {
-    public class Connector : IDisposable
+    public class Connector
     {
         protected event Func<UniTask> OnInternetConnected;
         protected event Func<UniTask> OnInternetDisconnected;
@@ -46,7 +46,6 @@ namespace Asteroid.Database.Connection
                         if (request.result == UnityWebRequest.Result.Success)
                         {
                             isConnected = true;
-                            Debug.Log($"Интернет подключен (проверка через {address})");
                             break;
                         }
                     }
@@ -60,6 +59,7 @@ namespace Asteroid.Database.Connection
                     Debug.LogError($"Ошибка проверки интернета через {address}: {ex.Message}");
                 }
             }
+            IsConnected = isConnected;
             return isConnected;
         }
 
