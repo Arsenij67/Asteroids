@@ -17,7 +17,7 @@ namespace Asteroid.SpaceShip
 
         private IDeviceInput _deviceInput;
         private ShipStatisticsView _statisticsView;
-        private ShipStatisticsPresenter _statisticsController;
+        private GameOverPresenter _statisticsController;
         private SpaceShipData _shipData;
         private Rigidbody2D _rigidBody2D;
         private WeaponShip _laserWeaponController;
@@ -40,7 +40,7 @@ namespace Asteroid.SpaceShip
             }
         }
 
-        public void Initialize(ShipStatisticsView statisticView, IDeviceInput concreteInput, ShipStatisticsPresenter statisticController, WeaponShip laserWeaponController, SpaceShipData shipData)
+        public void Initialize(ShipStatisticsView statisticView, IDeviceInput concreteInput, GameOverPresenter statisticController, WeaponShip laserWeaponController, SpaceShipData shipData)
         {
             _rigidBody2D = GetComponent<Rigidbody2D>();
             _deviceInput = concreteInput;

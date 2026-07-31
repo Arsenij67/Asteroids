@@ -7,7 +7,7 @@ using Zenject;
 
 namespace Asteroid.Installers
 {
-[RequireComponent(typeof(ShopUI))]
+[RequireComponent(typeof(ShopView))]
 public class ShopUIInstaller : MonoInstaller
 {
     [SerializeField] private TMP_Text _textCoins;
@@ -16,7 +16,7 @@ public class ShopUIInstaller : MonoInstaller
     [SerializeField] private Image _imageNoAds;
     public override void InstallBindings()
     {
-        Container.Bind<ShopUI>().FromComponentOn(gameObject).AsCached();
+        Container.Bind<ShopView>().FromComponentOn(gameObject).AsCached();
         Container.Bind<Button>().WithId("buttonBuyNoAds").FromInstance(_buttonBuyNoAds).AsCached();
         Container.Bind<Button>().WithId("buttonBuy100Coins").FromInstance(_buttonBuy100Coins).AsCached();
         Container.Bind<Image>().FromInstance(_imageNoAds).AsCached();

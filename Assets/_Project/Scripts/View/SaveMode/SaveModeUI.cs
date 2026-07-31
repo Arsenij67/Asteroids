@@ -11,28 +11,28 @@ namespace Asteroid.UI
 {
     public class SaveModeUI : MonoBehaviour
     {
-        public event Func<SaveChoice,UniTask> OnActiveItemChanged;
-        public event UnityAction OnButtonClosePressed;
+        public event Func<SaveChoice,UniTask> OnButtonApplyPressed;
+        public event Action OnButtonClosePressed;
 
         public int NumberActiveItem => _tmpSaveModeDrop.value;
         public bool ChoiceIsMade => _choiceIsMade;
 
         [SerializeField] private TMP_Dropdown _tmpSaveModeDrop;
-        [SerializeField] private Button _closeButton;
+        [SerializeField] private Button _applyButton;
 
-        private bool _choiceIsMade=false;
+        private bool _choiceIsMade = false;
+        private SaveChoice _selectedChoice = SaveChoice.NoChoice;
 
         private void OnDestroy()
         {
+            _applyButton.onClick.RemoveListener(ButtonApplyEventHandler);
             _tmpSaveModeDrop.onValueChanged.RemoveListener(SelectFromList);
-            _closeButton.onClick.RemoveListener(ButtonCloseEventHandler);
-
         }
 
         public void Initialize()
         {
             _tmpSaveModeDrop.onValueChanged.AddListener(SelectFromList);
-            _closeButton.onClick.AddListener(ButtonCloseEventHandler);
+            _applyButton.onClick.AddListener(ButtonApplyEventHandler);
         }
 
         public void CloseWindow()
@@ -40,15 +40,16 @@ namespace Asteroid.UI
             Destroy(gameObject);
         }
 
-        private void ButtonCloseEventHandler()
+        private void ButtonApplyEventHandler()
         {
+            OnButtonApplyPressed?.Invoke(_selectedChoice);
             OnButtonClosePressed?.Invoke();
         }
 
         private void SelectFromList(int numberItem)
         {
             _choiceIsMade = (SaveChoice) numberItem != SaveChoice.NoChoice;
-            OnActiveItemChanged?.Invoke((SaveChoice)numberItem);
+           _selectedChoice =(SaveChoice)numberItem;
         }
     }
 }

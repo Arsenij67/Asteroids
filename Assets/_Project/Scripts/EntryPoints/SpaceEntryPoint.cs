@@ -21,17 +21,17 @@ namespace Asteroid.Generation
         public event Action OnGameStarted;
         public event Action OnPlayerDied;
 
-        private Action<EnemyController, BaseEnemy> _enemyInitializedHandler;
-        private Action<BaseEnemy> _enemyDestroyedHandler;
-        private Action _shipDieHandler;
-        private Action _panelRestartHandler;
-        private Action _onPlayerDiedAction;
-        private Action _showInterstitialAction;
-        private Action _reviveShipAction;
-        private Action _closePanelAction;
-        private Action _reloadSceneAction;
-        private Action _loadMainMenuAction;
-        private Action _showAdsAfterDeadAction;
+        private event Action<EnemyController, BaseEnemy> _enemyInitializedHandler;
+        private event Action<BaseEnemy> _enemyDestroyedHandler;
+        private event Action _shipDieHandler;
+        private event Action _panelRestartHandler;
+        private event Action _onPlayerDiedAction;
+        private event Action _showInterstitialAction;
+        private event Action _reviveShipAction;
+        private event Action _closePanelAction;
+        private event Action _reloadSceneAction;
+        private event Action _loadMainMenuAction;
+        private event Action _showAdsAfterDeadAction;
 
         [Header("UI")]
         [SerializeField] private GameObject _restartPrefab;
@@ -46,7 +46,7 @@ namespace Asteroid.Generation
         [Header("Space Settings")]
         [Inject] private EntitiesGenerationPresenter _obstaclesGenerationController;
         [Inject] private EnemyDeathCounter _allEnemiesDeathCounter;
-        [Inject] private ShipStatisticsPresenter _shipStatisticController;
+        [Inject] private GameOverPresenter _shipStatisticPresenter;
         [Inject] private EntitiesGenerationData _entitiesGenerationData;
         [Inject] private AnalyticsEventHandler _analyticsEventHandler;
         [Inject] private SpaceShipData _spaceShipData;
@@ -60,7 +60,6 @@ namespace Asteroid.Generation
         [Inject] private IRemoteConfigService _remoteConfigService;
         [Inject] private DataSave _dataForSave;
         [Inject] private IRemoteSavable _remoteSave;
-        [Inject] private CloudDataPresenter _cloudController;
         [Inject] private SaveDataStrategyController _saveDataStrategyController;
         [Inject] private LocalSaveStrategyPresenter _localSaveStrategy;
         [Inject] private CloudDataPresenter _cloudSaveStrategy;
@@ -131,7 +130,7 @@ namespace Asteroid.Generation
         private void InitializeSpaceShipSystems()
         {
             _obstaclesGenerationController.OnShipSpawned += ShipInitializedHandler;
-            _shipStatisticController.Initialize(_shipStatisticModel, _instanceLoader, _dataForSave);
+            _shipStatisticPresenter.Initialize(_shipStatisticModel, _instanceLoader);
             _entitiesGenerationData.Initialize(_remoteConfigService);
             _obstaclesGenerationController.Initialize(_entitiesGenerationData, _resourceLoader, _instanceLoader, _sceneLoader);
         }
@@ -146,17 +145,16 @@ namespace Asteroid.Generation
         {
             _analyticsEventHandler.Initialize(this, _shipStatisticModel, _weaponShipLaser as LaserWeaponController);
             _advertisingController.Initialize(_advertisementService);
-            _cloudController.Initialize(_dataForSave,_instanceLoader,_remoteSave);
-            await _localSaveStrategy.Initialize(_dataForSave,_localSaveMetaData, _instanceLoader);
-            _cloudSaveStrategy.Initialize(_dataForSave, _instanceLoader, _remoteSave);
-            await _saveDataStrategyController.Initialize(_instanceLoader,_resourceLoader,_saveModeUIPrefab,_UIParent,_localSaveStrategy,_cloudSaveStrategy);
+            await _localSaveStrategy.Initialize(_dataForSave,_localSaveMetaData, _instanceLoader, shipStatisticsPresenter: _shipStatisticPresenter);
+            await _cloudSaveStrategy.Initialize(_dataForSave, _instanceLoader, _remoteSave,shipStatisticsPresenter:_shipStatisticPresenter);
+            await _saveDataStrategyController.Initialize(_instanceLoader,_resourceLoader,_saveModeUIPrefab,_UIParent,_cloudSaveStrategy, _localSaveStrategy);
         }
 
         private void EnemyInitializedHandler(EnemyController enemyController, BaseEnemy currentEnemy)
         {
             _enemyDestroyedHandler = (enemy) => EnemyDestroyedHandler(enemy);
             currentEnemy.OnEnemyDestroyed += _enemyDestroyedHandler;
-            currentEnemy.Initialize(_shipTransform, _shipStatisticController);
+            currentEnemy.Initialize(_shipTransform, _shipStatisticPresenter);
             enemyController.Initialize(_shipTransform);
         }
 
@@ -185,34 +183,18 @@ namespace Asteroid.Generation
 
             _shipController.OnPlayerDie += _shipDieHandler;
 
-            _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader, _remoteConfigService);
-            _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader, _remoteConfigService);
+            _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView, _shipStatisticPresenter, _resourceLoader, _remoteConfigService);
+            _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView, _shipStatisticPresenter, _resourceLoader, _remoteConfigService);
             _spaceShipData.Initialize(_remoteConfigService);
-            _shipController.Initialize(_shipStatisticView, _deviceInput, _shipStatisticController, _weaponShipLaser, _spaceShipData);
+            _shipController.Initialize(_shipStatisticView, _deviceInput, _shipStatisticPresenter, _weaponShipLaser, _spaceShipData);
             _weaponController.Initialize();
             _entitiesGenerationData.Initialize(_shipTransform, _remoteConfigService);
         }
 
         private async void PanelRestartSpawnedHandler()
         {
-            _endPanelView = _resourceLoader.Instantiate(_restartPrefab, _UIParent).GetComponent<GameOverView>();
-            _endPanelView.Initialize();
-
-            _closePanelAction = () => _endPanelView.Close();
-            _reloadSceneAction = () => _sceneLoader.ReloadCurrentScene();
-            _loadMainMenuAction = () => _obstaclesGenerationController.LoadMainMenuScene();
-            _showAdsAfterDeadAction = () => _advertisingController.ShowRewardedAdAfterDead();
-            _showInterstitialAction = () => _advertisingController.ShowInterstitialAdBeforeRestart();
-
-            _advertisingController.OnPlayerRevived += _closePanelAction;
-            _endPanelView.OnGameReloadClicked += _reloadSceneAction;
-            _endPanelView.OnButtonGoHomeClicked += _loadMainMenuAction;
-            _endPanelView.OnButtonShowAdsClicked += _showAdsAfterDeadAction;
-            _endPanelView.OnGameReloadClicked += _showInterstitialAction;
-
-            _endPanelView.UpdateButtonShowAd(_advertisementService.IsShowed);
-            _shipStatisticController.UpdateDestroyedEnemies(_endPanelView);
-            await _cloudController.AddCountDeadEnemies(_shipStatisticModel.CountEnemiesDestroyed);
+            _shipStatisticPresenter.OpenPanelRestart();
+            await _saveDataStrategyController.UpdateDestroyedEnemies(_shipStatisticModel.CountEnemiesDestroyed);
         }
     }
 }

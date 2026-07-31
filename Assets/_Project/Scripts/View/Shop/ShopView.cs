@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class ShopUI : MonoBehaviour
+public class ShopView : MonoBehaviour
 {
    public event Action OnPlayerClickBuyNoAds;
    public event Action OnPlayerClickBuy100Coins;

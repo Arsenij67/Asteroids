@@ -3,6 +3,8 @@ using Asteroid.Database.Connection;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
 using Unity.Services.CloudSave.Models;
@@ -83,26 +85,42 @@ namespace Asteroid.Services.UnityCloud
             {
                 key
             };
-            var stringDict = await CloudSaveService.Instance.Data.Player.LoadAsync(keysHash).AsUniTask();
-
-            if (stringDict.TryGetValue(key, out var keyName))
+            try
             {
-                return keyName.Value.GetAs<T>();
+
+                Dictionary<string, Item> stringDictionary = await CloudSaveService.Instance.Data.Player.LoadAsync(keysHash).AsUniTask();
+
+                if (stringDictionary.TryGetValue(key, out var keyName))
+                {
+                    return keyName.Value.GetAs<T>();
+                }
+                else
+                {
+                    return default(T);
+                }
             }
-            else
+
+            catch (Exception ex)
             {
                 return default(T);
             }
         }
 
-        public DateTime GetKeyLastModified(string key)
+        public async UniTask<DateTime> GetTimeLastModified()
         {
             if (!IsInitialized)
             {
                 UnityEngine.Debug.Log("Попытка получить время обновления до инициализации Cloud Save");
                 return DateTime.MinValue;
             }
-            return _data[key].Modified.Value.ToLocalTime();
+
+            await DownloadAllData();
+
+            return _data.Values
+                .Where(item => item?.Modified.HasValue == true)
+                .Select(item => item.Modified.Value)
+                .DefaultIfEmpty(DateTime.MinValue)
+                .Max().ToLocalTime();
         }
 
         private async UniTask SignIn()

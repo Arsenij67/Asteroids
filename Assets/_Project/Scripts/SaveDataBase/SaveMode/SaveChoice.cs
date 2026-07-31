@@ -5,7 +5,8 @@ namespace Asteroid.Database
     {
         NoChoice = 0,
         UseLocal = 1,
-        UseCloud = 2
+        UseCloud = 2,
+        Merge = 3
     }
 }
 

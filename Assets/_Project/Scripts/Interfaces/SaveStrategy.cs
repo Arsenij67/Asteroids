@@ -1,4 +1,6 @@
 using Asteroid.Generation;
+using Asteroid.SpaceShip;
+using Asteroid.Statistic;
 using Cysharp.Threading.Tasks;
 using System;
 using Unity.VisualScripting;
@@ -11,11 +13,10 @@ namespace Asteroid.Database
     {
         public bool NoAdsStatus => (bool)(DataSave[KeyData.ADS_DISABLED] ?? false);
         public int CountCoins => (int)(DataSave[KeyData.COINS_COUNT] ?? 0);
-        public DateTime LastSaveTime => (DateTime)(DataSave[KeyData.LAST_SAVE_TIME] ?? DateTime.MinValue);
-
+        public DateTime LastSaveTime => (DateTime)(DataSave[KeyData.LAST_SAVE_TIME]?? DateTime.MinValue);
         public int CountDeadEnemies => (int)(DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] ?? 0);
 
-        protected ShopUI ShopUI;
+        protected ShopView? ShopView;
 
         protected DataSave DataSave
         {
@@ -25,19 +26,22 @@ namespace Asteroid.Database
 
         private IInstanceLoader _instanceCreator;
         private DataSave _dataSave;
+        private GameOverPresenter? _shipStatisticsPresenter;
 
-        public void Initialize(DataSave dataSave, IInstanceLoader instanceCreator, ShopUI shopUI = null)
+        public void Initialize(DataSave dataSave, IInstanceLoader instanceCreator, ShopView shopUI = null, GameOverPresenter shipStatisticsPresenter=null)
         {
-            ShopUI = shopUI;
+            ShopView = shopUI;
             _dataSave = dataSave;
             _instanceCreator = instanceCreator; 
+            _shipStatisticsPresenter = shipStatisticsPresenter;
         }
+
         public abstract UniTask AddCountDeadEnemies(int enemiesToAdd);
         public abstract UniTask AddCountCoins(int coinsToAdd);
         public abstract  UniTask UpdateNoAdsStatus(bool advertisementIsCanceled);
         public abstract UniTask RemoveCountCoins(int coinsToRemove);
         public abstract SaveChoice GetMode();
-        protected abstract UniTask UpdateLastSaveTime(string key);
+        protected abstract UniTask UpdateLastSaveTime();
         private async UniTask UpdateCountCoins(int coinsSummary)
         {
             await AddCountCoins(coinsSummary-CountCoins);
@@ -50,18 +54,24 @@ namespace Asteroid.Database
 
         public void UpdateUINoAds(bool isAdvertisementCanceled)
         {
-            ShopUI?.UpdateViewNoAds(isAdvertisementCanceled);
+            ShopView?.UpdateViewNoAds(isAdvertisementCanceled);
         }
 
         public void UpdateUICountCoins(int countToAdd)
         {
-            ShopUI?.UpdateCountCoins((int)DataSave[KeyData.COINS_COUNT]);
+            ShopView?.UpdateCountCoins((int)DataSave[KeyData.COINS_COUNT]);
+        }
+
+        public void UpdateUIDeadEnemies()
+        {
+            _shipStatisticsPresenter?.UpdateDestroyedEnemiesUI();
         }
 
         public void UpdateAllDataUI()
         {
             UpdateUINoAds(NoAdsStatus);
             UpdateUICountCoins(CountCoins);
+            UpdateUIDeadEnemies();
         }
 
         public async UniTask UpdateAllData(DataSave dataSave)

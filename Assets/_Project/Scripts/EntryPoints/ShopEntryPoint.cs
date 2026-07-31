@@ -12,7 +12,7 @@ namespace Asteroid.EntryPoints
 {
     public class ShopEntryPoint : MonoBehaviour
     {
-        [Inject] private ShopUI _shopUI;
+        [Inject] private ShopView _shopUI;
         [Inject] private IPurchasingService _purchaseService;
         [Inject] private IInstanceLoader _instanceLoader;
         [Inject] private IRemoteSavable _remoteSavable;
@@ -35,22 +35,19 @@ namespace Asteroid.EntryPoints
             _shopUI.Initialize(_buttonBuyNoAds, _buttonBuy100Coins, _textCoins, _imageNoAds);
             await _purchaseService.Initialize(_dataSave);
             await _localSaveStrategy.Initialize(_dataSave,_localSave, _instanceLoader,_shopUI);
-            _cloudSaveStrategy.Initialize(_dataSave, _instanceLoader, _remoteSavable, _shopUI);
+            await _cloudSaveStrategy.Initialize(_dataSave, _instanceLoader, _remoteSavable, _shopUI);
             await _saveDataStrategy.Initialize(_instanceLoader,_resourceLoaderService,_saveModeUIPrefab,_parentUI,_cloudSaveStrategy, _localSaveStrategy);
     
-            _purchaseService.OnPlayerBought100Coins += _saveDataStrategy.UpdateCoinsAfterPurchase;
-            _purchaseService.OnPlayerBoughtNoAds += _saveDataStrategy.UpdateNoAdsAfterPurchase;
+            _purchaseService.OnPlayerBought100Coins += _saveDataStrategy.UpdateCoins;
+            _purchaseService.OnPlayerBoughtNoAds += _saveDataStrategy.UpdateNoAds;
             _shopUI.OnPlayerClickBuy100Coins += _purchaseService.Buy100Coins;
             _shopUI.OnPlayerClickBuyNoAds += _purchaseService.BuyNoAds;
-
-            _shopUI.UpdateViewNoAds(_saveDataStrategy.NoAdsStatus);
-            _shopUI.UpdateCountCoins(_saveDataStrategy.CountCoins);
         }
 
         private void OnDestroy()
         {
-            _purchaseService.OnPlayerBought100Coins -= _saveDataStrategy.UpdateCoinsAfterPurchase;
-            _purchaseService.OnPlayerBoughtNoAds -= _saveDataStrategy.UpdateNoAdsAfterPurchase;
+            _purchaseService.OnPlayerBought100Coins -= _saveDataStrategy.UpdateCoins;
+            _purchaseService.OnPlayerBoughtNoAds -= _saveDataStrategy.UpdateNoAds;
             _shopUI.OnPlayerClickBuy100Coins -= _purchaseService.Buy100Coins;
             _shopUI.OnPlayerClickBuyNoAds -= _purchaseService.BuyNoAds;
         }

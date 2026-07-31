@@ -16,14 +16,14 @@ namespace Asteroid.Enemies
         [SerializeField] private float _health;
         [SerializeField] private int _speed;
 
-        protected ShipStatisticsPresenter _shipStatisticController;
+        protected GameOverPresenter _shipStatisticController;
         protected Rigidbody2D _rigidBody2DEnemy;
         protected Transform _transformEnd;
 
         protected float Speed => Mathf.Clamp(_speed, 0, Mathf.Infinity);
         protected float Health => Mathf.Clamp(_health, 0, Mathf.Infinity);
 
-        public void Initialize(Transform transformEnd, ShipStatisticsPresenter shipStatisticModel)
+        public void Initialize(Transform transformEnd, GameOverPresenter shipStatisticModel)
         {
             _rigidBody2DEnemy = GetComponent<Rigidbody2D>();
             _transformEnd = transformEnd;

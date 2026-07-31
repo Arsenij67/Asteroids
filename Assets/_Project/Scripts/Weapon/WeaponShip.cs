@@ -20,7 +20,7 @@ namespace Asteroid.Weapon
 
         protected ShipStatisticsView _shipView;
         protected BaseBullet _concreteBulletPrefab;
-        protected ShipStatisticsPresenter _controllerStatistics;
+        protected GameOverPresenter _controllerStatistics;
         protected IResourceLoaderService _resourceLoaderService;
         protected IRemoteConfigService _remoteConfigService;
 
@@ -40,7 +40,7 @@ namespace Asteroid.Weapon
             }
         }
  
-        public virtual void Initialize(BaseBullet concreteBullet, ShipStatisticsView shipStView, ShipStatisticsPresenter controllerStatistics, IResourceLoaderService resourceLoader, IRemoteConfigService remoteConfigService)
+        public virtual void Initialize(BaseBullet concreteBullet, ShipStatisticsView shipStView, GameOverPresenter controllerStatistics, IResourceLoaderService resourceLoader, IRemoteConfigService remoteConfigService)
         { 
             _concreteBulletPrefab = concreteBullet;
             _shipView = shipStView;

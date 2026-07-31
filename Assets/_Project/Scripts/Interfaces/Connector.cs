@@ -73,7 +73,7 @@ namespace Asteroid.Database.Connection
                 Debug.Log("Ждем подключения");
                 if (await IsConnectionAvailable())
                 {
-                    await OnInternetConnected();
+                    OnInternetConnected.Invoke();
                     Debug.Log("Интерент дали!!!!");
                     break;
                 }
@@ -91,7 +91,7 @@ namespace Asteroid.Database.Connection
                 Debug.Log("Ждем отключения");
                 if (!await IsConnectionAvailable())
                 {
-                    await OnInternetDisconnected();
+                    OnInternetDisconnected.Invoke();
                     Debug.Log("Интернет забрали!");
                    break;
                 }
