@@ -91,7 +91,6 @@ namespace Asteroid.Generation
             StopEnemiesCreation();
             _spaceShipPresenter.OnShipSpawned -= ShipInitializeHandler;
             _spaceShipPresenter.OnShipSpawned -= StartEnemiesCreation;
-            _spaceShipPresenter.OnShipDied -= PanelRestartSpawnedHandler;
             _spaceShipPresenter.OnShipDied -= _analyticsEventHandler.SendEventGameEnd;
             OnGameStarted -= _analyticsEventHandler.SendEventGameStart;
             _spaceShipPresenter.OnShipDied -= PauseEnemiesCreation;
@@ -149,7 +148,7 @@ namespace Asteroid.Generation
             _spaceShipPresenter.OnShipDied += PanelRestartSpawnedHandler;
             _spaceShipPresenter.OnShipDied += _analyticsEventHandler.SendEventGameEnd;
             _spaceShipPresenter.OnShipDied += PauseEnemiesCreation;
-            //_spaceShipPresenter.OnShipDied += UnsubscribeShip;
+            _spaceShipPresenter.OnShipDied += UnsubscribeShip;
             _spaceShipPresenter.OnShipSpawned += StartEnemiesCreation;
             _advertisementPresenter.OnPlayerRevived += ReviveShip;
             OnGameStarted += _analyticsEventHandler.SendEventGameStart;
@@ -166,7 +165,7 @@ namespace Asteroid.Generation
             _spaceShipPresenter.OnShipSpawned -= StartEnemiesCreation;
             OnGameStarted -= _analyticsEventHandler.SendEventGameStart;
             _spaceShipPresenter.OnShipSpawned -= ShipInitializeHandler;
-            //_spaceShipPresenter.OnShipDied -= UnsubscribeShip;
+            _spaceShipPresenter.OnShipDied -= UnsubscribeShip;
         }
 
         private void SubscribeEnemy(EnemyController enemyController, Enemy currentEnemy)

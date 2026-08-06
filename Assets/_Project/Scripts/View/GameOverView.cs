@@ -39,7 +39,7 @@ public class GameOverView : MonoBehaviour
 
     public void Close()
     {
-        if (gameObject != null)
+        if (this.gameObject != null)
         {
             Destroy(gameObject);
         }

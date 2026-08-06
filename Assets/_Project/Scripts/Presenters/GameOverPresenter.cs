@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Asteroid.SpaceShip
 {
-    public class GameOverPresenter
+    public class GameOverPresenter : IDisposable
     {
         private ISceneLoader _sceneLoader;
         private IResourceLoader _resourceLoader;
@@ -17,6 +17,15 @@ namespace Asteroid.SpaceShip
         private BootstrapSceneData _bootstrapSceneData;
         private RectTransform _parentForAttachment;
 
+        public void Dispose()
+        {
+            _gameOverView.OnGameReloadClicked -= _sceneLoader.ReloadCurrentScene;
+            _gameOverView.OnButtonGoHomeClicked -= LoadMainMenuScene;
+            _gameOverView.OnButtonShowAdsClicked -= _advertisementPresenter.ShowRewardedAdAfterDead;
+            _gameOverView.OnGameReloadClicked -= _advertisementPresenter.ShowInterstitialAdBeforeRestart;
+            _advertisementPresenter.OnPlayerRevived -= ClosePanelRestart;
+        }
+
         public void Initialize (IResourceLoader resourceLoader,RectTransform parentForAttachment, GameOverView endPanelPrefab, AdvertisementPresenter advertisementPresenter, ShipStatisticsModel shipStatisticsModel,RectTransform parentForEndWindow, ISceneLoader sceneLoader, BootstrapSceneData bootstrapSceneData)
         {
             _shipStatisticModel = shipStatisticsModel; 
@@ -26,13 +35,6 @@ namespace Asteroid.SpaceShip
             _endPanelPrefab = endPanelPrefab;
             _parentForAttachment = parentForAttachment;
             _resourceLoader = resourceLoader;
-        }
-
-        private GameOverView CreateGameOverWindow(GameOverView gameOverViewPrefab, RectTransform parentAttachment)
-        {
-            GameOverView gameOverView =  _resourceLoader.Instantiate(gameOverViewPrefab, parentAttachment);
-            gameOverView.Initialize();
-            return gameOverView;
         }
 
         public void OpenPanelRestart()
@@ -48,9 +50,13 @@ namespace Asteroid.SpaceShip
 
         public void ClosePanelRestart()
         {
-            _advertisementPresenter.OnPlayerRevived -= ClosePanelRestart;
             _gameOverView.Close();
 
+        }
+
+        public void UpdateDestroyedEnemiesUI()
+        {
+            _gameOverView?.UpdateDestroyedEnemies(_shipStatisticModel.CountEnemiesDestroyed);
         }
 
         private void LoadMainMenuScene()
@@ -58,9 +64,11 @@ namespace Asteroid.SpaceShip
             _sceneLoader.LoadScene(_bootstrapSceneData.StartSceneName);  
         }
 
-        public void UpdateDestroyedEnemiesUI()
+        private GameOverView CreateGameOverWindow(GameOverView gameOverViewPrefab, RectTransform parentAttachment)
         {
-            _gameOverView?.UpdateDestroyedEnemies(_shipStatisticModel.CountEnemiesDestroyed);
+            GameOverView gameOverView =  _resourceLoader.Instantiate(gameOverViewPrefab, parentAttachment);
+            gameOverView.Initialize();
+            return gameOverView;
         }
     }
 }

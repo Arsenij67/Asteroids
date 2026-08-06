@@ -69,6 +69,7 @@ namespace Asteroid.Generation
         private void OnDestroy()
         {
             _entitiesGenerationFactory?.OnDestroy();
+            _gameOverPresenter?.Dispose();
         }
 
         private void InitializeUI()
