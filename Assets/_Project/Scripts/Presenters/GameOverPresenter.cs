@@ -1,4 +1,5 @@
 using Asteroid.Generation;
+using Asteroid.Services.UnityAdvertisement;
 using Asteroid.Statistic;
 using System;
 using UnityEngine;
@@ -7,73 +8,59 @@ namespace Asteroid.SpaceShip
 {
     public class GameOverPresenter
     {
+        private ISceneLoader _sceneLoader;
+        private IResourceLoader _resourceLoader;
+        private GameOverView? _gameOverView;
+        private GameOverView _endPanelPrefab;
         private ShipStatisticsModel _shipStatisticModel;
-        private IResourceLoaderService _resourceLoader;
-        private GameOverView _gameOverView;
-        private GameObject _endPanelPrefab;
-        private RectTransform _parentForEndWindow;
+        private AdvertisementPresenter _advertisementPresenter;
+        private BootstrapSceneData _bootstrapSceneData;
+        private RectTransform _parentForAttachment;
 
-        public void Initialize(ShipStatisticsModel shipStatisticModel, IResourceLoaderService resourceLoader, GameObject endPanelPrefab,RectTransform parentForEndWindow)
+        public void Initialize (IResourceLoader resourceLoader,RectTransform parentForAttachment, GameOverView endPanelPrefab, AdvertisementPresenter advertisementPresenter, ShipStatisticsModel shipStatisticsModel,RectTransform parentForEndWindow, ISceneLoader sceneLoader, BootstrapSceneData bootstrapSceneData)
         {
-            _shipStatisticModel = shipStatisticModel;
-            _resourceLoader = resourceLoader;
+            _shipStatisticModel = shipStatisticsModel; 
+            _advertisementPresenter = advertisementPresenter;
+            _sceneLoader = sceneLoader;
+            _bootstrapSceneData = bootstrapSceneData;
             _endPanelPrefab = endPanelPrefab;
-            _parentForEndWindow = parentForEndWindow;   
+            _parentForAttachment = parentForAttachment;
+            _resourceLoader = resourceLoader;
+        }
+
+        private GameOverView CreateGameOverWindow(GameOverView gameOverViewPrefab, RectTransform parentAttachment)
+        {
+            GameOverView gameOverView =  _resourceLoader.Instantiate(gameOverViewPrefab, parentAttachment);
+            gameOverView.Initialize();
+            return gameOverView;
         }
 
         public void OpenPanelRestart()
         {
-            _gameOverView = _resourceLoader.Instantiate(_endPanelPrefab, _parentForEndWindow).GetComponent<GameOverView>();
-            _gameOverView.Initialize();
-
-
-
-            _advertisingController.OnPlayerRevived += _endPanelView.Close;
-            _endPanelView.OnGameReloadClicked += _sceneLoader.ReloadCurrentScene;
-            _endPanelView.OnButtonGoHomeClicked += _obstaclesGenerationController.LoadMainMenuScene;
-            _endPanelView.OnButtonShowAdsClicked += _advertisingController.ShowRewardedAdAfterDead;
-            _endPanelView.OnGameReloadClicked += _advertisingController.ShowInterstitialAdBeforeRestart;
-            _gameOverView.UpdateButtonShowAd(_advertisementService.IsShowed);
+            _gameOverView = CreateGameOverWindow(_endPanelPrefab, _parentForAttachment);
+            _gameOverView.OnGameReloadClicked += _sceneLoader.ReloadCurrentScene;
+            _gameOverView.OnButtonGoHomeClicked += LoadMainMenuScene;
+            _gameOverView.OnButtonShowAdsClicked +=  _advertisementPresenter.ShowRewardedAdAfterDead;
+            _gameOverView.OnGameReloadClicked +=  _advertisementPresenter.ShowInterstitialAdBeforeRestart;
+            _advertisementPresenter.OnPlayerRevived += ClosePanelRestart;
+            _gameOverView.UpdateButtonShowAd(_advertisementPresenter.IsShowed,_advertisementPresenter.IsInitialized);
         }
 
         public void ClosePanelRestart()
         {
-             OnPanelClosed?.Invoke();
+            _advertisementPresenter.OnPlayerRevived -= ClosePanelRestart;
             _gameOverView.Close();
+
+        }
+
+        private void LoadMainMenuScene()
+        {
+            _sceneLoader.LoadScene(_bootstrapSceneData.StartSceneName);  
         }
 
         public void UpdateDestroyedEnemiesUI()
         {
             _gameOverView?.UpdateDestroyedEnemies(_shipStatisticModel.CountEnemiesDestroyed);
-        }
-
-        public void UpdateButtonAdsUI(bool isShowed)
-        {
-            _gameOverView?.UpdateButtonShowAd(isShowed);
-        }
-
-        public void IncreaseCountLaserShoots()
-        {
-            _shipStatisticModel.CountShootsLaser++;
-        }
-
-        public void IncreaseCountBulletShoots()
-        {
-            _shipStatisticModel.CountShootsFireball++;
-        }
-
-        public void IncreaseCountUFODestroyed()
-        {
-            _shipStatisticModel.CountDestroyedUFO++;
-        }
-
-        public void IncreaseCountMeteoritesDestroyed()
-        {
-           _shipStatisticModel.CountDestroyedMeteorites++;
-        }
-        public void IncreaseCountAsteroidsDestroyed()
-        {
-            _shipStatisticModel.CountDestroyedAsteroids++;
         }
     }
 }

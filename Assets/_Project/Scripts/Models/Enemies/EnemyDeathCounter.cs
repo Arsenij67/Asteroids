@@ -7,12 +7,12 @@ using Asteroid.Enemies;
 
 public class EnemyDeathCounter
 {
-    public void OnEnemyDied(BaseEnemy enemy)
+    public void OnEnemyDied(Enemy enemy)
     {
         IncreaseKilledEnemies(enemy);
     }
 
-    private void IncreaseKilledEnemies(BaseEnemy enemy)
+    private void IncreaseKilledEnemies(Enemy enemy)
     {
         enemy.AddToStatistic();
     }

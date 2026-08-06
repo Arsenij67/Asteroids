@@ -12,9 +12,9 @@ namespace Asteroid.Database
     public class LocalSaveStrategyPresenter : SaveStrategy
     {
         private LocalSaveMetaData _localSaveData;
-        private IInstanceLoader _instanceLoader;
+        private InstanceCreator _instanceLoader;
 
-        public async UniTask Initialize(DataSave dataSave, LocalSaveMetaData localSaveData, IInstanceLoader instanceLoader, ShopView shopUI = null, GameOverPresenter shipStatisticsPresenter = null)
+        public async UniTask Initialize(DataSave dataSave, LocalSaveMetaData localSaveData, InstanceCreator instanceLoader, ShopView shopUI = null, GameOverPresenter shipStatisticsPresenter = null)
         {
             base.Initialize(dataSave,_instanceLoader, shopUI,shipStatisticsPresenter);
             _localSaveData = localSaveData;

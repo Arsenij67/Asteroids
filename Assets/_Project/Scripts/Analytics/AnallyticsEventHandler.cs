@@ -9,23 +9,18 @@ namespace Asteroid.Services.Analytics
 {
     public class AnalyticsEventHandler: IDisposable
     {
-        private IInstanceLoader _instanceLoader;
         private IAnalytics _analytics;
         private ShipStatisticsModel _shipStatisticModel;
-        private SpaceEntryPoint _spaceEntryPoint;
         private IWeaponStrategy _weaponStrategy;
-        public void Initialize(SpaceEntryPoint spaceEntryPoint,ShipStatisticsModel shipStatisticsModel, IWeaponStrategy weaponStrategy)
+
+        public void Initialize(IAnalytics analytics,ShipStatisticsModel shipStatisticsModel, IWeaponStrategy weaponStrategy)
         {
-            _instanceLoader = new InstanceCreator();
-            _analytics = _instanceLoader.CreateInstance<FirebaseAnalyticsSender>();
-            _spaceEntryPoint = spaceEntryPoint;
             _shipStatisticModel = shipStatisticsModel;
             _weaponStrategy = weaponStrategy;
-            _spaceEntryPoint.OnGameStarted += SendEventGameStart;
-            _spaceEntryPoint.OnPlayerDied += SendEventGameEnd;
+            _analytics = analytics;
             (_weaponStrategy as LaserWeaponController).OnLaserTurned += SendEventLaserUsed;
-
         }
+
         public void SendEventGameStart()
         {
             _analytics.PushEvent(Firebase.Analytics.FirebaseAnalytics.EventLogin, Firebase.Analytics.FirebaseAnalytics.ParameterStartDate, DateTime.Now);
@@ -52,8 +47,6 @@ namespace Asteroid.Services.Analytics
 
         public void Dispose()
         {
-            _spaceEntryPoint.OnGameStarted -= SendEventGameStart;
-            _spaceEntryPoint.OnPlayerDied -= SendEventGameEnd;
             (_weaponStrategy as LaserWeaponController).OnLaserTurned -= SendEventLaserUsed;
         }
     }

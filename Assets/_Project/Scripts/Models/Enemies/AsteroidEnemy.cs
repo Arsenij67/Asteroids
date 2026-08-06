@@ -1,29 +1,31 @@
+using Asteroid.SpaceShip;
 using Asteroid.Statistic;
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace Asteroid.Enemies
 {
     [RequireComponent(typeof(CircleCollider2D))]
     [RequireComponent(typeof(EnemyController))]
-    public class AsteroidEnemy : BaseEnemy
+    public class AsteroidEnemy : Enemy
     {
-        public Action<BaseEnemy> OnMeteoriteDestroyed;
+        public Action<Enemy> OnMeteoriteDestroyed;
 
         [SerializeField] private MeteoriteEnemy _meteoriteExample;
         [SerializeField] private int _countMeteorites = 3;
 
-        public void Initialize(Transform transformEnd, Action<BaseEnemy> destroyEnemyCallBack,Vector2 PointEndFly)
+        private Vector2 _direction;
+
+        public override void Initialize(Transform transformEnd, GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticPresenter)
         {
-            base.Initialize(transformEnd, _shipStatisticController);
-            Vector2 direction = PointEndFly - (Vector2)transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
-            _rigidBody2DEnemy.MoveRotation(angle);
+            base.Initialize(transformEnd, gameOverPresenter, shipStatisticPresenter);    
+            _direction = (TransformEnd.position - transform.position).normalized;
         }
 
         public override void Move(Transform transformEnd)
         {
-            _rigidBody2DEnemy.linearVelocity = transform.up * Time.fixedDeltaTime * Speed;
+            RigidBody2DEnemy.linearVelocity = _direction * Time.fixedDeltaTime * Speed;
         }
 
         public override void TakeDamage(float damage)
@@ -35,10 +37,9 @@ namespace Asteroid.Enemies
             base.TakeDamage(damage);
         }
 
-
         public override void AddToStatistic()
         {
-            _shipStatisticController.IncreaseCountAsteroidsDestroyed();
+            ShipStatisticPresenter.IncreaseCountAsteroidsDestroyed();
         }
 
         private void SplitIntoMeteorites()
@@ -50,8 +51,8 @@ namespace Asteroid.Enemies
                 MeteoriteEnemy meteorite = Instantiate(_meteoriteExample, transform.position, Quaternion.identity);
                 EnemyController enemyController = meteorite.GetComponent<EnemyController>();
 
-                meteorite.Initialize(_transformEnd,_shipStatisticController);
-                enemyController.Initialize(_transformEnd);
+                meteorite.Initialize(TransformEnd,GameOverPresenter, ShipStatisticPresenter);
+                enemyController.Initialize(TransformEnd);
 
                 meteorite.OnEnemyDestroyed += MeteoriteDestroyedHandler;
                 meteorite.SetDirection(startDir += (Vector2)transform.up);
@@ -59,7 +60,7 @@ namespace Asteroid.Enemies
             }
         }
 
-        private void MeteoriteDestroyedHandler(BaseEnemy meteorite)
+        private void MeteoriteDestroyedHandler(Enemy meteorite)
         {
             OnMeteoriteDestroyed?.Invoke(meteorite);
         }

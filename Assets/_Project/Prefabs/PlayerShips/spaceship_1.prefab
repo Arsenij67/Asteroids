@@ -153,8 +153,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f587b04eee783ad44b1dfae146a66483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _countShoots: 10
-  _maxBulletsCount: 50
+  CountShoots: 10
+  MaxBulletsCount: 50
+  AssignmentMode: 0
   _timeBulletRecovery: 2
   <UniqueNumber>k__BackingField: 0
 --- !u!114 &4855001440156595902
@@ -169,10 +170,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 766bb34fc32b54c408d0f47a1208de79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _countShoots: 10
-  _maxBulletsCount: 50
+  CountShoots: 5
+  MaxBulletsCount: 50
+  AssignmentMode: 0
   _timeBulletRecovery: 2
-  _glowDuration: 0.4
+  _attackTime: 2
   <UniqueNumber>k__BackingField: 1
 --- !u!114 &5075971858278098079
 MonoBehaviour:

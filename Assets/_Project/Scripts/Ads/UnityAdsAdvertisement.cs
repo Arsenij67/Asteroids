@@ -5,13 +5,16 @@ using Unity;
 using Zenject;
 using Asteroid.Database.Connection;
 using Cysharp.Threading.Tasks;
+using System;
 
 namespace Asteroid.Services.UnityAdvertisement
 {
-    public class UnityAdsAdvertisement: Connector, IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener, IAdvertisementService
+    public class UnityAdsAdvertisement: WIFIConnector, IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener, IAdvertisementService
     {
         private const string GAME_ANDROID_ID = "5916275";
         private const string GAME_IOS_ID = "5916274";
+
+        public event Action OnAdsFinishedShow;
 
         private bool _isLoaded = false;
         private bool _isShowed = false;
@@ -36,6 +39,7 @@ namespace Asteroid.Services.UnityAdvertisement
             }
             _playerSave = (DataSave)parameters[1];
         }
+
         public void OnInitializationComplete()
         {
             Debug.Log("Инициализация прошла успешно!");
@@ -78,6 +82,7 @@ namespace Asteroid.Services.UnityAdvertisement
             Debug.Log($"Показ рекламы {placementId} закончен! Вот состояние рекламы: {showCompletionState}");
             Advertisement.Load(placementId, this);
             _isShowed = true;
+            OnAdsFinishedShow.Invoke();
         }
 
         public void Load(params object[] parameters)

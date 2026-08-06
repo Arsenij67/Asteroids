@@ -3,6 +3,7 @@ using Asteroid.Enemies;
 using Asteroid.SpaceShip;
 using Asteroid.Services.RemoteConfig;
 using Asteroid.Database;
+using Asteroid.Weapon;
 
 namespace Asteroid.Generation
 {
@@ -32,10 +33,14 @@ namespace Asteroid.Generation
             } 
         }
         [field: SerializeField] public Vector2[] GenerationVertices { get; private set; }
+        [field: SerializeField] public BaseBullet FireballPrefab { get; private set; }
+        [field: SerializeField] public BaseBullet LaserPrefab { get; private set; }
         [field: SerializeField] public string HomeSceneName { get; private set; }
 
+        [field: SerializeField] public GameOverView EndPanelView { get; private set; }
+
         public Transform EndPointToFly { get; private set; }
-        public BaseEnemy ObstacleToGenerateNow => _obstacles[Random.Range(0, _obstacles.Length)].GetComponent<BaseEnemy>();
+        public Enemy ObstacleToGenerateNow => _obstacles[Random.Range(0, _obstacles.Length)].GetComponent<Enemy>();
         public SpaceShipPresenter PlayerShipToGenerateNow {
             get
             {
@@ -78,15 +83,14 @@ namespace Asteroid.Generation
         }
 
         public void Initialize(IRemoteConfigService remoteConfig)
-        {
-            _remoteConfigService = remoteConfig;
+        { 
+          _remoteConfigService = remoteConfig;  
         }
 
-        public void Initialize(Transform EndPoint, IRemoteConfigService remoteConfig)
+        public void Initialize(IRemoteConfigService remoteConfig, Transform EndPoint)
         {
             EndPointToFly = EndPoint;
             _remoteConfigService = remoteConfig;
         }
-
     } 
 }

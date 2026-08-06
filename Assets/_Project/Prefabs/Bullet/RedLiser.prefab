@@ -147,5 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 955ff5d25d225384698e6a1663f56bda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _assignmentMode: 0
   _speed: Infinity
   _damage: Infinity

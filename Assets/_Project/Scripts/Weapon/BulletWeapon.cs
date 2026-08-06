@@ -9,21 +9,19 @@ namespace Asteroid.Weapon
 
         public void Fire()
         {
-            if (_countShoots > 0)
+            if (CountShoots > 0)
             {
-                var bullet = _resourceLoaderService.Instantiate(_concreteBulletPrefab, transform.position, Quaternion.identity).GetComponent<FireballBullet>();
+                var bullet = ResourceLoaderService.Instantiate(ConcreteBulletPrefab, transform.position, Quaternion.identity).GetComponent<FireballBullet>();
                 OnMissalSpawned?.Invoke(bullet, -transform.up);
-                _countShoots--;
-                bullet.Initialize(-transform.up,_remoteConfigService);
-                UpdateViewWeapon();
-                _controllerStatistics.IncreaseCountBulletShoots();
+                CountShoots--;
+                bullet.Initialize(-transform.up,RemoteConfigService);
+                UpdateWeapon();
             }
-
         }
 
-        protected override void UpdateViewWeapon()
+        protected override void UpdateWeapon()
         {
-            _shipView.UpdateFireballCount(_countShoots);
+            ShipStatisticsPresenter.UpdateCountBulletShoots(CountShoots);
         }
     }
 }

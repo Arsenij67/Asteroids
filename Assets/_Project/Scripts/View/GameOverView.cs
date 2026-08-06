@@ -39,12 +39,15 @@ public class GameOverView : MonoBehaviour
 
     public void Close()
     {
-        Destroy(gameObject);
+        if (gameObject != null)
+        {
+            Destroy(gameObject);
+        }
     }
 
-    public void UpdateButtonShowAd(bool adsShowed)
+    public void UpdateButtonShowAd(bool adsShowed, bool adsInitialized)
     {
-        _buttonShowAd.interactable = !adsShowed;
+        _buttonShowAd.interactable = !adsShowed && adsInitialized;
     }
 
     public void UpdateDestroyedEnemies(int count)

@@ -3,6 +3,7 @@ using Asteroid.Generation;
 using Asteroid.Services.IAP;
 using Asteroid.Services.UnityCloud;
 using Asteroid.UI;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,12 +15,12 @@ namespace Asteroid.EntryPoints
     {
         [Inject] private ShopView _shopUI;
         [Inject] private IPurchasingService _purchaseService;
-        [Inject] private IInstanceLoader _instanceLoader;
+        [Inject] private InstanceCreator _instanceLoader;
         [Inject] private IRemoteSavable _remoteSavable;
-        [Inject] private IResourceLoaderService _resourceLoaderService;
+        [Inject] private IResourceLoader _resourceLoaderService;
         [Inject] private LocalSaveStrategyPresenter _localSaveStrategy;
         [Inject] private CloudDataPresenter _cloudSaveStrategy;
-        [Inject] private SaveDataStrategyController _saveDataStrategy;
+        [Inject] private SaveDataStrategyManager _saveDataStrategy;
         [Inject] private TMP_Text _textCoins;
         [Inject] private DataSave _dataSave;
         [Inject] private LocalSaveMetaData _localSave;
@@ -27,7 +28,7 @@ namespace Asteroid.EntryPoints
         [Inject(Id = "buttonBuyNoAds")] private Button _buttonBuyNoAds;
         [Inject(Id = "buttonBuy100Coins")] private Button _buttonBuy100Coins;
 
-        [SerializeField] private GameObject _saveModeUIPrefab;
+        [SerializeField] private SaveModeUI _saveModeUIPrefab;
         [SerializeField] RectTransform _parentUI;
 
         private async void Start()
@@ -51,7 +52,5 @@ namespace Asteroid.EntryPoints
             _shopUI.OnPlayerClickBuy100Coins -= _purchaseService.Buy100Coins;
             _shopUI.OnPlayerClickBuyNoAds -= _purchaseService.BuyNoAds;
         }
-
-
     }
 }

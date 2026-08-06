@@ -14,7 +14,7 @@ using Zenject;
 
 namespace Asteroid.Services.UnityCloud
 {
-    public class UnitySaveCloud : Connector, IRemoteSavable
+    public class UnitySaveCloud : WIFIConnector, IRemoteSavable
     {
         private static bool _isInitialized = false;
         private static bool _isInitializing = false;

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Asteroid.Services.IAP
 {
-    public class IAPAnalyzer : Connector, IDisposable, IPurchasingService
+    public class IAPAnalyzer : WIFIConnector, IDisposable, IPurchasingService
     {
         private const string NO_ADS_ID = "NO ADS";
         private const string COINS_100_ID = "COINS 100";

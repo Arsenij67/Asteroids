@@ -15,6 +15,7 @@ namespace Asteroid.Installers
     {
         public override void InstallBindings()
         {
+            Container.Bind<BaseResourceLoaderService>().AsCached();
             Container.Bind<IApplicationQuitter>().To<PCApplicationQuitter>().AsSingle();
             Container.BindInterfacesAndSelfTo<UnityAdsAdvertisement>().AsSingle();
             Container.Bind<List<UniTask>>().AsTransient();
@@ -26,10 +27,10 @@ namespace Asteroid.Installers
             Container.BindInterfacesAndSelfTo<IAPAnalyzer>().FromNew().AsSingle();
             Container.BindInterfacesAndSelfTo<UnitySaveCloud>().FromNew().AsSingle();
             Container.BindInterfacesAndSelfTo<KeyData>().FromNew().AsCached();
-            Container.Bind<CloudDataPresenter>().FromNew().AsCached();
+            Container.Bind<CloudDataPresenter>().FromNew().AsTransient();
             Container.Bind<LocalSaveStrategyPresenter>().To<LocalSaveStrategyPresenter>().AsCached();
             Container.Bind<LocalSaveMetaData>().FromMethod((context) => context.Container.Resolve<BaseResourceLoaderService>().LoadResource<LocalSaveMetaData>("ScriptableObjects/LocalSaveMetaData")).AsSingle();
-            Container.Bind<SaveDataStrategyController>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<SaveDataStrategyController>()).AsSingle();
+            Container.Bind<SaveDataStrategyManager>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<SaveDataStrategyManager>()).AsSingle();
         }
     }
 }

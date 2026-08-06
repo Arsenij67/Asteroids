@@ -3,9 +3,7 @@ using Asteroid.Database;
 using Asteroid.Generation;
 using Asteroid.SpaceShip;
 using Cysharp.Threading.Tasks;
-using System;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace Asteroid.Services.UnityCloud
 {
@@ -13,7 +11,7 @@ namespace Asteroid.Services.UnityCloud
     {
         private IRemoteSavable _remoteSavable;
 
-        public UniTask Initialize(DataSave dataSave,IInstanceLoader instanceLoader, IRemoteSavable remoteSavable, ShopView shopUI = null, GameOverPresenter shipStatisticsPresenter = null)
+        public UniTask Initialize(DataSave dataSave,InstanceCreator instanceLoader, IRemoteSavable remoteSavable, ShopView shopUI = null, GameOverPresenter shipStatisticsPresenter = null)
         {
             base.Initialize(dataSave,instanceLoader,shopUI,shipStatisticsPresenter);
             _remoteSavable = remoteSavable;

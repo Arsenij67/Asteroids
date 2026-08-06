@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class LocalBundleLoader : IResourceLoaderService
+public class LocalBundleLoader :IResourceLoader
 {
-    public GameObject Instantiate<T>(T prefab, Vector2 position, Quaternion rotation) where T : Object
+    public T Instantiate<T>(T prefab, Vector2 position, Quaternion rotation) where T : Component
     {
         if (prefab == null)
         {
@@ -15,11 +15,11 @@ public class LocalBundleLoader : IResourceLoaderService
             return null;
         }
       
-        var handle = Addressables.InstantiateAsync(prefab.name, position, rotation).WaitForCompletion();
+        var handle = Addressables.InstantiateAsync(prefab.name, position, rotation).WaitForCompletion().GetComponent<T>();
         return handle;
     }
 
-    public GameObject Instantiate<T>(T prefab, Transform parent) where T : Object
+    public T  Instantiate<T>(T prefab, Transform parent) where T : Component
     {
         if (prefab == null)
         {
@@ -28,14 +28,14 @@ public class LocalBundleLoader : IResourceLoaderService
         }
 
         var handle = Addressables.InstantiateAsync(prefab.name, parent).WaitForCompletion();
-        return handle;
+        return handle.GetComponent<T>();
     }
 
-    public async UniTask<GameObject> InstantiateAsync(GameObject prefab, Transform parent)
+    public async UniTask<T> InstantiateAsync<T>(T prefab, Transform parent) where T : Component
     {
         AsyncOperationHandle<GameObject> asyncOperation = Addressables.InstantiateAsync(prefab.name, parent,trackHandle:true);
         GameObject createdObject = await asyncOperation;
-        return createdObject;
+        return createdObject.GetComponent<T>();
     }
 
     public async UniTask<T> LoadResourceAsync<T>(string path) where T : Object

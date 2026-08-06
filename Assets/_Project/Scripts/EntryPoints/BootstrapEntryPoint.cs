@@ -43,7 +43,7 @@ namespace Asteroid.Generation
 
         public async void Awake()
         {
-            await _sceneLoader.ReloadStartSceneAsync(_bootstrapSceneModel.SceneName);
+            await _sceneLoader.ReloadStartSceneAsync(_bootstrapSceneModel.StartSceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
             _loadingTasks.Add(PrepareAdvertisementAsync());
             _loadingTasks.Add(PrepareAnalyticsAsync());
@@ -60,13 +60,13 @@ namespace Asteroid.Generation
 
         private async UniTask PrepareShopSceneAsync()
         {
-             await _sceneLoader.LoadSceneAdditiveAsync(_shopData.SceneName,false);
+             await _sceneLoader.LoadSceneAdditiveAsync(_shopData.StartSceneName,false);
             _shopLoaded = true;
         }
 
         private UniTask OpenSceneShop()
         {
-           return _sceneLoader.SwitchSceneActivation(_shopData.SceneName, true);
+           return _sceneLoader.SwitchSceneActivation(_shopData.StartSceneName, true);
         }
 
         public void Dispose()
@@ -126,7 +126,7 @@ namespace Asteroid.Generation
 
         private async UniTask PrepareGameSceneAsync()
         {
-            await _sceneLoader.LoadSceneAsync(_bootstrapSceneModel.SceneGame,false);
+            await _sceneLoader.LoadSceneAsync(_bootstrapSceneModel.SceneGameName,false);
             _sceneLoaded = true;
         }
 
@@ -158,8 +158,8 @@ namespace Asteroid.Generation
 
         private async void OpenLoadedGameScene()
         {
-            await _sceneLoader.SwitchSceneActivation(_bootstrapSceneModel.SceneGame, true);
-            await _sceneLoader.UnloadSceneAsync(_bootstrapSceneModel.SceneName);
+            await _sceneLoader.SwitchSceneActivation(_bootstrapSceneModel.SceneGameName, true);
+            await _sceneLoader.UnloadSceneAsync(_bootstrapSceneModel.StartSceneName);
 
         }
     }

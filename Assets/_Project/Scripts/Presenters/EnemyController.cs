@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace Asteroid.Enemies
 {
-    [RequireComponent(typeof(BaseEnemy))]
+    [RequireComponent(typeof(Enemy))]
     public class EnemyController : MonoBehaviour
     {
         private Transform? _shipTransform;
-        private BaseEnemy _enemy;
+        private Enemy _enemy;
         private void FixedUpdate()
         {
             if (_shipTransform!=null)
@@ -20,7 +20,7 @@ namespace Asteroid.Enemies
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.TryGetComponent(out BaseEnemy enemy))
+            if (collision.TryGetComponent(out Enemy enemy))
             {
                 return;
             }
@@ -38,7 +38,7 @@ namespace Asteroid.Enemies
 
         public void Initialize(Transform shipTransform)
         {
-            _enemy = GetComponent<BaseEnemy>();
+            _enemy = GetComponent<Enemy>();
             _shipTransform = shipTransform;
         }
 

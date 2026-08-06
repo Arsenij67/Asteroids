@@ -11,7 +11,7 @@ using Zenject;
 
 namespace Asteroid.Services.RemoteConfig
 {
-    public class FirebaseRemoteConfigService : Connector, IRemoteConfigService, IDisposable
+    public class FirebaseRemoteConfigService : WIFIConnector, IRemoteConfigService, IDisposable
     {
         public event Action OnConfigUpdated;
 

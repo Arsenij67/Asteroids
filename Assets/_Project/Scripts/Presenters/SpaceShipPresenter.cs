@@ -11,17 +11,17 @@ using System.Collections.Generic;
 namespace Asteroid.SpaceShip
 {
     [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(LaserWeaponController))]
     public class SpaceShipPresenter : SpaceObject
     {
-        public event Action OnPlayerDie;
+        public event Action OnShipDied;
+        public event Action OnShipSpawned;
 
         private IDeviceInput _deviceInput;
         private ShipStatisticsView _statisticsView;
-        private GameOverPresenter _statisticsController;
         private SpaceShipData _shipData;
         private Rigidbody2D _rigidBody2D;
-        private WeaponShip _laserWeaponController;
-
+        private LaserWeaponController _weaponController;
 
         private void FixedUpdate()
         {
@@ -32,22 +32,21 @@ namespace Asteroid.SpaceShip
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            BaseEnemy someEnemy = collision.GetComponent<BaseEnemy>();
-            LaserWeaponController laserController = _laserWeaponController as LaserWeaponController;
-            if (someEnemy!=null && !laserController.LaserTurned)
+            Enemy someEnemy = collision.GetComponent<Enemy>();
+            if (someEnemy != null && !_weaponController.LaserTurned)
             {
-                Die();
+                    Die();
             }
         }
 
-        public void Initialize(ShipStatisticsView statisticView, IDeviceInput concreteInput, GameOverPresenter statisticController, WeaponShip laserWeaponController, SpaceShipData shipData)
+        public void Initialize(ShipStatisticsView statisticView, IDeviceInput concreteInput, SpaceShipData shipData)
         {
             _rigidBody2D = GetComponent<Rigidbody2D>();
+            _weaponController = GetComponent<LaserWeaponController>();
             _deviceInput = concreteInput;
             _statisticsView = statisticView;
-            _statisticsController = statisticController;
-            _laserWeaponController = laserWeaponController;
-            _shipData = shipData; 
+            _shipData = shipData;
+            OnShipSpawned?.Invoke();
         }
 
         private void TryRotate(float intensityInput)
@@ -71,11 +70,10 @@ namespace Asteroid.SpaceShip
             }
         }
 
-        private void Die()
+        public void Die()
         {
-            OnPlayerDie?.Invoke();
+            OnShipDied?.Invoke();
             Destroy(gameObject);
-            
         }
     }
 }

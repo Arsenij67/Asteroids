@@ -14,8 +14,9 @@ namespace Asteroid.Installers
         {
             Container.BindInterfacesAndSelfTo<DesktopInput>().AsSingle();
             Container.Bind<AnalyticsEventHandler>().FromNew().AsSingle();
-            Container.Bind<EntitiesGenerationPresenter>().FromNew().AsSingle();
+            Container.Bind<EntitiesGenerationFactory>().FromNew().AsSingle();
             Container.Bind<ShipStatisticsModel>().FromNew().AsSingle();
+            Container.Bind<ShipStatisticPresenter>().AsTransient();
             Container.Bind<EnemyDeathCounter>().FromNew().AsSingle();
             Container.Bind<GameOverPresenter>().FromNew().AsSingle();
             Container.Bind<EntitiesGenerationData>().FromMethod((context) => context.Container.Resolve<BaseResourceLoaderService>().LoadResource<EntitiesGenerationData>("ScriptableObjects/EntitiesGenerationData")).AsSingle();

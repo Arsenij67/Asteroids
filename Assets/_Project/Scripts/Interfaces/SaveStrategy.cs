@@ -24,11 +24,11 @@ namespace Asteroid.Database
             set => _dataSave = value;   
         }
 
-        private IInstanceLoader _instanceCreator;
+        private InstanceCreator _instanceCreator;
         private DataSave _dataSave;
         private GameOverPresenter? _shipStatisticsPresenter;
 
-        public void Initialize(DataSave dataSave, IInstanceLoader instanceCreator, ShopView shopUI = null, GameOverPresenter shipStatisticsPresenter=null)
+        public void Initialize(DataSave dataSave, InstanceCreator instanceCreator, ShopView shopUI = null, GameOverPresenter shipStatisticsPresenter=null)
         {
             ShopView = shopUI;
             _dataSave = dataSave;

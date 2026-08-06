@@ -8,7 +8,7 @@ using Asteroid.Database.Connection;
 
 namespace Asteroid.Services.Analytics
 {
-    public class FirebaseAnalyticsSender : Connector,IAnalytics
+    public class FirebaseAnalyticsSender : WIFIConnector,IAnalytics
     {
         private bool _isInitialized = false;
         public bool AnalyticsEnabled => _isInitialized && IsConnected;

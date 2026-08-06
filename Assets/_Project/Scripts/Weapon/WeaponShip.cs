@@ -13,54 +13,54 @@ namespace Asteroid.Weapon
     {
         public Action<BaseBullet, Vector2> OnMissalSpawned;
 
-        [SerializeField] protected int _countShoots;
-        [SerializeField] protected int _maxBulletsCount = 50;
-        [SerializeField] protected float _timeBulletRecovery = 2f;
+        [SerializeField] protected int CountShoots;
+        [SerializeField] protected int MaxBulletsCount = 50;
         [SerializeField] protected AssignmentMode AssignmentMode;
 
-        protected ShipStatisticsView _shipView;
-        protected BaseBullet _concreteBulletPrefab;
-        protected GameOverPresenter _controllerStatistics;
-        protected IResourceLoaderService _resourceLoaderService;
-        protected IRemoteConfigService _remoteConfigService;
+        [SerializeField] private float _timeBulletRecovery = 2f;
 
-        private WaitForSeconds _waitSecondsRecover;
-
+        protected BaseBullet ConcreteBulletPrefab;
+        protected IResourceLoader ResourceLoaderService;
+        protected IRemoteConfigService RemoteConfigService;
+        protected GameOverPresenter GameOverPresenter;
+        protected ShipStatisticPresenter ShipStatisticsPresenter;
         protected virtual float TimeBulletRecovery
         {
             get
             {
                 if (AssignmentMode.RemoteConfig.Equals(AssignmentMode))
                 {
-                    string jsonConfig = _remoteConfigService.GetValue<string>("weapon_bullet_config");
+                    string jsonConfig = RemoteConfigService.GetValue<string>("weapon_bullet_config");
                     RemoteConfigFireball _remoteConfigFireball = JsonUtility.FromJson<RemoteConfigFireball>(jsonConfig);
                     return _remoteConfigFireball.TimeBulletRecovery;
                 }
-                return _timeBulletRecovery;
+                return TimeBulletRecovery;
             }
         }
- 
-        public virtual void Initialize(BaseBullet concreteBullet, ShipStatisticsView shipStView, GameOverPresenter controllerStatistics, IResourceLoaderService resourceLoader, IRemoteConfigService remoteConfigService)
+
+        private WaitForSeconds _waitSecondsRecover;
+
+        public virtual void Initialize(GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticsPresenter, BaseBullet concreteBullet, IResourceLoader resourceLoader, IRemoteConfigService remoteConfigService)
         { 
-            _concreteBulletPrefab = concreteBullet;
-            _shipView = shipStView;
-            _resourceLoaderService = resourceLoader;
-            _controllerStatistics = controllerStatistics;
-            _remoteConfigService = remoteConfigService;
+            ConcreteBulletPrefab = concreteBullet;
+            ResourceLoaderService = resourceLoader;
+            RemoteConfigService = remoteConfigService;
+            this.GameOverPresenter = gameOverPresenter;
             _waitSecondsRecover = new WaitForSeconds(TimeBulletRecovery);
-            UpdateViewWeapon();
+            ShipStatisticsPresenter = shipStatisticsPresenter;
+            UpdateWeapon();
             StartCoroutine(RecoverMissile());
         }
 
-        protected abstract void UpdateViewWeapon();
+        protected abstract void UpdateWeapon();
 
         protected IEnumerator RecoverMissile()
         {
-            while (_countShoots < _maxBulletsCount)
+            while (CountShoots < MaxBulletsCount)
             {
                 yield return _waitSecondsRecover;
-                _countShoots++;
-                UpdateViewWeapon();
+                CountShoots++;
+                UpdateWeapon();
             }
         }
     }

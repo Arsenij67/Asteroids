@@ -1,10 +1,12 @@
 using Cysharp.Threading.Tasks;
+using System;
 using UnityEngine;
 
 namespace Asteroid.Services.UnityAdvertisement
 {
     public interface IAdvertisementService 
     {
+        public event Action OnAdsFinishedShow;
         public bool IsInitialized {  get; }  
         public bool IsLoaded {  get; }
         public bool IsShowed {  get; }

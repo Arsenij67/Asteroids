@@ -9,7 +9,6 @@ namespace Asteroid.Installers.MonInstallers
     {
         public override void InstallBindings()
         {
-            Container.Bind<BaseResourceLoaderService>().To<BaseResourceLoaderService>().AsTransient();
             Container.BindInterfacesAndSelfTo<LocalBundleSceneLoader>().AsSingle();
             Container.BindInterfacesAndSelfTo<FirebaseRemoteConfigService>().FromNew().AsSingle();
             Container.Bind<BootstrapSceneData>().FromMethod((context)=>context.Container.Resolve<BaseResourceLoaderService>().LoadResource<BootstrapSceneData>("ScriptableObjects/BootstrapSceneData")).AsSingle();
