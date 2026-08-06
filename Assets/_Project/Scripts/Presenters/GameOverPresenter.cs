@@ -51,7 +51,6 @@ namespace Asteroid.SpaceShip
         public void ClosePanelRestart()
         {
             _gameOverView.Close();
-
         }
 
         public void UpdateDestroyedEnemiesUI()
