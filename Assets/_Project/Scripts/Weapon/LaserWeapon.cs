@@ -23,6 +23,8 @@ namespace Asteroid.Weapon
         [field: SerializeField] public short UniqueNumber { get; private set; }
 
         public bool LaserTurned =>  _laserTurned;
+
+        public bool LaserCollideNow => _laserObject.LaserCollideNow;
         protected override float TimeBulletRecovery
         {
             get
@@ -30,7 +32,6 @@ namespace Asteroid.Weapon
                 if (AssignmentMode.RemoteConfig.Equals(AssignmentMode))
                 {
                     string jsonConfig = RemoteConfigService.GetValue<string>("weapon_laser_config");
-                    Debug.Log(jsonConfig);
                     RemoteConfigLaser _remoteConfigFireball = JsonUtility.FromJson<RemoteConfigLaser>(jsonConfig);
                     return _remoteConfigFireball.TimeBulletRecovery;
                 }

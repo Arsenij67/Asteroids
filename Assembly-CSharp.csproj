@@ -100,7 +100,6 @@
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\LevelLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\EntitiesGenerationFactory.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\Addressables\LocalBundleLoader.cs" />
-    <Compile Include="Assets\_Project\Scripts\View\Bootstrap\BootstrapUI.cs" />
     <Compile Include="Assets\_Project\Scripts\ScenesManagement\LocalBundleLoading\LocalBundleSceneLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\AdvertisementPresenter.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\AsteroidEnemy.cs" />
@@ -158,7 +157,6 @@
     <Compile Include="Assets\_Project\Scripts\Weapon\LaserWeapon.cs" />
     <Compile Include="Assets\_Project\Scripts\DeviceInputs\DesktopInput.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\SpaceObject.cs" />
-    <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\BootstrapUIInstaller.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\_Project\Content\AnimatedCosmos\Shaders\CosmosAnimated.shader" />

@@ -66,14 +66,6 @@ namespace Asteroid.Weapon
             }
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (collision.TryGetComponent(out Enemy enemy))
-            {
-                Destroy(gameObject);
-            }
-        }
-
         public void Initialize(Vector2 direction, IRemoteConfigService remoteConfigService)
         {
             base.Initialize(remoteConfigService);

@@ -1,4 +1,5 @@
 using Asteroid.Database;
+using Asteroid.Enemies;
 using Asteroid.Services.RemoteConfig;
 using UnityEngine;
 
@@ -17,6 +18,19 @@ namespace Asteroid.Weapon
         protected virtual float Speed => Mathf.Clamp(_speed, 0, _maxSpeed);
 
         public virtual float Damage => Mathf.Clamp(_damage, 0, _maxDamage);
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+             ReactOnCollisionStart(collision.GetComponent<Enemy>());
+        }
+
+        protected virtual void ReactOnCollisionStart(Enemy enemy)
+        {
+            if (enemy != null)
+            {
+                Destroy(gameObject);
+            }
+        }
 
         public virtual void Initialize(IRemoteConfigService remoteConfigService)
         {

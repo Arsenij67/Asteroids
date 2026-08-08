@@ -33,7 +33,7 @@ namespace Asteroid.SpaceShip
         private void OnTriggerEnter2D(Collider2D collision)
         {
             Enemy someEnemy = collision.GetComponent<Enemy>();
-            if (someEnemy != null && !_weaponController.LaserTurned)
+            if (someEnemy != null && !_weaponController.LaserCollideNow)
             {
                     Die();
             }
