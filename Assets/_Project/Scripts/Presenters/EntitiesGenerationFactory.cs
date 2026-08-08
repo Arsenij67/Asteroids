@@ -1,4 +1,3 @@
-using Asteroid.Database;
 using Asteroid.Enemies;
 using Asteroid.Inputs;
 using Asteroid.Services.Analytics;
@@ -10,7 +9,6 @@ using Asteroid.Weapon;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Asteroid.Generation
@@ -67,23 +65,11 @@ namespace Asteroid.Generation
             _cancellationTokenSource = _instanceCreator.CreateInstance<CancellationTokenSource>();
         }
 
-
         public void StartEnemiesCreation()
         {
             _isGamePaused = false;
             WaitAndGenerateNext(_cancellationTokenSource.Token);
           
-        }
-
-        private void PauseEnemiesCreation()
-        {
-            _isGamePaused = true;
-        }
-
-        private void StopEnemiesCreation()
-        {
-            _cancellationTokenSource?.Cancel();
-            _cancellationTokenSource?.Dispose();
         }
 
         public void OnDestroy()
@@ -95,6 +81,41 @@ namespace Asteroid.Generation
             OnGameStarted -= _analyticsEventHandler.SendEventGameStart;
             _spaceShipPresenter.OnShipDied -= PauseEnemiesCreation;
             _advertisementPresenter.OnPlayerRevived -= ReviveShip;
+        }
+
+        public SpaceShipPresenter CreateShip(SpaceShipPresenter shipControllerPrefab)
+        {
+            SpaceShipPresenter playerShip = _resourceLoader.
+                Instantiate(shipControllerPrefab,
+                _generationData.PointShipToGenerate,
+                Quaternion.identity);
+            _spaceShipPresenter = playerShip;
+            return _spaceShipPresenter;
+        }
+
+        public void SubscribeShip()
+        {
+            _spaceShipPresenter.OnShipDied += PanelRestartSpawnedHandler;
+            _spaceShipPresenter.OnShipDied += _analyticsEventHandler.SendEventGameEnd;
+            _spaceShipPresenter.OnShipDied += PauseEnemiesCreation;
+            _spaceShipPresenter.OnShipDied += UnsubscribeShip;
+            _spaceShipPresenter.OnShipSpawned += StartEnemiesCreation;
+            _advertisementPresenter.OnPlayerRevived += ReviveShip;
+            OnGameStarted += _analyticsEventHandler.SendEventGameStart;
+            _spaceShipPresenter.OnShipSpawned += ShipInitializeHandler;
+            _spaceShipPresenter.Initialize(_shipStatisticView, _deviceInput, _spaceShipData);
+            OnGameStarted.Invoke();
+        }
+
+        private void PauseEnemiesCreation()
+        {
+            _isGamePaused = true;
+        }
+
+        private void StopEnemiesCreation()
+        {
+            _cancellationTokenSource?.Cancel();
+            _cancellationTokenSource?.Dispose();
         }
 
         private async UniTask WaitAndGenerateNext(CancellationToken tokenStop)
@@ -131,30 +152,6 @@ namespace Asteroid.Generation
         {
             _enemyDeathCounter.OnEnemyDied(destroyedEnemy);
             destroyedEnemy.OnEnemyDestroyed -= OnEnemyDestroyedHandler;
-        }
-
-        public SpaceShipPresenter CreateShip(SpaceShipPresenter shipControllerPrefab)
-        {
-            SpaceShipPresenter playerShip = _resourceLoader.
-                Instantiate(shipControllerPrefab,
-                _generationData.PointShipToGenerate,
-                Quaternion.identity);
-            _spaceShipPresenter = playerShip;
-            return _spaceShipPresenter;
-        }
-
-        public void SubscribeShip()
-        {
-            _spaceShipPresenter.OnShipDied += PanelRestartSpawnedHandler;
-            _spaceShipPresenter.OnShipDied += _analyticsEventHandler.SendEventGameEnd;
-            _spaceShipPresenter.OnShipDied += PauseEnemiesCreation;
-            _spaceShipPresenter.OnShipDied += UnsubscribeShip;
-            _spaceShipPresenter.OnShipSpawned += StartEnemiesCreation;
-            _advertisementPresenter.OnPlayerRevived += ReviveShip;
-            OnGameStarted += _analyticsEventHandler.SendEventGameStart;
-            _spaceShipPresenter.OnShipSpawned += ShipInitializeHandler;
-            _spaceShipPresenter.Initialize(_shipStatisticView, _deviceInput, _spaceShipData);
-            OnGameStarted.Invoke();
         }
 
         private void UnsubscribeShip()

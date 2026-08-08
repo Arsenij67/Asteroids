@@ -1,5 +1,4 @@
 using Asteroid.Database;
-using Asteroid.Enemies;
 using Asteroid.Inputs;
 using Asteroid.Services.Analytics;
 using Asteroid.Services.RemoteConfig;
@@ -10,8 +9,6 @@ using Asteroid.Statistic;
 using Asteroid.UI;
 using Asteroid.Weapon;
 using Cysharp.Threading.Tasks;
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -19,7 +16,6 @@ namespace Asteroid.Generation
 {
     public class SpaceEntryPoint : MonoBehaviour
     {
-
         [Header("UI")]
         [SerializeField] private GameObject _restartPrefab;
         [SerializeField] private RectTransform _UIParent;
@@ -76,7 +72,7 @@ namespace Asteroid.Generation
         {
             _shipStatisticView = _resourceLoader.Instantiate<ShipStatisticsView>(_shipStatisticViewPrefab, _UIParent);
             _shipStatisticPresenter.Initialize(_shipStatisticModel, _shipStatisticView);
-               _entitiesGenerationData.Initialize(_remoteConfigService);
+            _entitiesGenerationData.Initialize(_remoteConfigService);
 
             _gameOverPresenter.Initialize(
             _resourceLoader,
@@ -87,42 +83,32 @@ namespace Asteroid.Generation
            _UIParent,
            _sceneLoader,
            _bootstrapSceneData);
-
-            _entitiesGenerationFactory.Initialize(
-            _analyticsEventHandler,
-            _advertisingPresenter,
-            _entitiesGenerationData,
-            _resourceLoader,
-            _instanceLoader,
-            _allEnemiesDeathCounter,
-            _gameOverPresenter,
-            _shipStatisticPresenter,
-            _spaceShipData,
-            _shipStatisticView,
-            _remoteConfigService,
-            _deviceInput);
-
-
-            _weaponShipLaser = _entitiesGenerationFactory.CreateShip(_entitiesGenerationData.PlayerShipToGenerateNow).GetComponent<LaserWeaponController>();
-
-            _entitiesGenerationData.Initialize(_remoteConfigService, _weaponShipLaser.transform);
-
-            _analyticsEventHandler.Initialize(_analyticsService, _shipStatisticModel, _weaponShipLaser as LaserWeaponController);
-
-            _entitiesGenerationFactory.SubscribeShip();
         }
 
         private void InitializeSpaceShipSystems()
         {
-  
-            
+          _entitiesGenerationFactory.Initialize(
+          _analyticsEventHandler,
+          _advertisingPresenter,
+          _entitiesGenerationData,
+          _resourceLoader,
+          _instanceLoader,
+          _allEnemiesDeathCounter,
+          _gameOverPresenter,
+          _shipStatisticPresenter,
+          _spaceShipData,
+          _shipStatisticView,
+          _remoteConfigService,
+          _deviceInput);
 
-
+          _weaponShipLaser = _entitiesGenerationFactory.CreateShip(_entitiesGenerationData.PlayerShipToGenerateNow).GetComponent<LaserWeaponController>();
+          _entitiesGenerationData.Initialize(_remoteConfigService, _weaponShipLaser.transform);
+          _analyticsEventHandler.Initialize(_analyticsService, _shipStatisticModel, _weaponShipLaser as LaserWeaponController);
+          _entitiesGenerationFactory.SubscribeShip();
         }
 
         private async UniTask InitializeServicesSystems()
         {
- 
             _advertisingPresenter.Initialize(_advertisementService);
             await _localSaveStrategy.Initialize(_dataForSave, _localSaveMetaData, _instanceLoader, shipStatisticsPresenter: _gameOverPresenter);
             await _cloudSaveStrategy.Initialize(_dataForSave, _instanceLoader, _remoteSave, shipStatisticsPresenter: _gameOverPresenter);
