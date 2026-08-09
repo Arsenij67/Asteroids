@@ -13,7 +13,6 @@ namespace Asteroid.EntryPoints
 {
     public class ShopEntryPoint : MonoBehaviour
     {
-        [Inject] private ShopView _shopUI;
         [Inject] private IPurchasingService _purchaseService;
         [Inject] private InstanceCreator _instanceLoader;
         [Inject] private IRemoteSavable _remoteSavable;
@@ -21,19 +20,16 @@ namespace Asteroid.EntryPoints
         [Inject] private LocalSaveStrategyPresenter _localSaveStrategy;
         [Inject] private CloudDataPresenter _cloudSaveStrategy;
         [Inject] private SaveDataStrategyManager _saveDataStrategy;
-        [Inject] private TMP_Text _textCoins;
         [Inject] private DataSave _dataSave;
         [Inject] private LocalSaveMetaData _localSave;
-        [Inject] private Image _imageNoAds;
-        [Inject(Id = "buttonBuyNoAds")] private Button _buttonBuyNoAds;
-        [Inject(Id = "buttonBuy100Coins")] private Button _buttonBuy100Coins;
 
         [SerializeField] private SaveModeUI _saveModeUIPrefab;
         [SerializeField] RectTransform _parentUI;
+        [SerializeField] private ShopView _shopUI;
 
         private async void Start()
         {
-            _shopUI.Initialize(_buttonBuyNoAds, _buttonBuy100Coins, _textCoins, _imageNoAds);
+            _shopUI.Initialize();
             await _purchaseService.Initialize(_dataSave);
             await _localSaveStrategy.Initialize(_dataSave,_localSave, _instanceLoader,_shopUI);
             await _cloudSaveStrategy.Initialize(_dataSave, _instanceLoader, _remoteSavable, _shopUI);

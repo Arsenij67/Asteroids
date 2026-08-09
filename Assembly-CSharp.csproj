@@ -148,7 +148,6 @@
     <Compile Include="Assets\Scripts\UnityPurchasing\generated\GooglePlayTangle.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\GameOver.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Shop\ShopSceneData.cs" />
-    <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\ShopUIInstaller.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\FireballBullet.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\GameplayInstaller.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\AnimationController.cs" />

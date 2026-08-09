@@ -73,6 +73,17 @@ namespace Asteroid.Generation
             _buttonExitGame.onClick.RemoveListener(NotifyButtonExitPressed);
         }
 
+        public void Dispose()
+        {
+            OnPlayerClickButtonStart -= OpenLoadedGameScene;
+            OnPlayerClickButtonExit -= _applicationQuitter.Quit;
+        }
+
+        public void SetUpUI(RectTransform parent)
+        {
+            _interfaceMount.SetParent(parent, false);
+        }
+
         public void UpdateSlider(float endValue)
         {
             endValue = Mathf.Clamp01(endValue);
@@ -106,17 +117,6 @@ namespace Asteroid.Generation
         private UniTask OpenSceneShop()
         {
            return _sceneLoader.SwitchSceneActivation(_shopData.StartSceneName, true);
-        }
-
-        public void Dispose()
-        {
-            OnPlayerClickButtonStart -= OpenLoadedGameScene;
-            OnPlayerClickButtonExit -= _applicationQuitter.Quit;
-        }
-
-        public void SetUpUI(RectTransform parent)
-        {
-            _interfaceMount.SetParent(parent, false);
         }
 
         private float UpdateProgress()

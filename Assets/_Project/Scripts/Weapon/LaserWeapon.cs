@@ -22,9 +22,8 @@ namespace Asteroid.Weapon
 
         [field: SerializeField] public short UniqueNumber { get; private set; }
 
-        public bool LaserTurned =>  _laserTurned;
-
         public bool LaserCollideNow => _laserObject.LaserCollideNow;
+
         protected override float TimeBulletRecovery
         {
             get

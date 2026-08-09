@@ -582,8 +582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
-  _monoInstallers:
-  - {fileID: 807235729}
+  _monoInstallers: []
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -702,7 +701,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 807235728}
-  - component: {fileID: 807235729}
   - component: {fileID: 807235730}
   m_Layer: 0
   m_Name: ShopUI
@@ -730,22 +728,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &807235729
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 807235725}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c738afaa510c79f41994572c543a4ae0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _textCoins: {fileID: 53526098}
-  _buttonBuy100Coins: {fileID: 1901874172}
-  _buttonBuyNoAds: {fileID: 78556168}
-  _imageNoAds: {fileID: 787074591}
 --- !u!114 &807235730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -758,6 +740,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8339dfccf0e4dcc47b77ecc82422c912, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _textCoins: {fileID: 53526098}
+  _buttonBuy100Coins: {fileID: 1901874172}
+  _buttonBuyNoAds: {fileID: 78556168}
+  _imageNoAds: {fileID: 787074591}
 --- !u!1 &856725614
 GameObject:
   m_ObjectHideFlags: 0
@@ -940,6 +926,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _saveModeUIPrefab: {fileID: 2253756722082059085, guid: 16d5cfc8252347a4e85b7f236801c2ae, type: 3}
   _parentUI: {fileID: 417372287}
+  _shopUI: {fileID: 807235730}
 --- !u!1 &1062690938
 GameObject:
   m_ObjectHideFlags: 0

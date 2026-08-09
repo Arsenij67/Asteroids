@@ -9,16 +9,13 @@ public class ShopView : MonoBehaviour
    public event Action OnPlayerClickBuyNoAds;
    public event Action OnPlayerClickBuy100Coins;
 
-   private TMP_Text _textCoins;
-   private Button _buttonBuyNoAds;
-   private Button _buttonBuy100Coins;
-   private Image _imageNoAds;
-    public  void Initialize(Button buttonBuyNoAds, Button buttonBuy100Coins, TMP_Text textCoins, Image imageNoAds)
+   [SerializeField] private TMP_Text _textCoins;
+   [SerializeField] private Button _buttonBuy100Coins;
+   [SerializeField] private Button _buttonBuyNoAds;
+   [SerializeField] private Image _imageNoAds;
+
+    public  void Initialize()
     {
-        _textCoins = textCoins;
-        _buttonBuy100Coins = buttonBuy100Coins;
-        _buttonBuyNoAds = buttonBuyNoAds;
-        _imageNoAds = imageNoAds;
         _buttonBuy100Coins.onClick.AddListener(NotifyButtonTryAdd100CoinsBought);
         _buttonBuyNoAds.onClick.AddListener(NotifyButtonTryBuyNoAds);
     }
