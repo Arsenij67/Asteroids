@@ -3,10 +3,7 @@ using Asteroid.Generation;
 using Asteroid.Services.IAP;
 using Asteroid.Services.UnityCloud;
 using Asteroid.UI;
-using Cysharp.Threading.Tasks;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 namespace Asteroid.EntryPoints

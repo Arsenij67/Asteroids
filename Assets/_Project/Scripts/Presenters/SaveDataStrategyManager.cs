@@ -48,6 +48,7 @@ namespace Asteroid.Database
 
             else
             {
+                await DefineStrategy(_saveModeChoice);
                 _currentSaveStrategy.UpdateAllDataUI();
             }
         }
