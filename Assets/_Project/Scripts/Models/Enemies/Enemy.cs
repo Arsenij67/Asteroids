@@ -34,7 +34,6 @@ namespace Asteroid.Enemies
 
         public abstract void Move(Transform transformEnd = null);
         public abstract void AddToStatistic();
-
         public virtual void TakeDamage(float damage)
         {
             damage = Mathf.Max(0, damage);
@@ -44,7 +43,6 @@ namespace Asteroid.Enemies
             }
             else
             {
-                _health = 0;
                 Die();
             }
         }
@@ -52,6 +50,11 @@ namespace Asteroid.Enemies
         public void Die()
         {
             OnEnemyDestroyed?.Invoke(this);
+            Destroy(gameObject);
+        }
+
+        public void Disappear()
+        {
             Destroy(gameObject);
         }
 

@@ -14,6 +14,12 @@ public class ShopView : MonoBehaviour
    [SerializeField] private Button _buttonBuyNoAds;
    [SerializeField] private Image _imageNoAds;
 
+    private void OnDestroy()
+    {
+        _buttonBuy100Coins.onClick.RemoveListener(NotifyButtonTryAdd100CoinsBought);
+        _buttonBuyNoAds.onClick.RemoveListener(NotifyButtonTryBuyNoAds);
+    }
+
     public  void Initialize()
     {
         _buttonBuy100Coins.onClick.AddListener(NotifyButtonTryAdd100CoinsBought);
@@ -25,11 +31,6 @@ public class ShopView : MonoBehaviour
         _textCoins.text = endValue.ToString();
     }
 
-    private void OnDestroy()
-    {
-        _buttonBuy100Coins.onClick.RemoveListener(NotifyButtonTryAdd100CoinsBought);
-        _buttonBuyNoAds.onClick.RemoveListener(NotifyButtonTryBuyNoAds);
-    }
     public void UpdateViewNoAds(bool adsDisabled)
     {
         _imageNoAds.enabled = adsDisabled;

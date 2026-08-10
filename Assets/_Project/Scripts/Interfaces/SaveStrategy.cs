@@ -54,12 +54,18 @@ namespace Asteroid.Database
 
         public void UpdateUINoAds(bool isAdvertisementCanceled)
         {
-            ShopView?.UpdateViewNoAds(isAdvertisementCanceled);
+            if (ShopView != null)
+            {
+                ShopView.UpdateViewNoAds(isAdvertisementCanceled);
+            }
         }
 
-        public void UpdateUICountCoins(int countToAdd)
+        public void UpdateUICountCoins(int countSummaryCoins)
         {
-            ShopView?.UpdateCountCoins((int)DataSave[KeyData.COINS_COUNT]);
+            if (ShopView != null)
+            {
+                ShopView.UpdateCountCoins(countSummaryCoins);
+            }
         }
 
         public void UpdateUIDeadEnemies()

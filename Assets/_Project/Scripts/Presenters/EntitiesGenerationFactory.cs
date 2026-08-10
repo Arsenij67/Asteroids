@@ -155,6 +155,7 @@ namespace Asteroid.Generation
         {
             _enemyDeathCounter.OnEnemyDied(destroyedEnemy);
             destroyedEnemy.OnEnemyDestroyed -= OnEnemyDestroyedHandler;
+            _spaceShipPresenter.OnShipDied -= destroyedEnemy.Disappear;
         }
 
         private void UnsubscribeShip()
@@ -176,6 +177,7 @@ namespace Asteroid.Generation
             currentEnemy.Initialize(_generationData.EndPointToFly, _gameOverPresenter, _shipStatisticPresenter);
             enemyController.Initialize(_generationData.EndPointToFly);
             currentEnemy.OnEnemyDestroyed += OnEnemyDestroyedHandler;
+            _spaceShipPresenter.OnShipDied += currentEnemy.Disappear;
         }
 
         private void OnShipDestroyedHandler()

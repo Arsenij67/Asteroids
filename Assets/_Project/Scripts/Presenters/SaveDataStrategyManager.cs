@@ -13,6 +13,7 @@ namespace Asteroid.Database
     {
         public bool NoAdsStatus => _currentSaveStrategy.NoAdsStatus;
         public int CountCoins => _currentSaveStrategy.CountCoins;
+
         private bool ChoiceIsMade => _saveModeUI?.ChoiceIsMade ?? false;
 
         private SaveChoice _saveModeChoice;
@@ -74,10 +75,10 @@ namespace Asteroid.Database
             return UniTask.CompletedTask;
         }
 
-        public async UniTask UpdateCoins(int countCoins)
+        public async UniTask UpdateCoins(int coinsToAdd)
         {
-            await _currentSaveStrategy.AddCountCoins(countCoins);
-            _currentSaveStrategy.UpdateUICountCoins(countCoins);
+            await _currentSaveStrategy.AddCountCoins(coinsToAdd);
+            _currentSaveStrategy.UpdateUICountCoins(_currentSaveStrategy.CountCoins+coinsToAdd);
         }
 
         public async UniTask UpdateNoAds(bool isCanceled)
