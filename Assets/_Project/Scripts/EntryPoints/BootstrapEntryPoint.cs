@@ -71,6 +71,7 @@ namespace Asteroid.Generation
         {
             _buttonStartGame.onClick.RemoveListener(NotifyButtonStartPressed);
             _buttonExitGame.onClick.RemoveListener(NotifyButtonExitPressed);
+            
         }
 
         public void Dispose()

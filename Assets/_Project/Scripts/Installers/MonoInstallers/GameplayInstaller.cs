@@ -13,14 +13,14 @@ namespace Asteroid.Installers
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<DesktopInput>().AsSingle();
-            Container.Bind<AnalyticsEventHandler>().FromNew().AsSingle();
-            Container.Bind<EntitiesGenerationFactory>().FromNew().AsSingle();
-            Container.Bind<ShipStatisticsModel>().FromNew().AsSingle();
-            Container.Bind<ShipStatisticPresenter>().AsTransient();
-            Container.Bind<EnemyDeathCounter>().FromNew().AsSingle();
-            Container.Bind<GameOverPresenter>().FromNew().AsSingle();
-            Container.Bind<EntitiesGenerationData>().FromMethod((context) => context.Container.Resolve<BaseResourceLoaderService>().LoadResource<EntitiesGenerationData>("ScriptableObjects/EntitiesGenerationData")).AsSingle();
-            Container.Bind<SpaceShipData>().FromMethod((context) => context.Container.Resolve<BaseResourceLoaderService>().LoadResource<SpaceShipData>("ScriptableObjects/SpaceShipData")).AsSingle();
+            Container.Bind<AnalyticsEventHandler>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<AnalyticsEventHandler>()).AsTransient();
+            Container.Bind<EntitiesGenerationFactory>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<EntitiesGenerationFactory>()).AsTransient();
+            Container.Bind<ShipStatisticsModel>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<ShipStatisticsModel>()).AsTransient();
+            Container.Bind<ShipStatisticPresenter>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<ShipStatisticPresenter>()).AsTransient();
+            Container.Bind<EnemyDeathCounter>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<EnemyDeathCounter>()).AsTransient();
+            Container.Bind<GameOverPresenter>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<GameOverPresenter>()).AsSingle();
+            Container.Bind<EntitiesGenerationData>().FromMethod((context) => context.Container.Resolve<BaseResourceLoaderService>().LoadResource<EntitiesGenerationData>("ScriptableObjects/EntitiesGenerationData")).AsTransient();
+            Container.Bind<SpaceShipData>().FromMethod((context) => context.Container.Resolve<BaseResourceLoaderService>().LoadResource<SpaceShipData>("ScriptableObjects/SpaceShipData")).AsTransient();
         }
     }
     

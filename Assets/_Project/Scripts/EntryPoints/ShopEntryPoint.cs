@@ -47,6 +47,7 @@ namespace Asteroid.EntryPoints
             _purchaseService.OnPlayerBoughtNoAds -= _saveDataStrategy.UpdateNoAds;
             _shopUI.OnPlayerClickBuy100Coins -= _purchaseService.Buy100Coins;
             _shopUI.OnPlayerClickBuyNoAds -= _purchaseService.BuyNoAds;
+            _resourceLoaderService.UnloadAllResources();
         }
     }
 }

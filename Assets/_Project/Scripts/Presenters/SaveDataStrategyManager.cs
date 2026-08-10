@@ -1,10 +1,7 @@
-﻿
-using Asteroid.Database.Connection;
+﻿using Asteroid.Database.Connection;
 using Asteroid.Generation;
 using Asteroid.Services.UnityCloud;
-using Asteroid.SpaceShip;
 using Asteroid.UI;
-using Asteroid.Weapon;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Linq;
@@ -16,7 +13,6 @@ namespace Asteroid.Database
     {
         public bool NoAdsStatus => _currentSaveStrategy.NoAdsStatus;
         public int CountCoins => _currentSaveStrategy.CountCoins;
-
         private bool ChoiceIsMade => _saveModeUI?.ChoiceIsMade ?? false;
 
         private SaveChoice _saveModeChoice;
@@ -166,6 +162,11 @@ namespace Asteroid.Database
                 _saveModeUI.OnButtonClosePressed -= CloseWindowSaveMode;
                 _saveModeUI.OnButtonApplyPressed -= DefineStrategy;
                 _saveModeUI?.CloseWindow();
+
+                if (_resourceLoaderService.IsResourceLoaded(_saveModeUIPrefab.name))
+                {
+                    _resourceLoaderService.UnloadResource(_saveModeUIPrefab.name);
+                }
             }
         }
     }

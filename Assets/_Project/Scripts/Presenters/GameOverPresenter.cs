@@ -50,6 +50,7 @@ namespace Asteroid.SpaceShip
 
         public void ClosePanelRestart()
         {
+            _resourceLoader.UnloadResource(_gameOverView.name);
             _gameOverView.Close();
         }
 

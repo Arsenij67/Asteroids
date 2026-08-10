@@ -1,7 +1,6 @@
 using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -10,68 +9,166 @@ namespace Asteroid.Generation
 {
     public class BaseResourceLoaderService : IResourceLoader
     {
+        private readonly Dictionary<string, ResourceRequest> _resourceRequests = new();
+
         public T Instantiate<T>(T prefab, Vector2 position, Quaternion rotation) where T : Component
         {
-            return InstantiateGameObject(prefab.GameObject(), position,rotation).GetComponent<T>();
+            if (prefab == null)
+            {
+                Debug.LogError("[BaseResourceLoaderService] Prefab is null");
+                return null;
+            }
+
+            GameObject instance = Object.Instantiate(prefab.gameObject, position, rotation);
+            return instance.GetComponent<T>();
         }
-        public T Instantiate<T>(T prefab, Transform transform) where T : Component
+
+        public T Instantiate<T>(T prefab, Transform parent) where T : Component
         {
-            return InstantiateGameObject(prefab.GameObject(), transform).GetComponent<T>();    
+            if (prefab == null)
+            {
+                Debug.LogError("[BaseResourceLoaderService] Prefab is null");
+                return null;
+            }
+
+            GameObject instance = Object.Instantiate(prefab.gameObject, parent);
+            return instance.GetComponent<T>();
         }
 
         public T LoadResource<T>(string path) where T : Object
         {
+            if (string.IsNullOrEmpty(path))
+            {
+                Debug.LogError("[BaseResourceLoaderService] Path is null or empty");
+                return null;
+            }
+
             T result = Resources.Load<T>(path);
 
             if (result == null)
             {
-                Debug.LogError($"Resource not found at path: {path}");
-               
+                Debug.LogError($"[BaseResourceLoaderService] Resource not found at path: {path}");
             }
+
             return result;
         }
 
-        public UniTask<T> InstantiateAsync <T>(T prefab, Transform parent) where T : Component  
+        public async UniTask<T> InstantiateAsync<T>(T prefab, Transform parent) where T : Component
         {
-            AsyncInstantiateOperation<GameObject> asyncOperation = Object.InstantiateAsync(prefab.GameObject(), parent);
-            return asyncOperation.ToUniTask().ContinueWith(() => asyncOperation.Result.First().GetComponent<T>());
+            if (prefab == null)
+            {
+                Debug.LogError("[BaseResourceLoaderService] Prefab is null");
+                return null;
+            }
+
+            try
+            {
+                var asyncOperation = Object.InstantiateAsync(prefab.gameObject, parent);
+                await asyncOperation.ToUniTask();
+                var results = asyncOperation.Result;
+                if (results == null || results.Length == 0)
+                {
+                    Debug.LogError($"[BaseResourceLoaderService] InstantiateAsync failed for {prefab.name}");
+                    return null;
+                }
+                GameObject instance = results[0];
+                return instance.GetComponent<T>();
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"[BaseResourceLoaderService] InstantiateAsync error: {ex.Message}");
+                return null;
+            }
         }
 
         public async UniTask<T> LoadResourceAsync<T>(string path) where T : Object
         {
-            var handler = Resources.LoadAsync<T>(path).ToUniTask();
-            T result = await handler as T;
-
-            if (result == null)
+            if (string.IsNullOrEmpty(path))
             {
-                Debug.LogError($"Resource not found at path: {path}");
-
-            }
-            return result;
-        }
-
-        private GameObject InstantiateGameObject(GameObject prefab, Transform parent = null)
-        {
-            if (prefab == null)
-            {
-                Debug.LogError("Prefab is null");
+                Debug.LogError("[BaseResourceLoaderService] Path is null or empty");
                 return null;
             }
-            return Object.Instantiate(prefab.GameObject(), parent);
-        }
 
-        private GameObject InstantiateGameObject(GameObject prefab, Vector2 position, Quaternion rotation)
-        {
-            if (rotation == null)
+            try
             {
-                return Object.Instantiate(prefab, position, Quaternion.identity);
+                ResourceRequest request = Resources.LoadAsync<T>(path);
+
+                if (!_resourceRequests.ContainsKey(path))
+                {
+                    _resourceRequests[path] = request;
+                }
+
+                await request.ToUniTask();
+
+                T result = request.asset as T;
+
+                if (result == null)
+                {
+                    Debug.LogError($"[BaseResourceLoaderService] Resource not found at path: {path}");
+                    _resourceRequests.Remove(path);
+                    return null;
+                }
+
+                return result;
             }
-            if (prefab == null)
+            catch (System.Exception ex)
             {
-                Debug.LogError("Prefab is null");
+                Debug.LogError($"[BaseResourceLoaderService] LoadResourceAsync error for {path}: {ex.Message}");
                 return null;
             }
-            return Object.Instantiate(prefab.GameObject(), position, rotation);
+        }
+
+        public void UnloadResource (string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                Debug.LogError("[BaseResourceLoaderService] Cannot unload: path is null or empty");
+                return;
+            }
+
+            try
+            {
+                if (_resourceRequests.TryGetValue(path, out var request))
+                {
+                    if (request.asset != null)
+                    {
+                        Resources.UnloadAsset(request.asset);
+                        Debug.Log($"[BaseResourceLoaderService] Unloaded: {path}");
+                    }
+                    _resourceRequests.Remove(path);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"[BaseResourceLoaderService] Unload error for {path}: {ex.Message}");
+            }
+        }
+
+        public void UnloadAllResources()
+        {
+            try
+            {
+                foreach (var keyValuePairHandle in _resourceRequests)
+                {
+                    if (keyValuePairHandle.Value?.asset != null)
+                    {
+                        Resources.UnloadAsset(keyValuePairHandle.Value.asset);
+                    }
+                }
+                Resources.UnloadUnusedAssets();
+                _resourceRequests.Clear();
+
+                Debug.Log("[BaseResourceLoaderService] Unloaded all resources");
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"[BaseResourceLoaderService] UnloadAll error: {ex.Message}");
+            }
+        }
+
+        public bool IsResourceLoaded(string path)
+        {
+            return _resourceRequests.ContainsKey(path) && _resourceRequests[path]?.asset != null;
         }
     }
 }

@@ -35,6 +35,7 @@ namespace Asteroid.Generation
         private AdvertisementPresenter _advertisementPresenter;
         private AnalyticsEventHandler _analyticsEventHandler;
         private bool _isGamePaused = false;
+        private SpaceShipPresenter? _shipPrefab;
 
         public void Initialize(
             AnalyticsEventHandler analyticsEventHandler,
@@ -75,16 +76,18 @@ namespace Asteroid.Generation
         public void OnDestroy()
         {   
             StopEnemiesCreation();
-            _spaceShipPresenter.OnShipSpawned -= ShipInitializeHandler;
             _spaceShipPresenter.OnShipSpawned -= StartEnemiesCreation;
             _spaceShipPresenter.OnShipDied -= _analyticsEventHandler.SendEventGameEnd;
             OnGameStarted -= _analyticsEventHandler.SendEventGameStart;
             _spaceShipPresenter.OnShipDied -= PauseEnemiesCreation;
             _advertisementPresenter.OnPlayerRevived -= ReviveShip;
+            _spaceShipPresenter.OnShipDied -= OnShipDestroyedHandler;
+            _resourceLoader.UnloadAllResources();   
         }
 
         public SpaceShipPresenter CreateShip(SpaceShipPresenter shipControllerPrefab)
         {
+            _shipPrefab = shipControllerPrefab;
             SpaceShipPresenter playerShip = _resourceLoader.
                 Instantiate(shipControllerPrefab,
                 _generationData.PointShipToGenerate,
@@ -99,6 +102,7 @@ namespace Asteroid.Generation
             _spaceShipPresenter.OnShipDied += _analyticsEventHandler.SendEventGameEnd;
             _spaceShipPresenter.OnShipDied += PauseEnemiesCreation;
             _spaceShipPresenter.OnShipDied += UnsubscribeShip;
+            _spaceShipPresenter.OnShipDied += OnShipDestroyedHandler;
             _spaceShipPresenter.OnShipSpawned += StartEnemiesCreation;
             _advertisementPresenter.OnPlayerRevived += ReviveShip;
             OnGameStarted += _analyticsEventHandler.SendEventGameStart;
@@ -173,6 +177,11 @@ namespace Asteroid.Generation
             currentEnemy.Initialize(_generationData.EndPointToFly, _gameOverPresenter, _shipStatisticPresenter);
             enemyController.Initialize(_generationData.EndPointToFly);
             currentEnemy.OnEnemyDestroyed += OnEnemyDestroyedHandler;
+        }
+
+        private void OnShipDestroyedHandler()
+        {
+            _resourceLoader.UnloadResource(_shipPrefab.name);
         }
 
         private void ShipInitializeHandler()

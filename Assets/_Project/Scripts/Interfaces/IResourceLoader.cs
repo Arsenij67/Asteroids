@@ -10,6 +10,8 @@ namespace Asteroid.Generation
         public T Instantiate<T>(T prefab,Transform transform) where T : Component;
         public UniTask<T> InstantiateAsync<T>(T prefab, Transform transform) where T : Component;
         public UniTask<T> LoadResourceAsync<T>(string path) where T : Object;
-
+        public void UnloadResource(string path);
+        public void UnloadAllResources();
+        public bool IsResourceLoaded(string path);
     }
 }
