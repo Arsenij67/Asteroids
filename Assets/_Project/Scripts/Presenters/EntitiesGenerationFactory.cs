@@ -76,7 +76,6 @@ namespace Asteroid.Generation
         public void OnDestroy()
         {   
             StopEnemiesCreation();
-            _spaceShipPresenter.OnShipSpawned -= StartEnemiesCreation;
             _spaceShipPresenter.OnShipDied -= _analyticsEventHandler.SendEventGameEnd;
             OnGameStarted -= _analyticsEventHandler.SendEventGameStart;
             _spaceShipPresenter.OnShipDied -= PauseEnemiesCreation;
