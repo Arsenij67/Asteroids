@@ -3,16 +3,13 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Zenject;
 using UnityEngine;
 using UnityEngine.Purchasing;
-using UnityEngine.Events;
-using Asteroid.Database.Connection;
-using System.Threading.Tasks;
+
 
 namespace Asteroid.Services.IAP
 {
-    public class IAPAnalyzer : WIFIConnector, IDisposable, IPurchasingService
+    public class IAPAnalyzer : IDisposable, IPurchasingService
     {
         private const string NO_ADS_ID = "NO ADS";
         private const string COINS_100_ID = "COINS 100";
@@ -20,40 +17,34 @@ namespace Asteroid.Services.IAP
         public event Func<int, UniTask> OnPlayerBought100Coins;
         public event Func<bool, UniTask> OnPlayerBoughtNoAds;
 
-        private readonly int ADDED_100_COINS = 100;
-        private readonly bool ADVERTISEMENT_IS_CANCELED = true;
+        public bool IsInitialized => _initialized;
 
-        private StoreController _storeController;
-        private CatalogProvider _catalog;
+        private bool _initialized = false;
+        private readonly int _added100Coins = 100;
+        private readonly bool _advertisementIsCanceled = true;
+        private readonly StoreController _storeController = UnityIAPServices.StoreController();
 
         public async UniTask Initialize(DataSave dataSave)
         {
-            await IsConnectionAvailable();
-
-            _storeController = UnityIAPServices.StoreController();
+            if (IsInitialized) return;
 
             _storeController.OnPurchasePending += OnPurchasePendingHandler;
+
+            await _storeController.Connect();
             _storeController.OnProductsFetched += OnProductsFetchedHandler;
             _storeController.OnProductsFetchFailed += OnProductsFailedHandler;
             _storeController.OnStoreDisconnected += OnStoreDisconnectedHandler;
             _storeController.OnPurchaseFailed += OnPurchaseFailedHandler;
             _storeController.OnPurchaseConfirmed += OnPurchasesConfirmedHandler;
 
-            _catalog = new CatalogProvider();
-            var unityCatalog = ProductCatalog.LoadDefaultCatalog();
-            foreach (var item in unityCatalog.allProducts)
-            {
-                var defaultId = item.id;
-                var productType = item.type;
-                _catalog.AddProduct(defaultId, productType);
-            }
-            _catalog.FetchProducts(UnityIAPServices.DefaultProduct().FetchProductsWithNoRetries);
-            await _storeController.Connect().AsUniTask();
+            var productCatalog = ProductCatalog.LoadDefaultCatalog();
+            var initialProductsToFetch = productCatalog.allProducts.Select(item => new ProductDefinition(item.id, item.type)).ToList();
+            _storeController.FetchProducts(initialProductsToFetch);
+            _initialized = true;
         }
 
         public void Buy100Coins()
         {
-            Debug.Log("DDD");
             BuyProduct(COINS_100_ID);
         }
 
@@ -90,7 +81,6 @@ namespace Asteroid.Services.IAP
         private void OnStoreDisconnectedHandler(StoreConnectionFailureDescription description)
         {
             Debug.Log("Disconnected " + description.message);
-            IsConnected = false;
         }
 
         private void OnProductsFailedHandler(ProductFetchFailed failed)
@@ -111,26 +101,23 @@ namespace Asteroid.Services.IAP
             {
                 Debug.Log($"Product: {product.definition.id}, Price: {product.metadata.localizedPrice}");
             }
-
-            _storeController.FetchPurchases();
         }
 
         private void OnPurchasesConfirmedHandler(Order order)
         {
-
+            var items = order.CartOrdered.Items();
             foreach (var product in order.CartOrdered.Items())
             {
                 if (product.Product.definition.id.Equals(COINS_100_ID))
                 {
-                   OnPlayerBought100Coins?.Invoke(ADDED_100_COINS);
+                   OnPlayerBought100Coins?.Invoke(_added100Coins);
                 }
                 else if (product.Product.definition.id.Equals(NO_ADS_ID))
                 {
-                    OnPlayerBoughtNoAds?.Invoke(ADVERTISEMENT_IS_CANCELED);
+                    OnPlayerBoughtNoAds?.Invoke(_advertisementIsCanceled);
                 }
                 Debug.Log($"Order: {product.Product.definition.id}, Status: Confirmed ");
             }
-        
         }
 
         private void OnPurchaseFailedHandler(FailedOrder failedOrder)
