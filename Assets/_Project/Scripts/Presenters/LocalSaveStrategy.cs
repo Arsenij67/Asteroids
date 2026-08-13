@@ -2,14 +2,13 @@ using Asteroid.Generation;
 using Asteroid.SpaceShip;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
-using System;
 using System.IO;
 using System.Text;
 using UnityEngine;
 
 namespace Asteroid.Database
 {
-    public class LocalSaveStrategyPresenter : SaveStrategy
+    public class LocalSaveStrategy : SaveStrategy
     {
         private LocalSaveMetaData _localSaveData;
         private InstanceCreator _instanceLoader;

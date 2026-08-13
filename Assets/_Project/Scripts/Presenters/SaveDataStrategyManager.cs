@@ -9,11 +9,8 @@ using UnityEngine;
 
 namespace Asteroid.Database
 {
-    public class SaveDataStrategyManager : WIFIConnector, IDisposable
+    public class SaveDataStrategyManager : IDisposable
     {
-        public bool NoAdsStatus => _currentSaveStrategy.NoAdsStatus;
-        public int CountCoins => _currentSaveStrategy.CountCoins;
-
         private bool ChoiceIsMade => _saveModeUI?.ChoiceIsMade ?? false;
 
         private SaveChoice _saveModeChoice;
@@ -23,55 +20,53 @@ namespace Asteroid.Database
         private SaveModeUI _saveModeUIPrefab;
         private RectTransform _parentForUI;
         private SaveModeUI? _saveModeUI;
-        private LocalSaveStrategyPresenter _localSavePresenter;
+        private LocalSaveStrategy _localSavePresenter;
         private CloudDataPresenter _cloudSavePresenter;
         private IResourceLoader _resourceLoaderService;
+        private IInstanceCreator _instanceCreator;
+        private WIFIConnector _WIFIConnector;
 
-        public async UniTask Initialize(InstanceCreator instanceLoader, IResourceLoader resourceLoaderService, SaveModeUI saveModeUIPrefab, RectTransform parentForUI, params SaveStrategy[] saveStrategies)
+        public async UniTask Initialize(WIFIConnector wifiConnector, IInstanceCreator instanceCreator, IResourceLoader resourceLoaderService, SaveModeUI saveModeUIPrefab, RectTransform parentForUI, params SaveStrategy[] saveStrategies)
         {
             _saveStrategies = saveStrategies;
             _saveModeUIPrefab = saveModeUIPrefab;
             _resourceLoaderService = resourceLoaderService;
             _parentForUI = parentForUI;
+            _WIFIConnector = wifiConnector;
+            _instanceCreator = instanceCreator;
             _cloudSavePresenter = _saveStrategies.FirstOrDefault((strategy) => strategy is CloudDataPresenter) as CloudDataPresenter;
-            _localSavePresenter = _saveStrategies.FirstOrDefault((strategy) => strategy is LocalSaveStrategyPresenter) as LocalSaveStrategyPresenter;
-            base.Initialize(instanceLoader);
+            _localSavePresenter = _saveStrategies.FirstOrDefault((strategy) => strategy is LocalSaveStrategy) as LocalSaveStrategy;
 
             if (!_initialized)
             {
-                await DefineStrategy();
                 _initialized = true;
-                OnInternetConnected += TryOpenWindowSaveMode;
-                OnInternetConnected += DefineStrategy;
-                OnInternetDisconnected += DefineStrategy;
             }
 
-            else
-            {
-                await DefineStrategy(_saveModeChoice);
-                _currentSaveStrategy.UpdateAllDataUI();
-            }
+            await DefineStrategy(_saveModeChoice);
+
+            await DefineTypeConnectionWaiting();
+
+            _WIFIConnector.OnInternetConnected += TryOpenWindowSaveMode;
+            _WIFIConnector.OnInternetConnected += DefineStrategy;
+            _WIFIConnector.OnInternetConnected += DefineTypeConnectionWaiting;
+            _WIFIConnector.OnInternetDisconnected += DefineStrategy;
+            _WIFIConnector.OnInternetDisconnected += DefineTypeConnectionWaiting;
         }
 
-        private UniTask TrySynchronizeData(SaveStrategy otherStrategy)
+        private UniTask TrySynchronizeData(SaveStrategy cloudStrategy,SaveStrategy localStrategy)
         {
-            DataSave synchronizeData = _instanceLoader.CreateInstance<DataSave>();
+            bool localSaveMoreThanCloudSave = cloudStrategy.LastSaveTime < localStrategy.LastSaveTime;
 
-            if (IsConnected && _currentSaveStrategy.LastSaveTime < otherStrategy.LastSaveTime)
+            if (_WIFIConnector.IsConnected && localSaveMoreThanCloudSave)
             {
-                synchronizeData[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = otherStrategy.CountDeadEnemies;
-                synchronizeData[KeyData.COINS_COUNT] = otherStrategy.CountCoins;
-                synchronizeData[KeyData.ADS_DISABLED] = otherStrategy.NoAdsStatus;
-                synchronizeData[KeyData.LAST_SAVE_TIME] = otherStrategy.LastSaveTime;
-                return _currentSaveStrategy.UpdateAllData(synchronizeData);
+                DataSave synchronizedLocalData = FillUpDataSave(localStrategy);
+                return cloudStrategy.UpdateAllData(synchronizedLocalData);
             }
-            else if(IsConnected && _currentSaveStrategy.LastSaveTime > otherStrategy.LastSaveTime)
+
+            else if (!localSaveMoreThanCloudSave)
             {
-                synchronizeData[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = _currentSaveStrategy.CountDeadEnemies;
-                synchronizeData[KeyData.COINS_COUNT] = CountCoins;
-                synchronizeData[KeyData.ADS_DISABLED] = NoAdsStatus;
-                synchronizeData[KeyData.LAST_SAVE_TIME] = _currentSaveStrategy.LastSaveTime;
-                return otherStrategy.UpdateAllData(synchronizeData);
+                DataSave synchronizedCloudData = FillUpDataSave(cloudStrategy);
+                return localStrategy.UpdateAllData(synchronizedCloudData);
             }
             return UniTask.CompletedTask;
         }
@@ -79,7 +74,7 @@ namespace Asteroid.Database
         public async UniTask UpdateCoins(int coinsToAdd)
         {
             await _currentSaveStrategy.AddCountCoins(coinsToAdd);
-            _currentSaveStrategy.UpdateUICountCoins(_currentSaveStrategy.CountCoins+coinsToAdd);
+            _currentSaveStrategy.UpdateUICountCoins(_currentSaveStrategy.CountCoins);
         }
 
         public async UniTask UpdateNoAds(bool isCanceled)
@@ -94,54 +89,74 @@ namespace Asteroid.Database
             _currentSaveStrategy.UpdateUIDeadEnemies();
         }
 
-        public new void Dispose()
+        public void Dispose()
         {
-            base.Dispose();
-            OnInternetConnected -= TryOpenWindowSaveMode;
-            OnInternetConnected -= DefineStrategy;
-            OnInternetDisconnected -= DefineStrategy;
+            _WIFIConnector.Dispose();
+            _WIFIConnector.OnInternetConnected -= TryOpenWindowSaveMode;
+            _WIFIConnector.OnInternetConnected -= DefineStrategy;
+            _WIFIConnector.OnInternetConnected -= DefineTypeConnectionWaiting;
+            _WIFIConnector.OnInternetDisconnected -= DefineStrategy;
+            _WIFIConnector.OnInternetDisconnected -= DefineTypeConnectionWaiting;
+        }
+
+        private DataSave FillUpDataSave(SaveStrategy strategy)
+        {
+            DataSave synchronizeData = _instanceCreator.CreateInstance<DataSave>();
+            synchronizeData[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = strategy.CountDeadEnemies;
+            synchronizeData[KeyData.COINS_COUNT] = strategy.CountCoins;
+            synchronizeData[KeyData.ADS_DISABLED] = strategy.NoAdsStatus;
+            synchronizeData[KeyData.LAST_SAVE_TIME] = strategy.LastSaveTime;
+            return synchronizeData;
         }
 
         private async UniTask DefineStrategy(SaveChoice newSaveChoice = SaveChoice.NoChoice)
         {
             _saveModeChoice = newSaveChoice;
 
-             await IsConnectionAvailable();
+             await _WIFIConnector.IsConnectionAvailable();
+             await TrySynchronizeData(_cloudSavePresenter, _localSavePresenter);
 
-            if (newSaveChoice.Equals(SaveChoice.UseCloud) && IsConnected)
+            if (newSaveChoice.Equals(SaveChoice.UseCloud) && _WIFIConnector.IsConnected)
             {
                 _currentSaveStrategy = _cloudSavePresenter;
-                WaitForDisconnection();
-                await TrySynchronizeData(_localSavePresenter);
+
             }
 
             else if (newSaveChoice.Equals(SaveChoice.UseLocal))
             {
                 _currentSaveStrategy = _localSavePresenter;
-                WaitForConnection();
-                await TrySynchronizeData(_cloudSavePresenter);
+
             }
 
-            else if (IsConnected)
+            else if (_WIFIConnector.IsConnected)
             {
                 _currentSaveStrategy = _cloudSavePresenter;
-                WaitForDisconnection();
-                await TrySynchronizeData(_localSavePresenter);
-
             }
 
             else
             {
                 _currentSaveStrategy = _localSavePresenter;
-                WaitForConnection();
-                await TrySynchronizeData(_cloudSavePresenter);
-
             }
 
             _currentSaveStrategy.UpdateAllDataUI();
         }
 
-        private async UniTask TryOpenWindowSaveMode()
+        private async UniTask DefineTypeConnectionWaiting()
+        {
+            await _WIFIConnector.IsConnectionAvailable();
+     
+            if (_WIFIConnector.IsConnected)
+            {
+                _WIFIConnector.WaitForDisconnection();
+            }
+
+            else
+            {
+                _WIFIConnector.WaitForConnection();
+            }
+        }
+
+       private async UniTask TryOpenWindowSaveMode()
         {
             if (!ChoiceIsMade)
             {

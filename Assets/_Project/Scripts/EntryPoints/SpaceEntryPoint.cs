@@ -1,4 +1,5 @@
 using Asteroid.Database;
+using Asteroid.Database.Connection;
 using Asteroid.Inputs;
 using Asteroid.Services.Analytics;
 using Asteroid.Services.RemoteConfig;
@@ -45,11 +46,12 @@ namespace Asteroid.Generation
         [Inject] private IAnalytics _analyticsService;
         [Inject] private IRemoteSavable _remoteSave;
         [Inject] private SaveDataStrategyManager _saveDataStrategyController;
-        [Inject] private LocalSaveStrategyPresenter _localSaveStrategy;
+        [Inject] private LocalSaveStrategy _localSaveStrategy;
         [Inject] private CloudDataPresenter _cloudSaveStrategy;
         [Inject] private LocalSaveMetaData _localSaveMetaData;
         [Inject] private ShipStatisticPresenter _shipStatisticPresenter;
         [Inject] private BootstrapSceneData  _bootstrapSceneData;
+        [Inject] private WIFIConnector _wifiConnector;
 
         private ShipStatisticsView _shipStatisticView;
         private WeaponShip _weaponShipLaser;
@@ -64,8 +66,9 @@ namespace Asteroid.Generation
         
         private void OnDestroy()
         {
-            _entitiesGenerationFactory?.OnDestroy();
+            _entitiesGenerationFactory.Dispose();
             _gameOverPresenter?.Dispose();
+            _saveDataStrategyController.Dispose();
         }
 
         private void InitializeUI()
@@ -109,10 +112,11 @@ namespace Asteroid.Generation
 
         private async UniTask InitializeServicesSystems()
         {
+            _wifiConnector.Initialize(_instanceLoader);
             _advertisingPresenter.Initialize(_advertisementService);
             await _localSaveStrategy.Initialize(_dataForSave, _localSaveMetaData, _instanceLoader, shipStatisticsPresenter: _gameOverPresenter);
-            await _cloudSaveStrategy.Initialize(_dataForSave, _instanceLoader, _remoteSave, shipStatisticsPresenter: _gameOverPresenter);
-            await _saveDataStrategyController.Initialize(_instanceLoader, _resourceLoader, _saveModeUIPrefab, _UIParent, _cloudSaveStrategy, _localSaveStrategy);
+            await _cloudSaveStrategy.Initialize(_wifiConnector, _dataForSave, _instanceLoader, _remoteSave, shipStatisticsPresenter: _gameOverPresenter);
+            await _saveDataStrategyController.Initialize(_wifiConnector,_instanceLoader, _resourceLoader, _saveModeUIPrefab, _UIParent, _cloudSaveStrategy, _localSaveStrategy);
         }
 
         private void InitializeEnemySystems()

@@ -14,22 +14,24 @@ using Zenject;
 
 namespace Asteroid.Services.UnityCloud
 {
-    public class UnitySaveCloud : WIFIConnector, IRemoteSavable
+    public class UnitySaveCloud : IRemoteSavable
     {
-        private static bool _isInitialized = false;
-        private static bool _isInitializing = false;
+        public bool IsInitialized => _WIFIConnector.IsConnected && _isInitialized;
 
-        public bool IsInitialized => IsConnected && _isInitialized;
+        private bool _isInitialized = false;
+        private bool _isInitializing = false;
 
         private Dictionary<string, Item> _data;
         private DataSave _dataSave;
+        private WIFIConnector _WIFIConnector;
 
-        public async UniTask Initialize(DataSave dataSave)
+        public async UniTask Initialize(DataSave dataSave, WIFIConnector wIFIConnector)
         {
+            _WIFIConnector = wIFIConnector;
 
-            IsConnected = await IsConnectionAvailable();
+            await _WIFIConnector.IsConnectionAvailable();
 
-            if (!IsConnected || _isInitialized || _isInitializing) return;
+            if (!_WIFIConnector.IsConnected || _isInitialized || _isInitializing) return;
 
             _isInitializing = true;
             _dataSave = dataSave;

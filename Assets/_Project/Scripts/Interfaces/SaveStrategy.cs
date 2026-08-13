@@ -1,11 +1,7 @@
 using Asteroid.Generation;
 using Asteroid.SpaceShip;
-using Asteroid.Statistic;
 using Cysharp.Threading.Tasks;
 using System;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.Networking;
 
 namespace Asteroid.Database
 {

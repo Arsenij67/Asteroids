@@ -1,4 +1,5 @@
 using Asteroid.Database;
+using Asteroid.Database.Connection;
 using Asteroid.Exit;
 using Asteroid.Services.Analytics;
 using Asteroid.Services.IAP;
@@ -37,6 +38,7 @@ namespace Asteroid.Generation
         [Inject] private DataSave _dataForSave;
         [Inject] private IApplicationQuitter _applicationQuitter;
         [Inject] private IRemoteSavable _remoteSave;
+        [Inject] private WIFIConnector  _WIFIConnector;
 
         private bool _analyticsReady;
         private bool _remoteConfigReady;
@@ -172,7 +174,7 @@ namespace Asteroid.Generation
 
         private async UniTask PreparePurchasingAsync()
         { 
-            await _purchasingService.Initialize(_dataForSave);
+            await _purchasingService.Initialize();
             _purchaseLoaded = true;
         }
 
@@ -183,7 +185,7 @@ namespace Asteroid.Generation
 
         private async UniTask PrepareCloudSaveServiceAsync()
         { 
-            await _remoteSave.Initialize(_dataForSave);
+            await _remoteSave.Initialize(_dataForSave,_WIFIConnector);
             _cloudSaveLoaded = true;
         }
 

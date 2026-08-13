@@ -1,4 +1,4 @@
-using Asteroid.Generation;
+п»їusing Asteroid.Generation;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
@@ -9,12 +9,12 @@ namespace Asteroid.Database.Connection
 {
     public class WIFIConnector
     {
-        protected event Func<UniTask> OnInternetConnected;
-        protected event Func<UniTask> OnInternetDisconnected;
+        public event Func<UniTask> OnInternetConnected;
+        public event Func<UniTask> OnInternetDisconnected;
 
-        protected InstanceCreator _instanceLoader;
-        protected bool IsConnected;
+        public bool IsConnected { get; private set; }
 
+        private IInstanceCreator _instanceLoader;
         private CancellationTokenSource _cancellationTokenSource;
         private CancellationToken _cancellationToken;
 
@@ -23,13 +23,13 @@ namespace Asteroid.Database.Connection
             _cancellationTokenSource.Cancel();
         }
 
-        protected void Initialize(InstanceCreator instanceLoader)
+        public void Initialize(IInstanceCreator instanceLoader)
         {
             _instanceLoader = instanceLoader;
             _cancellationTokenSource = _instanceLoader.CreateInstance<CancellationTokenSource>();
         }
 
-        protected async UniTask<bool> IsConnectionAvailable()
+        public async UniTask<bool> IsConnectionAvailable()
         {
             string[] _dnsAddresses = new string[] { "https://yandex.ru", "1.1.1.1", "www.microsoft.com" };
             bool isConnected = false;
@@ -51,30 +51,32 @@ namespace Asteroid.Database.Connection
                         }
                     }
                 }
+
                 catch (UnityWebRequestException ex)
                 {
-                    Debug.Log($"Нет подключения к интернету через {address}: {ex.Message}");
+                
                 }
+
                 catch (Exception ex)
                 {
-                    Debug.LogError($"Ошибка проверки интернета через {address}: {ex.Message}");
+                
                 }
             }
             IsConnected = isConnected;
             return isConnected;
         }
 
-        protected async UniTask WaitForConnection()
+        public async UniTask WaitForConnection()
         {
             const int TIME_WAIT_CALLBACK = 1*1000;
             _cancellationToken = _instanceLoader.CreateInstance<CancellationToken>();
             while (!_cancellationToken.IsCancellationRequested)
             {
-                Debug.Log("Ждем подключения");
+                Debug.Log("Р–РґРµРј РїРѕРґРєР»СЋС‡РµРЅРёСЏ");
                 if (await IsConnectionAvailable())
                 {
                     OnInternetConnected.Invoke();
-                    Debug.Log("Интерент дали!!!!");
+                    Debug.Log("РРЅС‚РµСЂРµРЅС‚ РґР°Р»Рё!!!!");
                     break;
                 }
               
@@ -82,17 +84,17 @@ namespace Asteroid.Database.Connection
             }
         }
 
-        protected async UniTask WaitForDisconnection()
+        public async UniTask WaitForDisconnection()
         {
             const int TIME_WAIT_CALLBACK = 1 * 1000;
             _cancellationToken = _instanceLoader.CreateInstance<CancellationToken>();
             while (!_cancellationToken.IsCancellationRequested)
             {
-                Debug.Log("Ждем отключения");
+                Debug.Log("Р–РґРµРј РѕС‚РєР»СЋС‡РµРЅРёСЏ");
                 if (!await IsConnectionAvailable())
                 {
                     OnInternetDisconnected.Invoke();
-                    Debug.Log("Интернет забрали!");
+                    Debug.Log("РРЅС‚РµСЂРЅРµС‚ Р·Р°Р±СЂР°Р»Рё!");
                    break;
                 }
 

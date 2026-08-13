@@ -1,4 +1,5 @@
 using Asteroid.Database;
+using Asteroid.Database.Connection;
 using Asteroid.Exit;
 using Asteroid.Generation;
 using Asteroid.Services.Analytics;
@@ -28,9 +29,10 @@ namespace Asteroid.Installers
             Container.BindInterfacesAndSelfTo<UnitySaveCloud>().FromNew().AsSingle();
             Container.BindInterfacesAndSelfTo<KeyData>().FromNew().AsCached();
             Container.Bind<CloudDataPresenter>().FromNew().AsTransient();
-            Container.Bind<LocalSaveStrategyPresenter>().To<LocalSaveStrategyPresenter>().AsCached();
+            Container.Bind<LocalSaveStrategy>().To<LocalSaveStrategy>().AsCached();
             Container.Bind<LocalSaveMetaData>().FromMethod((context) => context.Container.Resolve<BaseResourceLoaderService>().LoadResource<LocalSaveMetaData>("ScriptableObjects/LocalSaveMetaData")).AsSingle();
             Container.Bind<SaveDataStrategyManager>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<SaveDataStrategyManager>()).AsSingle();
+            Container.Bind<WIFIConnector>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<WIFIConnector>()).AsSingle();
         }
     }
 }

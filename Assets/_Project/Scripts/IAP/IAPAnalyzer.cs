@@ -1,15 +1,17 @@
 using Asteroid.Database;
+using Asteroid.Database.Connection;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Purchasing;
 
 
 namespace Asteroid.Services.IAP
 {
-    public class IAPAnalyzer : IDisposable, IPurchasingService
+    public class IAPAnalyzer : IPurchasingService
     {
         private const string NO_ADS_ID = "NO ADS";
         private const string COINS_100_ID = "COINS 100";
@@ -17,30 +19,21 @@ namespace Asteroid.Services.IAP
         public event Func<int, UniTask> OnPlayerBought100Coins;
         public event Func<bool, UniTask> OnPlayerBoughtNoAds;
 
-        public bool IsInitialized => _initialized;
+        public bool IsInitialized { get; private set; }
 
-        private bool _initialized = false;
         private readonly int _added100Coins = 100;
         private readonly bool _advertisementIsCanceled = true;
         private readonly StoreController _storeController = UnityIAPServices.StoreController();
 
-        public async UniTask Initialize(DataSave dataSave)
+        public async UniTask Initialize()
         {
             if (IsInitialized) return;
-
-            _storeController.OnPurchasePending += OnPurchasePendingHandler;
-
             await _storeController.Connect();
-            _storeController.OnProductsFetched += OnProductsFetchedHandler;
-            _storeController.OnProductsFetchFailed += OnProductsFailedHandler;
-            _storeController.OnStoreDisconnected += OnStoreDisconnectedHandler;
-            _storeController.OnPurchaseFailed += OnPurchaseFailedHandler;
-            _storeController.OnPurchaseConfirmed += OnPurchasesConfirmedHandler;
-
+            SubscribeListeners();
             var productCatalog = ProductCatalog.LoadDefaultCatalog();
             var initialProductsToFetch = productCatalog.allProducts.Select(item => new ProductDefinition(item.id, item.type)).ToList();
             _storeController.FetchProducts(initialProductsToFetch);
-            _initialized = true;
+            IsInitialized = true;
         }
 
         public void Buy100Coins()
@@ -55,27 +48,21 @@ namespace Asteroid.Services.IAP
 
         public void Dispose()
         {
-            if(_storeController == null) return;
-
-            _storeController.OnPurchasePending -= OnPurchasePendingHandler;
-            _storeController.OnProductsFetched -= OnProductsFetchedHandler;
-            _storeController.OnProductsFetchFailed -= OnProductsFailedHandler;
-            _storeController.OnStoreDisconnected -= OnStoreDisconnectedHandler;
-            _storeController.OnPurchaseFailed -= OnPurchaseFailedHandler;
-            _storeController.OnPurchaseConfirmed -= OnPurchasesConfirmedHandler;
+            UnsubscribeListeners();
+            IsInitialized = false;
         }
 
-        private void BuyProduct(string productId)
+        private async void BuyProduct(string productId)
         {
-                var product = _storeController.GetProducts().ToList().Find(p => p.definition.id == productId);
-                if (product != null)
-                {
-                    _storeController.PurchaseProduct(product);
-                }
-                else
-                {
-                    Debug.LogError($"Product {productId} not found!");
-                }
+            var product = _storeController.GetProducts().ToList().Find(p => p.definition.id == productId);
+            if (product != null)
+            {
+                _storeController.PurchaseProduct(product);
+            }
+            else
+            {
+                Debug.LogError($"Product {productId} not found!");
+            }
         }
 
         private void OnStoreDisconnectedHandler(StoreConnectionFailureDescription description)
@@ -125,6 +112,24 @@ namespace Asteroid.Services.IAP
             Debug.Log($"Purchase failed: {failedOrder.FailureReason}, Details: {failedOrder.Details}");
         }
 
+        private void SubscribeListeners()
+        {
+            _storeController.OnPurchasePending += OnPurchasePendingHandler;
+            _storeController.OnProductsFetched += OnProductsFetchedHandler;
+            _storeController.OnProductsFetchFailed += OnProductsFailedHandler;
+            _storeController.OnStoreDisconnected += OnStoreDisconnectedHandler;
+            _storeController.OnPurchaseFailed += OnPurchaseFailedHandler;
+            _storeController.OnPurchaseConfirmed += OnPurchasesConfirmedHandler;
+        }
 
+        private void UnsubscribeListeners()
+        {
+            _storeController.OnPurchasePending -= OnPurchasePendingHandler;
+            _storeController.OnProductsFetched -= OnProductsFetchedHandler;
+            _storeController.OnProductsFetchFailed -= OnProductsFailedHandler;
+            _storeController.OnStoreDisconnected -= OnStoreDisconnectedHandler;
+            _storeController.OnPurchaseFailed -= OnPurchaseFailedHandler;
+            _storeController.OnPurchaseConfirmed -= OnPurchasesConfirmedHandler;
+        }
     }
 }

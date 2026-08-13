@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Asteroid.Generation
 {
-    public class EntitiesGenerationFactory
+    public class EntitiesGenerationFactory :IDisposable
     {
         public event Action OnGameStarted;
 
@@ -73,7 +73,7 @@ namespace Asteroid.Generation
           
         }
 
-        public void OnDestroy()
+        public void Dispose()
         {   
             StopEnemiesCreation();
             _spaceShipPresenter.OnShipDied -= _analyticsEventHandler.SendEventGameEnd;
