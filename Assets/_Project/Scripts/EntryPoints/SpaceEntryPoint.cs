@@ -78,6 +78,7 @@ namespace Asteroid.Generation
             _entitiesGenerationData.Initialize(_remoteConfigService);
 
             _gameOverPresenter.Initialize(
+            _saveDataStrategyController,
             _resourceLoader,
             _UIParent,
             _entitiesGenerationData.EndPanelView,

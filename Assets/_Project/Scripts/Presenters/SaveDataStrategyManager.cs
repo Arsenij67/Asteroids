@@ -52,19 +52,19 @@ namespace Asteroid.Database
             _WIFIConnector.OnInternetDisconnected += DefineTypeConnectionWaiting;
         }
 
-        public async UniTask UpdateCoins(int coinsToAdd)
+        public async UniTask AddAndRefreshCoins(int coinsToAdd)
         {
             await _currentSaveStrategy.AddCountCoins(coinsToAdd);
             _currentSaveStrategy.UpdateUICountCoins(_currentSaveStrategy.CountCoins);
         }
 
-        public async UniTask UpdateNoAds(bool isCanceled)
+        public async UniTask AddAndRefreshAds(bool isCanceled)
         {
             await _currentSaveStrategy.UpdateNoAdsStatus(isCanceled);
             _currentSaveStrategy.UpdateUINoAds(isCanceled);
         }
 
-        public async UniTask UpdateDestroyedEnemies(int enemiesToAdd)
+        public async UniTask AddAndRefreshDestroyedEnemies(int enemiesToAdd)
         {
             await _currentSaveStrategy.AddCountDeadEnemies(enemiesToAdd);
             _currentSaveStrategy.UpdateUIDeadEnemies();

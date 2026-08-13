@@ -1,6 +1,8 @@
+using Asteroid.Database;
 using Asteroid.Generation;
 using Asteroid.Services.UnityAdvertisement;
 using Asteroid.Statistic;
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 
@@ -16,6 +18,7 @@ namespace Asteroid.SpaceShip
         private AdvertisementPresenter _advertisementPresenter;
         private BootstrapSceneData _bootstrapSceneData;
         private RectTransform _parentForAttachment;
+        private SaveDataStrategyManager _saveDataStrategyManager;
 
         public void Dispose()
         {
@@ -26,7 +29,7 @@ namespace Asteroid.SpaceShip
             _advertisementPresenter.OnPlayerRevived -= ClosePanelRestart;
         }
 
-        public void Initialize (IResourceLoader resourceLoader,RectTransform parentForAttachment, GameOverView endPanelPrefab, AdvertisementPresenter advertisementPresenter, ShipStatisticsModel shipStatisticsModel,RectTransform parentForEndWindow, ISceneLoader sceneLoader, BootstrapSceneData bootstrapSceneData)
+        public void Initialize (SaveDataStrategyManager saveDataStrategyManager,IResourceLoader resourceLoader,RectTransform parentForAttachment, GameOverView endPanelPrefab, AdvertisementPresenter advertisementPresenter, ShipStatisticsModel shipStatisticsModel,RectTransform parentForEndWindow, ISceneLoader sceneLoader, BootstrapSceneData bootstrapSceneData)
         {
             _shipStatisticModel = shipStatisticsModel; 
             _advertisementPresenter = advertisementPresenter;
@@ -35,6 +38,7 @@ namespace Asteroid.SpaceShip
             _endPanelPrefab = endPanelPrefab;
             _parentForAttachment = parentForAttachment;
             _resourceLoader = resourceLoader;
+            _saveDataStrategyManager = saveDataStrategyManager;
         }
 
         public void OpenPanelRestart()
@@ -48,13 +52,18 @@ namespace Asteroid.SpaceShip
             _gameOverView.UpdateButtonShowAd(_advertisementPresenter.IsShowed,_advertisementPresenter.IsInitialized);
         }
 
+        public UniTask AddAndRefreshDestroyedEnemies()
+        {
+            return _saveDataStrategyManager.AddAndRefreshDestroyedEnemies(_shipStatisticModel.CountEnemiesDestroyed);
+        }
+
         public void ClosePanelRestart()
         {
             _resourceLoader.UnloadResource(_endPanelPrefab.name);
             _gameOverView.Close();
         }
 
-        public void UpdateDestroyedEnemiesUI()
+        public void UpdateUIDeadEnemies()
         {
             _gameOverView?.UpdateDestroyedEnemies(_shipStatisticModel.CountEnemiesDestroyed);
         }

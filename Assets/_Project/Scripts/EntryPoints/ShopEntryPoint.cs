@@ -34,16 +34,16 @@ namespace Asteroid.EntryPoints
             await _cloudSaveStrategy.Initialize(_wiFiChecker, _dataSave, _instanceLoader, _remoteSavable, _shopUI);
             await _saveDataStrategy.Initialize(_wiFiChecker,_instanceLoader,_resourceLoaderService,_saveModeUIPrefab,_parentUI,_cloudSaveStrategy, _localSaveStrategy);
     
-            _purchaseService.OnPlayerBought100Coins += _saveDataStrategy.UpdateCoins;
-            _purchaseService.OnPlayerBoughtNoAds += _saveDataStrategy.UpdateNoAds;
+            _purchaseService.OnPlayerBought100Coins += _saveDataStrategy.AddAndRefreshCoins;
+            _purchaseService.OnPlayerBoughtNoAds += _saveDataStrategy.AddAndRefreshAds;
             _shopUI.OnPlayerClickBuy100Coins += _purchaseService.Buy100Coins;
             _shopUI.OnPlayerClickBuyNoAds += _purchaseService.BuyNoAds;
         }
 
         private void OnDestroy()
         {
-            _purchaseService.OnPlayerBought100Coins -= _saveDataStrategy.UpdateCoins;
-            _purchaseService.OnPlayerBoughtNoAds -= _saveDataStrategy.UpdateNoAds;
+            _purchaseService.OnPlayerBought100Coins -= _saveDataStrategy.AddAndRefreshCoins;
+            _purchaseService.OnPlayerBoughtNoAds -= _saveDataStrategy.AddAndRefreshAds;
             _shopUI.OnPlayerClickBuy100Coins -= _purchaseService.Buy100Coins;
             _shopUI.OnPlayerClickBuyNoAds -= _purchaseService.BuyNoAds;
             _resourceLoaderService.UnloadAllResources();

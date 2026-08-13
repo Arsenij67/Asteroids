@@ -420,7 +420,7 @@ MonoBehaviour:
     m_ContainerData: []
     m_OverlaysVisible: 1
   m_SearchFilter:
-    m_NameFilter: 
+    m_NameFilter: Manager
     m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
@@ -434,7 +434,7 @@ MonoBehaviour:
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
-    m_OriginalText: 
+    m_OriginalText: Manager
     m_ImportLogFlags: 0
     m_FilterByTypeIntersection: 0
   m_ViewMode: 1
@@ -447,8 +447,8 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: f2a40000
-    m_LastClickedID: 42226
+    m_SelectedIDs: 96aa0000
+    m_LastClickedID: 43670
     m_ExpandedIDs: 000000001ca100001ea1000020a1000022a1000024a1000026a10000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -504,9 +504,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 4c9a0000
-    m_LastClickedInstanceID: 39500
-    m_HadKeyboardFocusLastEvent: 0
+    m_SelectedInstanceIDs: de450000
+    m_LastClickedInstanceID: 17886
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: aeb800005cad000060ad000064ad00006aad000076ad00001caf000022af0000d4ae0000d8ae0000deae0000e4ae0000c8ae0000ccae00004caf000050af000044ae00005eae000046b7000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1185,9 +1185,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 124, y: 1035.2476, z: 0}
+    m_Target: {x: 372.63727, y: 555.8193, z: -4.138447}
     speed: 2
-    m_Value: {x: 124, y: 1035.2476, z: 0}
+    m_Value: {x: 372.63727, y: 555.8193, z: -4.138447}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1237,9 +1237,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 82.52436
+    m_Target: 423.84454
     speed: 2
-    m_Value: 82.52436
+    m_Value: 423.84454
   m_Ortho:
     m_Target: 1
     speed: 2

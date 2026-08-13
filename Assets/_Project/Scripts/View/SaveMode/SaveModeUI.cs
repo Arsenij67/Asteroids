@@ -1,10 +1,8 @@
 using Asteroid.Database;
-using Asteroid.Generation;
 using Cysharp.Threading.Tasks;
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Asteroid.UI

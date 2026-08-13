@@ -22,7 +22,9 @@ namespace Asteroid.Services.UnityCloud
         }
 
         public override async UniTask AddCountDeadEnemies(int enemiesToAdd)
-        {
+         {
+            if(enemiesToAdd<=0) return ;
+
             int oldEnemies = await _remoteSavable.GetKey<int>(KeyData.DEAD_ENEMIES_COUNT_SUMMARY);
             DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = oldEnemies + enemiesToAdd;
             if(!_remoteSavable.IsInitialized)

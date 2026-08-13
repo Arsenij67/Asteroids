@@ -197,10 +197,10 @@ namespace Asteroid.Generation
             _weaponController.Initialize();
         }
 
-        private void PanelRestartSpawnedHandler()
+        private async void PanelRestartSpawnedHandler()
         {
-             _gameOverPresenter.OpenPanelRestart();
-            _gameOverPresenter.UpdateDestroyedEnemiesUI();
+            _gameOverPresenter.OpenPanelRestart();
+            await _gameOverPresenter.AddAndRefreshDestroyedEnemies();
         }
     }
 }

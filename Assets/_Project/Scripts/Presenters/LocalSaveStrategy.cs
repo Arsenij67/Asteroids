@@ -11,9 +11,9 @@ namespace Asteroid.Database
     public class LocalSaveStrategy : SaveStrategy
     {
         private LocalSaveMetaData _localSaveData;
-        private InstanceCreator _instanceLoader;
+        private IInstanceCreator _instanceLoader;
 
-        public async UniTask Initialize(DataSave dataSave, LocalSaveMetaData localSaveData, InstanceCreator instanceLoader, ShopView shopUI = null, GameOverPresenter shipStatisticsPresenter = null)
+        public async UniTask Initialize(DataSave dataSave, LocalSaveMetaData localSaveData, IInstanceCreator instanceLoader, ShopView shopUI = null, GameOverPresenter shipStatisticsPresenter = null)
         {
             base.Initialize(dataSave,_instanceLoader, shopUI,shipStatisticsPresenter);
             _localSaveData = localSaveData;
@@ -24,7 +24,7 @@ namespace Asteroid.Database
                 File.Create(_localSaveData.FullPath);
             }
             string jsonData = await LoadDataFromFileAsync(_localSaveData.FullPath);
-            DataSave = JsonConvert.DeserializeObject<DataSave>(jsonData) ?? _instanceLoader.CreateInstance<DataSave>();
+            _dataForSave = JsonConvert.DeserializeObject<DataSave>(jsonData) ?? _instanceLoader.CreateInstance<DataSave>();
             await UpdateLastSaveTime();
         }
 
@@ -38,6 +38,8 @@ namespace Asteroid.Database
 
         public override async UniTask AddCountDeadEnemies(int enemiesToAdd)
         {
+            if(enemiesToAdd<=0) return;
+
             DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = (int)DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] + enemiesToAdd;
             string jsonData = JsonConvert.SerializeObject(DataSave);
             await WriteDataFromFileAsync(_localSaveData.FullPath, jsonData);
@@ -73,7 +75,8 @@ namespace Asteroid.Database
 
         private async UniTask<string> LoadDataFromFileAsync(string filePath)
         {
-            if (File.Exists(filePath))
+            FileInfo file = new FileInfo( filePath);
+            if (file.Exists && file.Length>0 )
             {
                 string jsonData = string.Empty;
                 using (StreamReader streamReader = new StreamReader(filePath))

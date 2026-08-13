@@ -23,7 +23,6 @@ namespace Asteroid.Statistic
             _shipStatisticView.UpdateRollbackTime(_shipStatisticModel.LaserRollbackTime);
         }
 
-
         public void UpdateCountBulletShoots(int countBullets)
         {
             _shipStatisticModel.CountShootsFireball = countBullets;
@@ -39,6 +38,7 @@ namespace Asteroid.Statistic
         {
             _shipStatisticModel.CountDestroyedMeteorites++;
         }
+
         public void IncreaseCountAsteroidsDestroyed()
         {
             _shipStatisticModel.CountDestroyedAsteroids++;
