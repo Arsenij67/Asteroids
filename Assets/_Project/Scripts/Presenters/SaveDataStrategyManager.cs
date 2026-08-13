@@ -39,36 +39,17 @@ namespace Asteroid.Database
 
             if (!_initialized)
             {
-                _initialized = true;
+                _initialized = true;         
+                await DefineTypeConnectionWaiting();
             }
 
             await DefineStrategy(_saveModeChoice);
-
-            await DefineTypeConnectionWaiting();
 
             _WIFIConnector.OnInternetConnected += TryOpenWindowSaveMode;
             _WIFIConnector.OnInternetConnected += DefineStrategy;
             _WIFIConnector.OnInternetConnected += DefineTypeConnectionWaiting;
             _WIFIConnector.OnInternetDisconnected += DefineStrategy;
             _WIFIConnector.OnInternetDisconnected += DefineTypeConnectionWaiting;
-        }
-
-        private UniTask TrySynchronizeData(SaveStrategy cloudStrategy,SaveStrategy localStrategy)
-        {
-            bool localSaveMoreThanCloudSave = cloudStrategy.LastSaveTime < localStrategy.LastSaveTime;
-
-            if (_WIFIConnector.IsConnected && localSaveMoreThanCloudSave)
-            {
-                DataSave synchronizedLocalData = FillUpDataSave(localStrategy);
-                return cloudStrategy.UpdateAllData(synchronizedLocalData);
-            }
-
-            else if (!localSaveMoreThanCloudSave)
-            {
-                DataSave synchronizedCloudData = FillUpDataSave(cloudStrategy);
-                return localStrategy.UpdateAllData(synchronizedCloudData);
-            }
-            return UniTask.CompletedTask;
         }
 
         public async UniTask UpdateCoins(int coinsToAdd)
@@ -97,6 +78,24 @@ namespace Asteroid.Database
             _WIFIConnector.OnInternetConnected -= DefineTypeConnectionWaiting;
             _WIFIConnector.OnInternetDisconnected -= DefineStrategy;
             _WIFIConnector.OnInternetDisconnected -= DefineTypeConnectionWaiting;
+        }
+
+        private UniTask TrySynchronizeData(SaveStrategy cloudStrategy, SaveStrategy localStrategy)
+        {
+            bool localSaveMoreThanCloudSave = cloudStrategy.LastSaveTime < localStrategy.LastSaveTime;
+
+            if (_WIFIConnector.IsConnected && localSaveMoreThanCloudSave)
+            {
+                DataSave synchronizedLocalData = FillUpDataSave(localStrategy);
+                return cloudStrategy.UpdateAllData(synchronizedLocalData);
+            }
+
+            else if (!localSaveMoreThanCloudSave)
+            {
+                DataSave synchronizedCloudData = FillUpDataSave(cloudStrategy);
+                return localStrategy.UpdateAllData(synchronizedCloudData);
+            }
+            return UniTask.CompletedTask;
         }
 
         private DataSave FillUpDataSave(SaveStrategy strategy)
