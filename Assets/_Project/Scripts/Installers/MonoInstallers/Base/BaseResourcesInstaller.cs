@@ -22,7 +22,7 @@ namespace Asteroid.Installers
             Container.Bind<List<UniTask>>().AsTransient();
             Container.BindInterfacesAndSelfTo<InstanceCreator>().AsSingle();
             Container.Bind<AdvertisementPresenter>().AsSingle();
-            Container.BindInterfacesAndSelfTo<LocalBundleLoader>().AsSingle();
+            Container.BindInterfacesAndSelfTo<AddressableBundleLoader>().AsSingle();
             Container.BindInterfacesAndSelfTo<FirebaseAnalyticsSender>().AsSingle();
             Container.Bind<DataSave>().FromNew().AsSingle();
             Container.BindInterfacesAndSelfTo<IAPAnalyzer>().FromNew().AsSingle();

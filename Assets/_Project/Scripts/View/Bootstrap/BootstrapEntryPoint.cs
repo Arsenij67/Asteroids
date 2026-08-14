@@ -11,21 +11,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 namespace Asteroid.Generation
 {
-    public class BootstrapEntryPoint : MonoBehaviour, IDisposable
+    public class BootstrapEntryPoint : MonoBehaviour
     {
-        public event Action OnPlayerClickButtonStart;
-        public event Action OnPlayerClickButtonExit;
-
         [SerializeField] private SaveModeUI _saveModeUI;
-        [SerializeField] private Slider _sliderLoading;
-        [SerializeField] private Button _buttonStartGame;
-        [SerializeField] private Button _buttonExitGame;
-        [SerializeField] private RectTransform _interfaceMount;
+        [SerializeField] private BootstrapUI _bootstrapUI;
 
         [Inject] private List<UniTask> _loadingTasks;
         [Inject] private ISceneLoader _sceneLoader;
@@ -51,11 +44,11 @@ namespace Asteroid.Generation
 
         public async void Awake()
         {
-            _buttonStartGame.onClick.AddListener(NotifyButtonStartPressed);
-            _buttonExitGame.onClick.AddListener(NotifyButtonExitPressed);
-
+            _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
+            _bootstrapUI.OnPlayerClickButtonExit += _applicationQuitter.Quit;
+            _bootstrapUI.Initialize();
             await _sceneLoader.ReloadStartSceneAsync(_bootstrapSceneModel.StartSceneName);
-            OnPlayerClickButtonStart += OpenLoadedGameScene;
+            _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
             _loadingTasks.Add(PrepareAdvertisementAsync());
             _loadingTasks.Add(PrepareAnalyticsAsync());
             _loadingTasks.Add(PrepareShopSceneAsync());
@@ -65,50 +58,14 @@ namespace Asteroid.Generation
             _loadingTasks.Add(PrepareCloudSaveServiceAsync());
             TickLoading();
             await UniTask.WhenAll(_loadingTasks);
-            ActivateButtonStart();
-            OnPlayerClickButtonExit += _applicationQuitter.Quit;
+            _bootstrapUI.ActivateButtonStart();
         }
 
         private void OnDestroy()
         {
-            _buttonStartGame.onClick.RemoveListener(NotifyButtonStartPressed);
-            _buttonExitGame.onClick.RemoveListener(NotifyButtonExitPressed);
-            
-        }
-
-        public void Dispose()
-        {
-            OnPlayerClickButtonStart -= OpenLoadedGameScene;
-            OnPlayerClickButtonExit -= _applicationQuitter.Quit;
-        }
-
-        public void SetUpUI(RectTransform parent)
-        {
-            _interfaceMount.SetParent(parent, false);
-        }
-
-        public void UpdateSlider(float endValue)
-        {
-            endValue = Mathf.Clamp01(endValue);
-            _sliderLoading.value = endValue;
-        }
-
-        public void ActivateButtonStart()
-        {
-            if (_buttonStartGame != null)
-            {
-                _buttonStartGame.gameObject.SetActive(true);
-            }
-        }
-
-        private void NotifyButtonStartPressed()
-        {
-            OnPlayerClickButtonStart?.Invoke();
-        }
-
-        private void NotifyButtonExitPressed()
-        {
-            OnPlayerClickButtonExit?.Invoke();
+            _bootstrapUI.OnPlayerClickButtonStart -= OpenLoadedGameScene;
+            _bootstrapUI.OnPlayerClickButtonExit -= _applicationQuitter.Quit;
+            _bootstrapUI.Dispose();
         }
 
         private async UniTask PrepareShopSceneAsync()
@@ -180,7 +137,7 @@ namespace Asteroid.Generation
 
         private void UpdateBootstrapUI()
         {
-            UpdateSlider(_loadingProgress);
+            _bootstrapUI.UpdateSlider(_loadingProgress);
         }
 
         private async UniTask PrepareCloudSaveServiceAsync()

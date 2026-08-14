@@ -1,12 +1,12 @@
 using Asteroid.Generation;
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceProviders;
 
-public class LocalBundleLoader : IResourceLoader
+public class AddressableBundleLoader : IResourceLoader, IDisposable
 {
     private readonly Dictionary<string, AsyncOperationHandle> _handles = new();
 
@@ -14,7 +14,7 @@ public class LocalBundleLoader : IResourceLoader
     {
         if (prefab == null)
         {
-            Debug.LogError($"[LocalBundleLoader] Prefab is null");
+            Debug.LogError($"[AddressablesBundleLoader] Prefab is null");
             return null;
         }
 
@@ -27,7 +27,7 @@ public class LocalBundleLoader : IResourceLoader
         }
         catch (System.Exception ex)
         {
-            Debug.LogError($"[LocalBundleLoader] Failed to instantiate {prefab.name}: {ex.Message}");
+            Debug.LogError($"[AddressablesBundleLoader] Failed to instantiate {prefab.name}: {ex.Message}");
             return null;
         }
     }
@@ -36,7 +36,7 @@ public class LocalBundleLoader : IResourceLoader
     {
         if (prefab == null)
         {
-            Debug.LogError($"[LocalBundleLoader] Prefab is null");
+            Debug.LogError($"[AddressablesBundleLoader] Prefab is null");
             return null;
         }
 
@@ -49,16 +49,16 @@ public class LocalBundleLoader : IResourceLoader
         }
         catch (System.Exception ex)
         {
-            Debug.LogError($"[LocalBundleLoader] Failed to instantiate {prefab.name}: {ex.Message}");
+            Debug.LogError($"[AddressablesBundleLoader] Failed to instantiate {prefab.name}: {ex.Message}");
             return null;
         }
     }
 
-    public T LoadResource<T>(string path) where T : Object
+    public T LoadResource<T>(string path) where T : UnityEngine.Object
     {
         if (string.IsNullOrEmpty(path))
         {
-            Debug.LogError($"[LocalBundleLoader] Path is null or empty");
+            Debug.LogError($"[AddressablesBundleLoader] Path is null or empty");
             return null;
         }
 
@@ -69,7 +69,7 @@ public class LocalBundleLoader : IResourceLoader
 
             if (result == null)
             {
-                Debug.LogError($"[LocalBundleLoader] Failed to load resource: {path}");
+                Debug.LogError($"[AddressablesBundleLoader] Failed to load resource: {path}");
                 return null;
             }
             _handles[path] = handle;
@@ -77,7 +77,7 @@ public class LocalBundleLoader : IResourceLoader
         }
         catch (System.Exception ex)
         {
-            Debug.LogError($"[LocalBundleLoader] Failed to load {path}: {ex.Message}");
+            Debug.LogError($"[AddressablesBundleLoader] Failed to load {path}: {ex.Message}");
             return null;
         }
     }
@@ -86,7 +86,7 @@ public class LocalBundleLoader : IResourceLoader
     {
         if (prefab == null)
         {
-            Debug.LogError($"[LocalBundleLoader] Prefab is null");
+            Debug.LogError($"[AddressablesBundleLoader] Prefab is null");
             return null;
         }
 
@@ -98,7 +98,7 @@ public class LocalBundleLoader : IResourceLoader
 
             if (result == null)
             {
-                Debug.LogError($"[LocalBundleLoader] Failed to instantiate {prefab.name}");
+                Debug.LogError($"[AddressablesBundleLoader] Failed to instantiate {prefab.name}");
                 return null;
             }
 
@@ -108,16 +108,16 @@ public class LocalBundleLoader : IResourceLoader
         }
         catch (System.Exception ex)
         {
-            Debug.LogError($"[LocalBundleLoader] Failed to instantiate async {prefab.name}: {ex.Message}");
+            Debug.LogError($"[AddressablesBundleLoader] Failed to instantiate async {prefab.name}: {ex.Message}");
             return null;
         }
     }
 
-    public async UniTask<T> LoadResourceAsync<T>(string path) where T : Object
+    public async UniTask<T> LoadResourceAsync<T>(string path) where T : UnityEngine.Object
     {
         if (string.IsNullOrEmpty(path))
         {
-            Debug.LogError($"[LocalBundleLoader] Path is null or empty");
+            Debug.LogError($"[AddressablesBundleLoader] Path is null or empty");
             return null;
         }
 
@@ -128,7 +128,7 @@ public class LocalBundleLoader : IResourceLoader
 
             if (result == null)
             {
-                Debug.LogError($"[LocalBundleLoader] Failed to load resource async: {path}");
+                Debug.LogError($"[AddressablesBundleLoader] Failed to load resource async: {path}");
                 return null;
             }
             _handles[path] = handle;
@@ -136,7 +136,7 @@ public class LocalBundleLoader : IResourceLoader
         }
         catch (System.Exception ex)
         {
-            Debug.LogError($"[LocalBundleLoader] Failed to load async {path}: {ex.Message}");
+            Debug.LogError($"[AddressablesBundleLoader] Failed to load async {path}: {ex.Message}");
             return null;
         }
     }
@@ -145,7 +145,7 @@ public class LocalBundleLoader : IResourceLoader
     {
         if (string.IsNullOrEmpty(path))
         {
-            Debug.LogError($"[LocalBundleLoader] Cannot unload: path is null or empty");
+            Debug.LogError($"[AddressablesBundleLoader] Cannot unload: path is null or empty");
             return;
         }
 
@@ -155,16 +155,16 @@ public class LocalBundleLoader : IResourceLoader
             {
                 Addressables.Release(handle);
                 _handles.Remove(path);
-                Debug.Log($"[LocalBundleLoader] Unloaded: {path}");
+                Debug.Log($"[AddressablesBundleLoader] Unloaded: {path}");
             }
             else
             {
-                Debug.LogWarning($"[LocalBundleLoader] Handle not found for: {path}");
+                Debug.LogWarning($"[AddressablesBundleLoader] Handle not found for: {path}");
             }
         }
         catch (System.Exception ex)
         {
-            Debug.LogError($"[LocalBundleLoader] Failed to unload {path}: {ex.Message}");
+            Debug.LogError($"[AddressablesBundleLoader] Failed to unload {path}: {ex.Message}");
         }
     }
 
@@ -178,16 +178,29 @@ public class LocalBundleLoader : IResourceLoader
             }
             catch (System.Exception ex)
             {
-                Debug.LogWarning($"[LocalBundleLoader] Failed to unload {keyValuePairHandle.Key}: {ex.Message}");
+                Debug.LogWarning($"[AddressablesBundleLoader] Failed to unload {keyValuePairHandle.Key}: {ex.Message}");
             }
         }
 
         _handles.Clear();
-        Debug.Log($"[LocalBundleLoader] Unloaded all resources");
+        Debug.Log($"[AddressablesBundleLoader] Unloaded all resources");
     }
 
     public bool IsResourceLoaded(string path)
     {
         return _handles.ContainsKey(path) && _handles[path].IsValid();
+    }
+
+    public void Dispose()
+    {
+        if (Caching.ClearCache())
+        {
+            Debug.LogWarning($"[AddressablesBundleLoader] кэш очищен");
+        }
+
+        else
+        {
+            Debug.LogWarning($"[AddressablesBundleLoader] ошибка очистки кэша");
+        }
     }
 }

@@ -95,12 +95,11 @@
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\Addressables\RemoteBundle.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\Settings.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IWeaponStrategy.cs" />
-    <Compile Include="Assets\_Project\Scripts\EntryPoints\BootstrapEntryPoint.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IResourceLoader.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\ObstacleLineSpawner.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\LevelLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\EntitiesGenerationFactory.cs" />
-    <Compile Include="Assets\_Project\Scripts\ResourceLoaders\Addressables\LocalBundleLoader.cs" />
+    <Compile Include="Assets\_Project\Scripts\View\Bootstrap\BootstrapUI.cs" />
     <Compile Include="Assets\_Project\Scripts\ScenesManagement\LocalBundleLoading\LocalBundleSceneLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\AdvertisementPresenter.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\AsteroidEnemy.cs" />
@@ -109,6 +108,7 @@
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\EnemyDeathCounter.cs" />
     <Compile Include="Assets\_Project\Scripts\Analytics\FirebaseAnalyticsSender.cs" />
     <Compile Include="Assets\_Project\Scripts\View\ShipStatisticView.cs" />
+    <Compile Include="Assets\_Project\Scripts\ResourceLoaders\Addressables\AddressablesBundleLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\WeaponController.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\BaseBullet.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\LoadBar.cs" />
@@ -119,6 +119,7 @@
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\ExitGame.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\Obstacle.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\Part.cs" />
+    <Compile Include="Assets\_Project\Scripts\View\Bootstrap\BootstrapEntryPoint.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\Pause.cs" />
     <Compile Include="Assets\_Project\Scripts\Ads\UnityAdsAdvertisement.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\LocalSaveStrategy.cs" />
