@@ -1,8 +1,3 @@
-using Asteroid.Statistic;
-using Asteroid.Database;
-using UnityEngine;
-using Asteroid.Generation;
-using UnityEditor.Playables;
 using Asteroid.Enemies;
 
 public class EnemyDeathCounter

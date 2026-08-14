@@ -9,6 +9,7 @@ using UnityEngine.ResourceManagement.ResourceProviders;
 public class LocalBundleLoader : IResourceLoader
 {
     private readonly Dictionary<string, AsyncOperationHandle> _handles = new();
+
     public T Instantiate<T>(T prefab, Vector2 position, Quaternion rotation) where T : Component
     {
         if (prefab == null)
