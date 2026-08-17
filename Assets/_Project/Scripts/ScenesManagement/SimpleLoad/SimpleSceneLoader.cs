@@ -1,7 +1,5 @@
 using Asteroid.Generation;
 using Cysharp.Threading.Tasks;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -83,15 +81,15 @@ public class SimpleSceneLoader : ISceneLoader
         return operation.ToUniTask().ContinueWith(()=>(object)name);
     }
 
+    public UniTask ReloadSceneAsync(string name)
+    {
+        return LoadSceneAsync(name, true);
+    }
+
     private bool SceneForUnloadingIsValid(string name)
     {
         Scene scene = SceneManager.GetSceneByName(name);
         return scene.IsValid() && scene.isLoaded && SceneManager.sceneCount > 1;
-    }
-
-    public UniTask ReloadStartSceneAsync(string name)
-    {
-        return LoadSceneAsync(name, true);
     }
 }
 

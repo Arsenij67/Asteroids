@@ -19,7 +19,7 @@ namespace Asteroid.Installers
             Container.Bind<ShipStatisticPresenter>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<ShipStatisticPresenter>()).AsTransient();
             Container.Bind<EnemyDeathCounter>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<EnemyDeathCounter>()).AsTransient();
             Container.Bind<GameOverPresenter>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<GameOverPresenter>()).AsSingle();
-            Container.Bind<EntitiesGenerationData>().FromMethod((context) => context.Container.Resolve<BaseResourceLoaderService>().LoadResource<EntitiesGenerationData>("ScriptableObjects/EntitiesGenerationData")).AsTransient();
+            Container.Bind<EntitiesGenerationData>().FromMethod((context) => context.Container.Resolve<AddressableBundleLoader>().LoadResource<EntitiesGenerationData>("Assets/_Project/Scripts/Models/Data/EntitiesGenerationData")).AsTransient();
             Container.Bind<SpaceShipData>().FromMethod((context) => context.Container.Resolve<BaseResourceLoaderService>().LoadResource<SpaceShipData>("ScriptableObjects/SpaceShipData")).AsTransient();
         }
     }

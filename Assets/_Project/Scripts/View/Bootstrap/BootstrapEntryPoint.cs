@@ -47,7 +47,7 @@ namespace Asteroid.Generation
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
             _bootstrapUI.OnPlayerClickButtonExit += _applicationQuitter.Quit;
             _bootstrapUI.Initialize();
-            await _sceneLoader.ReloadStartSceneAsync(_bootstrapSceneModel.StartSceneName);
+            await _sceneLoader.ReloadSceneAsync(_bootstrapSceneModel.StartSceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
             _loadingTasks.Add(PrepareAdvertisementAsync());
             _loadingTasks.Add(PrepareAnalyticsAsync());
@@ -66,6 +66,7 @@ namespace Asteroid.Generation
             _bootstrapUI.OnPlayerClickButtonStart -= OpenLoadedGameScene;
             _bootstrapUI.OnPlayerClickButtonExit -= _applicationQuitter.Quit;
             _bootstrapUI.Dispose();
+            _sceneLoader.UnloadScene(_shopData.StartSceneName);
         }
 
         private async UniTask PrepareShopSceneAsync()

@@ -1,8 +1,6 @@
 using Asteroid.Database;
 using UnityEngine;
 using UnityEngine.Advertisements;
-using Unity;
-using Zenject;
 using Asteroid.Database.Connection;
 using Cysharp.Threading.Tasks;
 using System;

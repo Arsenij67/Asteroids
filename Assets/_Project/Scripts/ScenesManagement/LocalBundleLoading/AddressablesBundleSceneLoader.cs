@@ -10,9 +10,10 @@ using UnityEngine.SceneManagement;
 
 namespace Asteroid.Generation
 {
-    public class LocalBundleSceneLoader : ISceneLoader
+    public class AddressablesBundleSceneLoader : ISceneLoader
     {
         private Dictionary<string, AsyncOperationHandle<SceneInstance>> _loadedScenes = new();
+
         public async void LoadScene(string name)
         {
             var loadHandle = Addressables.LoadSceneAsync(name, activateOnLoad: true);
@@ -25,7 +26,7 @@ namespace Asteroid.Generation
             LoadSceneAdditiveAsync(name).Forget();
         }
 
-        public UniTask ReloadStartSceneAsync(string name)
+        public UniTask ReloadSceneAsync(string name)
         {
             if (_loadedScenes.ContainsKey(name) && _loadedScenes[name].IsValid())
             {
@@ -46,9 +47,11 @@ namespace Asteroid.Generation
         public void ReloadCurrentScene()
         {
             Scene sceneData = SceneManager.GetActiveScene();
-            _loadedScenes[sceneData.name] =  default;
+            _loadedScenes[sceneData.name].Release();
+            _loadedScenes[sceneData.name] = default;
             LoadScene(sceneData.name);
         }
+
         public UniTask SwitchSceneActivation(string name, bool allowSceneBeActive)
         {
             if (_loadedScenes.ContainsKey(name))
@@ -124,5 +127,7 @@ namespace Asteroid.Generation
                 }
                 return default(object);
             });
-    }   }
+        }
+
+    }
 }

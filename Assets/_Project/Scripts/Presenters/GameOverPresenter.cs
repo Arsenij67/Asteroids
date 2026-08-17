@@ -5,6 +5,7 @@ using Asteroid.Statistic;
 using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Asteroid.SpaceShip
 {
@@ -27,6 +28,7 @@ namespace Asteroid.SpaceShip
             _gameOverView.OnButtonShowAdsClicked -= _advertisementPresenter.ShowRewardedAdAfterDead;
             _gameOverView.OnGameReloadClicked -= _advertisementPresenter.ShowInterstitialAdBeforeRestart;
             _advertisementPresenter.OnPlayerRevived -= ClosePanelRestart;
+            _gameOverView.OnGameReloadClicked -= _sceneLoader.ReloadCurrentScene;
         }
 
         public void Initialize (SaveDataStrategyManager saveDataStrategyManager,IResourceLoader resourceLoader,RectTransform parentForAttachment, GameOverView endPanelPrefab, AdvertisementPresenter advertisementPresenter, ShipStatisticsModel shipStatisticsModel,RectTransform parentForEndWindow, ISceneLoader sceneLoader, BootstrapSceneData bootstrapSceneData)
@@ -45,9 +47,9 @@ namespace Asteroid.SpaceShip
         {
             _gameOverView = CreateGameOverWindow(_endPanelPrefab, _parentForAttachment);
             _gameOverView.OnGameReloadClicked += _sceneLoader.ReloadCurrentScene;
+            _gameOverView.OnGameReloadClicked += _advertisementPresenter.ShowInterstitialAdBeforeRestart;
             _gameOverView.OnButtonGoHomeClicked += LoadMainMenuScene;
             _gameOverView.OnButtonShowAdsClicked +=  _advertisementPresenter.ShowRewardedAdAfterDead;
-            _gameOverView.OnGameReloadClicked +=  _advertisementPresenter.ShowInterstitialAdBeforeRestart;
             _advertisementPresenter.OnPlayerRevived += ClosePanelRestart;
             _gameOverView.UpdateButtonShowAd(_advertisementPresenter.IsShowed,_advertisementPresenter.IsInitialized);
         }
