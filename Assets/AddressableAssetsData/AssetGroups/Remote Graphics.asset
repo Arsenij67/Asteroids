@@ -15,8 +15,23 @@ MonoBehaviour:
   m_GroupName: Remote Graphics
   m_GUID: c512e3d770971bc46ad2e370e667e2a7
   m_SerializeEntries:
-  - m_GUID: 1740469607c5ef74a9dce354e6c48998
-    m_Address: Meteorite
+  - m_GUID: 0b0c27137eb4d504096874b80ace66bd
+    m_Address: RedFireball
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 379099edad5cfac49a2bfd5611387077
+    m_Address: Assets/_Project/Scripts/Models/Data/EntitiesGenerationData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7aedc3d3800e35748a80176f3d49258f
+    m_Address: RedLiserPrefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8aeb9e233fbb8f14db39770841b78b94
+    m_Address: Assets/_Project/Content/2D Pixel Spaceship - Two Small Ships/Sprites/sprites.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -32,6 +47,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b353e60dec2b67040a3e72844bd71630
     m_Address: spaceship_1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd66b356fa5632d4493b1517b93c2ade
+    m_Address: RedLiser
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -15,13 +15,13 @@ MonoBehaviour:
   m_GroupName: Local Graphics
   m_GUID: 35d58fea9de5a32498cc7bc64a1cb8de
   m_SerializeEntries:
-  - m_GUID: 0b0c27137eb4d504096874b80ace66bd
-    m_Address: RedFireball
+  - m_GUID: 16d5cfc8252347a4e85b7f236801c2ae
+    m_Address: WindowSaveMode
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 16d5cfc8252347a4e85b7f236801c2ae
-    m_Address: WindowSaveMode
+  - m_GUID: 1740469607c5ef74a9dce354e6c48998
+    m_Address: Meteorite
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -30,28 +30,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2712b6e85669d2648985d38fb8238681
-    m_Address: Assets/_Project/Content/Space Adventure/Textures/Rocks/rock-4.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2f445512d9b623f4fb07a783363d81b7
     m_Address: Assets/_Project/Prefabs/UI/Bootstrap/StartGameButton
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 379099edad5cfac49a2bfd5611387077
-    m_Address: Assets/_Project/Scripts/Models/Data/EntitiesGenerationData
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7aedc3d3800e35748a80176f3d49258f
-    m_Address: RedLiserPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8aeb9e233fbb8f14db39770841b78b94
-    m_Address: Assets/_Project/Content/2D Pixel Spaceship - Two Small Ships/Sprites/sprites.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -67,11 +47,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: db3681d7733b8a84d920c9d328d3a4cc
     m_Address: UIStatistic
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: dd66b356fa5632d4493b1517b93c2ade
-    m_Address: RedLiser
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
