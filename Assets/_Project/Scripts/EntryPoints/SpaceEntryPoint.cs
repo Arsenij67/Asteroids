@@ -22,6 +22,7 @@ namespace Asteroid.Generation
         [SerializeField] private RectTransform _UIParent;
         [SerializeField] private ShipStatisticsView _shipStatisticViewPrefab;
         [SerializeField] private SaveModeUI _saveModeUIPrefab;
+        [SerializeField] private WeaponView _weaponView;
 
         [Header("Bullet Settings")]
         [SerializeField] private LaserBullet _laserPrefab;
@@ -52,6 +53,7 @@ namespace Asteroid.Generation
         [Inject] private ShipStatisticPresenter _shipStatisticPresenter;
         [Inject] private BootstrapSceneData  _bootstrapSceneData;
         [Inject] private WIFIConnector _wifiConnector;
+        [Inject] private Joystick _joystick;
 
         private ShipStatisticsView _shipStatisticView;
         private WeaponShip _weaponShipLaser;
@@ -91,7 +93,9 @@ namespace Asteroid.Generation
 
         private void InitializeSpaceShipSystems()
         {
+          _deviceInput.Initialize(_joystick);
           _entitiesGenerationFactory.Initialize(
+          _weaponView,
           _analyticsEventHandler,
           _advertisingPresenter,
           _entitiesGenerationData,

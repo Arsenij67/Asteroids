@@ -61,10 +61,10 @@ namespace Asteroid.SpaceShip
 
         private void TryMove(float intensityInput)
         {
-            if (intensityInput > 0)
-            {
+            if (Mathf.Abs(intensityInput) > 0)
+            {  
                 Vector2 forwardForce = -transform.up * _shipData.Speed * intensityInput * Time.fixedDeltaTime;
-                _rigidBody2D.linearVelocity = forwardForce;
+                _rigidBody2D.MovePosition(_rigidBody2D.position + forwardForce);
                 _statisticsView.UpdateCoordinates(_rigidBody2D.position);
                 _statisticsView.UpdateSpaceShipVelocity(_rigidBody2D.linearVelocity);
             }

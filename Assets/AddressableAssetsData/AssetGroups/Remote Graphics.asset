@@ -60,6 +60,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e77a3343c9a53fc4c9166102bccb52f2
+    m_Address: Assets/_Project/Prefabs/UI/Game/FireBallButton.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e9d3de259ff80d346a0f25fe0e9b210b
     m_Address: spaceship_2
     m_ReadOnly: 0

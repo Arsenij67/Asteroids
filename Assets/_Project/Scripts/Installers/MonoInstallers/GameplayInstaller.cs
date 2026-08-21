@@ -12,7 +12,8 @@ namespace Asteroid.Installers
     {
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<DesktopInput>().AsSingle();
+            Container.BindInterfacesAndSelfTo<MobileInput>().AsSingle();
+            Container.Bind<Joystick>().FromComponentInHierarchy().AsCached();
             Container.Bind<AnalyticsEventHandler>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<AnalyticsEventHandler>()).AsTransient();
             Container.Bind<EntitiesGenerationFactory>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<EntitiesGenerationFactory>()).AsTransient();
             Container.Bind<ShipStatisticsModel>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<ShipStatisticsModel>()).AsTransient();

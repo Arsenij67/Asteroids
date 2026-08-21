@@ -5,11 +5,13 @@ using Asteroid.Services.RemoteConfig;
 using Asteroid.Services.UnityAdvertisement;
 using Asteroid.SpaceShip;
 using Asteroid.Statistic;
+using Asteroid.UI;
 using Asteroid.Weapon;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Asteroid.Generation
 {
@@ -24,7 +26,7 @@ namespace Asteroid.Generation
         private ShipStatisticPresenter _shipStatisticPresenter;
         private EnemyDeathCounter _enemyDeathCounter;
         private GameOverPresenter _gameOverPresenter;
-        private WeaponController? _weaponController;
+        private WeaponPresenter? _weaponController;
         private LaserWeaponController? _weaponShipLaser;
         private BulletWeaponController? _weaponShipBullet;
         private IRemoteConfigService _remoteConfig;
@@ -36,8 +38,10 @@ namespace Asteroid.Generation
         private AnalyticsEventHandler _analyticsEventHandler;
         private bool _isGamePaused = false;
         private SpaceShipPresenter? _shipPrefab;
+        private WeaponView _weaponView;
 
         public void Initialize(
+            WeaponView weaponViewPrefab,
             AnalyticsEventHandler analyticsEventHandler,
             AdvertisementPresenter advertisementPresenter,
             EntitiesGenerationData entitiesGenerationData,
@@ -64,6 +68,7 @@ namespace Asteroid.Generation
             _advertisementPresenter = advertisementPresenter;   
             _analyticsEventHandler = analyticsEventHandler;
             _cancellationTokenSource = _instanceCreator.CreateInstance<CancellationTokenSource>();
+            _weaponView = weaponViewPrefab;
         }
 
         public void StartEnemiesCreation()
@@ -187,14 +192,14 @@ namespace Asteroid.Generation
 
         private void ShipInitializeHandler()
         {
-            _weaponController = _spaceShipPresenter.GetComponent<WeaponController>();
+            _weaponController = _spaceShipPresenter.GetComponent<WeaponPresenter>();
             _weaponShipLaser = _spaceShipPresenter.GetComponent<LaserWeaponController>();
             _weaponShipBullet = _spaceShipPresenter.GetComponent<BulletWeaponController>();
 
             _generationData.Initialize(_remoteConfig, _spaceShipPresenter.transform);
             _weaponShipBullet.Initialize(_gameOverPresenter, _shipStatisticPresenter, _generationData.FireballPrefab, _resourceLoader, _remoteConfig);
             _weaponShipLaser.Initialize(_gameOverPresenter,_shipStatisticPresenter, _generationData.LaserPrefab, _resourceLoader, _remoteConfig);
-            _weaponController.Initialize();
+            _weaponController.Initialize(_weaponView);
         }
 
         private async void PanelRestartSpawnedHandler()

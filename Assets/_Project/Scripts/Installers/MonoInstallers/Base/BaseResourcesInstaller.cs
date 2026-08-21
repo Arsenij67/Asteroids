@@ -17,7 +17,7 @@ namespace Asteroid.Installers
         public override void InstallBindings()
         {
             Container.Bind<BaseResourceLoaderService>().AsCached();
-            Container.Bind<IApplicationQuitter>().To<PCApplicationQuitter>().AsSingle();
+            Container.Bind<IApplicationQuitter>().To<AndroidApplicationQuitter>().AsSingle();
             Container.BindInterfacesAndSelfTo<UnityAdsAdvertisement>().AsSingle();
             Container.Bind<List<UniTask>>().AsTransient();
             Container.BindInterfacesAndSelfTo<InstanceCreator>().AsSingle();

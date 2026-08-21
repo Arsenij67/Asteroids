@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Asteroid.Exit
 {
-    public class PCApplicationQuitter : IApplicationQuitter
+    public class AndroidApplicationQuitter : IApplicationQuitter
     {
         public void Quit()
         {

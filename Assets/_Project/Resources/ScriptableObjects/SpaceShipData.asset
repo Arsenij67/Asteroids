@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SpaceShipData
   m_EditorClassIdentifier: 
   _assignmentMode: 1
-  _angularSpeed: 250
-  _speed: 300
+  _angularSpeed: 300
+  _speed: 5

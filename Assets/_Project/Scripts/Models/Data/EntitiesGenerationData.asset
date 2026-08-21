@@ -19,7 +19,7 @@ MonoBehaviour:
   _playerShips:
   - {fileID: 2352494245927858696, guid: b353e60dec2b67040a3e72844bd71630, type: 3}
   - {fileID: 2352494245927858696, guid: e9d3de259ff80d346a0f25fe0e9b210b, type: 3}
-  _generationFrequency: 2
+  _generationFrequency: 3
   <GenerationVertices>k__BackingField:
   - {x: -9, y: 5}
   - {x: 9, y: 5}

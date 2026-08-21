@@ -644,9 +644,9 @@ namespace Unity.VisualScripting.Generated.Aot
 	// Asteroid.Weapon.BaseBullet.op_Implicit
 	// Asteroid.Weapon.BaseBullet.op_Equality
 	// Asteroid.Weapon.BaseBullet.op_Inequality
-	// Asteroid.Weapon.FireballBullet.op_Implicit
-	// Asteroid.Weapon.FireballBullet.op_Equality
-	// Asteroid.Weapon.FireballBullet.op_Inequality
+	// Asteroid.Weapon.FireFireball.op_Implicit
+	// Asteroid.Weapon.FireFireball.op_Equality
+	// Asteroid.Weapon.FireFireball.op_Inequality
 	// Asteroid.Weapon.LaserBullet.op_Implicit
 	// Asteroid.Weapon.LaserBullet.op_Equality
 	// Asteroid.Weapon.LaserBullet.op_Inequality
@@ -8276,7 +8276,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// Asteroid.Weapon.FireballBullet.op_Implicit
+		// Asteroid.Weapon.FireFireball.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void Asteroid_Weapon_FireballBullet_op_Implicit()
 		{
@@ -8287,7 +8287,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// Asteroid.Weapon.FireballBullet.op_Equality
+		// Asteroid.Weapon.FireFireball.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void Asteroid_Weapon_FireballBullet_op_Equality()
 		{
@@ -8299,7 +8299,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// Asteroid.Weapon.FireballBullet.op_Inequality
+		// Asteroid.Weapon.FireFireball.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void Asteroid_Weapon_FireballBullet_op_Inequality()
 		{
