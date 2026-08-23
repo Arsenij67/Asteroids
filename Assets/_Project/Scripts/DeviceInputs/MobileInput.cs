@@ -4,6 +4,8 @@ namespace Asteroid.Inputs
 {
     public class MobileInput : IDeviceInput
     {
+        private const double MIN_SESITIVITY_LENGTH = 0.1;
+
         private Joystick _joystick;
 
         public void Initialize<T>(T joystick)
@@ -11,19 +13,28 @@ namespace Asteroid.Inputs
             _joystick = joystick as Joystick;
         }
 
-        public float ScanMove()
+        public Vector2 ScanMove()
         {
-            return _joystick.Direction.magnitude;
+            if (_joystick == null)
+                return Vector2.zero;
+
+            Vector2 direction = _joystick.Direction;
+
+            return direction.normalized;
         }
 
         public float ScanRotation()
         {
-            Vector2 direction = _joystick.Direction;
+            if (_joystick == null)
+                return 0f;
 
-            float angle = Vector2.SignedAngle(Vector2.up, direction);
-
-            float normalizedAngle = Mathf.Clamp(angle / Mathf.Rad2Deg * Mathf.PI*2, -1f, 1f);
-            return -normalizedAngle;
+                Vector2 direction = _joystick.Direction;
+                if (direction.magnitude >= MIN_SESITIVITY_LENGTH)
+                {
+                    float angle = Mathf.Atan2(direction.x, -direction.y) * Mathf.Rad2Deg;
+                return angle;
+                }
+                return 0f;
         }
     }
 }

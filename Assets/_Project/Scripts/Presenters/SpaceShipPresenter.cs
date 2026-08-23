@@ -35,7 +35,7 @@ namespace Asteroid.SpaceShip
             Enemy someEnemy = collision.GetComponent<Enemy>();
             if (someEnemy != null && !_weaponController.LaserCollideNow)
             {
-                    Die();
+                Die();
             }
         }
 
@@ -49,21 +49,21 @@ namespace Asteroid.SpaceShip
             OnShipSpawned?.Invoke();
         }
 
-        private void TryRotate(float intensityInput)
+        private void TryRotate(float angleRotation)
         {
-            if (!Mathf.Approximately(intensityInput, 0f))
-            { 
-                float rotationAngle = -intensityInput * _shipData.AngularSpeed * Time.fixedDeltaTime;
-                _rigidBody2D.MoveRotation(_rigidBody2D.rotation + rotationAngle);
+            if (!Mathf.Approximately(angleRotation, 0f))
+            {
+                float rotationAngle = angleRotation;
+                _rigidBody2D.MoveRotation(rotationAngle);
                 _statisticsView.UpdateAngleRotation(_rigidBody2D.rotation);
-             }
+            }
         }
 
-        private void TryMove(float intensityInput)
+        private void TryMove(Vector2 direction)
         {
-            if (Mathf.Abs(intensityInput) > 0)
-            {  
-                Vector2 forwardForce = -transform.up * _shipData.Speed * intensityInput * Time.fixedDeltaTime;
+            if (Mathf.Abs(direction.magnitude) > 0)
+            {
+                Vector2 forwardForce = _shipData.Speed * direction * Time.fixedDeltaTime;
                 _rigidBody2D.MovePosition(_rigidBody2D.position + forwardForce);
                 _statisticsView.UpdateCoordinates(_rigidBody2D.position);
                 _statisticsView.UpdateSpaceShipVelocity(_rigidBody2D.linearVelocity);

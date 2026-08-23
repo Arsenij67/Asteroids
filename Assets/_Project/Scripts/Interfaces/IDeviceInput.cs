@@ -5,7 +5,7 @@ namespace Asteroid.Inputs
     public interface IDeviceInput
     {
         public void Initialize <T> (T InputSource);
-        public float ScanMove();
+        public Vector2 ScanMove();
         public float ScanRotation();
 
     }
