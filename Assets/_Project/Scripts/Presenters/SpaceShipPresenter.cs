@@ -17,6 +17,7 @@ namespace Asteroid.SpaceShip
         public event Action OnShipDied;
         public event Action OnShipSpawned;
 
+        private float _health;
         private IDeviceInput _deviceInput;
         private ShipStatisticsView _statisticsView;
         private SpaceShipData _shipData;
@@ -35,8 +36,18 @@ namespace Asteroid.SpaceShip
             Enemy someEnemy = collision.GetComponent<Enemy>();
             if (someEnemy != null && !_weaponController.LaserCollideNow)
             {
-                //Die();
+                TakeDamage(someEnemy.Damage);
             }
+        }
+
+        private void TakeDamage(float damage)
+        {
+            if (damage >= _health)
+            {
+                Die();
+            }
+            _health-= damage;
+            _statisticsView.UpdateHealthProgressBar(_health);
         }
 
         public void Initialize(ShipStatisticsView statisticView, IDeviceInput concreteInput, SpaceShipData shipData)
@@ -47,6 +58,7 @@ namespace Asteroid.SpaceShip
             _statisticsView = statisticView;
             _shipData = shipData;
             OnShipSpawned?.Invoke();
+            _health = _shipData.Health;
         }
 
         private void TryRotate(float angleRotation)

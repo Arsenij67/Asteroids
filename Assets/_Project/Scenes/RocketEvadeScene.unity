@@ -187,6 +187,37 @@ MonoBehaviour:
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
+--- !u!1 &409494843
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 409494844}
+  m_Layer: 0
+  m_Name: Table
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &409494844
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 409494843}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 305.18362, y: 799.71204, z: 0.52195436}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &416978514
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,7 +249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _restartPrefab: {fileID: 8417194731950465201, guid: 1deb9489119882c40a6ecf1f397a93a0, type: 3}
   _UIParent: {fileID: 828259855}
-  _shipStatisticViewPrefab: {fileID: 8461020293197611451, guid: db3681d7733b8a84d920c9d328d3a4cc, type: 3}
+  _shipStatisticViewPrefab: {fileID: 460277818003006585, guid: 91a39ae328b0ae44aafaffc31c0f1668, type: 3}
   _saveModeUIPrefab: {fileID: 2253756722082059085, guid: 16d5cfc8252347a4e85b7f236801c2ae, type: 3}
   _weaponView: {fileID: 933731463}
   _laserPrefab: {fileID: 7557963557402377491, guid: dd66b356fa5632d4493b1517b93c2ade, type: 3}
@@ -779,7 +810,7 @@ RectTransform:
   - {fileID: 1298340848}
   - {fileID: 933731462}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -73.894}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -57.688}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -1187,3 +1218,4 @@ SceneRoots:
   - {fileID: 828259855}
   - {fileID: 25563757}
   - {fileID: 1329560528}
+  - {fileID: 409494844}

@@ -10,6 +10,7 @@ namespace Asteroid.SpaceShip
         [SerializeField] private AssignmentMode _assignmentMode;
         [SerializeField] private float _angularSpeed;
         [SerializeField] private float _speed;
+        [SerializeField] private float _health;
 
         private RemoteConfigShip _remoteConfigShip;
         private IRemoteConfigService _remoteConfigService;
@@ -52,6 +53,8 @@ namespace Asteroid.SpaceShip
             }
     
         }
+
+        public float Health => _health;
 
         public void Initialize(IRemoteConfigService remoteConfigService)
         { 

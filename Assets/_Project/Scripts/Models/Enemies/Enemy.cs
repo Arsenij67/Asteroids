@@ -14,6 +14,9 @@ namespace Asteroid.Enemies
 
         public event Action<Enemy> OnEnemyDestroyed;
 
+
+        [field: SerializeField] public float Damage;
+
         [SerializeField] private float _health;
         [SerializeField] private int _speed;
 

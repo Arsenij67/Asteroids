@@ -53,6 +53,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4018161852436278198, guid: 236055fb118b89949bf4698f3928dd5b, type: 3}
+      propertyPath: Damage
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4018161852436278198, guid: 236055fb118b89949bf4698f3928dd5b, type: 3}
       propertyPath: <Vertices>k__BackingField
       value: 
       objectReference: {fileID: 921764346079199045, guid: 193dd5376e00e4e43a9366b1d43b36ca, type: 3}

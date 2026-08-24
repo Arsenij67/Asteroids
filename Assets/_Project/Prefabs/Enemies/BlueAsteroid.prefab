@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Vertices>k__BackingField: {fileID: 921764346079199045, guid: 193dd5376e00e4e43a9366b1d43b36ca, type: 3}
+  Damage: 20
   _health: 50
   _speed: 100
   _meteoriteExample: {fileID: 2316985412445000268, guid: 1740469607c5ef74a9dce354e6c48998, type: 3}

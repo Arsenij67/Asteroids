@@ -15,3 +15,4 @@ MonoBehaviour:
   _assignmentMode: 1
   _angularSpeed: 300
   _speed: 5
+  _health: 100
