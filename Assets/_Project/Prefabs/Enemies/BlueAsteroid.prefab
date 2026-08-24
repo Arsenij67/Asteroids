@@ -180,8 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b0bb4cf73e43bb489bb09e43e309cc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DownLeftBorder>k__BackingField: {x: -9, y: -5}
-  <UpRightBorder>k__BackingField: {x: 9, y: 5}
+  <Vertices>k__BackingField: {fileID: 921764346079199045, guid: 193dd5376e00e4e43a9366b1d43b36ca, type: 3}
   _health: 50
   _speed: 100
   _meteoriteExample: {fileID: 2316985412445000268, guid: 1740469607c5ef74a9dce354e6c48998, type: 3}

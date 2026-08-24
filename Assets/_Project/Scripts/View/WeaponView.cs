@@ -25,12 +25,12 @@ namespace Asteroid.UI
 
         private void NotifyAboutClickLaser()
         {
-           OnButtonLaserClicked.Invoke();
+           OnButtonLaserClicked?.Invoke();
         }
 
         private void NotifyAboutClickFireball()
         {
-            OnButtonFireballClicked.Invoke();
+            OnButtonFireballClicked?.Invoke();
         }
 
         private void OnDestroy()

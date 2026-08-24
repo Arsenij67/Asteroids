@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4018161852436278198, guid: 236055fb118b89949bf4698f3928dd5b, type: 3}
+      propertyPath: <Vertices>k__BackingField
+      value: 
+      objectReference: {fileID: 921764346079199045, guid: 193dd5376e00e4e43a9366b1d43b36ca, type: 3}
     - target: {fileID: 6789844688594117046, guid: 236055fb118b89949bf4698f3928dd5b, type: 3}
       propertyPath: m_Animations.Array.size
       value: 1

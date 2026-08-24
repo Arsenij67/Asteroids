@@ -35,7 +35,7 @@ namespace Asteroid.SpaceShip
             Enemy someEnemy = collision.GetComponent<Enemy>();
             if (someEnemy != null && !_weaponController.LaserCollideNow)
             {
-                Die();
+                //Die();
             }
         }
 

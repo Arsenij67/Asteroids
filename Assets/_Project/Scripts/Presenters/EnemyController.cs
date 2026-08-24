@@ -9,8 +9,6 @@ namespace Asteroid.Enemies
     [RequireComponent(typeof(DisplayEnemy))]
     public class EnemyController : MonoBehaviour
     {
-        private const float DESTROY_DELAY = 0.7f;
-
         private Transform? _shipTransform;
         private Enemy _enemy;
         private void FixedUpdate()
@@ -37,7 +35,7 @@ namespace Asteroid.Enemies
 
             if (collision.TryGetComponent(out SpaceShipPresenter ship))
             {
-                DieEnemy(enemy);
+                DieEnemy(_enemy);
             }
         }
 
@@ -49,7 +47,7 @@ namespace Asteroid.Enemies
 
         private void DieEnemy(Enemy enemy)
         {
-            enemy.Die(DESTROY_DELAY);
+            enemy.Die();
         }
     }
 }

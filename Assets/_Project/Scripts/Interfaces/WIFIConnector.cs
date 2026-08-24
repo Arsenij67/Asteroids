@@ -54,12 +54,12 @@ namespace Asteroid.Database.Connection
 
                 catch (UnityWebRequestException ex)
                 {
-                
+                    return isConnected;
                 }
 
                 catch (Exception ex)
                 {
-                
+                    return isConnected;
                 }
             }
             IsConnected = isConnected;

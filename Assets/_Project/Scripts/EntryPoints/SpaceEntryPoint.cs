@@ -110,7 +110,7 @@ namespace Asteroid.Generation
           _deviceInput);
 
           _weaponShipLaser = _entitiesGenerationFactory.CreateShip(_entitiesGenerationData.PlayerShipToGenerateNow).GetComponent<LaserWeaponController>();
-          _entitiesGenerationData.Initialize(_remoteConfigService, _weaponShipLaser.transform);
+          _entitiesGenerationData.Initialize(_weaponShipLaser.transform);
           _analyticsEventHandler.Initialize(_analyticsService, _shipStatisticModel, _weaponShipLaser as LaserWeaponController);
           _entitiesGenerationFactory.SubscribeShip();
         }

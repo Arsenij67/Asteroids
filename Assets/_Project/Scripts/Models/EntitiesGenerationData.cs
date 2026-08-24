@@ -33,7 +33,7 @@ namespace Asteroid.Generation
                 }
             } 
         }
-        [field: SerializeField] public Vector2[] GenerationVertices { get; private set; }
+        [field: SerializeField] public Transform GenerationVertices { get; private set; }
         [field: SerializeField] public BaseBullet FireballPrefab { get; private set; }
         [field: SerializeField] public BaseBullet LaserPrefab { get; private set; }
         [field: SerializeField] public string HomeSceneName { get; private set; }
@@ -63,11 +63,11 @@ namespace Asteroid.Generation
         {
             get
             {
-                int startIndex = Random.Range(0, GenerationVertices.Length);
-                int endIndex = (startIndex + 1) % GenerationVertices.Length;
+                int startIndex = Random.Range(0, GenerationVertices.childCount);
+                int endIndex = (startIndex + 1) % GenerationVertices.childCount;
 
-                Vector3 startPoint = GenerationVertices[startIndex];
-                Vector3 endPoint = GenerationVertices[endIndex];
+                Vector3 startPoint = GenerationVertices.GetChild(startIndex).position;
+                Vector3 endPoint = GenerationVertices.GetChild(endIndex).position;
 
                 float t = Random.Range(0f, 1f);
                 return Vector2.Lerp(startPoint, endPoint, t);
@@ -78,8 +78,8 @@ namespace Asteroid.Generation
             get
             {
                 return new Vector2(
-                    (GenerationVertices[0].x + GenerationVertices[2].x) / 2,
-                    (GenerationVertices[0].y + GenerationVertices[2].y) / 2);
+                    (GenerationVertices.GetChild(0).position.x + GenerationVertices.GetChild(2).position.x) / 2,
+                    (GenerationVertices.GetChild(0).position.y + GenerationVertices.GetChild(2).position.y) / 2);
             }
         }
 
@@ -88,10 +88,9 @@ namespace Asteroid.Generation
           _remoteConfigService = remoteConfig;  
         }
 
-        public void Initialize(IRemoteConfigService remoteConfig, Transform EndPoint)
+        public void Initialize(Transform EndPoint)
         {
             EndPointToFly = EndPoint;
-            _remoteConfigService = remoteConfig;
         }
     } 
 }
