@@ -17,10 +17,14 @@ namespace Asteroid.Enemies
             Vector2 transformStart = transform.position;
             Vector2 direction = (Vector2)transformEnd.position - transformStart;
             Vector2 forwardForce = direction.normalized * Speed * Time.fixedDeltaTime;
-            if (direction.sqrMagnitude > MIN_LENGHT_REACT)
+            if (direction.sqrMagnitude > MIN_LENGHT_REACT && !EnemyIsDied)
             {
                 RigidBody2DEnemy.linearVelocity = forwardForce;
                 Rotate(forwardForce);
+            }
+            else
+            {
+                RigidBody2DEnemy.linearVelocity = Vector2.zero;
             }
         }
 

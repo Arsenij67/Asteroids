@@ -10,8 +10,15 @@ namespace Asteroid.Enemies
 
         public override void Move(Transform transformEnd = null)
         {
-            RigidBody2DEnemy.linearVelocity = _direction.normalized * Time.fixedDeltaTime * Speed;
-            Rotate(_rotationSpeed);
+            if (!EnemyIsDied)
+            {
+                RigidBody2DEnemy.linearVelocity = _direction.normalized * Time.fixedDeltaTime * Speed;
+                Rotate(_rotationSpeed);
+            }
+            else
+            {
+                RigidBody2DEnemy.linearVelocity = Vector2.zero;
+            }
         }
 
         public void SetDirection(Vector2 dir)

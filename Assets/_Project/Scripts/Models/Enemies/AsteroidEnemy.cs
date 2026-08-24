@@ -27,7 +27,14 @@ namespace Asteroid.Enemies
 
         public override void Move(Transform transformEnd)
         {
-            RigidBody2DEnemy.linearVelocity = _direction * Time.fixedDeltaTime * Speed;
+            if (!EnemyIsDied)
+            {
+                RigidBody2DEnemy.linearVelocity = _direction * Time.fixedDeltaTime * Speed;
+            }
+            else
+            {
+                RigidBody2DEnemy.linearVelocity = Vector2.zero;
+            }
         }
 
         public override void TakeDamage(float damage)

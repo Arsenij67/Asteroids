@@ -96,6 +96,7 @@
     <Compile Include="Assets\_Project\Scripts\Interfaces\IAnalytics.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\Coin.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\Addressables\RemoteBundle.cs" />
+    <Compile Include="Assets\_Project\Scripts\View\DisplayEnemy\DisplayEnemy.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\Settings.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IWeaponStrategy.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IResourceLoader.cs" />

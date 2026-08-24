@@ -1,3 +1,4 @@
+using Asteroid.Effects;
 using Asteroid.SpaceShip;
 using Asteroid.Weapon;
 using UnityEngine;
@@ -5,8 +6,11 @@ using UnityEngine;
 namespace Asteroid.Enemies
 {
     [RequireComponent(typeof(Enemy))]
+    [RequireComponent(typeof(DisplayEnemy))]
     public class EnemyController : MonoBehaviour
     {
+        private const float DESTROY_DELAY = 0.7f;
+
         private Transform? _shipTransform;
         private Enemy _enemy;
         private void FixedUpdate()
@@ -17,6 +21,7 @@ namespace Asteroid.Enemies
                 _enemy.TryTeleport(_enemy.transform.position);
             }
         }
+        
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
@@ -32,7 +37,7 @@ namespace Asteroid.Enemies
 
             if (collision.TryGetComponent(out SpaceShipPresenter ship))
             {
-                _enemy.Die();
+                DieEnemy(enemy);
             }
         }
 
@@ -42,5 +47,9 @@ namespace Asteroid.Enemies
             _shipTransform = shipTransform;
         }
 
+        private void DieEnemy(Enemy enemy)
+        {
+            enemy.Die(DESTROY_DELAY);
+        }
     }
 }

@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 1561002095637583260}
   - component: {fileID: 3985455718124692607}
   - component: {fileID: 4716408853621113818}
+  - component: {fileID: 5131160805645432991}
+  - component: {fileID: 1243116612788818603}
   m_Layer: 0
   m_Name: BlueAsteroid
   m_TagString: Untagged
@@ -31,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: -6.317704, y: 1.0501182, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 0}
+  m_LocalScale: {x: 4, y: 4, z: 0}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -153,7 +155,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.05
+  m_Radius: 0.09630776
 --- !u!114 &3985455718124692607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,3 +186,37 @@ MonoBehaviour:
   _speed: 100
   _meteoriteExample: {fileID: 2316985412445000268, guid: 1740469607c5ef74a9dce354e6c48998, type: 3}
   _countMeteorites: 3
+--- !u!95 &5131160805645432991
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3038870751785615970}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3dcf85e84dd48eb42b58279c4a1aa02f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1243116612788818603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3038870751785615970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f951ecebbf6b1b742b34e371eb5df4c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

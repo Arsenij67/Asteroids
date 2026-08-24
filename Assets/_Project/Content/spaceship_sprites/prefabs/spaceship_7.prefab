@@ -10,11 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 427946}
   - component: {fileID: 21201980}
-  - component: {fileID: 9553560}
   - component: {fileID: 3191458258366962700}
   - component: {fileID: 4018161852436278198}
   - component: {fileID: 1655857433115632672}
   - component: {fileID: 1254629639282211221}
+  - component: {fileID: 6789844688594117046}
+  - component: {fileID: 3237306339822615554}
   m_Layer: 0
   m_Name: spaceship_7
   m_TagString: Untagged
@@ -92,28 +93,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &9553560
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 161008}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 83e944e7ea7307748a4ddbdf6d939610, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!50 &3191458258366962700
 Rigidbody2D:
   serializedVersion: 5
@@ -153,10 +132,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8b7853bc0c08d04b8ebcd7133f3a23e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb2dEnemy: {fileID: 0}
-  health: 100
-  damage: 100
-  speed: 100
+  <DownLeftBorder>k__BackingField: {x: -9, y: -5}
+  <UpRightBorder>k__BackingField: {x: 9, y: 5}
+  _health: 100
+  _speed: 50
 --- !u!114 &1655857433115632672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,4 +183,42 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.2
+  m_Radius: 0.18
+--- !u!111 &6789844688594117046
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161008}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: 6fefbf759318a794eb27268deaf6630e, type: 2}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
+--- !u!95 &3237306339822615554
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161008}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 83e944e7ea7307748a4ddbdf6d939610, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
