@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2213415298629228257}
   - component: {fileID: 9006465385012082274}
   - component: {fileID: 4627742481004242442}
+  - component: {fileID: 3575700762901727912}
   m_Layer: 0
   m_Name: RedFireball
   m_TagString: Untagged
@@ -166,5 +167,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _assignmentMode: 0
-  _speed: 25
+  _speed: 15
   _damage: 50
+--- !u!95 &3575700762901727912
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860706049015914}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ac1fc37459399d6458a8fca9d4bc5889, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
