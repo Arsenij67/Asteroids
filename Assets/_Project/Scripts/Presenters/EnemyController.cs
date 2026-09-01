@@ -28,7 +28,7 @@ namespace Asteroid.Enemies
                 return;
             }
 
-            if (collision.TryGetComponent(out BaseBullet bullet))
+            if (collision.TryGetComponent(out BaseBullet bullet) || collision.transform.parent!=null ? collision.transform.parent.TryGetComponent(out bullet): false)
             {
                 _enemy.TakeDamage(bullet.Damage);
             }
