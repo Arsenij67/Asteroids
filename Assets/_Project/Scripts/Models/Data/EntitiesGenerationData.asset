@@ -22,6 +22,6 @@ MonoBehaviour:
   _generationFrequency: 5
   <GenerationVertices>k__BackingField: {fileID: 921764346079199045, guid: 193dd5376e00e4e43a9366b1d43b36ca, type: 3}
   <FireballPrefab>k__BackingField: {fileID: 4627742481004242442, guid: 0b0c27137eb4d504096874b80ace66bd, type: 3}
-  <LaserPrefab>k__BackingField: {fileID: 7557963557402377491, guid: dd66b356fa5632d4493b1517b93c2ade, type: 3}
+  <LaserPrefab>k__BackingField: {fileID: 4925590382959650693, guid: 7aedc3d3800e35748a80176f3d49258f, type: 3}
   <HomeSceneName>k__BackingField: BootstrapScene
   <EndPanelView>k__BackingField: {fileID: 7216205763715956276, guid: 1deb9489119882c40a6ecf1f397a93a0, type: 3}

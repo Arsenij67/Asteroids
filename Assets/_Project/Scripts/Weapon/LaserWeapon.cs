@@ -57,7 +57,6 @@ namespace Asteroid.Weapon
             _waitSecondsGlow = new WaitForSeconds(AttackTime);
             _laserObject = ResourceLoaderService.Instantiate(ConcreteBulletPrefab, transform).GetComponent<LaserBullet>();
             _laserObject.gameObject.SetActive(false);
-            _laserObject.transform.position = (Vector2)transform.position + _laserObject.SpawnOffset;
             _laserObject.Initialize(remoteConfigService);
         }
 

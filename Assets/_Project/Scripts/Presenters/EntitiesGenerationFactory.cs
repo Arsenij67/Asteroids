@@ -198,7 +198,7 @@ namespace Asteroid.Generation
 
             _generationData.Initialize(_spaceShipPresenter.transform);
             _weaponShipBullet.Initialize(_gameOverPresenter, _shipStatisticPresenter, _generationData.FireballPrefab, _resourceLoader, _remoteConfig);
-            _weaponShipLaser.Initialize(_gameOverPresenter,_shipStatisticPresenter, _generationData.LaserPrefab, _resourceLoader, _remoteConfig);
+            _weaponShipLaser.Initialize(_gameOverPresenter,_shipStatisticPresenter, _generationData.LaserPrefab.GetComponentInChildren<BaseBullet>(), _resourceLoader, _remoteConfig);
             _weaponController.Initialize(_weaponView);
         }
 
