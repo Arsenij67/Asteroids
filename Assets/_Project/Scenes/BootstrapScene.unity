@@ -191,7 +191,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 92.258575, y: -71.24838}
+  m_AnchoredPosition: {x: 92.258575, y: -71.24829}
   m_SizeDelta: {x: 800, y: 965.50525}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &140619003
@@ -2600,6 +2600,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _saveModeUI: {fileID: 2253756722082059085, guid: 16d5cfc8252347a4e85b7f236801c2ae, type: 3}
   _bootstrapUI: {fileID: 1096412837}
+  _audioData: {fileID: 11400000, guid: 3f26af55bcc7c974dbab4bfdf1c2e1a5, type: 2}
+  _audioSourcePrefab: {fileID: 9100547244190249562, guid: b94a84681ce0e3849924681020bff2b4, type: 3}
+  _poolSize: 5
 --- !u!1 &484671686705267289
 GameObject:
   m_ObjectHideFlags: 0

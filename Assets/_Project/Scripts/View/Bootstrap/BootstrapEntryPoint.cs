@@ -1,3 +1,4 @@
+using Asteroid.Audio;
 using Asteroid.Database;
 using Asteroid.Database.Connection;
 using Asteroid.Exit;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Zenject;
+using static Unity.VisualScripting.Member;
 
 namespace Asteroid.Generation
 {
@@ -19,6 +21,9 @@ namespace Asteroid.Generation
     {
         [SerializeField] private SaveModeUI _saveModeUI;
         [SerializeField] private BootstrapUI _bootstrapUI;
+        [SerializeField] private AudioData _audioData;
+        [SerializeField] private AudioSource _audioSourcePrefab;
+        [SerializeField] private int _poolSize = 5;
 
         [Inject] private List<UniTask> _loadingTasks;
         [Inject] private ISceneLoader _sceneLoader;
@@ -32,6 +37,9 @@ namespace Asteroid.Generation
         [Inject] private IApplicationQuitter _applicationQuitter;
         [Inject] private IRemoteSavable _remoteSave;
         [Inject] private WIFIConnector  _WIFIConnector;
+        [Inject] private IInstanceCreator _instanceCreator;
+        [Inject] private IResourceLoader _resourceLoader;
+        [Inject] private IAudioService _audioLocator;
 
         private bool _analyticsReady;
         private bool _remoteConfigReady;
@@ -58,6 +66,19 @@ namespace Asteroid.Generation
             _loadingTasks.Add(PrepareCloudSaveServiceAsync());
             TickLoading();
             await UniTask.WhenAll(_loadingTasks);
+
+            var sfxPool =  _instanceCreator.CreateInstance <List<AudioSource>>();
+            for (int i = 0; i < _poolSize; i++)
+            {
+                var sourceObj =  _resourceLoader.Instantiate(_audioSourcePrefab.GetComponent<AudioSource>(),transform);
+                sourceObj.name = $"SFX_Source_{i}";
+                if (sourceObj.TryGetComponent<AudioSource>(out AudioSource voice))
+                {
+                    sfxPool.Add(voice);
+                }
+            }
+            _audioLocator.Initialize(_audioData, sfxPool);
+            _audioLocator.PlayBackgroundMusic();
             _bootstrapUI.ActivateButtonStart();
         }
 

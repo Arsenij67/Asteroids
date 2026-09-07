@@ -50,6 +50,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b94a84681ce0e3849924681020bff2b4
+    m_Address: AudioSource
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e28212ea638f7f84190f01ecb9839a2e
     m_Address: UFOEnemy
     m_ReadOnly: 0

@@ -79,6 +79,7 @@
     <Compile Include="Assets\_Project\Scripts\Interfaces\SaveStrategy.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\Wallet.cs" />
     <Compile Include="Assets\_Project\Scripts\IAP\IAPAnalyzer.cs" />
+    <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\AudioInstaller\AudioInstaller.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\ObstaclesLine.cs" />
     <Compile Include="Assets\_Project\Scripts\EntryPoints\ShopEntryPoint.cs" />
     <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FloatingJoystick.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Assets\_Project\Scripts\Interfaces\IWeaponStrategy.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IResourceLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\DeviceInputs\MobileInput.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\IAudioService.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\ObstacleLineSpawner.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\LevelLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\EntitiesGenerationFactory.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\LoadBar.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\UnityCloud\KeyData.cs" />
     <Compile Include="Assets\_Project\Scripts\ScenesManagement\Exiter\PCApplicationExiter.cs" />
+    <Compile Include="Assets\_Project\Scripts\Audio\AudioService.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\ShipStatisticPresenter.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\GameOverPresenter.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\ExitGame.cs" />
@@ -132,6 +135,7 @@
     <Compile Include="Assets\_Project\Scripts\Interfaces\IRemoteSavable.cs" />
     <Compile Include="Assets\_Project\Scripts\RemoteConfig\FirebaseRemoteConfigService.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\MeteoriteEnemy.cs" />
+    <Compile Include="Assets\_Project\Scripts\Models\Audio\AudioData.cs" />
     <Compile Include="Assets\Unity.VisualScripting.Generated\VisualScripting.Core\AotStubs.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\EntitiesGenerationData.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\Base\BaseResourcesInstaller.cs" />
