@@ -1,3 +1,4 @@
+using Asteroid.Audio;
 using Asteroid.Database;
 using Asteroid.Generation;
 using Asteroid.Services.RemoteConfig;
@@ -24,6 +25,8 @@ namespace Asteroid.Weapon
         protected IRemoteConfigService RemoteConfigService;
         protected GameOverPresenter GameOverPresenter;
         protected ShipStatisticPresenter ShipStatisticsPresenter;
+        protected IAudioService AudioLocator;
+
         protected virtual float TimeBulletRecovery
         {
             get
@@ -40,7 +43,7 @@ namespace Asteroid.Weapon
 
         private WaitForSeconds _waitSecondsRecover;
 
-        public virtual void Initialize(GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticsPresenter, BaseBullet concreteBullet, IResourceLoader resourceLoader, IRemoteConfigService remoteConfigService)
+        public virtual void Initialize(GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticsPresenter, BaseBullet concreteBullet, IResourceLoader resourceLoader, IRemoteConfigService remoteConfigService, IAudioService audioService)
         { 
             ConcreteBulletPrefab = concreteBullet;
             ResourceLoaderService = resourceLoader;
@@ -48,6 +51,7 @@ namespace Asteroid.Weapon
             this.GameOverPresenter = gameOverPresenter;
             _waitSecondsRecover = new WaitForSeconds(TimeBulletRecovery);
             ShipStatisticsPresenter = shipStatisticsPresenter;
+            AudioLocator = audioService;
             UpdateWeapon();
             StartCoroutine(RecoverMissile());
         }
@@ -63,5 +67,6 @@ namespace Asteroid.Weapon
                 UpdateWeapon();
             }
         }
+        protected abstract void PlayFireSound(BaseBullet bullet);
     }
 }

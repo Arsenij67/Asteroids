@@ -1,3 +1,4 @@
+using Asteroid.Audio;
 using Asteroid.Enemies;
 using Asteroid.Inputs;
 using Asteroid.Services.Analytics;
@@ -39,8 +40,10 @@ namespace Asteroid.Generation
         private bool _isGamePaused = false;
         private SpaceShipPresenter? _shipPrefab;
         private WeaponView _weaponView;
+        private IAudioService _audioService;
 
         public void Initialize(
+            IAudioService audioService,
             WeaponView weaponViewPrefab,
             AnalyticsEventHandler analyticsEventHandler,
             AdvertisementPresenter advertisementPresenter,
@@ -69,6 +72,7 @@ namespace Asteroid.Generation
             _analyticsEventHandler = analyticsEventHandler;
             _cancellationTokenSource = _instanceCreator.CreateInstance<CancellationTokenSource>();
             _weaponView = weaponViewPrefab;
+            _audioService = audioService;
         }
 
         public void StartEnemiesCreation()
@@ -197,8 +201,8 @@ namespace Asteroid.Generation
             _weaponShipBullet = _spaceShipPresenter.GetComponent<BulletWeaponController>();
 
             _generationData.Initialize(_spaceShipPresenter.transform);
-            _weaponShipBullet.Initialize(_gameOverPresenter, _shipStatisticPresenter, _generationData.FireballPrefab, _resourceLoader, _remoteConfig);
-            _weaponShipLaser.Initialize(_gameOverPresenter,_shipStatisticPresenter, _generationData.LaserPrefab, _resourceLoader, _remoteConfig);
+            _weaponShipBullet.Initialize(_gameOverPresenter, _shipStatisticPresenter, _generationData.FireballPrefab, _resourceLoader, _remoteConfig,_audioService);
+            _weaponShipLaser.Initialize(_gameOverPresenter,_shipStatisticPresenter, _generationData.LaserPrefab, _resourceLoader, _remoteConfig,_audioService);
             _weaponController.Initialize(_weaponView);
         }
 

@@ -1,3 +1,4 @@
+using Asteroid.Audio;
 using Asteroid.Database;
 using Asteroid.Enemies;
 using Asteroid.Services.RemoteConfig;
@@ -17,6 +18,8 @@ namespace Asteroid.Weapon
 
         protected virtual float Speed => Mathf.Clamp(_speed, 0, _maxSpeed);
 
+        private IAudioService _audioLocator;
+
         public virtual float Damage => Mathf.Clamp(_damage, 0, _maxDamage);
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -32,9 +35,15 @@ namespace Asteroid.Weapon
             }
         }
 
-        public virtual void Initialize(IRemoteConfigService remoteConfigService)
+        public virtual void Initialize(IRemoteConfigService remoteConfigService, IAudioService audioLocator)
         {
             _remoteConfigService = remoteConfigService;
+            _audioLocator = audioLocator;
+        }
+
+        public void PlaySoundShoot()
+        {
+            _audioLocator.PlayShoot();
         }
     }
 }

@@ -14,9 +14,15 @@ namespace Asteroid.Weapon
                 var bullet = ResourceLoaderService.Instantiate(ConcreteBulletPrefab, transform.position, Quaternion.identity).GetComponent<FireballBullet>();
                 OnMissalSpawned?.Invoke(bullet, -transform.up);
                 CountShoots--;
-                bullet.Initialize(-transform.up,RemoteConfigService);
+                bullet.Initialize(-transform.up,RemoteConfigService,AudioLocator);
+                PlayFireSound(bullet);
                 UpdateWeapon();
             }
+        }
+
+        protected override void PlayFireSound(BaseBullet bullet)
+        {
+            bullet.PlaySoundShoot();
         }
 
         protected override void UpdateWeapon()

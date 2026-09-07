@@ -67,5 +67,10 @@ namespace Asteroid.Audio
             source.Stop();
             source.Play();
         }
+
+        public void Dispose()
+        {
+            _sfxPool.Clear();
+        }
     }
 }

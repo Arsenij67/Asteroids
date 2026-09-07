@@ -1,3 +1,4 @@
+using Asteroid.Audio;
 using Asteroid.Database;
 using Asteroid.Enemies;
 using Asteroid.Services.RemoteConfig;
@@ -66,9 +67,9 @@ namespace Asteroid.Weapon
             }
         }
 
-        public void Initialize(Vector2 direction, IRemoteConfigService remoteConfigService)
+        public void Initialize(Vector2 direction, IRemoteConfigService remoteConfigService,IAudioService audioLocator)
         {
-            base.Initialize(remoteConfigService);
+            base.Initialize(remoteConfigService,audioLocator);
             _rigidBody2D = GetComponent<Rigidbody2D>();
             _rigidBody2D.linearVelocity = direction.normalized * Speed;
             Destroy(gameObject, LifeTime);

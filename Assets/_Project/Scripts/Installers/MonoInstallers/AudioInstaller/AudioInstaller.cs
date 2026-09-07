@@ -1,7 +1,6 @@
 using Zenject;
 using UnityEngine;
 using Asteroid.Audio;
-using System.Collections.Generic;
 using Asteroid.Generation;
 
 namespace Asteroid.Installers

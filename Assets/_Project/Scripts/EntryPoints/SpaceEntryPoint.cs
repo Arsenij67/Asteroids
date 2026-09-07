@@ -1,3 +1,4 @@
+using Asteroid.Audio;
 using Asteroid.Database;
 using Asteroid.Database.Connection;
 using Asteroid.Inputs;
@@ -40,6 +41,7 @@ namespace Asteroid.Generation
         [Inject] private ISceneLoader _sceneLoader;
         [Inject] private IDeviceInput _deviceInput;
         [Inject] private IAdvertisementService _advertisementService;
+        [Inject] private IAudioService _serviceLocator;
         [Inject] private AdvertisementPresenter _advertisingPresenter;
         [Inject] private ShipStatisticsModel _shipStatisticModel;
         [Inject] private IRemoteConfigService _remoteConfigService;
@@ -95,6 +97,7 @@ namespace Asteroid.Generation
         {
           _deviceInput.Initialize(_joystick);
           _entitiesGenerationFactory.Initialize(
+          _serviceLocator,
           _weaponView,
           _analyticsEventHandler,
           _advertisingPresenter,

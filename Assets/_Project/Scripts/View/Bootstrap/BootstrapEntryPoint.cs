@@ -88,6 +88,7 @@ namespace Asteroid.Generation
             _bootstrapUI.OnPlayerClickButtonExit -= _applicationQuitter.Quit;
             _bootstrapUI.Dispose();
             _sceneLoader.UnloadScene(_shopData.StartSceneName);
+            _audioLocator.Dispose();
         }
 
         private async UniTask PrepareShopSceneAsync()

@@ -1,10 +1,11 @@
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Asteroid.Audio
 {
-    public interface IAudioService
+    public interface IAudioService : IDisposable
     {
         public void Initialize(AudioData audioData, List<AudioSource> sfxSources);
         public void PlayShoot();

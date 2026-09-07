@@ -1,3 +1,4 @@
+using Asteroid.Audio;
 using Asteroid.Database;
 using Asteroid.Enemies;
 using Asteroid.Generation;
@@ -51,13 +52,13 @@ namespace Asteroid.Weapon
             }
         }
 
-        public override void Initialize(GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticsPresenter, BaseBullet concreteBullet, IResourceLoader resourceLoader, IRemoteConfigService remoteConfigService)
+        public override void Initialize(GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticsPresenter, BaseBullet concreteBullet, IResourceLoader resourceLoader, IRemoteConfigService remoteConfigService, IAudioService audioService)
         {
-            base.Initialize(gameOverPresenter, shipStatisticsPresenter, concreteBullet, resourceLoader, remoteConfigService);
+            base.Initialize(gameOverPresenter, shipStatisticsPresenter, concreteBullet, resourceLoader, remoteConfigService,audioService);
             _waitSecondsGlow = new WaitForSeconds(AttackTime);
             _laserObject = ResourceLoaderService.Instantiate(ConcreteBulletPrefab, transform).GetComponent<LaserBullet>();
             _laserObject.gameObject.SetActive(false);
-            _laserObject.Initialize(remoteConfigService);
+            _laserObject.Initialize(remoteConfigService,audioService);
         }
 
          public void Fire()
@@ -68,7 +69,7 @@ namespace Asteroid.Weapon
                 OnMissalSpawned?.Invoke(ConcreteBulletPrefab, transform.up * -1);
                 _laserTurned = true;
                 StartCoroutine(FireLaser());
-                
+                PlayFireSound(_laserObject);
             }
         }
 
@@ -89,6 +90,11 @@ namespace Asteroid.Weapon
         {
             ShipStatisticsPresenter.UpdateCountLaserShoots(CountShoots);
             ShipStatisticsPresenter.UpdateRollbackTime(AttackTime);
+        }
+
+        protected override void  PlayFireSound(BaseBullet bullet)
+        {
+            bullet.PlaySoundShoot();
         }
     }
 }
