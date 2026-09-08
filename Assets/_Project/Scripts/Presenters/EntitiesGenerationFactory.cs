@@ -181,9 +181,9 @@ namespace Asteroid.Generation
         private void SubscribeEnemy(EnemyController enemyController, Enemy currentEnemy)
         {
             Transform shipTransform = _generationData.EndPointToFly;
-            currentEnemy.Initialize(shipTransform, _gameOverPresenter, _shipStatisticPresenter);
+            currentEnemy.Initialize(shipTransform, _gameOverPresenter, _shipStatisticPresenter,_audioService);
             enemyController.Initialize(shipTransform);
-            currentEnemy.Initialize(_generationData.EndPointToFly, _gameOverPresenter, _shipStatisticPresenter);
+            currentEnemy.Initialize(_generationData.EndPointToFly, _gameOverPresenter, _shipStatisticPresenter,_audioService);
             enemyController.Initialize(_generationData.EndPointToFly);
             currentEnemy.OnEnemyDestroyed += OnEnemyDestroyedHandler;
             _spaceShipPresenter.OnShipDied += currentEnemy.Disappear;

@@ -32,7 +32,7 @@ namespace Asteroid.Generation
         [SerializeField] private FireballBullet _bulletPrefab;
         [SerializeField] private AudioData _audioData;
         [SerializeField] private AudioSource _audioSourcePrefab;
-        [SerializeField] private int _poolSize = 3;
+        [SerializeField] private int _poolSize = 4;
 
         [Header("Space Settings")]
         [Inject] private EntitiesGenerationFactory _entitiesGenerationFactory;

@@ -1,3 +1,4 @@
+using Asteroid.Audio;
 using Asteroid.SpaceShip;
 using Asteroid.Statistic;
 using System;
@@ -19,9 +20,9 @@ namespace Asteroid.Enemies
 
         private Vector2 _direction;
 
-        public override void Initialize(Transform transformEnd, GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticPresenter)
+        public override void Initialize(Transform transformEnd, GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticPresenter, IAudioService audioService)
         {
-            base.Initialize(transformEnd, gameOverPresenter, shipStatisticPresenter);    
+            base.Initialize(transformEnd, gameOverPresenter, shipStatisticPresenter,audioService);    
             _direction = (TransformEnd.position - transform.position).normalized;
         }
 
@@ -70,7 +71,7 @@ namespace Asteroid.Enemies
                 MeteoriteEnemy meteorite = Instantiate(_meteoriteExample, transform.position, Quaternion.identity);
                 EnemyController enemyController = meteorite.GetComponent<EnemyController>();
 
-                meteorite.Initialize(TransformEnd, GameOverPresenter, ShipStatisticPresenter);
+                meteorite.Initialize(TransformEnd, GameOverPresenter, ShipStatisticPresenter,AudioLocator);
                 enemyController.Initialize(TransformEnd);
 
                 meteorite.OnEnemyDestroyed += MeteoriteDestroyedHandler;

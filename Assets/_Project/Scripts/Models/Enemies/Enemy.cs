@@ -1,9 +1,11 @@
+using Asteroid.Audio;
 using Asteroid.Effects;
 using Asteroid.SpaceObjectActions;
 using Asteroid.SpaceShip;
 using Asteroid.Statistic;
 using System;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Asteroid.Enemies
 {
@@ -25,13 +27,14 @@ namespace Asteroid.Enemies
         protected Transform TransformEnd;
         protected ShipStatisticPresenter ShipStatisticPresenter;
         protected bool EnemyIsDied = false;
+        protected IAudioService AudioLocator;
 
         protected float Speed => Mathf.Clamp(_speed, 0, Mathf.Infinity);
         protected float Health => Mathf.Clamp(_health, 0, Mathf.Infinity);
 
         private DisplayEnemy _displayEnemy;
 
-        public virtual void Initialize(Transform transformEnd, GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticPresenter)
+        public virtual void Initialize(Transform transformEnd, GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticPresenter, IAudioService audioLocator)
         {
             RigidBody2DEnemy = GetComponent<Rigidbody2D>();
             TransformEnd = transformEnd;
@@ -39,6 +42,7 @@ namespace Asteroid.Enemies
             ShipStatisticPresenter = shipStatisticPresenter;
             _displayEnemy = GetComponent<DisplayEnemy>();
             _displayEnemy.Initialize();
+            AudioLocator = audioLocator;
         }
 
         public abstract void Move(Transform transformEnd = null);
@@ -61,12 +65,18 @@ namespace Asteroid.Enemies
             EnemyIsDied = true;
             OnEnemyDestroyed?.Invoke(this);
             _displayEnemy.PlayDieEffect();
-            Destroy(gameObject,lifeTime);
+            PlayExploadSound();
+            Destroy(gameObject, lifeTime);
         }
 
         public void Disappear()
         {
             Destroy(gameObject);
         }
+
+        public virtual void PlayExploadSound()
+        {
+            AudioLocator.PlayExplosion();
+        }    
     }
 }
