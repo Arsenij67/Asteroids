@@ -25,11 +25,12 @@ namespace Asteroid.Audio
                 source.volume = _audioData.SfxVolume;
             }
             _musicSource = _sfxPool.First();
+            _sfxPool.Remove(_sfxPool.First());
         }
 
-        public void PlayShoot()
+        public void PlayLaserShoot()
         {
-            PlaySFX(_audioData.ShootClip);
+            PlaySFX(_audioData.LaserShootClip);
         }
 
         public void PlayExplosion()
@@ -40,7 +41,10 @@ namespace Asteroid.Audio
         public void PlayBackgroundMusic()
         {
             if (!_musicSource.isPlaying)
+            {
                 _musicSource.Play();
+                _musicSource.loop = true;
+            }
         }
 
         public void SetMusicVolume(float volume)
@@ -56,6 +60,16 @@ namespace Asteroid.Audio
             }
         }
 
+        public void Dispose()
+        {
+            _sfxPool.Clear();
+        }
+
+        public void PlayFireballShoot()
+        {
+            PlaySFX(_audioData.FireballShootClip);
+        }
+
         private void PlaySFX(AudioClip clip)
         {
             if (clip == null || _sfxPool.Count == 0) return;
@@ -66,11 +80,6 @@ namespace Asteroid.Audio
             source.clip = clip;
             source.Stop();
             source.Play();
-        }
-
-        public void Dispose()
-        {
-            _sfxPool.Clear();
         }
     }
 }

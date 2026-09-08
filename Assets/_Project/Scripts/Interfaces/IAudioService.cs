@@ -8,7 +8,8 @@ namespace Asteroid.Audio
     public interface IAudioService : IDisposable
     {
         public void Initialize(AudioData audioData, List<AudioSource> sfxSources);
-        public void PlayShoot();
+        public void PlayLaserShoot();
+        public void PlayFireballShoot();
         public void PlayExplosion();
         public void PlayBackgroundMusic();
         public void SetMusicVolume(float volume);

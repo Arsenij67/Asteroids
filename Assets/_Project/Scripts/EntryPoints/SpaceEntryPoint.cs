@@ -11,6 +11,8 @@ using Asteroid.Statistic;
 using Asteroid.UI;
 using Asteroid.Weapon;
 using Cysharp.Threading.Tasks;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -28,6 +30,9 @@ namespace Asteroid.Generation
         [Header("Bullet Settings")]
         [SerializeField] private LaserBullet _laserPrefab;
         [SerializeField] private FireballBullet _bulletPrefab;
+        [SerializeField] private AudioData _audioData;
+        [SerializeField] private AudioSource _audioSourcePrefab;
+        [SerializeField] private int _poolSize = 3;
 
         [Header("Space Settings")]
         [Inject] private EntitiesGenerationFactory _entitiesGenerationFactory;
@@ -47,6 +52,7 @@ namespace Asteroid.Generation
         [Inject] private IRemoteConfigService _remoteConfigService;
         [Inject] private DataSave _dataForSave;
         [Inject] private IAnalytics _analyticsService;
+        [Inject] private IInstanceCreator _instanceCreator; 
         [Inject] private IRemoteSavable _remoteSave;
         [Inject] private SaveDataStrategyManager _saveDataStrategyController;
         [Inject] private LocalSaveStrategy _localSaveStrategy;
@@ -56,6 +62,7 @@ namespace Asteroid.Generation
         [Inject] private BootstrapSceneData  _bootstrapSceneData;
         [Inject] private WIFIConnector _wifiConnector;
         [Inject] private Joystick _joystick;
+
 
         private ShipStatisticsView _shipStatisticView;
         private WeaponShip _weaponShipLaser;
@@ -67,13 +74,19 @@ namespace Asteroid.Generation
             await InitializeServicesSystems();
             InitializeEnemySystems();
         }
-        
+
+        private void Start()
+        {
+            _serviceLocator.PlayBackgroundMusic();
+        }
+
         private void OnDestroy()
         {
             _entitiesGenerationFactory.Dispose();
             _gameOverPresenter?.Dispose();
             _saveDataStrategyController.Dispose();
         }
+
 
         private void InitializeUI()
         {
@@ -95,7 +108,9 @@ namespace Asteroid.Generation
 
         private void InitializeSpaceShipSystems()
         {
+           
           _deviceInput.Initialize(_joystick);
+          _serviceLocator.Initialize(_audioData, FillUpAudioPull());
           _entitiesGenerationFactory.Initialize(
           _serviceLocator,
           _weaponView,
@@ -130,6 +145,21 @@ namespace Asteroid.Generation
         private void InitializeEnemySystems()
         {
             _entitiesGenerationFactory.StartEnemiesCreation();
+        }
+
+        private List<AudioSource> FillUpAudioPull()
+        {
+            var sfxPool = _instanceCreator.CreateInstance<List<AudioSource>>();
+            for (int i = 0; i < _poolSize; i++)
+            {
+                var sourceObj = _resourceLoader.Instantiate(_audioSourcePrefab.GetComponent<AudioSource>(), transform);
+                sourceObj.name = $"SFX_Source_{i}";
+                if (sourceObj.TryGetComponent<AudioSource>(out AudioSource voice))
+                {
+                    sfxPool.Add(voice);
+                }
+            }
+            return sfxPool; 
         }
     }
 }

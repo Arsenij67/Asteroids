@@ -21,5 +21,10 @@ namespace Asteroid.Weapon
         {
             _laserCollideNow = !collision.gameObject.GetComponent<Enemy>();
         }
+
+        public override void PlaySoundShoot()
+        {
+            AudioLocator.PlayLaserShoot();
+        }
     }
 }

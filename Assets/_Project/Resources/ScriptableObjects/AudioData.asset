@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b06ad6190416d3146a7851c7bfa2d221, type: 3}
   m_Name: AudioData
   m_EditorClassIdentifier: 
-  ShootClip: {fileID: 8300000, guid: 34c638d8d99ccfd44a261f13505ab317, type: 3}
+  LaserShootClip: {fileID: 8300000, guid: 34c638d8d99ccfd44a261f13505ab317, type: 3}
+  FireballShootClip: {fileID: 8300000, guid: e43baa980ea570a4e8a279adca6e7990, type: 3}
   ExplosionClip: {fileID: 8300000, guid: 9cb65eb2505fbf443ac876ba177374f9, type: 3}
   BackgroundMusic: {fileID: 8300000, guid: 1c65b86fd980496449d33e33b379f939, type: 3}
   SfxVolume: 0.647

@@ -23,7 +23,7 @@ namespace Asteroid.Generation
         [SerializeField] private BootstrapUI _bootstrapUI;
         [SerializeField] private AudioData _audioData;
         [SerializeField] private AudioSource _audioSourcePrefab;
-        [SerializeField] private int _poolSize = 5;
+        [SerializeField] private int _poolSize = 1;
 
         [Inject] private List<UniTask> _loadingTasks;
         [Inject] private ISceneLoader _sceneLoader;

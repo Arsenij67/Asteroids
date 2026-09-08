@@ -12,7 +12,6 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Asteroid.Generation
 {
@@ -91,6 +90,7 @@ namespace Asteroid.Generation
             _advertisementPresenter.OnPlayerRevived -= ReviveShip;
             _spaceShipPresenter.OnShipDied -= OnShipDestroyedHandler;
             _resourceLoader.UnloadAllResources();   
+            _audioService.Dispose();
         }
 
         public SpaceShipPresenter CreateShip(SpaceShipPresenter shipControllerPrefab)

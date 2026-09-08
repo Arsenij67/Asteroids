@@ -254,6 +254,9 @@ MonoBehaviour:
   _weaponView: {fileID: 933731463}
   _laserPrefab: {fileID: 7557963557402377491, guid: dd66b356fa5632d4493b1517b93c2ade, type: 3}
   _bulletPrefab: {fileID: 4627742481004242442, guid: 0b0c27137eb4d504096874b80ace66bd, type: 3}
+  _audioData: {fileID: 11400000, guid: 3f26af55bcc7c974dbab4bfdf1c2e1a5, type: 2}
+  _audioSourcePrefab: {fileID: 9100547244190249562, guid: b94a84681ce0e3849924681020bff2b4, type: 3}
+  _poolSize: 2
 --- !u!4 &416978516
 Transform:
   m_ObjectHideFlags: 0

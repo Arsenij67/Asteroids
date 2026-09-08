@@ -6,7 +6,8 @@ namespace Asteroid.Audio
     [CreateAssetMenu(fileName = "AudioData", menuName = "Game/Audio Data")]
     public class AudioData : ScriptableObject
     {
-        public AudioClip ShootClip;
+        public AudioClip LaserShootClip;
+        public AudioClip FireballShootClip;
         public AudioClip ExplosionClip;
         public AudioClip BackgroundMusic;
 
