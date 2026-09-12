@@ -53,7 +53,6 @@ namespace Asteroid.Enemies
         private void DieEnemy(Enemy enemy)
         {
             enemy.Die();
-            enemy.PlayExploadSound();
         }
     }
 }

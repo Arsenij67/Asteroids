@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Asteroid.Generation;
 
 public class GameOverView : MonoBehaviour
 {
@@ -15,11 +16,35 @@ public class GameOverView : MonoBehaviour
     [SerializeField] private Button _buttonGoHome;
     [SerializeField] private TMP_Text _enemiesDestroyedText;
 
-    public void Initialize()
+    [Header("Tuning")]
+    [SerializeField] private float _duration = 0.5f;
+    [SerializeField] private float _punchFactor = 0.05f;
+    [SerializeField] private int _vibrato = 6;
+
+    private Sequence _sequence;
+    private RectTransform _window;
+
+    public async void Initialize()
     {
         _buttonRestart.onClick.AddListener(OnRestartClicked);
         _buttonShowAd.onClick.AddListener(OnShowAdClicked);
         _buttonGoHome.onClick.AddListener(OnGoHomeClicked);
+        _window = GetComponent<RectTransform>();
+        await PlayShow();
+    }
+
+    public UniTask PlayShow()
+    {
+        _sequence?.Kill();
+        _window = transform.GetComponent<RectTransform>();
+        _sequence = DOTween.Sequence()
+                .Append(_window.DOAnchorPos(Vector2.zero, _duration)
+                .SetEase(Ease.OutCubic))
+                .Append(_window.DOScale(Vector3.one, _duration))
+                .Append(_window.DOPunchScale(Vector3.one * _punchFactor, _duration, _vibrato))
+                .SetUpdate(true)
+                .SetLink(gameObject); 
+        return _sequence.AsyncWaitForCompletion().AsUniTask();  
     }
 
     private void OnRestartClicked()
@@ -60,6 +85,8 @@ public class GameOverView : MonoBehaviour
 
     private void OnDestroy()
     {
+        _sequence?.Kill();
+
         if (_buttonRestart != null)
         {  
             _buttonRestart.onClick.RemoveListener(OnRestartClicked);
