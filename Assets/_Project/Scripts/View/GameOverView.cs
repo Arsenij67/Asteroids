@@ -17,9 +17,9 @@ public class GameOverView : MonoBehaviour
     [SerializeField] private TMP_Text _enemiesDestroyedText;
 
     [Header("Tuning")]
-    [SerializeField] private float _duration = 0.5f;
-    [SerializeField] private float _punchFactor = 0.05f;
-    [SerializeField] private int _vibrato = 6;
+    [SerializeField] private float _animationDuration = 1.0f;
+    [SerializeField] private float _shareIncreaseWindow = 0.15f;
+    [SerializeField] private int _countFadeAway = 4;
 
     private Sequence _sequence;
     private RectTransform _window;
@@ -38,10 +38,10 @@ public class GameOverView : MonoBehaviour
         _sequence?.Kill();
         _window = transform.GetComponent<RectTransform>();
         _sequence = DOTween.Sequence()
-                .Append(_window.DOAnchorPos(Vector2.zero, _duration)
+                .Append(_window.DOScale(Vector2.zero, 0)
                 .SetEase(Ease.OutCubic))
-                .Append(_window.DOScale(Vector3.one, _duration))
-                .Append(_window.DOPunchScale(Vector3.one * _punchFactor, _duration, _vibrato))
+                .Append(_window.DOScale(Vector3.one, _animationDuration))
+                .Append(_window.DOPunchScale(Vector3.one * _shareIncreaseWindow, _animationDuration, _countFadeAway))
                 .SetUpdate(true)
                 .SetLink(gameObject); 
         return _sequence.AsyncWaitForCompletion().AsUniTask();  
