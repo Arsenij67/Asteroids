@@ -15,8 +15,18 @@ MonoBehaviour:
   m_GroupName: Remote Graphics
   m_GUID: c512e3d770971bc46ad2e370e667e2a7
   m_SerializeEntries:
+  - m_GUID: 04759fb2ec03cd44f8d342d354fdf1d6
+    m_Address: UFODisplay
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0b0c27137eb4d504096874b80ace66bd
     m_Address: RedFireball
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3481901475fadbe4fb1b179b06134dff
+    m_Address: AsteroidDisplay
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

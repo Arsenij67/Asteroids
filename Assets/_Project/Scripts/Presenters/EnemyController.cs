@@ -6,7 +6,6 @@ using UnityEngine;
 namespace Asteroid.Enemies
 {
     [RequireComponent(typeof(Enemy))]
-    [RequireComponent(typeof(DisplayEnemy))]
     public class EnemyController : MonoBehaviour
     {
         private Transform? _shipTransform;
@@ -23,7 +22,7 @@ namespace Asteroid.Enemies
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.TryGetComponent(out Enemy enemy))
+            if (collision.TryGetComponent(out Enemy enemy) || _enemy.EnemyIsDied)
             {
                 return;
             }
@@ -38,7 +37,7 @@ namespace Asteroid.Enemies
                 _enemy.TakeDamage(bullet.Damage);
             }
 
-            if (collision.TryGetComponent(out SpaceShipPresenter ship))
+            else if (collision.TryGetComponent(out SpaceShipPresenter ship))
             {
                 DieEnemy(_enemy);
             }

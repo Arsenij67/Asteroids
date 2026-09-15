@@ -4,9 +4,12 @@ namespace Asteroid.SpaceObjectActions
 {
     public class SpaceObject : MonoBehaviour
     {
+        private const short INDEX_CHILD_DOWN_LEFT = 3;
+        private const short INDEX_CHILD_UP_RIGHT = 1;
+
         [field: SerializeField] public Transform Vertices { get; private set; }
-        private Transform DownLeftBorder => Vertices.GetChild(3);
-        private Transform UpRightBorder => Vertices.GetChild(1);
+        private Transform DownLeftBorder => Vertices.GetChild(INDEX_CHILD_DOWN_LEFT);
+        private Transform UpRightBorder => Vertices.GetChild(INDEX_CHILD_UP_RIGHT);
 
         public bool TryTeleport(Vector2 position)
         {

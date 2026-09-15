@@ -1,4 +1,5 @@
 using Asteroid.Effects;
+using Asteroid.Generation;
 using Asteroid.SpaceObjectActions;
 using Asteroid.SpaceShip;
 using Asteroid.Statistic;
@@ -8,9 +9,9 @@ using UnityEngine;
 namespace Asteroid.Enemies
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    [RequireComponent(typeof(DisplayEnemy))]
     public abstract class Enemy : SpaceObject
     {
+        private const int CHILD_INDEX_DISPLAY = 0;
 
         public event Action<Enemy> OnEnemyDestroyed;
 
@@ -24,21 +25,25 @@ namespace Asteroid.Enemies
         protected Rigidbody2D RigidBody2DEnemy;
         protected Transform TransformEnd;
         protected ShipStatisticPresenter ShipStatisticPresenter;
-        protected bool EnemyIsDied = false;
+
+        public bool EnemyIsDied { get; private set; }
 
         protected float Speed => Mathf.Clamp(_speed, 0, Mathf.Infinity);
         protected float Health => Mathf.Clamp(_health, 0, Mathf.Infinity);
 
         private DisplayEnemy _displayEnemy;
+        private IInstanceCreator _instanceCreator;
+ 
 
-        public virtual void Initialize(Transform transformEnd, GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticPresenter)
+        public virtual void Initialize(IInstanceCreator instanceCreator,IResourceLoader resourceLoader, Transform transformEnd, GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticPresenter)
         {
             RigidBody2DEnemy = GetComponent<Rigidbody2D>();
+            _instanceCreator = instanceCreator;
             TransformEnd = transformEnd;
             GameOverPresenter = gameOverPresenter;
             ShipStatisticPresenter = shipStatisticPresenter;
-            _displayEnemy = GetComponent<DisplayEnemy>();
-            _displayEnemy.Initialize();
+            _displayEnemy = _instanceCreator.CreateInstance<DisplayEnemy>();
+            _displayEnemy.Initialize(resourceLoader,transform.GetChild(CHILD_INDEX_DISPLAY).GetComponent<Animator>(),this);
         }
 
         public abstract void Move(Transform transformEnd = null);
@@ -64,7 +69,7 @@ namespace Asteroid.Enemies
             Destroy(gameObject,lifeTime);
         }
 
-        public void Disappear()
+        public void Clear()
         {
             Destroy(gameObject);
         }

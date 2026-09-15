@@ -11,7 +11,6 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Asteroid.Generation
 {
@@ -160,7 +159,7 @@ namespace Asteroid.Generation
         {
             _enemyDeathCounter.OnEnemyDied(destroyedEnemy);
             destroyedEnemy.OnEnemyDestroyed -= OnEnemyDestroyedHandler;
-            _spaceShipPresenter.OnShipDied -= destroyedEnemy.Disappear;
+            _spaceShipPresenter.OnShipDied -= destroyedEnemy.Clear;
         }
 
         private void UnsubscribeShip()
@@ -177,12 +176,10 @@ namespace Asteroid.Generation
         private void SubscribeEnemy(EnemyController enemyController, Enemy currentEnemy)
         {
             Transform shipTransform = _generationData.EndPointToFly;
-            currentEnemy.Initialize(shipTransform, _gameOverPresenter, _shipStatisticPresenter);
+            currentEnemy.Initialize(_instanceCreator,_resourceLoader,shipTransform, _gameOverPresenter, _shipStatisticPresenter);
             enemyController.Initialize(shipTransform);
-            currentEnemy.Initialize(_generationData.EndPointToFly, _gameOverPresenter, _shipStatisticPresenter);
-            enemyController.Initialize(_generationData.EndPointToFly);
             currentEnemy.OnEnemyDestroyed += OnEnemyDestroyedHandler;
-            _spaceShipPresenter.OnShipDied += currentEnemy.Disappear;
+            _spaceShipPresenter.OnShipDied += currentEnemy.Clear;
         }
 
         private void OnShipDestroyedHandler()

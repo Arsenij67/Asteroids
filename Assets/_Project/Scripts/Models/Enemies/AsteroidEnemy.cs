@@ -1,8 +1,8 @@
+using Asteroid.Generation;
 using Asteroid.SpaceShip;
 using Asteroid.Statistic;
 using System;
 using UnityEngine;
-using Zenject;
 
 namespace Asteroid.Enemies
 {
@@ -10,7 +10,7 @@ namespace Asteroid.Enemies
     [RequireComponent(typeof(EnemyController))]
     public class AsteroidEnemy : Enemy
     {
-        private const float SPREAD_RANGE = 70f;
+        private const float SPREAD_RANGE = 120f;
 
         public Action<Enemy> OnMeteoriteDestroyed;
 
@@ -18,10 +18,15 @@ namespace Asteroid.Enemies
         [SerializeField] private int _countMeteorites = 3;
 
         private Vector2 _direction;
+        private IResourceLoader _resourceLoader;
+        private IInstanceCreator _instanceCreator;
+        private Enemy _enemyPrefab;
 
-        public override void Initialize(Transform transformEnd, GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticPresenter)
+        public override void Initialize(IInstanceCreator instanceCreator, IResourceLoader resourceLoader,Transform transformEnd, GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticPresenter)
         {
-            base.Initialize(transformEnd, gameOverPresenter, shipStatisticPresenter);    
+            _resourceLoader = resourceLoader;
+            _instanceCreator = instanceCreator;
+            base.Initialize(instanceCreator,resourceLoader,transformEnd, gameOverPresenter, shipStatisticPresenter);    
             _direction = (TransformEnd.position - transform.position).normalized;
         }
 
@@ -57,7 +62,7 @@ namespace Asteroid.Enemies
 
             float baseAngle = Mathf.Atan2(_direction.y, _direction.x);
 
-            float angleStep = angleRange * Mathf.Deg2Rad / (_countMeteorites - 1);
+            float angleStep = angleRange * Mathf.Deg2Rad / (_countMeteorites--);
 
             float startAngle = baseAngle - (angleRange * Mathf.Deg2Rad);
 
@@ -70,7 +75,7 @@ namespace Asteroid.Enemies
                 MeteoriteEnemy meteorite = Instantiate(_meteoriteExample, transform.position, Quaternion.identity);
                 EnemyController enemyController = meteorite.GetComponent<EnemyController>();
 
-                meteorite.Initialize(TransformEnd, GameOverPresenter, ShipStatisticPresenter);
+                meteorite.Initialize(_instanceCreator,_resourceLoader,TransformEnd, GameOverPresenter, ShipStatisticPresenter);
                 enemyController.Initialize(TransformEnd);
 
                 meteorite.OnEnemyDestroyed += MeteoriteDestroyedHandler;

@@ -1,19 +1,23 @@
+using Asteroid.Enemies;
+using Asteroid.Generation;
+using System;
 using UnityEngine;
 
 namespace Asteroid.Effects
-{ 
-
-[RequireComponent(typeof(Animator))]
-public class DisplayEnemy : MonoBehaviour
+{
+public class DisplayEnemy: IDisposable
 {
     private static int _dieTrigger;
 
     private Animator _animationController;
+    private IResourceLoader _resourceLoader;
 
-    public  void Initialize()
-    { 
-        _animationController = GetComponent<Animator>();   
+    public void Initialize(IResourceLoader resourceLoader, Animator animatorComponent, Enemy enemyTransform)
+    {
+        _resourceLoader = resourceLoader;
+        _animationController = animatorComponent;
         _dieTrigger = Animator.StringToHash("DieTrigger");
+    
     }
 
     public void PlayDieEffect()
@@ -21,5 +25,9 @@ public class DisplayEnemy : MonoBehaviour
         _animationController.SetTrigger(_dieTrigger);
     }
 
+    public void Dispose()
+    { 
+        _resourceLoader.UnloadResource(_animationController.gameObject.name);
+    }
 }
 }
