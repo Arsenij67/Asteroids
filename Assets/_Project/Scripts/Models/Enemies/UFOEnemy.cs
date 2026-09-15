@@ -6,7 +6,7 @@ namespace Asteroid.Enemies
     [RequireComponent(typeof(CircleCollider2D))]
     public class UFOEnemy : Enemy
     {
-        private const float MIN_LENGHT_REACT = 0.05f;
+        private const float MIN_LENGHT_REACT = 0.5f;
 
         public override void AddToStatistic()
         {

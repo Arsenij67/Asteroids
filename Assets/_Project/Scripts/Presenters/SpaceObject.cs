@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Asteroid.SpaceObjectActions
@@ -5,6 +6,7 @@ namespace Asteroid.SpaceObjectActions
     public class SpaceObject : MonoBehaviour
     {
         private const short INDEX_CHILD_DOWN_LEFT = 3;
+        private const short TELEPORTATION_THRESHOLD = 5;
         private const short INDEX_CHILD_UP_RIGHT = 1;
 
         [field: SerializeField] public Transform Vertices { get; private set; }
@@ -14,6 +16,11 @@ namespace Asteroid.SpaceObjectActions
         public bool TryTeleport(Vector2 position)
         {
             Vector2 newPosition = position;
+
+            if (Mathf.Abs((newPosition - (Vector2) UpRightBorder.position).magnitude) < TELEPORTATION_THRESHOLD || Mathf.Abs((newPosition - (Vector2)DownLeftBorder.position).magnitude) < TELEPORTATION_THRESHOLD)
+            { 
+                return false;
+            }
 
             if (position.x < DownLeftBorder.position.x)
             {

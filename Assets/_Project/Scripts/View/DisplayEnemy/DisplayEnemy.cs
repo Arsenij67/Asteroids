@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Asteroid.Effects
 {
-public class DisplayEnemy: IDisposable
+public class DisplayEnemy
 {
     private static int _dieTrigger;
 
@@ -23,11 +23,6 @@ public class DisplayEnemy: IDisposable
     public void PlayDieEffect()
     {
         _animationController.SetTrigger(_dieTrigger);
-    }
-
-    public void Dispose()
-    { 
-        _resourceLoader.UnloadResource(_animationController.gameObject.name);
     }
 }
 }
