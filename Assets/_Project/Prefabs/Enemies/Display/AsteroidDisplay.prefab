@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8051740749195117188}
   - component: {fileID: 8025666475790018395}
-  - component: {fileID: 5529225031123775471}
+  - component: {fileID: 4661674538659143047}
   m_Layer: 0
   m_Name: AsteroidDisplay
   m_TagString: Untagged
@@ -55,7 +55,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!212 &5529225031123775471
+--- !u!212 &4661674538659143047
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,7 +98,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300026, guid: 8aeb9e233fbb8f14db39770841b78b94, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

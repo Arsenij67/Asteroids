@@ -10,6 +10,7 @@ namespace Asteroid.SpaceObjectActions
         private const short INDEX_CHILD_UP_RIGHT = 1;
 
         [field: SerializeField] public Transform Vertices { get; private set; }
+
         private Transform DownLeftBorder => Vertices.GetChild(INDEX_CHILD_DOWN_LEFT);
         private Transform UpRightBorder => Vertices.GetChild(INDEX_CHILD_UP_RIGHT);
 

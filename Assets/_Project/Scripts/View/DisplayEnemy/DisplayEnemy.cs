@@ -1,9 +1,8 @@
 using UnityEngine;
-using Asteroid.SpaceObjectActions;
 
 namespace Asteroid.Effects
 {
-public class DisplayEnemy : SpaceObject
+public class DisplayEnemy : MonoBehaviour
 {
     private static int _dieTrigger;
 

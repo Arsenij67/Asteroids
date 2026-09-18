@@ -125,9 +125,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Vertices>k__BackingField: {fileID: 921764346079199045, guid: 193dd5376e00e4e43a9366b1d43b36ca, type: 3}
   Damage: 20
+  EnemyIsDied: 0
   _health: 50
   _speed: 100
-  _displayPrefabAnimator: {fileID: 8025666475790018395, guid: 3481901475fadbe4fb1b179b06134dff, type: 3}
   _meteoriteExample: {fileID: 2316985412445000268, guid: 1740469607c5ef74a9dce354e6c48998, type: 3}
   _countMeteorites: 3
 --- !u!1001 &1113805120257419793
@@ -182,14 +182,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: AsteroidDisplay
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5529225031123775471, guid: 3481901475fadbe4fb1b179b06134dff, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8504571100180260514, guid: 3481901475fadbe4fb1b179b06134dff, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 644071136413069468}
+      addedObject: {fileID: 4417635308923346099}
   m_SourcePrefab: {fileID: 100100000, guid: 3481901475fadbe4fb1b179b06134dff, type: 3}
 --- !u!4 &6973965130487064725 stripped
 Transform:
@@ -201,58 +200,16 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8504571100180260514, guid: 3481901475fadbe4fb1b179b06134dff, type: 3}
   m_PrefabInstance: {fileID: 1113805120257419793}
   m_PrefabAsset: {fileID: 0}
---- !u!212 &644071136413069468
-SpriteRenderer:
+--- !u!114 &4417635308923346099
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8751419316302793907}
   m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 4294967295
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 21300026, guid: 8aeb9e233fbb8f14db39770841b78b94, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.09, y: 0.09}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f951ecebbf6b1b742b34e371eb5df4c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Vertices>k__BackingField: {fileID: 0}

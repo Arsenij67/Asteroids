@@ -125,6 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Vertices>k__BackingField: {fileID: 921764346079199045, guid: 193dd5376e00e4e43a9366b1d43b36ca, type: 3}
   Damage: 10
+  EnemyIsDied: 0
   _health: 50
   _speed: 200
   _rotationSpeed: 100
@@ -183,8 +184,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8504571100180260514, guid: 3481901475fadbe4fb1b179b06134dff, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1763327050051551951}
   m_SourcePrefab: {fileID: 100100000, guid: 3481901475fadbe4fb1b179b06134dff, type: 3}
+--- !u!1 &925710085674039610 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8504571100180260514, guid: 3481901475fadbe4fb1b179b06134dff, type: 3}
+  m_PrefabInstance: {fileID: 8853661459596763032}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1763327050051551951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925710085674039610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f951ecebbf6b1b742b34e371eb5df4c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1541077410890702108 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8051740749195117188, guid: 3481901475fadbe4fb1b179b06134dff, type: 3}
