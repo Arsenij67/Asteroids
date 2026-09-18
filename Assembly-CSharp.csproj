@@ -136,7 +136,6 @@
     <Compile Include="Assets\_Project\Scripts\RemoteConfig\FirebaseRemoteConfigService.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\MeteoriteEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Audio\AudioData.cs" />
-    <Compile Include="Assets\Unity.VisualScripting.Generated\VisualScripting.Core\AotStubs.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\EntitiesGenerationData.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\Base\BaseResourcesInstaller.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\Garage.cs" />
@@ -216,7 +215,6 @@
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.App.dll" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_Sprite.shader" />
-    <None Include="Assets\Unity.VisualScripting.Generated\VisualScripting.Core\link.xml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

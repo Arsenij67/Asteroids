@@ -1,0 +1,12 @@
+# ninja log v5
+17	217	8114315366484748	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	2f57af0d852dcb94
+219	354	8114315367804828	C:/Users/Asteroids/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/Debug/27jd5a1w/obj/arm64-v8a/libswappywrapper.so	651fe6c9a43f4a71
+8	1540	8114315379657553	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	3c2fc1a0173e7bb1
+9	1549	8114315379687564	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	b23cbe9da427d579
+4	1552	8114315379767568	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	8d068f8c0ed30d46
+14	1554	8114315379807590	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	815a7e217558ea6b
+0	1613	8114315380427573	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	4eeec79561bf59bb
+12	1668	8114315380937639	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	1b13050bd5b76ce2
+6	1701	8114315381277636	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	4439b4e691cdc0ee
+2	1751	8114315381777651	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	6ae260523d1cfb35
+1752	1845	8114315382617705	C:/Users/Asteroids/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/Debug/27jd5a1w/obj/arm64-v8a/libgame.so	4bba73e824447205
