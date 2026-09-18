@@ -17,8 +17,7 @@ namespace Asteroid.Enemies
                 _enemy.Move(_shipTransform);
                 _enemy.TryTeleport(_enemy.transform.position);
             }
-        }
-        
+        } 
 
         private void OnTriggerEnter2D(Collider2D collision)
         {

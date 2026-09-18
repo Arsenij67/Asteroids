@@ -1,23 +1,18 @@
-using Asteroid.Enemies;
-using Asteroid.Generation;
-using System;
 using UnityEngine;
+using Asteroid.SpaceObjectActions;
 
 namespace Asteroid.Effects
 {
-public class DisplayEnemy
+public class DisplayEnemy : SpaceObject
 {
     private static int _dieTrigger;
 
     private Animator _animationController;
-    private IResourceLoader _resourceLoader;
 
-    public void Initialize(IResourceLoader resourceLoader, Animator animatorComponent, Enemy enemyTransform)
+    public void Initialize()
     {
-        _resourceLoader = resourceLoader;
-        _animationController = animatorComponent;
         _dieTrigger = Animator.StringToHash("DieTrigger");
-    
+        _animationController = GetComponent<Animator>();
     }
 
     public void PlayDieEffect()

@@ -5,19 +5,19 @@ using Asteroid.SpaceShip;
 using Asteroid.Statistic;
 using System;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Asteroid.Enemies
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    [RequireComponent(typeof(DisplayEnemy))]
     public abstract class Enemy : SpaceObject
     {
+        public const short INDEX_CHILD_DISPLAY_ENEMY = 0;
 
         public event Action<Enemy> OnEnemyDestroyed;
 
 
-        [field: SerializeField] public float Damage;
+        public float Damage;
+        public bool EnemyIsDied = false;
 
         [SerializeField] private float _health;
         [SerializeField] private int _speed;
@@ -26,7 +26,6 @@ namespace Asteroid.Enemies
         protected Rigidbody2D RigidBody2DEnemy;
         protected Transform TransformEnd;
         protected ShipStatisticPresenter ShipStatisticPresenter;
-        protected bool EnemyIsDied = false;
         protected IAudioService AudioLocator;
 
         protected float Speed => Mathf.Clamp(_speed, 0, Mathf.Infinity);
@@ -40,7 +39,7 @@ namespace Asteroid.Enemies
             TransformEnd = transformEnd;
             GameOverPresenter = gameOverPresenter;
             ShipStatisticPresenter = shipStatisticPresenter;
-            _displayEnemy = GetComponent<DisplayEnemy>();
+            _displayEnemy = transform.GetChild(INDEX_CHILD_DISPLAY_ENEMY).GetComponent<DisplayEnemy>();
             _displayEnemy.Initialize();
             AudioLocator = audioLocator;
         }

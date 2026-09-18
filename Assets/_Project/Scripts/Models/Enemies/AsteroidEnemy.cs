@@ -1,3 +1,4 @@
+using Asteroid.Audio;
 using Asteroid.Generation;
 using Asteroid.SpaceShip;
 using Asteroid.Statistic;
@@ -18,15 +19,11 @@ namespace Asteroid.Enemies
         [SerializeField] private int _countMeteorites = 3;
 
         private Vector2 _direction;
-        private IResourceLoader _resourceLoader;
-        private IInstanceCreator _instanceCreator;
         private Enemy _enemyPrefab;
 
-        public override void Initialize(IInstanceCreator instanceCreator, IResourceLoader resourceLoader,Transform transformEnd, GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticPresenter)
+        public override void Initialize(Transform transformEnd, GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticPresenter, IAudioService audioLocator)
         {
-            _resourceLoader = resourceLoader;
-            _instanceCreator = instanceCreator;
-            base.Initialize(instanceCreator,resourceLoader,transformEnd, gameOverPresenter, shipStatisticPresenter);    
+            base.Initialize(transformEnd,gameOverPresenter,shipStatisticPresenter, audioLocator);    
             _direction = (TransformEnd.position - transform.position).normalized;
         }
 
@@ -75,7 +72,7 @@ namespace Asteroid.Enemies
                 MeteoriteEnemy meteorite = Instantiate(_meteoriteExample, transform.position, Quaternion.identity);
                 EnemyController enemyController = meteorite.GetComponent<EnemyController>();
 
-                meteorite.Initialize(_instanceCreator,_resourceLoader,TransformEnd, GameOverPresenter, ShipStatisticPresenter);
+                meteorite.Initialize(TransformEnd,GameOverPresenter,ShipStatisticPresenter,AudioLocator);
                 enemyController.Initialize(TransformEnd);
 
                 meteorite.OnEnemyDestroyed += MeteoriteDestroyedHandler;
