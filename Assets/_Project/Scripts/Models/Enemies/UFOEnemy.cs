@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Asteroid.Enemies
@@ -5,7 +6,7 @@ namespace Asteroid.Enemies
     [RequireComponent(typeof(CircleCollider2D))]
     public class UFOEnemy : Enemy
     {
-        private const float MIN_LENGHT_REACT = 0.05f;
+        private const float MIN_LENGHT_REACT = 0.5f;
 
         public override void AddToStatistic()
         {
@@ -30,7 +31,7 @@ namespace Asteroid.Enemies
 
         private void Rotate(Vector2 direction)
         {
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             RigidBody2DEnemy.MoveRotation(angle);
         }
     }
