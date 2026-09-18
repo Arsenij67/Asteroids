@@ -7,7 +7,7 @@ namespace Asteroid.Services.Analytics
 {
     public interface  IAnalytics 
     {
-        public UniTask<bool> Initialize();
+        public UniTask<bool> Initialize(bool IsServiceAvailable);
         public void PushEvent<E>(string name, string parameterName, E parameterValue = default);
         public void PushUserProperty <P> (string name, P property = default);
         public void ResetAnalyticsData();

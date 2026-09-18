@@ -13,19 +13,14 @@ namespace Asteroid.Services.Analytics
         private bool _isInitialized = false;
         public bool AnalyticsEnabled => _isInitialized && IsConnected;
 
-        public async UniTask<bool> Initialize()
+        public async UniTask<bool> Initialize(bool IsServiceAvailable)
         {
             await IsConnectionAvailable();
-            var dependencyStatus = await FirebaseApp.CheckAndFixDependenciesAsync();
           
-            if (dependencyStatus == DependencyStatus.Available)
+            if (IsServiceAvailable)
             {
                 _isInitialized = true;
                 Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
-            }
-            else
-            {
-                Debug.LogError($"Could not resolve Firebase dependencies: {dependencyStatus}");
             }
             return AnalyticsEnabled;
         }

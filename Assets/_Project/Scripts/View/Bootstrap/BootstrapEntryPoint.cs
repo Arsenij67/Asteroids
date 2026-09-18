@@ -40,6 +40,7 @@ namespace Asteroid.Generation
         [Inject] private IInstanceCreator _instanceCreator;
         [Inject] private IResourceLoader _resourceLoader;
         [Inject] private IAudioService _audioLocator;
+        [Inject] private IServiceDependencyChecker _serviceDependencyChecker;
 
         private bool _analyticsReady;
         private bool _remoteConfigReady;
@@ -49,6 +50,7 @@ namespace Asteroid.Generation
         private bool _purchaseLoaded;
         private bool _cloudSaveLoaded;
         private bool _shopLoaded;
+        private bool _serviceCheckerLoaded;
 
         public async void Awake()
         {
@@ -57,6 +59,7 @@ namespace Asteroid.Generation
             _bootstrapUI.Initialize();
             await _sceneLoader.ReloadSceneAsync(_bootstrapSceneModel.StartSceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
+            _loadingTasks.Add(CheckServiceDependencies());
             _loadingTasks.Add(PrepareAdvertisementAsync());
             _loadingTasks.Add(PrepareAnalyticsAsync());
             _loadingTasks.Add(PrepareShopSceneAsync());
@@ -112,6 +115,7 @@ namespace Asteroid.Generation
             completedCount += Convert.ToInt16(_purchaseLoaded);
             completedCount += Convert.ToInt16(_shopLoaded);
             completedCount += Convert.ToInt16(_cloudSaveLoaded);
+            completedCount += Convert.ToInt16(_serviceCheckerLoaded);
             return _loadingProgress = (float)completedCount / _loadingTasks.Count();
         }
 
@@ -123,7 +127,7 @@ namespace Asteroid.Generation
 
         private async UniTask PrepareAnalyticsAsync()
         {
-            await _analytics.Initialize();
+            await _analytics.Initialize(_serviceDependencyChecker.IsAvailable);
             _analyticsReady = true;
         }
 
@@ -148,7 +152,7 @@ namespace Asteroid.Generation
 
         private async UniTask PrepareRemoteConfigAsync()
         {
-            await _remoteConfigService.Initialize();
+            await _remoteConfigService.Initialize(_serviceDependencyChecker.IsAvailable);
             _remoteConfigReady = true;
         }
 
@@ -173,6 +177,16 @@ namespace Asteroid.Generation
         {
             await _sceneLoader.SwitchSceneActivation(_bootstrapSceneModel.SceneGameName, true);
             await _sceneLoader.UnloadSceneAsync(_bootstrapSceneModel.StartSceneName);
+        }
+
+        private async UniTask CheckServiceDependencies()
+        {
+            _serviceCheckerLoaded = true;
+            await _serviceDependencyChecker.CheckAndFixDependenciesAsync();
+            if (!_serviceDependencyChecker.IsAvailable)
+            {
+                Debug.LogError($"Error init firebase {_serviceDependencyChecker.ErrorStatus}");
+            }
         }
     }
 }

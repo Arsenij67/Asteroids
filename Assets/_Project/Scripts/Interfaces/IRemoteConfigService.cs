@@ -11,7 +11,7 @@ namespace Asteroid.Services.RemoteConfig
 
         public T GetValue<T>(string key);
         public UniTask FetchAndActivateAsync();
-        public UniTask Initialize();
+        public UniTask Initialize(bool IsServiceAvailable);
         public UniTask SetUserAttributes(string[] keys, string[] values);
     }
 }

@@ -7,7 +7,7 @@ using ModestTree;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
+
 
 namespace Asteroid.Services.RemoteConfig
 {
@@ -18,20 +18,15 @@ namespace Asteroid.Services.RemoteConfig
         private bool _isInitialized = false;
         public bool IsInitialized => _isInitialized && IsConnected;
 
-        public async UniTask Initialize()
+        public async UniTask Initialize(bool isServiceAvailable)
         {
             await IsConnectionAvailable();
-            DependencyStatus statusResult =  await FirebaseApp.CheckAndFixDependenciesAsync().AsUniTask();
-            if (statusResult == DependencyStatus.Available)
+            if (isServiceAvailable)
             {
                 FirebaseRemoteConfig.DefaultInstance.OnConfigUpdateListener += HandleConfigUpdate;
                 await FetchAndActivateAsync();
                 _isInitialized = true;
                 Debug.Log("Remote Config Initialized!");
-            }
-            else
-            {
-                Debug.LogError($"Firebase init failed: {statusResult}");
             }
         }
 

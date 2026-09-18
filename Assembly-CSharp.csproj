@@ -69,6 +69,7 @@
     <Compile Include="Assets\_Project\Scripts\Presenters\SpaceShipPresenter.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\RemoteConfigDatas\RemoteConfigShip.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\RateGame.cs" />
+    <Compile Include="Assets\_Project\Scripts\ServicesCheckers\FirebaseServiceDependencyChecker.cs" />
     <Compile Include="Assets\_Project\Content\AnimatedCosmos\Example\MouseLook.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Bullets\LaserBullet.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\SpaceShipData.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Assets\_Project\Scripts\Models\RemoteConfigDatas\RemoteConfigFireball.cs" />
     <Compile Include="Assets\_Project\Scripts\View\Shop\ShopView.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\RemoteConfigDatas\AssignmentMode.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interfaces\IServiceDependencyChecker.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\SaveStrategy.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\Wallet.cs" />
     <Compile Include="Assets\_Project\Scripts\IAP\IAPAnalyzer.cs" />
@@ -210,6 +212,7 @@
     <None Include="Assets\Firebase\Plugins\Firebase.RemoteConfig.dll" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\AddressableAssetsData\link.xml" />
     <None Include="Assets\Firebase\Plugins\Google.MiniJson.dll" />
     <None Include="Assets\_Project\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />

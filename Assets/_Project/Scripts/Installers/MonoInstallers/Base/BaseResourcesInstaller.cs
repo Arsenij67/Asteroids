@@ -33,6 +33,7 @@ namespace Asteroid.Installers
             Container.Bind<LocalSaveMetaData>().FromMethod((context) => context.Container.Resolve<BaseResourceLoaderService>().LoadResource<LocalSaveMetaData>("ScriptableObjects/LocalSaveMetaData")).AsSingle();
             Container.Bind<SaveDataStrategyManager>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<SaveDataStrategyManager>()).AsSingle();
             Container.Bind<WIFIConnector>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<WIFIConnector>()).AsSingle();
+            Container.Bind<IServiceDependencyChecker>().To<FirebaseServiceDependencyChecker>().AsSingle(); 
         }
     }
 }
