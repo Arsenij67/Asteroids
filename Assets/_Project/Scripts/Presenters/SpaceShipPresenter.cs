@@ -5,8 +5,6 @@ using Asteroid.Weapon;
 using Asteroid.Inputs;
 using Asteroid.SpaceObjectActions;
 using System;
-using Asteroid.Generation;
-using System.Collections.Generic;
 
 namespace Asteroid.SpaceShip
 {
@@ -59,6 +57,7 @@ namespace Asteroid.SpaceShip
             _shipData = shipData;
             OnShipSpawned?.Invoke();
             _health = _shipData.Health;
+            _statisticsView.UpdateHealthProgressBar(_health);
         }
 
         private void TryRotate(float angleRotation)

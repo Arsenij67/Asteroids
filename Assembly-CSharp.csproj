@@ -179,6 +179,7 @@
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF-Mobile-2-Pass.shader" />
+    <None Include="Assets\AddressableAssetsData\link.xml" />
     <None Include="Assets\Firebase\Plugins\Firebase.Analytics.dll" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.Analytics.dll" />
@@ -212,7 +213,6 @@
     <None Include="Assets\Firebase\Plugins\Firebase.RemoteConfig.dll" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
-    <None Include="Assets\AddressableAssetsData\link.xml" />
     <None Include="Assets\Firebase\Plugins\Google.MiniJson.dll" />
     <None Include="Assets\_Project\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
@@ -1296,6 +1296,10 @@
       <HintPath>Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Mobile.AndroidLogcat.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Mobile.AndroidLogcat.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Services.Authentication.PlayerAccounts">
       <HintPath>Library\ScriptAssemblies\Unity.Services.Authentication.PlayerAccounts.dll</HintPath>
       <Private>False</Private>
@@ -1312,12 +1316,12 @@
       <HintPath>Library\ScriptAssemblies\Unity.Addressables.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.VisualScripting.Core">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.Services.CloudSave.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Services.CloudSave.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.Core">
+      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Services.Authentication.Editor.Shared">

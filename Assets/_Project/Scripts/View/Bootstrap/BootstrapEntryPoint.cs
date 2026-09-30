@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Zenject;
-using static Unity.VisualScripting.Member;
 
 namespace Asteroid.Generation
 {
@@ -57,9 +56,8 @@ namespace Asteroid.Generation
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
             _bootstrapUI.OnPlayerClickButtonExit += _applicationQuitter.Quit;
             _bootstrapUI.Initialize();
-            await _sceneLoader.ReloadSceneAsync(_bootstrapSceneModel.StartSceneName);
             _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
-            _loadingTasks.Add(CheckServiceDependencies());
+             await CheckServiceDependencies();
             _loadingTasks.Add(PrepareAdvertisementAsync());
             _loadingTasks.Add(PrepareAnalyticsAsync());
             _loadingTasks.Add(PrepareShopSceneAsync());
@@ -70,18 +68,18 @@ namespace Asteroid.Generation
             TickLoading();
             await UniTask.WhenAll(_loadingTasks);
 
-            var sfxPool =  _instanceCreator.CreateInstance <List<AudioSource>>();
-            for (int i = 0; i < _poolSize; i++)
-            {
-                var sourceObj =  _resourceLoader.Instantiate(_audioSourcePrefab.GetComponent<AudioSource>(),transform);
-                sourceObj.name = $"SFX_Source_{i}";
-                if (sourceObj.TryGetComponent<AudioSource>(out AudioSource voice))
-                {
-                    sfxPool.Add(voice);
-                }
-            }
-            _audioLocator.Initialize(_audioData, sfxPool);
-            _audioLocator.PlayBackgroundMusic();
+            //var sfxPool =  _instanceCreator.CreateInstance <List<AudioSource>>();
+            //for (int i = 0; i < _poolSize; i++)
+            //{
+            //    var sourceObj =  await _resourceLoader.InstantiateAsync(_audioSourcePrefab.GetComponent<AudioSource>(),transform);
+            //    sourceObj.name = $"SFX_Source_{i}";
+            //    if (sourceObj.TryGetComponent<AudioSource>(out AudioSource voice))
+            //    {
+            //        sfxPool.Add(voice);
+            //    }
+            //}
+            //_audioLocator.Initialize(_audioData, sfxPool);
+            //_audioLocator.PlayBackgroundMusic();
             _bootstrapUI.ActivateButtonStart();
         }
 
@@ -116,7 +114,7 @@ namespace Asteroid.Generation
             completedCount += Convert.ToInt16(_shopLoaded);
             completedCount += Convert.ToInt16(_cloudSaveLoaded);
             completedCount += Convert.ToInt16(_serviceCheckerLoaded);
-            return _loadingProgress = (float)completedCount / _loadingTasks.Count();
+            return _loadingProgress = (float)completedCount / (_loadingTasks.Count()+1);
         }
 
         private async UniTask PrepareAdvertisementAsync()

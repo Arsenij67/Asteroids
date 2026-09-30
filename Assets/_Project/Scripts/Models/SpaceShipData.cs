@@ -16,7 +16,6 @@ namespace Asteroid.SpaceShip
         private IRemoteConfigService _remoteConfigService;
         public float AngularSpeed 
         {
-
             get
             {
                 if (_assignmentMode.Equals(AssignmentMode.RemoteConfig))

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaaf45a6230eca64b80c460116df5839, type: 3}
   m_Name: SpaceShipData
   m_EditorClassIdentifier: 
-  _assignmentMode: 1
+  _assignmentMode: 0
   _angularSpeed: 300
   _speed: 5
   _health: 100

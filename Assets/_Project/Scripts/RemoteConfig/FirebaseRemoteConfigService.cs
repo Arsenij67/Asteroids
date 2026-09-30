@@ -1,7 +1,6 @@
 using Asteroid.Database.Connection;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
-using Firebase;
 using Firebase.RemoteConfig;
 using ModestTree;
 using System;
@@ -16,18 +15,21 @@ namespace Asteroid.Services.RemoteConfig
         public event Action OnConfigUpdated;
 
         private bool _isInitialized = false;
+
         public bool IsInitialized => _isInitialized && IsConnected;
 
         public async UniTask Initialize(bool isServiceAvailable)
         {
-            await IsConnectionAvailable();
             if (isServiceAvailable)
             {
+                await IsConnectionAvailable();
                 FirebaseRemoteConfig.DefaultInstance.OnConfigUpdateListener += HandleConfigUpdate;
-                await FetchAndActivateAsync();
                 _isInitialized = true;
-                Debug.Log("Remote Config Initialized!");
+                await FetchAndActivateAsync();
+           
+                ConfigValue configValue = FirebaseRemoteConfig.DefaultInstance.GetValue("ship_config");
             }
+
         }
 
         public T GetValue<T>(string key)

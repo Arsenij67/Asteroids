@@ -18,9 +18,9 @@ namespace Asteroid.Inputs
             if (_joystick == null)
                 return Vector2.zero;
 
-            Vector2 direction = _joystick.Direction;
+            Vector2 direction = _joystick.Direction.normalized;
 
-            return direction.normalized;
+            return direction;
         }
 
         public float ScanRotation()
@@ -34,7 +34,7 @@ namespace Asteroid.Inputs
                     float angle = Mathf.Atan2(direction.x, -direction.y) * Mathf.Rad2Deg;
                 return angle;
                 }
-                return 0f;
+            return 0f;
         }
     }
 }

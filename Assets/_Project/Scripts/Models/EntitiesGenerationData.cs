@@ -48,6 +48,7 @@ namespace Asteroid.Generation
                 if (_assignmentMode.Equals(AssignmentMode.RemoteConfig))
                 {
                     string shipJson = _remoteConfigService.GetValue<string>("ship_config");
+                    Debug.Log("your json: "+shipJson);
                     RemoteConfigShip _remoteConfigShip = JsonUtility.FromJson<RemoteConfigShip>(shipJson);
                     return _playerShips[_remoteConfigShip.ShipVariant].GetComponent<SpaceShipPresenter>();
                 }

@@ -1233,6 +1233,10 @@
       <HintPath>Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Mobile.AndroidLogcat.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Mobile.AndroidLogcat.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Services.Authentication.PlayerAccounts">
       <HintPath>Library\ScriptAssemblies\Unity.Services.Authentication.PlayerAccounts.dll</HintPath>
       <Private>False</Private>
@@ -1249,12 +1253,12 @@
       <HintPath>Library\ScriptAssemblies\Unity.Addressables.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.VisualScripting.Core">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.Services.CloudSave.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Services.CloudSave.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.Core">
+      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Services.Authentication.Editor.Shared">

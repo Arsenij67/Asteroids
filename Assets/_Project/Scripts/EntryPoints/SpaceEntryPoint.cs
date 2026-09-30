@@ -111,6 +111,7 @@ namespace Asteroid.Generation
            
           _deviceInput.Initialize(_joystick);
           _serviceLocator.Initialize(_audioData, FillUpAudioPull());
+          _spaceShipData.Initialize(_remoteConfigService);
           _entitiesGenerationFactory.Initialize(
           _serviceLocator,
           _weaponView,

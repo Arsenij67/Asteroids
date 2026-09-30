@@ -17,11 +17,9 @@ namespace Asteroid.Services.Analytics
         {
             await IsConnectionAvailable();
           
-            if (IsServiceAvailable)
-            {
-                _isInitialized = true;
-                Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
-            }
+            _isInitialized = true;
+            Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
+           
             return AnalyticsEnabled;
         }
 
