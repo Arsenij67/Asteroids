@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{56D710A2-3B09-32A4-E032-F4DBA21C1726}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zenject", "Zenject.csproj", "{8F9F474A-824A-2397-6CA9-FAD021E49CFE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zenject-IntegrationTests-Editor", "Zenject-IntegrationTests-Editor.csproj", "{11205643-6BAA-BE11-2931-480911DED82C}"
@@ -25,8 +27,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DOTween.Modules", "DOTween.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zenject-TestFramework", "Zenject-TestFramework.csproj", "{06CA2FD7-A1B9-6604-C130-5E3599B0F530}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{56D710A2-3B09-32A4-E032-F4DBA21C1726}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniTask.TextMeshPro", "UniTask.TextMeshPro.csproj", "{896A2773-4907-36D5-5AA6-7BE3526F1E98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zenject-PoolMonitor-Editor", "Zenject-PoolMonitor-Editor.csproj", "{3E8E72F0-F794-647A-C2D3-C74BF47F4627}"
@@ -41,6 +41,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{56D710A2-3B09-32A4-E032-F4DBA21C1726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56D710A2-3B09-32A4-E032-F4DBA21C1726}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56D710A2-3B09-32A4-E032-F4DBA21C1726}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56D710A2-3B09-32A4-E032-F4DBA21C1726}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8F9F474A-824A-2397-6CA9-FAD021E49CFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8F9F474A-824A-2397-6CA9-FAD021E49CFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F9F474A-824A-2397-6CA9-FAD021E49CFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -89,10 +93,6 @@ Global
 		{06CA2FD7-A1B9-6604-C130-5E3599B0F530}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06CA2FD7-A1B9-6604-C130-5E3599B0F530}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06CA2FD7-A1B9-6604-C130-5E3599B0F530}.Release|Any CPU.Build.0 = Release|Any CPU
-		{56D710A2-3B09-32A4-E032-F4DBA21C1726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{56D710A2-3B09-32A4-E032-F4DBA21C1726}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{56D710A2-3B09-32A4-E032-F4DBA21C1726}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{56D710A2-3B09-32A4-E032-F4DBA21C1726}.Release|Any CPU.Build.0 = Release|Any CPU
 		{896A2773-4907-36D5-5AA6-7BE3526F1E98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{896A2773-4907-36D5-5AA6-7BE3526F1E98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{896A2773-4907-36D5-5AA6-7BE3526F1E98}.Release|Any CPU.ActiveCfg = Release|Any CPU

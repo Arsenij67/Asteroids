@@ -3,17 +3,11 @@
     "m_SelectedProcess": {
         "deviceId": "RFCY80MJXCY",
         "name": "com.Oasis.Asteroids",
-        "processId": 15073,
+        "processId": 5798,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownProcessesForSerialization": [
-        {
-            "deviceId": "RFCY80MJXCY",
-            "name": "com.Oasis.Asteroids",
-            "processId": 20643,
-            "exited": true
-        },
         {
             "deviceId": "RFCY80MJXCY",
             "name": "com.Oasis.Asteroids",
@@ -42,6 +36,12 @@
             "deviceId": "RFCY80MJXCY",
             "name": "com.Oasis.Asteroids",
             "processId": 15073,
+            "exited": true
+        },
+        {
+            "deviceId": "RFCY80MJXCY",
+            "name": "com.Oasis.Asteroids",
+            "processId": 5798,
             "exited": false
         }
     ],
