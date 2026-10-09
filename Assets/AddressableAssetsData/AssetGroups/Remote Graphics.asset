@@ -25,6 +25,26 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 16d5cfc8252347a4e85b7f236801c2ae
+    m_Address: WindowSaveMode
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1740469607c5ef74a9dce354e6c48998
+    m_Address: Meteorite
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1deb9489119882c40a6ecf1f397a93a0
+    m_Address: RestartView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2f445512d9b623f4fb07a783363d81b7
+    m_Address: Assets/_Project/Prefabs/UI/Bootstrap/StartGameButton
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3481901475fadbe4fb1b179b06134dff
     m_Address: AsteroidDisplay
     m_ReadOnly: 0
@@ -50,8 +70,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c9cfa26abfee488c85f1582747f6a02
+    m_Address: RocketEvadeScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8d18f6d2b73e89b4882fbf3bb5aedb4b
     m_Address: Assets/_Project/Content/spaceship_sprites/texture/spaceships.psd
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91a39ae328b0ae44aafaffc31c0f1668
+    m_Address: UIStatistic
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -70,8 +100,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bde90569afa499b46a111098ce9f2ea3
+    m_Address: BootstrapScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e28212ea638f7f84190f01ecb9839a2e
     m_Address: UFOEnemy
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e353d18c76250f44fa5c11547674ad16
+    m_Address: Shop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e7432cbcc284f1a4495e442dfdf33cb7
+    m_Address: Assets/_Project/Prefabs/UI/Bootstrap/SceneLoadSlider
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
