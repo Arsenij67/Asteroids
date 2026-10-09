@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2327db52289400341a6d04988d55945e, type: 3}
+  m_Name: FirebaseSettings
+  m_EditorClassIdentifier: 
+  _apiKey: AIzaSyBmXtz5puDmtUILMLmwR1-X4lMcvxOp8Og
+  _authDomain: 
+  _projectId: asteroid-480d0
+  _storageBucket: asteroid-480d0.firebasestorage.app
+  _messagingSenderId: 
+  _appId: 1:616408021951:android:e89292d2c9efe7f0187f0a
+  _measurementId: 
+  _useContentSecurityPolicies: 0
+  _includeAuth: 0
+  _includeAuthSettings:
+    _useGoogleAuthProvider: 0
+    _useGoogleAuthProviderSettings:
+      _scopes: []
+    _useAppleAuthProvider: 0
+    _useAppleAuthProviderSettings:
+      _scopes: []
+    _useFacebookAuthProvider: 0
+    _useFacebookAuthProviderSettings:
+      _scopes: []
+    _useGithubAuthProvider: 0
+    _useGithubAuthProviderSettings:
+      _scopes: []
+    _useTwitterAuthProvider: 0
+    _useTwitterAuthProviderSettings:
+      _scopes: []
+    _useMicrosoftAuthProvider: 0
+    _useMicrosoftAuthProviderSettings:
+      _scopes: []
+    _useYahooAuthProvider: 0
+    _useYahooAuthProviderSettings:
+      _scopes: []
+  _includeAnalytics: 1
+  _includeAnalyticsSettings:
+    _dataLayerName: dataLayerFirebaseWebGL
+  _includeAppCheck: 1
+  _includeAppCheckSettings:
+    _providerType: 0
+    _reCaptchaV3PublicKey: 
+    _reCaptchaEnterprisePublicKey: 
+    _isTokenAutoRefreshEnabled: 0
+  _includeFunctions: 0
+  _includeFunctionsSettings:
+    _regionOnCustomDomain: 
+  _includeMessaging: 0
+  _includeMessagingSettings:
+    _enableServiceWorker: 0
+  _includeRemoteConfig: 1
+  _includeInstallations: 0
+  _includePerformance: 0
+  _includeStorage: 0
+  _includeStorageSettings:
+    _bucketUrl: 

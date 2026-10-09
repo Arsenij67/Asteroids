@@ -125,7 +125,7 @@ namespace Asteroid.Generation
 
         private async UniTask PrepareAnalyticsAsync()
         {
-            await _analytics.Initialize(_serviceDependencyChecker.IsAvailable);
+            await _analytics.Initialize(_serviceDependencyChecker);
             _analyticsReady = true;
         }
 

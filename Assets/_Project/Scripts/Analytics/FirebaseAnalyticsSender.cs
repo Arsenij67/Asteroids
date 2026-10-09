@@ -1,25 +1,29 @@
 using UnityEngine;
-using Firebase;
-using Firebase.Analytics;
-using System.Threading.Tasks;
+using FirebaseWebGL;
 using Cysharp.Threading.Tasks;
 using Zenject;
 using Asteroid.Database.Connection;
+using System.Collections.Generic;
 
 namespace Asteroid.Services.Analytics
 {
     public class FirebaseAnalyticsSender : WIFIConnector,IAnalytics
     {
+        private FirebaseApp _firebaseApplication;
         private bool _isInitialized = false;
         public bool AnalyticsEnabled => _isInitialized && IsConnected;
 
-        public async UniTask<bool> Initialize(bool IsServiceAvailable)
+        public async UniTask<bool> Initialize (IServiceDependencyChecker application)
         {
             await IsConnectionAvailable();
-          
+            if (!application.IsAvailable)
+            {
+                return await UniTask.FromResult(false);
+            }
+
+            _firebaseApplication = application as FirebaseApp;
             _isInitialized = true;
-            Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
-           
+            _firebaseApplication.Analytics.SetAnalyticsCollectionEnabled(true);
             return AnalyticsEnabled;
         }
 
@@ -31,10 +35,9 @@ namespace Asteroid.Services.Analytics
                 return;
             }
 
-            Firebase.Analytics.FirebaseAnalytics.LogEvent(
-                eventName,
-                parameterName,
-                parameterValue.ToString()
+            _firebaseApplication.Analytics.LogEvent
+            (
+                eventName, new Dictionary<string,object> () { { parameterName, parameterValue.ToString() } }
             );
         }
 
@@ -46,18 +49,10 @@ namespace Asteroid.Services.Analytics
                 return;
             }
 
-            Firebase.Analytics.FirebaseAnalytics.SetUserProperty(
-                propertyName,
-                propertyValue.ToString()
+            _firebaseApplication.Analytics.SetUserProperties
+            (
+              new Dictionary<string, string>(){ { propertyName, propertyValue.ToString()}}
             );
-        }
-
-        public void ResetAnalyticsData()
-        {
-            if (!AnalyticsEnabled) return;
-
-            Firebase.Analytics.FirebaseAnalytics.ResetAnalyticsData();
-            Debug.Log("Firebase Analytics data reset");
         }
     }
 }
