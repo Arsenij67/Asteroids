@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class AddressableBundleLoader : IResourceLoader, IDisposable
+public class AddressableBundleLoader : IResourceLoader
 {
     private readonly Dictionary<string, AsyncOperationHandle> _handles = new();
 
@@ -189,18 +189,5 @@ public class AddressableBundleLoader : IResourceLoader, IDisposable
     public bool IsResourceLoaded(string path)
     {
         return _handles.ContainsKey(path) && _handles[path].IsValid();
-    }
-
-    public void Dispose()
-    {
-        if (Caching.ClearCache())
-        {
-            Debug.LogWarning($"[AddressablesBundleLoader] кэш очищен");
-        }
-
-        else
-        {
-            Debug.LogWarning($"[AddressablesBundleLoader] ошибка очистки кэша");
-        }
     }
 }

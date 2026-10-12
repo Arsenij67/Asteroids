@@ -1,6 +1,5 @@
 using Asteroid.Statistic;
 using Asteroid.Weapon;
-using StandardFirebase = Firebase.Analytics;
 using System;
 using UnityEngine;
 
@@ -22,25 +21,25 @@ namespace Asteroid.Services.Analytics
 
         public void SendEventGameStart()
         {
-            _analytics.PushEvent(StandardFirebase.FirebaseAnalytics.EventLogin, StandardFirebase.FirebaseAnalytics.ParameterStartDate, DateTime.Now);
-            Debug.Log($"Отправлено уведомление о начале игры: {StandardFirebase.FirebaseAnalytics.EventLogin} {StandardFirebase.FirebaseAnalytics.ParameterStartDate} {DateTime.Now}");
+            _analytics.PushEvent(FirebaseAnalytics.EventLogin, FirebaseAnalytics.ParameterStartDate, DateTime.Now);
+            Debug.Log($"Отправлено уведомление о начале игры: {FirebaseAnalytics.EventLogin} {FirebaseAnalytics.ParameterStartDate} {DateTime.Now}");
         }
 
         public void SendEventGameEnd()
         {
-            StandardFirebase.Parameter[] parametersValue =
+            Parameter[] parametersValue =
 {
-            new StandardFirebase .Parameter("count_shoots", _shipStatisticModel.CountShoots),
-            new StandardFirebase .Parameter("count_laser_shoots", _shipStatisticModel.CountShootsLaser.ToString()),
-            new StandardFirebase .Parameter("enemies_destroyed", _shipStatisticModel.CountEnemiesDestroyed)
+            new  Parameter("count_shoots", _shipStatisticModel.CountShoots),
+            new  Parameter("count_laser_shoots", _shipStatisticModel.CountShootsLaser.ToString()),
+            new Parameter("enemies_destroyed", _shipStatisticModel.CountEnemiesDestroyed)
             };
-            _analytics.PushEvent(StandardFirebase.FirebaseAnalytics.EventLevelEnd, StandardFirebase.FirebaseAnalytics.ParameterLevelName, parametersValue);
+            _analytics.PushEvent(FirebaseAnalytics.EventLevelEnd, FirebaseAnalytics.ParameterLevelName, parametersValue);
             Debug.Log($"Отправлено уведомление о конце игры: {_shipStatisticModel.CountShoots} {_shipStatisticModel.CountShootsLaser.ToString()} {_shipStatisticModel.CountEnemiesDestroyed}");
         }
 
         public void SendEventLaserUsed()
         {
-            _analytics.PushEvent(StandardFirebase.FirebaseAnalytics.EventSelectItem, "laser_used_now", DateTime.UtcNow);
+            _analytics.PushEvent(FirebaseAnalytics.EventSelectItem, "laser_used_now", DateTime.UtcNow);
             Debug.Log($"Отправлено уведомление об использовании лазера: !");
         }
 

@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2327db52289400341a6d04988d55945e, type: 3}
   m_Name: FirebaseSettings
   m_EditorClassIdentifier: 
-  _apiKey: AIzaSyBmXtz5puDmtUILMLmwR1-X4lMcvxOp8Og
-  _authDomain: 
+  _apiKey: AIzaSyAO69rme9PpfoQilylQI0RpyN5R5Kpte8I
+  _authDomain: asteroid-480d0.firebaseapp.com
   _projectId: asteroid-480d0
   _storageBucket: asteroid-480d0.firebasestorage.app
-  _messagingSenderId: 
-  _appId: 1:616408021951:android:e89292d2c9efe7f0187f0a
-  _measurementId: 
+  _messagingSenderId: 616408021951
+  _appId: 1:616408021951:web:b354dc786a58368d187f0a
+  _measurementId: G-ZCP5LY36WP
   _useContentSecurityPolicies: 0
   _includeAuth: 0
   _includeAuthSettings:

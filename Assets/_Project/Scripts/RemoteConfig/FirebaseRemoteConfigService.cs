@@ -1,7 +1,6 @@
 using Asteroid.Database.Connection;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
-using Firebase.RemoteConfig;
 using FirebaseWebGL;
 using ModestTree;
 using Newtonsoft.Json;
