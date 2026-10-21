@@ -33,7 +33,7 @@ namespace Asteroid.Database.Connection
         {
             string[] _dnsAddresses = new string[] { "https://yandex.ru", "1.1.1.1", "www.microsoft.com" };
             bool isConnected = false;
-            const int TIME_WAIT_CALLBACK = 2;
+            const int TIME_WAIT_CALLBACK = 1;
 
             foreach (string address in _dnsAddresses)
             {
@@ -52,13 +52,15 @@ namespace Asteroid.Database.Connection
                     }
                 }
 
-                catch (UnityWebRequestException ex)
+                catch (UnityWebRequestException exception)
                 {
+                    IsConnected = isConnected;
                     return isConnected;
                 }
 
-                catch (Exception ex)
+                catch (Exception exception)
                 {
+                    IsConnected = isConnected;
                     return isConnected;
                 }
             }
@@ -86,7 +88,7 @@ namespace Asteroid.Database.Connection
 
         public async UniTask WaitForDisconnection()
         {
-            const int TIME_WAIT_CALLBACK = 1 * 1000;
+            const int TIME_WAIT_CALLBACK = 1*1000;
             _cancellationToken = _instanceLoader.CreateInstance<CancellationToken>();
             while (!_cancellationToken.IsCancellationRequested)
             {

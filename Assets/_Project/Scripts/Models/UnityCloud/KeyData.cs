@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Asteroid.Database
 {
     public struct KeyData

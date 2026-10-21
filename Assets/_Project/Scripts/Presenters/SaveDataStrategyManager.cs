@@ -24,7 +24,7 @@ namespace Asteroid.Database
         private CloudDataPresenter _cloudSavePresenter;
         private IResourceLoader _resourceLoaderService;
         private IInstanceCreator _instanceCreator;
-        private WIFIConnector _WIFIConnector;
+        private WIFIConnector _wifiConnector;
 
         public async UniTask Initialize(WIFIConnector wifiConnector, IInstanceCreator instanceCreator, IResourceLoader resourceLoaderService, SaveModeUI saveModeUIPrefab, RectTransform parentForUI, params SaveStrategy[] saveStrategies)
         {
@@ -32,7 +32,7 @@ namespace Asteroid.Database
             _saveModeUIPrefab = saveModeUIPrefab;
             _resourceLoaderService = resourceLoaderService;
             _parentForUI = parentForUI;
-            _WIFIConnector = wifiConnector;
+            _wifiConnector = wifiConnector;
             _instanceCreator = instanceCreator;
             _cloudSavePresenter = _saveStrategies.FirstOrDefault((strategy) => strategy is CloudDataPresenter) as CloudDataPresenter;
             _localSavePresenter = _saveStrategies.FirstOrDefault((strategy) => strategy is LocalSaveStrategy) as LocalSaveStrategy;
@@ -45,11 +45,12 @@ namespace Asteroid.Database
 
             await DefineStrategy(_saveModeChoice);
 
-            _WIFIConnector.OnInternetConnected += TryOpenWindowSaveMode;
-            _WIFIConnector.OnInternetConnected += DefineStrategy;
-            _WIFIConnector.OnInternetConnected += DefineTypeConnectionWaiting;
-            _WIFIConnector.OnInternetDisconnected += DefineStrategy;
-            _WIFIConnector.OnInternetDisconnected += DefineTypeConnectionWaiting;
+            _wifiConnector.OnInternetConnected += TryOpenWindowSaveMode;
+            _wifiConnector.OnInternetConnected += DefineStrategy;
+            _wifiConnector.OnInternetConnected += DefineTypeConnectionWaiting;
+
+            _wifiConnector.OnInternetDisconnected += DefineStrategy;
+            _wifiConnector.OnInternetDisconnected += DefineTypeConnectionWaiting;
         }
 
         public async UniTask AddAndRefreshCoins(int coinsToAdd)
@@ -72,19 +73,20 @@ namespace Asteroid.Database
 
         public void Dispose()
         {
-            _WIFIConnector.Dispose();
-            _WIFIConnector.OnInternetConnected -= TryOpenWindowSaveMode;
-            _WIFIConnector.OnInternetConnected -= DefineStrategy;
-            _WIFIConnector.OnInternetConnected -= DefineTypeConnectionWaiting;
-            _WIFIConnector.OnInternetDisconnected -= DefineStrategy;
-            _WIFIConnector.OnInternetDisconnected -= DefineTypeConnectionWaiting;
+            _wifiConnector.Dispose();
+            _wifiConnector.OnInternetConnected -= TryOpenWindowSaveMode;
+            _wifiConnector.OnInternetConnected -= DefineStrategy;
+            _wifiConnector.OnInternetConnected -= DefineTypeConnectionWaiting;
+
+            _wifiConnector.OnInternetDisconnected -= DefineStrategy;
+            _wifiConnector.OnInternetDisconnected -= DefineTypeConnectionWaiting;
         }
 
         private UniTask TrySynchronizeData(SaveStrategy cloudStrategy, SaveStrategy localStrategy)
         {
             bool localSaveMoreThanCloudSave = cloudStrategy.LastSaveTime < localStrategy.LastSaveTime;
 
-            if (_WIFIConnector.IsConnected && localSaveMoreThanCloudSave)
+            if (_wifiConnector.IsConnected && localSaveMoreThanCloudSave)
             {
                 DataSave synchronizedLocalData = FillUpDataSave(localStrategy);
                 return cloudStrategy.UpdateAllData(synchronizedLocalData);
@@ -112,10 +114,10 @@ namespace Asteroid.Database
         {
             _saveModeChoice = newSaveChoice;
 
-             await _WIFIConnector.IsConnectionAvailable();
+             await _wifiConnector.IsConnectionAvailable();
              await TrySynchronizeData(_cloudSavePresenter, _localSavePresenter);
 
-            if (newSaveChoice.Equals(SaveChoice.UseCloud) && _WIFIConnector.IsConnected)
+            if (newSaveChoice.Equals(SaveChoice.UseCloud) && _wifiConnector.IsConnected)
             {
                 _currentSaveStrategy = _cloudSavePresenter;
 
@@ -127,7 +129,7 @@ namespace Asteroid.Database
 
             }
 
-            else if (_WIFIConnector.IsConnected)
+            else if (_wifiConnector.IsConnected)
             {
                 _currentSaveStrategy = _cloudSavePresenter;
             }
@@ -142,16 +144,16 @@ namespace Asteroid.Database
 
         private async UniTask DefineTypeConnectionWaiting()
         {
-            await _WIFIConnector.IsConnectionAvailable();
+            await _wifiConnector.IsConnectionAvailable();
      
-            if (_WIFIConnector.IsConnected)
+            if (_wifiConnector.IsConnected)
             {
-                _WIFIConnector.WaitForDisconnection();
+                _wifiConnector.WaitForDisconnection();
             }
 
             else
             {
-                _WIFIConnector.WaitForConnection();
+                _wifiConnector.WaitForConnection();
             }
         }
 

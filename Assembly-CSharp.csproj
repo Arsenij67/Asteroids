@@ -179,7 +179,6 @@
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF-Mobile-2-Pass.shader" />
-    <None Include="Assets\AddressableAssetsData\link.xml" />
     <None Include="Assets\Firebase\Plugins\Firebase.Analytics.dll" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.Analytics.dll" />

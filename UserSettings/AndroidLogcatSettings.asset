@@ -3,7 +3,7 @@
     "m_SelectedProcess": {
         "deviceId": "RFCY80MJXCY",
         "name": "com.Oasis.Asteroids",
-        "processId": 15073,
+        "processId": 26548,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -11,37 +11,31 @@
         {
             "deviceId": "RFCY80MJXCY",
             "name": "com.Oasis.Asteroids",
-            "processId": 20643,
-            "exited": true
-        },
-        {
-            "deviceId": "RFCY80MJXCY",
-            "name": "com.Oasis.Asteroids",
-            "processId": 13332,
-            "exited": true
-        },
-        {
-            "deviceId": "RFCY80MJXCY",
-            "name": "com.Oasis.Asteroids",
-            "processId": 13949,
-            "exited": true
-        },
-        {
-            "deviceId": "RFCY80MJXCY",
-            "name": "com.sec.android.app.launcher",
-            "processId": 3935,
-            "exited": false
-        },
-        {
-            "deviceId": "RFCY80MJXCY",
-            "name": "com.Oasis.Asteroids",
-            "processId": 14354,
-            "exited": true
-        },
-        {
-            "deviceId": "RFCY80MJXCY",
-            "name": "com.Oasis.Asteroids",
             "processId": 15073,
+            "exited": true
+        },
+        {
+            "deviceId": "RFCY80MJXCY",
+            "name": "com.Oasis.Asteroids",
+            "processId": 5798,
+            "exited": true
+        },
+        {
+            "deviceId": "RFCY80MJXCY",
+            "name": "com.Oasis.Asteroids",
+            "processId": 18270,
+            "exited": true
+        },
+        {
+            "deviceId": "RFCY80MJXCY",
+            "name": "com.Oasis.Asteroids",
+            "processId": 21321,
+            "exited": true
+        },
+        {
+            "deviceId": "RFCY80MJXCY",
+            "name": "com.Oasis.Asteroids",
+            "processId": 26548,
             "exited": false
         }
     ],
