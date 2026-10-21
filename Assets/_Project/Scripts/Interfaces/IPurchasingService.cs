@@ -10,7 +10,7 @@ namespace Asteroid.Services.IAP
 {
     public interface IPurchasingService : IDisposable
     {
-        public event Func<int, UniTask> OnPlayerBought100Coins;
+        public event Func<int, UniTask> OnPlayerBoughtCoins;
         public event Func<bool, UniTask> OnPlayerBoughtNoAds;
         public UniTask Initialize();
         public void BuyNoAds();

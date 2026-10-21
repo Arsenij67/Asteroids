@@ -28,8 +28,9 @@ namespace Asteroid.Services.UnityCloud
         public async UniTask Initialize(DataSave dataSave, WIFIConnector wIFIConnector)
         {
             _WIFIConnector = wIFIConnector;
-
+#if !UNITY_WEBGL
             await _WIFIConnector.IsConnectionAvailable();
+#endif
 
             if (!_WIFIConnector.IsConnected || _isInitialized || _isInitializing) return;
 

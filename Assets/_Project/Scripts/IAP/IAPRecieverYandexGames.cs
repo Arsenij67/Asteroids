@@ -1,11 +1,8 @@
 
 using Cysharp.Threading.Tasks;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Purchasing;
 using YG;
-using YG.Utils.Pay;
 
 namespace Asteroid.Services.IAP
 {
@@ -16,25 +13,25 @@ namespace Asteroid.Services.IAP
 
         public bool IsInitialized { get; private set; }
 
-        public event Func<int, UniTask> OnPlayerBought100Coins;
+        public event Func<int, UniTask> OnPlayerBoughtCoins;
         public event Func<bool, UniTask> OnPlayerBoughtNoAds;
 
         private readonly int _added100Coins = 100;
         private readonly bool _advertisementIsCanceled = true;
-        public UniTask Initialize()
+
+        public async UniTask Initialize()
         {
+            await UniTask.WaitUntil(() => YG2.isSDKEnabled);
             YG2.ConsumePurchases();
             SubscribeListeners();
             YG2.SyncInitialization();
-            if (IsInitialized) return UniTask.CompletedTask;
-            return UniTask.CompletedTask;
         }
 
         private void SuccessPurchased(string id)
         {
             if (id.Equals(COINS_100_ID))
             {
-                OnPlayerBought100Coins?.Invoke(_added100Coins);
+                OnPlayerBoughtCoins?.Invoke(_added100Coins);
             }
             else if (id.Equals(NO_ADS_ID))
             {

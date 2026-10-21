@@ -111,8 +111,9 @@ namespace Asteroid.Database
         private async UniTask DefineStrategy(SaveChoice newSaveChoice = SaveChoice.NoChoice)
         {
             _saveModeChoice = newSaveChoice;
-
+#if !UNITY_WEBGL
              await _WIFIConnector.IsConnectionAvailable();
+#endif
              await TrySynchronizeData(_cloudSavePresenter, _localSavePresenter);
 
             if (newSaveChoice.Equals(SaveChoice.UseCloud) && _WIFIConnector.IsConnected)
@@ -142,8 +143,9 @@ namespace Asteroid.Database
 
         private async UniTask DefineTypeConnectionWaiting()
         {
+#if !UNITY_WEBGL
             await _WIFIConnector.IsConnectionAvailable();
-     
+    
             if (_WIFIConnector.IsConnected)
             {
                 _WIFIConnector.WaitForDisconnection();
@@ -151,11 +153,15 @@ namespace Asteroid.Database
 
             else
             {
+ 
                 _WIFIConnector.WaitForConnection();
+
             }
+#endif
         }
 
-       private async UniTask TryOpenWindowSaveMode()
+
+        private async UniTask TryOpenWindowSaveMode()
         {
             if (!ChoiceIsMade)
             {

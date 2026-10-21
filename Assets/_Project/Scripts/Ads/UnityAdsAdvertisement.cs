@@ -30,7 +30,9 @@ namespace Asteroid.Services.UnityAdvertisement
 
         public async UniTask Initialize(params object[] parameters)
         {
+        #if !UNITY_WEBGL
             await IsConnectionAvailable();
+        #endif
             if (Advertisement.isSupported)
             {
                 Advertisement.Initialize(ApplicationId, (bool)parameters[0], this);

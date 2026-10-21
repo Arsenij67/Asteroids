@@ -28,8 +28,9 @@ namespace Asteroid.Services.RemoteConfig
                 await  UniTask.CompletedTask;
             }
             _firebaseApplication = application as FirebaseApp;
-
+#if !UNITY_WEBGL
             await IsConnectionAvailable();
+#endif
             _firebaseApplication.RemoteConfig.OnConfigUpdate(HandleConfigUpdate);
             _isInitialized = true;
             await FetchAndActivateAsync();

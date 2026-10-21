@@ -15,7 +15,9 @@ namespace Asteroid.Services.Analytics
 
         public async UniTask<bool> Initialize (IServiceDependencyChecker application)
         {
+#if !UNITY_WEBGL
             await IsConnectionAvailable();
+#endif
             if (!application.IsAvailable)
             {
                 return await UniTask.FromResult(false);

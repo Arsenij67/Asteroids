@@ -31,7 +31,7 @@ namespace Asteroid.Database.Connection
 
         public async UniTask<bool> IsConnectionAvailable()
         {
-            string[] _dnsAddresses = new string[] { "https://yandex.ru", "1.1.1.1", "www.microsoft.com" };
+            string[] _dnsAddresses = new string[] { "https://www.google.com", "https://www.microsoft.com" };
             bool isConnected = false;
             const int TIME_WAIT_CALLBACK = 2;
 
@@ -39,7 +39,7 @@ namespace Asteroid.Database.Connection
             {
                 try
                 {
-                    using (UnityWebRequest request = UnityWebRequest.Head(address))
+                    using (UnityWebRequest request = UnityWebRequest.Get(address))
                     {
                         request.timeout = TIME_WAIT_CALLBACK;
                         await request.SendWebRequest();

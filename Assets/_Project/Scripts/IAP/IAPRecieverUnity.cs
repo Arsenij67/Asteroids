@@ -13,7 +13,7 @@ namespace Asteroid.Services.IAP
         private const string NO_ADS_ID = "NO_ADS";
         private const string COINS_100_ID = "COINS_100";
 
-        public event Func<int, UniTask> OnPlayerBought100Coins;
+        public event Func<int, UniTask> OnPlayerBoughtCoins;
         public event Func<bool, UniTask> OnPlayerBoughtNoAds;
 
         public bool IsInitialized { get; private set; }
@@ -94,7 +94,7 @@ namespace Asteroid.Services.IAP
             {
                 if (product.Product.definition.id.Equals(COINS_100_ID))
                 {
-                   OnPlayerBought100Coins?.Invoke(_added100Coins);
+                   OnPlayerBoughtCoins?.Invoke(_added100Coins);
                 }
                 else if (product.Product.definition.id.Equals(NO_ADS_ID))
                 {
