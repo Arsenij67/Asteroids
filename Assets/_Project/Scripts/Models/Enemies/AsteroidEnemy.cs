@@ -61,7 +61,7 @@ namespace Asteroid.Enemies
 
             float angleStep = angleRange * Mathf.Deg2Rad / (_countMeteorites--);
 
-            float startAngle = baseAngle - (angleRange * Mathf.Deg2Rad);
+            float startAngle = baseAngle;
 
             for (int i = 0; i < _countMeteorites; ++i)
             {

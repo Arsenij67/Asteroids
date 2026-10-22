@@ -137,7 +137,10 @@
     <Compile Include="Assets\_Project\Scripts\Interfaces\IRemoteSavable.cs" />
     <Compile Include="Assets\_Project\Scripts\RemoteConfig\FirebaseRemoteConfigService.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\MeteoriteEnemy.cs" />
+<<<<<<< Updated upstream
     <Compile Include="Assets\_Project\Scripts\Models\Audio\AudioData.cs" />
+=======
+>>>>>>> Stashed changes
     <Compile Include="Assets\_Project\Scripts\Models\EntitiesGenerationData.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\Base\BaseResourcesInstaller.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\Garage.cs" />
