@@ -36,8 +36,10 @@ namespace Asteroid.UI
             _resourceLoader = resourceLoader;
         }
 
-        public UniTask OpenWindow()
+        public UniTask OpenWindow(string textForProduct, Sprite imageForProduct)
         {
+            _imageProduct.sprite = imageForProduct;
+            _textProductTitle.text = textForProduct;
             Sequence openAnimationAsync = DOTween.Sequence()
                 .Append(transform.DOPunchScale(Vector2.one, PUNCH_DURATION, COUNT_PUNCHES, DEVIATION))
                 .Join(transform.DORotate(transform.up,ANGLE_ROTATION));

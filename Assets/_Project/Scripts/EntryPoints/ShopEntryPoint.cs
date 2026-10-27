@@ -21,6 +21,8 @@ namespace Asteroid.EntryPoints
         [Inject] private DataSave _dataSave;
         [Inject] private LocalSaveMetaData _localSave;
         [Inject] private WIFIConnector _wiFiChecker;
+        [Inject] private PurchasesResultPresenter _purchasesResultPresenter;
+        [Inject] private PurchasesResultData _purchasesResultData;
 
         [SerializeField] private SaveModeUI _saveModeUIPrefab;
         [SerializeField] RectTransform _parentUI;
@@ -33,7 +35,10 @@ namespace Asteroid.EntryPoints
             await _localSaveStrategy.Initialize(_dataSave,_localSave, _instanceLoader,_shopUI);
             await _cloudSaveStrategy.Initialize(_wiFiChecker, _dataSave, _instanceLoader, _remoteSavable, _shopUI);
             await _saveDataStrategy.Initialize(_wiFiChecker,_instanceLoader,_resourceLoaderService,_saveModeUIPrefab,_parentUI,_cloudSaveStrategy, _localSaveStrategy);
+            _purchasesResultPresenter.Initialize(_purchasesResultData,_parentUI,_resourceLoaderService);
 
+            _purchaseService.OnPlayerBoughtNoAds += _purchasesResultPresenter.OpenResultPurchasedAds;
+            _purchaseService.OnPlayerBought100Coins += _purchasesResultPresenter.OpenResultPurchasedCoins;
             _purchaseService.OnPlayerBought100Coins += _saveDataStrategy.AddAndRefreshCoins;
             _purchaseService.OnPlayerBoughtNoAds += _saveDataStrategy.AddAndRefreshAds;
             _shopUI.OnPlayerClickBuy100Coins += _purchaseService.Buy100Coins;
@@ -42,6 +47,8 @@ namespace Asteroid.EntryPoints
 
         private void OnDestroy()
         {
+            _purchaseService.OnPlayerBoughtNoAds -= _purchasesResultPresenter.OpenResultPurchasedAds;
+            _purchaseService.OnPlayerBought100Coins -= _purchasesResultPresenter.OpenResultPurchasedCoins;
             _purchaseService.OnPlayerBought100Coins -= _saveDataStrategy.AddAndRefreshCoins;
             _purchaseService.OnPlayerBoughtNoAds -= _saveDataStrategy.AddAndRefreshAds;
             _shopUI.OnPlayerClickBuy100Coins -= _purchaseService.Buy100Coins;
