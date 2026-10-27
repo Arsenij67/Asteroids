@@ -4,6 +4,7 @@ using Asteroid.Exit;
 using Asteroid.Generation;
 using Asteroid.Services.Analytics;
 using Asteroid.Services.IAP;
+using Asteroid.Services.RemoteConfig;
 using Asteroid.Services.UnityAdvertisement;
 using Asteroid.Services.UnityCloud;
 using Cysharp.Threading.Tasks;
@@ -33,7 +34,10 @@ namespace Asteroid.Installers
             Container.Bind<LocalSaveMetaData>().FromMethod((context) => context.Container.Resolve<BaseResourceLoaderService>().LoadResource<LocalSaveMetaData>("ScriptableObjects/LocalSaveMetaData")).AsSingle();
             Container.Bind<SaveDataStrategyManager>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<SaveDataStrategyManager>()).AsSingle();
             Container.Bind<WIFIConnector>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<WIFIConnector>()).AsSingle();
-            Container.Bind<IServiceDependencyChecker>().To<FirebaseServiceDependencyChecker>().AsSingle(); 
+            Container.Bind<IServiceDependencyChecker>().To<FirebaseServiceDependencyChecker>().AsSingle();
+            Container.BindInterfacesAndSelfTo<AddressablesBundleSceneLoader>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<AddressablesBundleSceneLoader>()).AsSingle();
+            Container.BindInterfacesAndSelfTo<FirebaseRemoteConfigService>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<FirebaseRemoteConfigService>()).AsSingle();
+            Container.Bind<BootstrapSceneData>().FromMethod((context) => context.Container.Resolve<BaseResourceLoaderService>().LoadResource<BootstrapSceneData>("ScriptableObjects/BootstrapSceneData")).AsSingle();
         }
     }
 }

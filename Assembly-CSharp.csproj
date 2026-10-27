@@ -108,6 +108,7 @@
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\LevelLoader.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\EntitiesGenerationFactory.cs" />
     <Compile Include="Assets\_Project\Scripts\View\Bootstrap\BootstrapUI.cs" />
+    <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\ShopInstaller.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\AdvertisementPresenter.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\AsteroidEnemy.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\Score.cs" />
@@ -163,7 +164,6 @@
     <Compile Include="Assets\Joystick Pack\Examples\JoystickSetterExample.cs" />
     <Compile Include="Assets\_Project\Scripts\ResourceLoaders\BaseResourceLoaderService.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IApplicationQuitter.cs" />
-    <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\SceneSaveInstaller.cs" />
     <Compile Include="Assets\Scripts\UnityPurchasing\generated\GooglePlayTangle.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\WeaponPresenter.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\GameOver.cs" />

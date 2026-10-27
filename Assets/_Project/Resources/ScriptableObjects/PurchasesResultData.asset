@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <NoAdsSprite>k__BackingField: {fileID: 21300000, guid: 0ffe4aa14c314cb4190a4dbc351b6982, type: 3}
   <CoinSprite>k__BackingField: {fileID: 21300000, guid: 4122a379d851de54ea41f30e31a8aeb3, type: 3}
-  <textForNoAds>k__BackingField: +100 cois
-  <textForCoins>k__BackingField: The advertisement has been cancelled.
+  <TextForNoAds>k__BackingField: The ads are disabled
+  <TextForCoins>k__BackingField: 100 coins credited
+  <WindowPrefab>k__BackingField: {fileID: 70523361572018150, guid: de65a5e9c7b644d4ca8a4ae940817330, type: 3}

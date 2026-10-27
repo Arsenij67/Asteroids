@@ -23,12 +23,14 @@ namespace Asteroid.Services.IAP
         public async UniTask OpenResultPurchasedCoins(int addCoins)
         {
             _purchasesResultView =  await _resourceLoader.InstantiateAsync(_shopNotificationData.WindowPrefab, _parentToPin);
+            _purchasesResultView.Initialize(_resourceLoader);
             await _purchasesResultView.OpenWindow(Regex.Replace(_shopNotificationData.TextForCoins,@"\d+",addCoins.ToString()), _shopNotificationData.CoinSprite);
         }
 
         public async UniTask OpenResultPurchasedAds(bool isActive)
         {
             _purchasesResultView = await _resourceLoader.InstantiateAsync(_shopNotificationData.WindowPrefab, _parentToPin);
+            _purchasesResultView.Initialize(_resourceLoader);
             await _purchasesResultView.OpenWindow(_shopNotificationData.TextForNoAds, _shopNotificationData.NoAdsSprite);
         }
 

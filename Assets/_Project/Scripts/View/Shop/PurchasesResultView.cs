@@ -11,11 +11,11 @@ namespace Asteroid.UI
 {
     public class PurchasesResultView : MonoBehaviour
     {
-        private const float PUNCH_DURATION = 2;
+        private const float PUNCH_DURATION = 1;
         private const int COUNT_PUNCHES = 2;
         private const float DEVIATION = 0;
         private const float ANGLE_ROTATION = 360;
-        private const float TIME_DISAPPEAR = 1f;
+        private const float TIME_DISAPPEAR = 0.5f;
 
         public event Action OnPlayerClickApply;
 
@@ -42,7 +42,7 @@ namespace Asteroid.UI
             _textProductTitle.text = textForProduct;
             Sequence openAnimationAsync = DOTween.Sequence()
                 .Append(transform.DOPunchScale(Vector2.one, PUNCH_DURATION, COUNT_PUNCHES, DEVIATION))
-                .Join(transform.DORotate(transform.up,ANGLE_ROTATION));
+                .Join(transform.DORotate(new Vector3(0,0,ANGLE_ROTATION), TIME_DISAPPEAR,RotateMode.FastBeyond360));
             return openAnimationAsync.AsyncWaitForCompletion().AsUniTask();
         }
 

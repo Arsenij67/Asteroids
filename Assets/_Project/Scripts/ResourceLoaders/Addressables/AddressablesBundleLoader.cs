@@ -102,7 +102,7 @@ public class AddressableBundleLoader : IResourceLoader, IDisposable
                 return null;
             }
 
-            _handles.Add(prefab.name,handle);
+            _handles.Add(result.name,handle);
 
             return result.GetComponent<T>();
         }
