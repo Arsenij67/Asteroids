@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9702599d30f00424cb9707c2d8398332, type: 3}
+  m_Name: ShopNotificationData
+  m_EditorClassIdentifier: 
+  <NoAdsSprite>k__BackingField: {fileID: 21300000, guid: 0ffe4aa14c314cb4190a4dbc351b6982, type: 3}
+  <CoinSprite>k__BackingField: {fileID: 21300000, guid: 4122a379d851de54ea41f30e31a8aeb3, type: 3}
+  <textForNoAds>k__BackingField: +100 cois
+  <textForCoins>k__BackingField: The advertisement has been cancelled.

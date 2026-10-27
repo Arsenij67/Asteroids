@@ -413,7 +413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5217421112148336391, guid: 2f445512d9b623f4fb07a783363d81b7, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 34.50499
+      value: -15.5715
       objectReference: {fileID: 0}
     - target: {fileID: 5217421112148336391, guid: 2f445512d9b623f4fb07a783363d81b7, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -421,7 +421,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5217421112148336391, guid: 2f445512d9b623f4fb07a783363d81b7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -182.7475
+      value: -157.70927
       objectReference: {fileID: 0}
     - target: {fileID: 6647362696145258977, guid: 2f445512d9b623f4fb07a783363d81b7, type: 3}
       propertyPath: m_Pivot.x
@@ -521,13 +521,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7558893895047376462, guid: 2f445512d9b623f4fb07a783363d81b7, type: 3}
       propertyPath: m_text
-      value: '100
+      value: '+100 coins
 
 '
       objectReference: {fileID: 0}
     - target: {fileID: 7558893895047376462, guid: 2f445512d9b623f4fb07a783363d81b7, type: 3}
       propertyPath: m_margin.w
-      value: 54.32376
+      value: 1.3859024
       objectReference: {fileID: 0}
     - target: {fileID: 7558893895047376462, guid: 2f445512d9b623f4fb07a783363d81b7, type: 3}
       propertyPath: m_fontColor.b
