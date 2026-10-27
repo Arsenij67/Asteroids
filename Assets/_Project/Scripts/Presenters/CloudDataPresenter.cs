@@ -3,6 +3,7 @@ using Asteroid.Database;
 using Asteroid.Database.Connection;
 using Asteroid.Generation;
 using Asteroid.SpaceShip;
+using Asteroid.UI;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -23,7 +24,7 @@ namespace Asteroid.Services.UnityCloud
 
         public override async UniTask AddCountDeadEnemies(int enemiesToAdd)
          {
-            if(enemiesToAdd<=0) return ;
+            if(enemiesToAdd<=0) return;
 
             int oldEnemies = await _remoteSavable.GetKey<int>(KeyData.DEAD_ENEMIES_COUNT_SUMMARY);
             DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = oldEnemies + enemiesToAdd;

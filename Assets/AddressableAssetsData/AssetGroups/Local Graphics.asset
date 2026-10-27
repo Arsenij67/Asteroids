@@ -50,6 +50,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de65a5e9c7b644d4ca8a4ae940817330
+    m_Address: WindowShopNotification
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e353d18c76250f44fa5c11547674ad16
     m_Address: Shop
     m_ReadOnly: 0
