@@ -1,10 +1,8 @@
-using Asteroid.Database;
-using Asteroid.Database.Connection;
+
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Purchasing;
 
@@ -21,6 +19,8 @@ namespace Asteroid.Services.IAP
 
         public bool IsInitialized { get; private set; }
 
+        private List<ProductDefinition> _surrogateProducts;
+
         private readonly int _added100Coins = 100;
         private readonly bool _advertisementIsCanceled = true;
         private readonly StoreController _storeController = UnityIAPServices.StoreController();
@@ -31,8 +31,8 @@ namespace Asteroid.Services.IAP
             await _storeController.Connect();
             SubscribeListeners();
             var productCatalog = ProductCatalog.LoadDefaultCatalog();
-            var initialProductsToFetch = productCatalog.allProducts.Select(item => new ProductDefinition(item.id, item.type)).ToList();
-            _storeController.FetchProducts(initialProductsToFetch);
+            _surrogateProducts = productCatalog.allProducts.Select(item => new ProductDefinition(item.id, item.type)).ToList();
+            _storeController.FetchProducts(_surrogateProducts);
             IsInitialized = true;
         }
 
@@ -54,15 +54,24 @@ namespace Asteroid.Services.IAP
 
         private async void BuyProduct(string productId)
         {
+
             var product = _storeController.GetProducts().ToList().Find(p => p.definition.id == productId);
+#if UNITY_EDITOR
             if (product != null)
             {
                 _storeController.PurchaseProduct(product);
+ 
             }
+
             else
             {
                 Debug.LogError($"Product {productId} not found!");
             }
+#endif
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+            PurchaseForTest();
+#endif
         }
 
         private void OnStoreDisconnectedHandler(StoreConnectionFailureDescription description)
@@ -104,6 +113,21 @@ namespace Asteroid.Services.IAP
                     OnPlayerBoughtNoAds?.Invoke(_advertisementIsCanceled);
                 }
                 Debug.Log($"Order: {product.Product.definition.id}, Status: Confirmed ");
+            }
+        }
+
+        private void PurchaseForTest()
+        {
+            foreach (var product in _surrogateProducts)
+            {
+                if (product.id.Equals(COINS_100_ID))
+                {
+                    OnPlayerBought100Coins?.Invoke(_added100Coins);
+                }
+                else if (product.id.Equals(NO_ADS_ID))
+                {
+                    OnPlayerBoughtNoAds?.Invoke(_advertisementIsCanceled);
+                }
             }
         }
 
