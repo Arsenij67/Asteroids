@@ -30,6 +30,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 379099edad5cfac49a2bfd5611387077
+    m_Address: ScriptableObjects/EntitiesGenerationData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3f26af55bcc7c974dbab4bfdf1c2e1a5
     m_Address: AudioData
     m_ReadOnly: 0
