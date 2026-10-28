@@ -53,33 +53,31 @@ namespace Asteroid.Generation
 
         public async void Awake()
         {
-            _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
+            _bootstrapUI.OnPlayerClickButtonStart += PrepareAndActivateGameScene;
             _bootstrapUI.OnPlayerClickButtonExit += _applicationQuitter.Quit;
             _bootstrapUI.Initialize();
-            _bootstrapUI.OnPlayerClickButtonStart += OpenLoadedGameScene;
              await CheckServiceDependencies();
             _loadingTasks.Add(PrepareAdvertisementAsync());
             _loadingTasks.Add(PrepareAnalyticsAsync());
             _loadingTasks.Add(PrepareShopSceneAsync());
-            _loadingTasks.Add(PrepareGameSceneAsync());
             _loadingTasks.Add(PrepareRemoteConfigAsync());
             _loadingTasks.Add(PreparePurchasingAsync());
             _loadingTasks.Add(PrepareCloudSaveServiceAsync());
             TickLoading();
             await UniTask.WhenAll(_loadingTasks);
 
-            //var sfxPool =  _instanceCreator.CreateInstance <List<AudioSource>>();
-            //for (int i = 0; i < _poolSize; i++)
-            //{
-            //    var sourceObj =  await _resourceLoader.InstantiateAsync(_audioSourcePrefab.GetComponent<AudioSource>(),transform);
-            //    sourceObj.name = $"SFX_Source_{i}";
-            //    if (sourceObj.TryGetComponent<AudioSource>(out AudioSource voice))
-            //    {
-            //        sfxPool.Add(voice);
-            //    }
-            //}
-            //_audioLocator.Initialize(_audioData, sfxPool);
-            //_audioLocator.PlayBackgroundMusic();
+            var sfxPool = _instanceCreator.CreateInstance<List<AudioSource>>();
+            for (int i = 0; i < _poolSize; i++)
+            {
+                var sourceObj = await _resourceLoader.InstantiateAsync(_audioSourcePrefab.GetComponent<AudioSource>(), transform);
+                sourceObj.name = $"SFX_Source_{i}";
+                if (sourceObj.TryGetComponent<AudioSource>(out AudioSource voice))
+                {
+                    sfxPool.Add(voice);
+                }
+            }
+            _audioLocator.Initialize(_audioData, sfxPool);
+            _audioLocator.PlayBackgroundMusic();
             _bootstrapUI.ActivateButtonStart();
         }
 
@@ -142,9 +140,9 @@ namespace Asteroid.Generation
             await OpenSceneShop();
         }
 
-        private async UniTask PrepareGameSceneAsync()
+        private async UniTask PrepareAndActivateGameScene()
         {
-            await _sceneLoader.LoadSceneAsync(_bootstrapSceneModel.SceneGameName,false);
+            await _sceneLoader.LoadSceneAsync(_bootstrapSceneModel.SceneGameName,false).ContinueWith(OpenLoadedGameScene);
             _sceneLoaded = true;
         }
 
@@ -171,7 +169,7 @@ namespace Asteroid.Generation
             _cloudSaveLoaded = true;
         }
 
-        private async void OpenLoadedGameScene()
+        private async UniTask OpenLoadedGameScene()
         {
             await _sceneLoader.SwitchSceneActivation(_bootstrapSceneModel.SceneGameName, true);
             await _sceneLoader.UnloadSceneAsync(_bootstrapSceneModel.StartSceneName);

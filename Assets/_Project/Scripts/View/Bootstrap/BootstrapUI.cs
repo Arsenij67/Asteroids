@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +7,7 @@ namespace Asteroid.UI
 {
     public class BootstrapUI : MonoBehaviour, IDisposable
     {
-        public event Action OnPlayerClickButtonStart;
+        public event Func<UniTask> OnPlayerClickButtonStart;
         public event Action OnPlayerClickButtonExit;
 
         [SerializeField] private Slider _sliderLoading;

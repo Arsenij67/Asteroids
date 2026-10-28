@@ -60,18 +60,18 @@ namespace Asteroid.Services.IAP
             if (product != null)
             {
                 _storeController.PurchaseProduct(product);
- 
-            }
 
+            }
             else
             {
                 Debug.LogError($"Product {productId} not found!");
             }
 #endif
 
-#if UNITY_ANDROID && !UNITY_EDITOR
-            PurchaseForTest();
+#if !UNITY_EDITOR && UNITY_ANDROID
+            PurchaseForTest(productId);
 #endif
+ 
         }
 
         private void OnStoreDisconnectedHandler(StoreConnectionFailureDescription description)
@@ -116,15 +116,15 @@ namespace Asteroid.Services.IAP
             }
         }
 
-        private void PurchaseForTest()
+        private void PurchaseForTest(string productId)
         {
             foreach (var product in _surrogateProducts)
             {
-                if (product.id.Equals(COINS_100_ID))
+                if (product.id.Equals(productId))
                 {
                     OnPlayerBought100Coins?.Invoke(_added100Coins);
                 }
-                else if (product.id.Equals(NO_ADS_ID))
+                else if (product.id.Equals(productId))
                 {
                     OnPlayerBoughtNoAds?.Invoke(_advertisementIsCanceled);
                 }

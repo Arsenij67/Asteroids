@@ -2602,7 +2602,7 @@ MonoBehaviour:
   _bootstrapUI: {fileID: 1096412837}
   _audioData: {fileID: 11400000, guid: 3f26af55bcc7c974dbab4bfdf1c2e1a5, type: 2}
   _audioSourcePrefab: {fileID: 9100547244190249562, guid: b94a84681ce0e3849924681020bff2b4, type: 3}
-  _poolSize: 5
+  _poolSize: 1
 --- !u!1 &484671686705267289
 GameObject:
   m_ObjectHideFlags: 0

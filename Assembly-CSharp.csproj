@@ -141,6 +141,7 @@
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\MeteoriteEnemy.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Audio\AudioData.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\ScriptableObjectData\ShipStatisticsModel.cs" />
+    <Compile Include="Assets\Unity.VisualScripting.Generated\VisualScripting.Core\AotStubs.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\Base\BaseResourcesInstaller.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\Garage.cs" />
     <Compile Include="Assets\_Project\Content\AnimatedCosmos\Example\MaterialSwitch.cs" />
@@ -195,6 +196,7 @@
     <None Include="Assets\Firebase\Plugins\Firebase.TaskExtension.dll" />
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-app-unity\maven-metadata.xml" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\SDFFunctions.hlsl" />
+    <None Include="Assets\AddressableAssetsData\link.xml" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\_Project\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\_Project\Content\Space Adventure\Third-Party Notices.txt" />
@@ -207,6 +209,7 @@
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-analytics-unity\maven-metadata.xml" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\_Project\Content\AnimatedCosmos\Shaders\CosmosAnimatedMesh.shader" />
+    <None Include="Assets\Unity.VisualScripting.Generated\VisualScripting.Core\link.xml" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\_Project\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\_Project\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
