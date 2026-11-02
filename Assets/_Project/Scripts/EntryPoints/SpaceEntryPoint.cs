@@ -28,8 +28,6 @@ namespace Asteroid.Generation
         [SerializeField] private WeaponView _weaponView;
 
         [Header("Bullet Settings")]
-        [SerializeField] private LaserBullet _laserPrefab;
-        [SerializeField] private FireballBullet _bulletPrefab;
         [SerializeField] private AudioData _audioData;
         [SerializeField] private AudioSource _audioSourcePrefab;
         [SerializeField] private int _poolSize = 4;

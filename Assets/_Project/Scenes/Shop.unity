@@ -924,7 +924,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380e34b25988aa34f90550b996e6426b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _saveModeUIPrefab: {fileID: 2253756722082059085, guid: 16d5cfc8252347a4e85b7f236801c2ae, type: 3}
+  _saveModeUIPrefab: {fileID: 1314448889679600136, guid: 16d5cfc8252347a4e85b7f236801c2ae, type: 3}
   _parentUI: {fileID: 417372287}
   _shopUI: {fileID: 807235730}
 --- !u!1 &1062690938

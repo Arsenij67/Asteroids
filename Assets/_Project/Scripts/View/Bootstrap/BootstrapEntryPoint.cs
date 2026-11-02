@@ -18,7 +18,6 @@ namespace Asteroid.Generation
 {
     public class BootstrapEntryPoint : MonoBehaviour
     {
-        [SerializeField] private SaveModeUI _saveModeUI;
         [SerializeField] private BootstrapUI _bootstrapUI;
         [SerializeField] private AudioData _audioData;
         [SerializeField] private AudioSource _audioSourcePrefab;
