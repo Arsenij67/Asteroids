@@ -68,6 +68,7 @@ namespace Asteroid.Services.IAP
 //            }
 //#endif
             PurchaseForTest(productId);
+            Debug.Log(productId);
 #if !UNITY_EDITOR && UNITY_ANDROID
           
 #endif
