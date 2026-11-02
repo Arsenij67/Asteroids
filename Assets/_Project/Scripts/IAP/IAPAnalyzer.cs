@@ -119,17 +119,14 @@ namespace Asteroid.Services.IAP
 
         private void PurchaseForTest(string productId)
         {
-            foreach (var product in _surrogateProducts)
-            {
-                if (product.id.Equals(productId))
+                if (productId.Equals(COINS_100_ID))
                 {
                     OnPlayerBought100Coins?.Invoke(_added100Coins);
                 }
-                else if (product.id.Equals(productId))
+                else if (productId.Equals(NO_ADS_ID))
                 {
                     OnPlayerBoughtNoAds?.Invoke(_advertisementIsCanceled);
                 }
-            }
         }
 
         private void OnPurchaseFailedHandler(FailedOrder failedOrder)
