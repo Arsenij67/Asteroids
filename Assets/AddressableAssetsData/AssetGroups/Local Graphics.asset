@@ -15,11 +15,6 @@ MonoBehaviour:
   m_GroupName: Local Graphics
   m_GUID: 35d58fea9de5a32498cc7bc64a1cb8de
   m_SerializeEntries:
-  - m_GUID: 16d5cfc8252347a4e85b7f236801c2ae
-    m_Address: WindowSaveMode
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1740469607c5ef74a9dce354e6c48998
     m_Address: Meteorite
     m_ReadOnly: 0

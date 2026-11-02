@@ -2598,7 +2598,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6756421a606f4594a949d7cc6c332a38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _saveModeUI: {fileID: 2253756722082059085, guid: 16d5cfc8252347a4e85b7f236801c2ae, type: 3}
+  _saveModeUI: {fileID: 1314448889679600136, guid: 16d5cfc8252347a4e85b7f236801c2ae, type: 3}
   _bootstrapUI: {fileID: 1096412837}
   _audioData: {fileID: 11400000, guid: 3f26af55bcc7c974dbab4bfdf1c2e1a5, type: 2}
   _audioSourcePrefab: {fileID: 9100547244190249562, guid: b94a84681ce0e3849924681020bff2b4, type: 3}

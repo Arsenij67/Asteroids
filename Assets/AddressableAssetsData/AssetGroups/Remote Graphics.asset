@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 16d5cfc8252347a4e85b7f236801c2ae
+    m_Address: WindowSaveMode
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3481901475fadbe4fb1b179b06134dff
     m_Address: AsteroidDisplay
     m_ReadOnly: 0
