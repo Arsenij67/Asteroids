@@ -56,22 +56,22 @@ namespace Asteroid.Services.IAP
         {
 
             var product = _storeController.GetProducts().ToList().Find(p => p.definition.id == productId);
-#if UNITY_EDITOR
-            if (product != null)
-            {
-                _storeController.PurchaseProduct(product);
+//#if UNITY_EDITOR
+//            if (product != null)
+//            {
+//                _storeController.PurchaseProduct(product);
 
-            }
-            else
-            {
-                Debug.LogError($"Product {productId} not found!");
-            }
-#endif
-
-#if !UNITY_EDITOR && UNITY_ANDROID
+//            }
+//            else
+//            {
+//                Debug.LogError($"Product {productId} not found!");
+//            }
+//#endif
             PurchaseForTest(productId);
+#if !UNITY_EDITOR && UNITY_ANDROID
+          
 #endif
- 
+
         }
 
         private void OnStoreDisconnectedHandler(StoreConnectionFailureDescription description)
