@@ -11,6 +11,7 @@ namespace Asteroid.Services.Analytics
     public class FirebaseAnalyticsSender : WIFIConnector,IAnalytics
     {
         private bool _isInitialized = false;
+
         public bool AnalyticsEnabled => _isInitialized && IsConnected;
 
         public async UniTask<bool> Initialize(bool IsServiceAvailable)

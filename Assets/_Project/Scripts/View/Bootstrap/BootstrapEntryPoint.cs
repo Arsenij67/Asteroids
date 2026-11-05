@@ -147,7 +147,7 @@ namespace Asteroid.Generation
 
         private async UniTask PrepareRemoteConfigAsync()
         {
-            await _remoteConfigService.Initialize(_serviceDependencyChecker.IsAvailable);
+            await _remoteConfigService.Initialize(_serviceDependencyChecker.IsAvailable,_WIFIConnector);
             _remoteConfigReady = true;
         }
 

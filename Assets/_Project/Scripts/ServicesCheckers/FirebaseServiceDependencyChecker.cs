@@ -1,17 +1,20 @@
 using Cysharp.Threading.Tasks;
 using Firebase;
 
-public class FirebaseServiceDependencyChecker : IServiceDependencyChecker
+namespace Asteroid.Services.Checker
 {
-    private DependencyStatus _status;
-
-    public bool IsAvailable => _status == DependencyStatus.Available;
-
-    public string ErrorStatus => _status != DependencyStatus.Available ? _status.ToString() : "Initialization firebase successful!";
-
-    public async UniTask CheckAndFixDependenciesAsync()
+    public class FirebaseServiceDependencyChecker : IServiceDependencyChecker
     {
-        var dependencyStatus = await FirebaseApp.CheckAndFixDependenciesAsync();
-       _status = dependencyStatus;
+        private DependencyStatus _status;
+
+        public bool IsAvailable => _status == DependencyStatus.Available;
+
+        public string ErrorStatus => _status != DependencyStatus.Available ? _status.ToString() : "Initialization firebase successful!";
+
+        public async UniTask CheckAndFixDependenciesAsync()
+        {
+            var dependencyStatus = await FirebaseApp.CheckAndFixDependenciesAsync();
+            _status = dependencyStatus;
+        }
     }
 }

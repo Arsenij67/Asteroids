@@ -1,4 +1,3 @@
-
 namespace Asteroid.Exit
 {
     public interface IApplicationQuitter

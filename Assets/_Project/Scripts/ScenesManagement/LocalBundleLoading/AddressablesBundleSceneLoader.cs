@@ -1,4 +1,3 @@
-
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
@@ -128,6 +127,5 @@ namespace Asteroid.Generation
                 return default(object);
             });
         }
-
     }
 }

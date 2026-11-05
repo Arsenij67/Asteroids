@@ -18,11 +18,6 @@ namespace Asteroid.Database.Connection
         private CancellationTokenSource _cancellationTokenSource;
         private CancellationToken _cancellationToken;
 
-        public void Dispose()
-        {
-            _cancellationTokenSource.Cancel();
-        }
-
         public void Initialize(IInstanceCreator instanceLoader)
         {
             _instanceLoader = instanceLoader;
@@ -70,15 +65,13 @@ namespace Asteroid.Database.Connection
 
         public async UniTask WaitForConnection()
         {
-            const int TIME_WAIT_CALLBACK = 1*1000;
+            const int TIME_WAIT_CALLBACK = 1000;
             _cancellationToken = _instanceLoader.CreateInstance<CancellationToken>();
             while (!_cancellationToken.IsCancellationRequested)
             {
-                Debug.Log("Ждем подключения");
                 if (await IsConnectionAvailable())
                 {
                     OnInternetConnected.Invoke();
-                    Debug.Log("Интерент дали!!!!");
                     break;
                 }
               
@@ -88,20 +81,23 @@ namespace Asteroid.Database.Connection
 
         public async UniTask WaitForDisconnection()
         {
-            const int TIME_WAIT_CALLBACK = 1*1000;
+            const int TIME_WAIT_CALLBACK = 1000;
             _cancellationToken = _instanceLoader.CreateInstance<CancellationToken>();
             while (!_cancellationToken.IsCancellationRequested)
             {
-                Debug.Log("Ждем отключения");
                 if (!await IsConnectionAvailable())
                 {
                     OnInternetDisconnected.Invoke();
-                    Debug.Log("Интернет забрали!");
                    break;
                 }
 
                 await UniTask.Delay(TIME_WAIT_CALLBACK, cancellationToken: _cancellationToken);
             }
+        }
+
+        public void Dispose()
+        {
+            _cancellationTokenSource.Cancel();
         }
     }
 }

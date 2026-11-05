@@ -38,16 +38,6 @@ namespace Asteroid.SpaceShip
             }
         }
 
-        private void TakeDamage(float damage)
-        {
-            if (damage >= _health)
-            {
-                Die();
-            }
-            _health-= damage;
-            _statisticsView.UpdateHealthProgressBar(_health);
-        }
-
         public void Initialize(ShipStatisticsView statisticView, IDeviceInput concreteInput, SpaceShipData shipData)
         {
             _rigidBody2D = GetComponent<Rigidbody2D>();
@@ -58,6 +48,12 @@ namespace Asteroid.SpaceShip
             OnShipSpawned?.Invoke();
             _health = _shipData.Health;
             _statisticsView.UpdateHealthProgressBar(_health);
+        }
+
+        public void Die()
+        {
+            OnShipDied?.Invoke();
+            Destroy(gameObject);
         }
 
         private void TryRotate(float angleRotation)
@@ -81,10 +77,14 @@ namespace Asteroid.SpaceShip
             }
         }
 
-        public void Die()
+        private void TakeDamage(float damage)
         {
-            OnShipDied?.Invoke();
-            Destroy(gameObject);
+            if (damage >= _health)
+            {
+                Die();
+            }
+            _health -= damage;
+            _statisticsView.UpdateHealthProgressBar(_health);
         }
     }
 }

@@ -16,22 +16,22 @@ namespace Asteroid.Services.UnityCloud
 {
     public class UnitySaveCloud : IRemoteSavable
     {
-        public bool IsInitialized => _WIFIConnector.IsConnected && _isInitialized;
+        public bool IsInitialized => _wifiConnector.IsConnected && _isInitialized;
 
         private bool _isInitialized = false;
         private bool _isInitializing = false;
 
         private Dictionary<string, Item> _data;
         private DataSave _dataSave;
-        private WIFIConnector _WIFIConnector;
+        private WIFIConnector _wifiConnector;
 
         public async UniTask Initialize(DataSave dataSave, WIFIConnector wIFIConnector)
         {
-            _WIFIConnector = wIFIConnector;
+            _wifiConnector = wIFIConnector;
 
-            await _WIFIConnector.IsConnectionAvailable();
+            await _wifiConnector.IsConnectionAvailable();
 
-            if (!_WIFIConnector.IsConnected || _isInitialized || _isInitializing) return;
+            if (!_wifiConnector.IsConnected || _isInitialized || _isInitializing) return;
 
             _isInitializing = true;
             _dataSave = dataSave;
@@ -48,16 +48,6 @@ namespace Asteroid.Services.UnityCloud
                 UnityEngine.Debug.Log($"Ошибка инициализации Unity Cloud Save: {ex.Message}");
             }
                 await DownloadAllData();
-        }
-
-        private async UniTask DownloadAllData()
-        {
-            _data =  await CloudSaveService.Instance.Data.Player.LoadAllAsync();
-
-            foreach (string key in _data.Keys)
-            {
-                _dataSave[key] = _data[key].Value.GetAsString();
-            }
         }
 
         public UniTask SaveKey(string key, object value)
@@ -125,6 +115,16 @@ namespace Asteroid.Services.UnityCloud
                 .Max().ToLocalTime();
         }
 
+        private async UniTask DownloadAllData()
+        {
+            _data = await CloudSaveService.Instance.Data.Player.LoadAllAsync();
+
+            foreach (string key in _data.Keys)
+            {
+                _dataSave[key] = _data[key].Value.GetAsString();
+            }
+        }
+
         private async UniTask SignIn()
         {
             if (AuthenticationService.Instance.IsSignedIn)
@@ -148,6 +148,8 @@ namespace Asteroid.Services.UnityCloud
 
         private async UniTask SetUp()
         {
+            short delayForSetUp = 100;
+
             if (UnityServices.State == ServicesInitializationState.Initialized)
             {
                 return;
@@ -157,7 +159,7 @@ namespace Asteroid.Services.UnityCloud
             {
                 while (UnityServices.State == ServicesInitializationState.Initializing)
                 {
-                    await UniTask.Delay(100);
+                    await UniTask.Delay(delayForSetUp);
                 }
 
                 if (UnityServices.State == ServicesInitializationState.Initialized)

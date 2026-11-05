@@ -7,29 +7,28 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace Asteroid.Services.RemoteConfig
 {
-    public class FirebaseRemoteConfigService : WIFIConnector, IRemoteConfigService, IDisposable
+    public class FirebaseRemoteConfigService : IRemoteConfigService, IDisposable
     {
         public event Action OnConfigUpdated;
 
         private bool _isInitialized = false;
+        private WIFIConnector _wifiConnector;
 
-        public bool IsInitialized => _isInitialized && IsConnected;
+        public bool IsInitialized => _isInitialized && _wifiConnector.IsConnected;
 
-        public async UniTask Initialize(bool isServiceAvailable)
+        public async UniTask Initialize(bool isServiceAvailable, WIFIConnector wifiConnector)
         {
+            _wifiConnector = wifiConnector;
             if (isServiceAvailable)
             {
-                await IsConnectionAvailable();
+                await _wifiConnector.IsConnectionAvailable();
                 FirebaseRemoteConfig.DefaultInstance.OnConfigUpdateListener += HandleConfigUpdate;
                 _isInitialized = true;
                 await FetchAndActivateAsync();
-           
                 ConfigValue configValue = FirebaseRemoteConfig.DefaultInstance.GetValue("ship_config");
             }
-
         }
 
         public T GetValue<T>(string key)
@@ -56,7 +55,7 @@ namespace Asteroid.Services.RemoteConfig
         {
             if (!IsInitialized) return UniTask.CompletedTask;
 
-                var userProperties = new Dictionary<string, object>();
+            var userProperties = new Dictionary<string, object>();
             short indexValue = 0;
             foreach (var attr in keys)
             {

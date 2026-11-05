@@ -21,8 +21,6 @@ namespace Asteroid.Weapon
         private bool _laserTurned;
         private WaitForSeconds _waitSecondsGlow;
 
-        [field: SerializeField] public short UniqueNumber { get; private set; }
-
         public bool LaserCollideNow => _laserObject.LaserCollideNow;
 
         protected override float TimeBulletRecovery
@@ -73,6 +71,17 @@ namespace Asteroid.Weapon
             }
         }
 
+        protected override void UpdateWeapon()
+        {
+            ShipStatisticsPresenter.UpdateCountLaserShoots(CountShoots);
+            ShipStatisticsPresenter.UpdateRollbackTime(AttackTime);
+        }
+
+        protected override void  PlayFireSound(BaseBullet bullet)
+        {
+            bullet.PlaySoundShoot();
+        }
+
         private IEnumerator FireLaser()
         {
             if (CountShoots > 0)
@@ -84,17 +93,6 @@ namespace Asteroid.Weapon
                 UpdateWeapon();
             }
             _laserTurned = false;
-        }
-
-        protected override void UpdateWeapon()
-        {
-            ShipStatisticsPresenter.UpdateCountLaserShoots(CountShoots);
-            ShipStatisticsPresenter.UpdateRollbackTime(AttackTime);
-        }
-
-        protected override void  PlayFireSound(BaseBullet bullet)
-        {
-            bullet.PlaySoundShoot();
         }
     }
 }

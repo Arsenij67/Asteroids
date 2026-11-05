@@ -15,7 +15,6 @@ public class GameOverView : MonoBehaviour
     [SerializeField] private Button _buttonShowAd;
     [SerializeField] private Button _buttonGoHome;
     [SerializeField] private TMP_Text _enemiesDestroyedText;
-
     [Header("Tuning")]
     [SerializeField] private float _animationDuration = 1.0f;
     [SerializeField] private float _shareIncreaseWindow = 0.15f;
@@ -47,21 +46,6 @@ public class GameOverView : MonoBehaviour
         return _sequence.AsyncWaitForCompletion().AsUniTask();  
     }
 
-    private void OnRestartClicked()
-    {
-        OnGameReloadClicked?.Invoke();
-    }
-
-    private void OnShowAdClicked()
-    {
-        OnButtonShowAdsClicked?.Invoke();
-    }
-
-    private void OnGoHomeClicked()
-    {
-        OnButtonGoHomeClicked?.Invoke();
-    }
-
     public void Close()
     {
         if (this.gameObject != null)
@@ -81,6 +65,21 @@ public class GameOverView : MonoBehaviour
         {
             _enemiesDestroyedText.text = $"Enemies destroyed: {count:D1} units";
         }
+    }
+
+    private void OnRestartClicked()
+    {
+        OnGameReloadClicked?.Invoke();
+    }
+
+    private void OnShowAdClicked()
+    {
+        OnButtonShowAdsClicked?.Invoke();
+    }
+
+    private void OnGoHomeClicked()
+    {
+        OnButtonGoHomeClicked?.Invoke();
     }
 
     private void OnDestroy()

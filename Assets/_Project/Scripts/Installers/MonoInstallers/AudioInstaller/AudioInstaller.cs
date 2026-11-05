@@ -10,7 +10,7 @@ namespace Asteroid.Installers
         public override void InstallBindings()
         {
             Container.Bind<AudioSource>().FromMethod((context) => context.Container.Resolve<IInstanceCreator>().CreateInstance<GameObject>().AddComponent<AudioSource>()).AsSingle();
-            Container.Bind<IAudioService>().To<AudioService>().AsSingle();
+            Container.Bind<IAudioService>().To<AudioServiceLocator>().AsSingle();
         }
     }
 }

@@ -48,7 +48,7 @@
   <PropertyGroup>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnityProjectGenerator>Package</UnityProjectGenerator>
-    <UnityProjectGeneratorVersion>2.0.28</UnityProjectGeneratorVersion>
+    <UnityProjectGeneratorVersion>2.0.29</UnityProjectGeneratorVersion>
     <UnityProjectGeneratorStyle>Legacy</UnityProjectGeneratorStyle>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
@@ -97,7 +97,6 @@
     <Compile Include="Assets\_Project\Scripts\Analytics\AnallyticsEventHandler.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IAnalytics.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Game\Coin.cs" />
-    <Compile Include="Assets\_Project\Scripts\ResourceLoaders\Addressables\RemoteBundle.cs" />
     <Compile Include="Assets\_Project\Scripts\View\DisplayEnemy\DisplayEnemy.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\Settings.cs" />
     <Compile Include="Assets\_Project\Scripts\Interfaces\IWeaponStrategy.cs" />
@@ -121,7 +120,6 @@
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\UI\LoadBar.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\UnityCloud\KeyData.cs" />
     <Compile Include="Assets\_Project\Scripts\ScenesManagement\Exiter\PCApplicationExiter.cs" />
-    <Compile Include="Assets\_Project\Scripts\Audio\AudioService.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\ShipStatisticPresenter.cs" />
     <Compile Include="Assets\_Project\Scripts\Presenters\GameOverPresenter.cs" />
     <Compile Include="Assets\_Project\Content\Space Adventure\Scripts\Main Menu\ExitGame.cs" />
@@ -139,6 +137,7 @@
     <Compile Include="Assets\_Project\Scripts\Interfaces\IRemoteSavable.cs" />
     <Compile Include="Assets\_Project\Scripts\RemoteConfig\FirebaseRemoteConfigService.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Enemies\MeteoriteEnemy.cs" />
+    <Compile Include="Assets\_Project\Scripts\Audio\AudioServiceLocator.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\Audio\AudioData.cs" />
     <Compile Include="Assets\_Project\Scripts\Models\ScriptableObjectData\ShipStatisticsModel.cs" />
     <Compile Include="Assets\_Project\Scripts\Installers\MonoInstallers\Base\BaseResourcesInstaller.cs" />

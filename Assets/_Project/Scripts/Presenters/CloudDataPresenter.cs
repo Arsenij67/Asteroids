@@ -1,4 +1,3 @@
-
 using Asteroid.Database;
 using Asteroid.Database.Connection;
 using Asteroid.Generation;

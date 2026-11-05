@@ -30,7 +30,7 @@ namespace Asteroid.Generation
         [Header("Bullet Settings")]
         [SerializeField] private AudioData _audioData;
         [SerializeField] private AudioSource _audioSourcePrefab;
-        [SerializeField] private int _poolSize = 4;
+        [SerializeField] private int _poolSize;
 
         [Header("Space Settings")]
         [Inject] private EntitiesGenerationFactory _entitiesGenerationFactory;
@@ -61,7 +61,6 @@ namespace Asteroid.Generation
         [Inject] private WIFIConnector _wifiConnector;
         [Inject] private Joystick _joystick;
 
-
         private ShipStatisticsView _shipStatisticView;
         private WeaponShip _weaponShipLaser;
 
@@ -84,7 +83,6 @@ namespace Asteroid.Generation
             _gameOverPresenter?.Dispose();
             _saveDataStrategyController.Dispose();
         }
-
 
         private void InitializeUI()
         {

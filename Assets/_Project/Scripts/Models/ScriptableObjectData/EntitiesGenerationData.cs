@@ -17,6 +17,7 @@ namespace Asteroid.Generation
         [SerializeField] private float _generationFrequency;
 
         private IRemoteConfigService _remoteConfigService;
+
         public float GenerationFrequency 
         {
             get
@@ -33,14 +34,6 @@ namespace Asteroid.Generation
                 }
             } 
         }
-        [field: SerializeField] public Transform GenerationVertices { get; private set; }
-        [field: SerializeField] public BaseBullet FireballPrefab { get; private set; }
-        [field: SerializeField] public BaseBullet LaserPrefab { get; private set; }
-        [field: SerializeField] public string HomeSceneName { get; private set; }
-
-        [field: SerializeField] public GameOverView EndPanelView { get; private set; }
-
-        public Transform EndPointToFly { get; private set; }
         public Enemy ObstacleToGenerateNow => _obstacles[Random.Range(0, _obstacles.Length)].GetComponent<Enemy>();
         public SpaceShipPresenter PlayerShipToGenerateNow {
             get
@@ -83,6 +76,13 @@ namespace Asteroid.Generation
                     (GenerationVertices.GetChild(0).position.y + GenerationVertices.GetChild(2).position.y) / 2);
             }
         }
+        public Transform EndPointToFly { get; private set; }
+
+        [field: SerializeField] public Transform GenerationVertices { get; private set; }
+        [field: SerializeField] public BaseBullet FireballPrefab { get; private set; }
+        [field: SerializeField] public BaseBullet LaserPrefab { get; private set; }
+        [field: SerializeField] public string HomeSceneName { get; private set; }
+        [field: SerializeField] public GameOverView EndPanelView { get; private set; }
 
         public void Initialize(IRemoteConfigService remoteConfig)
         { 

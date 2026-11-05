@@ -1,10 +1,7 @@
-
 using UnityEngine;
 
 namespace Asteroid.Generation
-
 {
-
     [CreateAssetMenu(fileName = "BootstrapSceneModel", menuName = "Scriptable Objects/BootstrapSceneModel")]
     public class BootstrapSceneData : BaseSceneData
     {

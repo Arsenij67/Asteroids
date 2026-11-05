@@ -43,6 +43,5 @@ namespace Asteroid.Statistic
         {
             _shipStatisticModel.CountDestroyedAsteroids++;
         }
-
     }
 }

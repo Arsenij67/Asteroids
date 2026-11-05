@@ -1,95 +1,97 @@
-using Asteroid.Generation;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SimpleSceneLoader : ISceneLoader
+namespace Asteroid.Generation
 {
-    private const float LEVEL_LOAD_ADDITIVE_SCENE = 0.9f;
-
-    private AsyncOperation asyncLoading;
-
-    public void LoadScene(string name)
+    public class SimpleSceneLoader : ISceneLoader
     {
-       SceneManager.LoadScene(name);   
-    }
+        private const float LEVEL_LOAD_ADDITIVE_SCENE = 0.9f;
 
-    public void LoadSceneAdditive(string name)
-    {
-       SceneManager.LoadScene(name,LoadSceneMode.Additive);
-    }
+        private AsyncOperation _asyncLoading;
 
-    public UniTask LoadSceneAdditiveAsync(string name, bool allowSceneActivate = true)
-    {
-       asyncLoading = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
-       asyncLoading.allowSceneActivation = allowSceneActivate;
-       return UniTask.WaitUntil(() => asyncLoading.progress >= LEVEL_LOAD_ADDITIVE_SCENE);
-    }
-
-    public void ReloadCurrentScene()
-    {
-        Scene sceneData = SceneManager.GetActiveScene();   
-        SceneManager.LoadScene(sceneData.name);
-    }
-
-    public UniTask SwitchSceneActivation(string name, bool allowSceneBeActive)
-    {
-        asyncLoading.allowSceneActivation = allowSceneBeActive;
-        return asyncLoading.ToUniTask();
-    }
-    public void UnloadScene(string name)
-    {
-        if (SceneForUnloadingIsValid(name))
+        public void LoadScene(string name)
         {
-            SceneManager.UnloadSceneAsync(name);
+            SceneManager.LoadScene(name);
         }
-        else
+
+        public void LoadSceneAdditive(string name)
         {
-            Debug.LogWarning($"Cannot unload {name}: it's the only loaded scene.");
+            SceneManager.LoadScene(name, LoadSceneMode.Additive);
         }
-    }
 
-    public UniTask ReloadSceneAsync(string name, bool activateOnLoad = true)
-    {
-        Scene sceneData = SceneManager.GetSceneByName(name);
-        if (!sceneData.isLoaded)
+        public UniTask LoadSceneAdditiveAsync(string name, bool allowSceneActivate = true)
         {
-          AsyncOperation sceneHandler = SceneManager.LoadSceneAsync(sceneData.name);
-          sceneHandler.allowSceneActivation = activateOnLoad;
-            return sceneHandler.ToUniTask();
+            _asyncLoading = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
+            _asyncLoading.allowSceneActivation = allowSceneActivate;
+            return UniTask.WaitUntil(() => _asyncLoading.progress >= LEVEL_LOAD_ADDITIVE_SCENE);
         }
-        name = sceneData.name;
-        return UniTask.FromResult<object>(name);
-    }
 
-    public UniTask LoadSceneAsync(string name, bool activateOnLoad)
-    {
-        asyncLoading = SceneManager.LoadSceneAsync(name, LoadSceneMode.Single);
-        asyncLoading.allowSceneActivation = activateOnLoad;
-        return asyncLoading.ToUniTask();
-      
-    }
-
-    public UniTask<object> UnloadSceneAsync(string name)
-    {
-        if (!SceneForUnloadingIsValid(name))
+        public void ReloadCurrentScene()
         {
-            Debug.LogWarning($"Cannot unload {name}: it's invalid or the only loaded scene.");
+            Scene sceneData = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(sceneData.name);
+        }
+
+        public UniTask SwitchSceneActivation(string name, bool allowSceneBeActive)
+        {
+            _asyncLoading.allowSceneActivation = allowSceneBeActive;
+            return _asyncLoading.ToUniTask();
+        }
+
+        public void UnloadScene(string name)
+        {
+            if (SceneForUnloadingIsValid(name))
+            {
+                SceneManager.UnloadSceneAsync(name);
+            }
+            else
+            {
+                Debug.LogWarning($"Cannot unload {name}: it's the only loaded scene.");
+            }
+        }
+
+        public UniTask ReloadSceneAsync(string name, bool activateOnLoad = true)
+        {
+            Scene sceneData = SceneManager.GetSceneByName(name);
+            if (!sceneData.isLoaded)
+            {
+                AsyncOperation sceneHandler = SceneManager.LoadSceneAsync(sceneData.name);
+                sceneHandler.allowSceneActivation = activateOnLoad;
+                return sceneHandler.ToUniTask();
+            }
+            name = sceneData.name;
             return UniTask.FromResult<object>(name);
         }
-        AsyncOperation operation = SceneManager.UnloadSceneAsync(name);
-        return operation.ToUniTask().ContinueWith(()=>(object)name);
-    }
 
-    public UniTask ReloadSceneAsync(string name)
-    {
-        return LoadSceneAsync(name, true);
-    }
+        public UniTask LoadSceneAsync(string name, bool activateOnLoad)
+        {
+            _asyncLoading = SceneManager.LoadSceneAsync(name, LoadSceneMode.Single);
+            _asyncLoading.allowSceneActivation = activateOnLoad;
+            return _asyncLoading.ToUniTask();
 
-    private bool SceneForUnloadingIsValid(string name)
-    {
-        Scene scene = SceneManager.GetSceneByName(name);
-        return scene.IsValid() && scene.isLoaded && SceneManager.sceneCount > 1;
+        }
+
+        public UniTask<object> UnloadSceneAsync(string name)
+        {
+            if (!SceneForUnloadingIsValid(name))
+            {
+                Debug.LogWarning($"Cannot unload {name}: it's invalid or the only loaded scene.");
+                return UniTask.FromResult<object>(name);
+            }
+            AsyncOperation operation = SceneManager.UnloadSceneAsync(name);
+            return operation.ToUniTask().ContinueWith(() => (object)name);
+        }
+
+        public UniTask ReloadSceneAsync(string name)
+        {
+            return LoadSceneAsync(name, true);
+        }
+
+        private bool SceneForUnloadingIsValid(string name)
+        {
+            Scene scene = SceneManager.GetSceneByName(name);
+            return scene.IsValid() && scene.isLoaded && SceneManager.sceneCount > 1;
+        }
     }
 }
-

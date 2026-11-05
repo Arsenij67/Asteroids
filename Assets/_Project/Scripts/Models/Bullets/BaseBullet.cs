@@ -19,14 +19,20 @@ namespace Asteroid.Weapon
 
         protected virtual float Speed => Mathf.Clamp(_speed, 0, _maxSpeed);
 
- 
-
         public virtual float Damage => Mathf.Clamp(_damage, 0, _maxDamage);
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
              ReactOnCollisionStart(collision.GetComponent<Enemy>());
         }
+
+        public virtual void Initialize(IRemoteConfigService remoteConfigService, IAudioService audioLocator)
+        {
+            RemoteConfigService = remoteConfigService;
+            AudioLocator = audioLocator;
+        }
+
+        public abstract void PlaySoundShoot();
 
         protected virtual void ReactOnCollisionStart(Enemy enemy)
         {
@@ -35,15 +41,5 @@ namespace Asteroid.Weapon
                 Destroy(gameObject);
             }
         }
-
-        public abstract void PlaySoundShoot();
-
-        public virtual void Initialize(IRemoteConfigService remoteConfigService, IAudioService audioLocator)
-        {
-            RemoteConfigService = remoteConfigService;
-            AudioLocator = audioLocator;
-        }
-
- 
     }
 }

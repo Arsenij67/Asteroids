@@ -25,7 +25,7 @@ namespace Asteroid.Database
                 File.Create(_localSaveData.FullPath);
             }
             string jsonData = await LoadDataFromFileAsync(_localSaveData.FullPath);
-            _dataForSave = JsonConvert.DeserializeObject<DataSave>(jsonData) ?? _instanceLoader.CreateInstance<DataSave>();
+            DataForSave = JsonConvert.DeserializeObject<DataSave>(jsonData) ?? _instanceLoader.CreateInstance<DataSave>();
             await UpdateLastSaveTime();
         }
 

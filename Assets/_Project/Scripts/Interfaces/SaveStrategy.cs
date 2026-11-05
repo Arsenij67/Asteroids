@@ -14,20 +14,20 @@ namespace Asteroid.Database
         public int CountDeadEnemies => (int)(DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] ?? 0);
 
         protected ShopView? ShopView;
+        protected DataSave DataForSave;
 
         protected DataSave DataSave
         {
-            get => _dataForSave;
+            get => DataForSave;
         }
-
-        protected DataSave _dataForSave;
+       
         private IInstanceCreator _instanceCreator;
         private GameOverPresenter? _shipStatisticsPresenter;
 
         public void Initialize(DataSave dataSave, IInstanceCreator instanceCreator, ShopView shopUI = null, GameOverPresenter shipStatisticsPresenter=null)
         {
             ShopView = shopUI;
-            _dataForSave = dataSave;
+            DataForSave = dataSave;
             _instanceCreator = instanceCreator; 
             _shipStatisticsPresenter = shipStatisticsPresenter;
         }
@@ -68,7 +68,7 @@ namespace Asteroid.Database
 
         public async UniTask UpdateAllData(DataSave dataSave)
         {
-            _dataForSave = dataSave;
+            DataForSave = dataSave;
             await UpdateCountCoins((int)dataSave[KeyData.COINS_COUNT]);
             await UpdateDeadEnemies((int)dataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY]);
             await UpdateNoAdsStatus((bool)dataSave[KeyData.ADS_DISABLED]);
@@ -85,6 +85,5 @@ namespace Asteroid.Database
         {
             await AddCountDeadEnemies (deadEnemiesSummary - CountDeadEnemies);
         }
-
     }
 }

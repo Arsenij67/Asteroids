@@ -1,11 +1,9 @@
-
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Purchasing;
-
 
 namespace Asteroid.Services.IAP
 {
@@ -56,21 +54,20 @@ namespace Asteroid.Services.IAP
         {
 
             var product = _storeController.GetProducts().ToList().Find(p => p.definition.id == productId);
-//#if UNITY_EDITOR
-//            if (product != null)
-//            {
-//                _storeController.PurchaseProduct(product);
+#if UNITY_EDITOR && UNITY_ANDROID
+            if (product != null)
+            {
+                _storeController.PurchaseProduct(product);
 
-//            }
-//            else
-//            {
-//                Debug.LogError($"Product {productId} not found!");
-//            }
-//#endif
-            PurchaseForTest(productId);
-            Debug.Log(productId);
+            }
+            else
+            {
+                Debug.LogError($"Product {productId} not found!");
+            }
+#endif
+
 #if !UNITY_EDITOR && UNITY_ANDROID
-          
+            PurchaseForTest(productId);
 #endif
 
         }

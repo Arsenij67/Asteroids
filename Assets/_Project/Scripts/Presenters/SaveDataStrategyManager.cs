@@ -11,10 +11,8 @@ namespace Asteroid.Database
 {
     public class SaveDataStrategyManager : IDisposable
     {
-        private bool ChoiceIsMade => _saveModeUI?.ChoiceIsMade ?? false;
-
         private SaveChoice _saveModeChoice;
-        private bool _initialized=false;
+        private bool _initialized = false;
         private SaveStrategy[] _saveStrategies;
         private SaveStrategy _currentSaveStrategy;
         private SaveModeUI _saveModeUIPrefab;
@@ -25,6 +23,8 @@ namespace Asteroid.Database
         private IResourceLoader _resourceLoaderService;
         private IInstanceCreator _instanceCreator;
         private WIFIConnector _wifiConnector;
+
+        private bool ChoiceIsMade => _saveModeUI?.ChoiceIsMade ?? false;
 
         public async UniTask Initialize(WIFIConnector wifiConnector, IInstanceCreator instanceCreator, IResourceLoader resourceLoaderService, SaveModeUI saveModeUIPrefab, RectTransform parentForUI, params SaveStrategy[] saveStrategies)
         {
@@ -77,7 +77,7 @@ namespace Asteroid.Database
             _wifiConnector.OnInternetConnected -= TryOpenWindowSaveMode;
             _wifiConnector.OnInternetConnected -= DefineStrategy;
             _wifiConnector.OnInternetConnected -= DefineTypeConnectionWaiting;
-
+            
             _wifiConnector.OnInternetDisconnected -= DefineStrategy;
             _wifiConnector.OnInternetDisconnected -= DefineTypeConnectionWaiting;
         }

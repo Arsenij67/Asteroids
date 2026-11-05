@@ -15,7 +15,6 @@ namespace Asteroid.Enemies
 
         public event Action<Enemy> OnEnemyDestroyed;
 
-
         public float Damage;
         public bool EnemyIsDied = false;
 
@@ -46,6 +45,7 @@ namespace Asteroid.Enemies
 
         public abstract void Move(Transform transformEnd = null);
         public abstract void AddToStatistic();
+
         public virtual void TakeDamage(float damage)
         {
             damage = Mathf.Max(0, damage);
@@ -64,7 +64,7 @@ namespace Asteroid.Enemies
             EnemyIsDied = true;
             OnEnemyDestroyed?.Invoke(this);
             _displayEnemy.PlayDieEffect();
-            PlayExploadSound();
+            PlayExplodeSound();
             Destroy(gameObject, lifeTime);
         }
 
@@ -73,7 +73,7 @@ namespace Asteroid.Enemies
             Destroy(gameObject);
         }
 
-        public virtual void PlayExploadSound()
+        public virtual void PlayExplodeSound()
         {
             AudioLocator.PlayExplosion();
         }    

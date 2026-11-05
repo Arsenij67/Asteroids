@@ -5,8 +5,6 @@ namespace Asteroid.Weapon
 {
     public class BulletWeaponController : WeaponShip, IWeaponStrategy
     {
-        [field: SerializeField] public short UniqueNumber { get; private set; }
-
         public void Fire()
         {
             if (CountShoots > 0)

@@ -1,4 +1,3 @@
-
 namespace Asteroid.Database
 {
     [System.Serializable]
