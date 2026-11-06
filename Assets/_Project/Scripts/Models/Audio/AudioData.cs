@@ -9,6 +9,8 @@ namespace Asteroid.Audio
         public AudioClip FireballShootClip;
         public AudioClip ExplosionClip;
         public AudioClip BackgroundMusic;
+        public AudioSource AudioSourcePrefab;
+
         [Range(0f, 1f)] public float SfxVolume = 1f;
         [Range(0f, 1f)] public float MusicVolume = 0.5f;
     }

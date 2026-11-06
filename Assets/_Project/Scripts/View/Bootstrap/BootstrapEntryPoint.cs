@@ -20,8 +20,7 @@ namespace Asteroid.Generation
     {
         [SerializeField] private BootstrapUI _bootstrapUI;
         [SerializeField] private AudioData _audioData;
-        [SerializeField] private AudioSource _audioSourcePrefab;
-        [SerializeField] private int _poolSize = 1;
+        [SerializeField] private ushort _poolSize = 1;
 
         [Inject] private List<UniTask> _loadingTasks;
         [Inject] private ISceneLoader _sceneLoader;
@@ -65,17 +64,7 @@ namespace Asteroid.Generation
             TickLoading();
             await UniTask.WhenAll(_loadingTasks);
 
-            var sfxPool = _instanceCreator.CreateInstance<List<AudioSource>>();
-            for (int i = 0; i < _poolSize; i++)
-            {
-                var sourceObj = await _resourceLoader.InstantiateAsync(_audioSourcePrefab.GetComponent<AudioSource>(), transform);
-                sourceObj.name = $"SFX_Source_{i}";
-                if (sourceObj.TryGetComponent<AudioSource>(out AudioSource voice))
-                {
-                    sfxPool.Add(voice);
-                }
-            }
-            _audioLocator.Initialize(_audioData, sfxPool);
+            _audioLocator.Initialize(_audioData, _instanceCreator,_resourceLoader, _poolSize);
             _audioLocator.PlayBackgroundMusic();
             _bootstrapUI.ActivateButtonStart();
         }

@@ -29,8 +29,7 @@ namespace Asteroid.Generation
 
         [Header("Bullet Settings")]
         [SerializeField] private AudioData _audioData;
-        [SerializeField] private AudioSource _audioSourcePrefab;
-        [SerializeField] private int _poolSize;
+        [SerializeField] private ushort _poolSize;
 
         [Header("Space Settings")]
         [Inject] private EntitiesGenerationFactory _entitiesGenerationFactory;
@@ -104,9 +103,8 @@ namespace Asteroid.Generation
 
         private void InitializeSpaceShipSystems()
         {
-           
           _deviceInput.Initialize(_joystick);
-          _serviceLocator.Initialize(_audioData, FillUpAudioPull());
+          _serviceLocator.Initialize(_audioData,_instanceCreator,_resourceLoader, _poolSize);
           _spaceShipData.Initialize(_remoteConfigService);
           _entitiesGenerationFactory.Initialize(
           _serviceLocator,
@@ -142,21 +140,6 @@ namespace Asteroid.Generation
         private void InitializeEnemySystems()
         {
             _entitiesGenerationFactory.StartEnemiesCreation();
-        }
-
-        private List<AudioSource> FillUpAudioPull()
-        {
-            var sfxPool = _instanceCreator.CreateInstance<List<AudioSource>>();
-            for (int i = 0; i < _poolSize; i++)
-            {
-                var sourceObj = _resourceLoader.Instantiate(_audioSourcePrefab.GetComponent<AudioSource>(), transform);
-                sourceObj.name = $"SFX_Source_{i}";
-                if (sourceObj.TryGetComponent<AudioSource>(out AudioSource voice))
-                {
-                    sfxPool.Add(voice);
-                }
-            }
-            return sfxPool; 
         }
     }
 }

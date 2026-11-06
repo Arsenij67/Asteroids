@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Asteroid.Generation;
 
 namespace Asteroid.Audio
 {
@@ -8,12 +9,18 @@ namespace Asteroid.Audio
     {
         private AudioData _audioData;
         private AudioSource _musicSource;
+        private IInstanceCreator _instanceCreator;
         private int _currentPoolIndex = 0;
+        private IResourceLoader _resourceLoader;
         private readonly List<AudioSource> _sfxPool = new List<AudioSource>();
 
-        public void Initialize(AudioData audioData, List<AudioSource> sfxSources)
+        public void Initialize(AudioData audioData, IInstanceCreator instanceCreator,IResourceLoader resourceLoader, ushort poolSize)
         {
+            _instanceCreator = instanceCreator;
+            _resourceLoader = resourceLoader;
             _audioData = audioData;
+
+            var sfxSources = FillUpAudioPull(poolSize);
             _sfxPool.Clear();
             _sfxPool.AddRange(sfxSources);
 
@@ -78,6 +85,22 @@ namespace Asteroid.Audio
             source.clip = clip;
             source.Stop();
             source.Play();
+        }
+
+        private List<AudioSource> FillUpAudioPull(ushort poolSize)
+        {
+            var sfxPool = _instanceCreator.CreateInstance<List<AudioSource>>();
+            for (int i = 0; i < poolSize; i++)
+            {
+                var sourceObj = _resourceLoader.Instantiate(_audioData.AudioSourcePrefab,
+                    _audioData.AudioSourcePrefab.transform);
+                sourceObj.name = $"SFX_Source_{i}";
+                if (sourceObj.TryGetComponent<AudioSource>(out AudioSource voice))
+                {
+                    sfxPool.Add(voice);
+                }
+            }
+            return sfxPool;
         }
     }
 }
