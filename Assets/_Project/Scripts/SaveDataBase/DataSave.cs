@@ -1,3 +1,4 @@
+﻿using Newtonsoft.Json;
 using System;
 
 namespace Asteroid.Database
@@ -5,11 +6,12 @@ namespace Asteroid.Database
     [Serializable]
     public class DataSave
     {
-        private string _name;
-        private int _countSummaryEnemiesDestroyed;
-        private bool _isLaserUsed;
-        private int _countCoins;
-        private bool _adsDisabled;
+        [JsonProperty] private string _name;
+        [JsonProperty] private int _countSummaryEnemiesDestroyed;
+        [JsonProperty] private bool _isLaserUsed;
+        [JsonProperty] private int _countCoins;
+        [JsonProperty] private bool _adsDisabled;
+        [JsonProperty] private DateTime _lastSaveTime;
 
         public object this[string key]
         {
@@ -17,11 +19,12 @@ namespace Asteroid.Database
             {
                 return key switch
                 {
-                    CloudKeyData.DEAD_ENEMIES_COUNT_SUMMARY => _countSummaryEnemiesDestroyed,
-                    CloudKeyData.COINS_COUNT => _countCoins,
-                    CloudKeyData.ADS_DISABLED => _adsDisabled,
-                    CloudKeyData.IS_LASER_USED => _isLaserUsed,
-                    CloudKeyData.NAME=>_name,
+                    KeyData.DEAD_ENEMIES_COUNT_SUMMARY => _countSummaryEnemiesDestroyed,
+                    KeyData.COINS_COUNT => _countCoins,
+                    KeyData.ADS_DISABLED => _adsDisabled,
+                    KeyData.IS_LASER_USED => _isLaserUsed,
+                    KeyData.NAME=>_name,
+                    KeyData.LAST_SAVE_TIME => _lastSaveTime,
                     _ => throw new ArgumentException($"Invalid key: {key}")
                 };
             }
@@ -29,26 +32,28 @@ namespace Asteroid.Database
             {
                 switch (key)
                 {
-                    case CloudKeyData.DEAD_ENEMIES_COUNT_SUMMARY:
+                    case KeyData.DEAD_ENEMIES_COUNT_SUMMARY:
                         _countSummaryEnemiesDestroyed = Convert.ToInt32(value);
                         break;
-                    case CloudKeyData.COINS_COUNT:
+                    case KeyData.COINS_COUNT:
                         _countCoins = Convert.ToInt32(value);
                         break;
-                    case CloudKeyData.ADS_DISABLED:
+                    case KeyData.ADS_DISABLED:
                         _adsDisabled = Convert.ToBoolean(value);
                         break;
-                    case CloudKeyData.IS_LASER_USED:
+                    case KeyData.IS_LASER_USED:
                         _isLaserUsed = Convert.ToBoolean(_isLaserUsed);
                         break;
-                    case CloudKeyData.NAME:
+                    case KeyData.NAME:
                         _name = Convert.ToString(value);
+                        break;
+                    case KeyData.LAST_SAVE_TIME:
+                        _lastSaveTime = (DateTime)value;    
                         break;
                     default:
                         throw new ArgumentException($"Invalid key: {key}");
                 }
             }
         }
-
     }
 }

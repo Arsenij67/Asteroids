@@ -1,15 +1,18 @@
 using Asteroid.Database;
 using UnityEngine;
 using UnityEngine.Advertisements;
-using Unity;
-using Zenject;
+using Asteroid.Database.Connection;
+using Cysharp.Threading.Tasks;
+using System;
 
 namespace Asteroid.Services.UnityAdvertisement
 {
-    public class UnityAdsAdvertisement:IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener, IAdvertisementService
+    public class UnityAdsAdvertisement: WIFIConnector, IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener, IAdvertisementService
     {
         private const string GAME_ANDROID_ID = "5916275";
         private const string GAME_IOS_ID = "5916274";
+
+        public event Action OnAdsFinishedShow;
 
         private bool _isLoaded = false;
         private bool _isShowed = false;
@@ -17,23 +20,24 @@ namespace Asteroid.Services.UnityAdvertisement
 
         private string ApplicationId => Application.platform == RuntimePlatform.IPhonePlayer ? GAME_IOS_ID : GAME_ANDROID_ID;
 
-        public bool IsInitialized => Advertisement.isInitialized;
+        public bool IsInitialized => Advertisement.isInitialized && IsConnected;
 
         public bool IsLoaded => _isLoaded;
 
         public bool IsShowed => _isShowed;
 
-        public bool IsEnabled => !(bool)_playerSave[CloudKeyData.ADS_DISABLED];
+        public bool IsEnabled => !(bool)_playerSave[KeyData.ADS_DISABLED];
 
-        public void Initialize(params object[] parameters)
+        public async UniTask Initialize(params object[] parameters)
         {
-           
+            await IsConnectionAvailable();
             if (Advertisement.isSupported)
             {
                 Advertisement.Initialize(ApplicationId, (bool)parameters[0], this);
             }
             _playerSave = (DataSave)parameters[1];
         }
+
         public void OnInitializationComplete()
         {
             Debug.Log("Инициализация прошла успешно!");
@@ -76,6 +80,7 @@ namespace Asteroid.Services.UnityAdvertisement
             Debug.Log($"Показ рекламы {placementId} закончен! Вот состояние рекламы: {showCompletionState}");
             Advertisement.Load(placementId, this);
             _isShowed = true;
+            OnAdsFinishedShow.Invoke();
         }
 
         public void Load(params object[] parameters)

@@ -1,75 +1,61 @@
 ﻿using Asteroid.Database;
+using Asteroid.Database.Connection;
+using Asteroid.Generation;
 using Asteroid.Services.IAP;
 using Asteroid.Services.UnityCloud;
-using TMPro;
+using Asteroid.UI;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 using Zenject;
 
 namespace Asteroid.EntryPoints
 {
     public class ShopEntryPoint : MonoBehaviour
     {
-        private const int ADDED_100_COINS = 100;
-        private const bool ADVERTISEMENT_IS_CANCELED = true;
-
-        [Inject] private ShopUI _shopUI;
         [Inject] private IPurchasingService _purchaseService;
-        [Inject] private IRemoteSavable _remoteSave;
-        [Inject] private CloudDataPresenter _cloudDataController;
-        [Inject] private TMP_Text _textCoins;
+        [Inject] private InstanceCreator _instanceLoader;
+        [Inject] private IRemoteSavable _remoteSavable;
+        [Inject] private IResourceLoader _resourceLoaderService;
+        [Inject] private LocalSaveStrategy _localSaveStrategy;
+        [Inject] private CloudDataPresenter _cloudSaveStrategy;
+        [Inject] private SaveDataStrategyManager _saveDataStrategy;
         [Inject] private DataSave _dataSave;
-        [Inject] private Image _imageNoAds;
-        [Inject(Id = "buttonBuyNoAds")] private Button _buttonBuyNoAds;
-        [Inject(Id = "buttonBuy100Coins")] private Button _buttonBuy100Coins;
+        [Inject] private LocalSaveMetaData _localSave;
+        [Inject] private WIFIConnector _wiFiChecker;
+        [Inject] private PurchasesResultPresenter _purchasesResultPresenter;
+        [Inject] private PurchasesResultData _purchasesResultData;
+
+        [SerializeField] private SaveModeUI _saveModeUIPrefab;
+        [SerializeField] RectTransform _parentUI;
+        [SerializeField] private ShopView _shopUI;
 
         private async void Start()
         {
-            _shopUI.Initialize(_buttonBuyNoAds, _buttonBuy100Coins, _textCoins, _imageNoAds);
-            await _purchaseService.Initialize(_dataSave);
-            _cloudDataController.Initialize(_remoteSave, _dataSave);
+            _shopUI.Initialize();
+            _wiFiChecker.Initialize(_instanceLoader);
+            await _localSaveStrategy.Initialize(_dataSave,_localSave, _instanceLoader,_shopUI);
+            await _cloudSaveStrategy.Initialize(_wiFiChecker, _dataSave, _instanceLoader, _remoteSavable, _shopUI);
+            await _saveDataStrategy.Initialize(_wiFiChecker,_instanceLoader,_resourceLoaderService,_saveModeUIPrefab,_parentUI,_cloudSaveStrategy, _localSaveStrategy);
+            _purchasesResultPresenter.Initialize(_purchasesResultData,_parentUI,_resourceLoaderService);
 
-            _purchaseService.OnPlayerBought100Coins += UpdateCoinsAfterPurchase;
-            _purchaseService.OnPlayerBought100Coins += UpdateCoinsUI;
-            _purchaseService.OnPlayerBoughtNoAds += UpdateNoAdsCloudAfterPurchase;
-            _purchaseService.OnPlayerBoughtNoAds += UpdateNoAdsUI;
+            _purchaseService.OnPlayerBoughtNoAds += _purchasesResultPresenter.OpenResultPurchasedAds;
+            _purchaseService.OnPlayerBought100Coins += _purchasesResultPresenter.OpenResultPurchasedCoins;
+            _purchaseService.OnPlayerBought100Coins += _saveDataStrategy.AddAndRefreshCoins;
+            _purchaseService.OnPlayerBoughtNoAds += _saveDataStrategy.AddAndRefreshAds;
             _shopUI.OnPlayerClickBuy100Coins += _purchaseService.Buy100Coins;
             _shopUI.OnPlayerClickBuyNoAds += _purchaseService.BuyNoAds;
-
-            _shopUI.UpdateViewNoAds(_cloudDataController.NoAdsStatus);
-            _shopUI.UpdateCountCoins(_cloudDataController.CountCoins);
         }
 
         private void OnDestroy()
         {
-            _purchaseService.OnPlayerBought100Coins -= UpdateCoinsAfterPurchase;
-            _purchaseService.OnPlayerBought100Coins -= UpdateCoinsUI;
-            _purchaseService.OnPlayerBoughtNoAds -= UpdateNoAdsCloudAfterPurchase;
-            _purchaseService.OnPlayerBoughtNoAds -= UpdateNoAdsUI;
+            _purchaseService.OnPlayerBoughtNoAds -= _purchasesResultPresenter.OpenResultPurchasedAds;
+            _purchaseService.OnPlayerBought100Coins -= _purchasesResultPresenter.OpenResultPurchasedCoins;
+            _purchaseService.OnPlayerBought100Coins -= _saveDataStrategy.AddAndRefreshCoins;
+            _purchaseService.OnPlayerBoughtNoAds -= _saveDataStrategy.AddAndRefreshAds;
             _shopUI.OnPlayerClickBuy100Coins -= _purchaseService.Buy100Coins;
             _shopUI.OnPlayerClickBuyNoAds -= _purchaseService.BuyNoAds;
+            _resourceLoaderService.UnloadAllResources();
+            _purchaseService.Dispose();
+            _saveDataStrategy.Dispose();
         }
-
-        private void UpdateNoAdsCloudAfterPurchase()
-        {
-            _cloudDataController.UpdateNoAdsStatusCloud(ADVERTISEMENT_IS_CANCELED);
-        }
-
-        private void UpdateNoAdsUI()
-        {
-            _shopUI.UpdateViewNoAds(ADVERTISEMENT_IS_CANCELED);
-        }
-
-        private async void UpdateCoinsAfterPurchase()
-        {
-            await _cloudDataController.AddCountCoins(ADDED_100_COINS);
-        }
-
-        private void UpdateCoinsUI()
-        {
-            _shopUI.UpdateCountCoins(_cloudDataController.CountCoins + ADDED_100_COINS);
-        }
-
     }
 }

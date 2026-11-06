@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b06ad6190416d3146a7851c7bfa2d221, type: 3}
+  m_Name: AudioData
+  m_EditorClassIdentifier: 
+  LaserShootClip: {fileID: 8300000, guid: 34c638d8d99ccfd44a261f13505ab317, type: 3}
+  FireballShootClip: {fileID: 8300000, guid: e43baa980ea570a4e8a279adca6e7990, type: 3}
+  ExplosionClip: {fileID: 8300000, guid: 9cb65eb2505fbf443ac876ba177374f9, type: 3}
+  BackgroundMusic: {fileID: 8300000, guid: 1c65b86fd980496449d33e33b379f939, type: 3}
+  AudioSourcePrefab: {fileID: 9100547244190249562, guid: b94a84681ce0e3849924681020bff2b4, type: 3}
+  SfxVolume: 0.647
+  MusicVolume: 0.435

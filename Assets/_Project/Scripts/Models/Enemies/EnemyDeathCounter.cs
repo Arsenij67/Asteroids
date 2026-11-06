@@ -1,20 +1,17 @@
-using Asteroid.Statistic;
-using Asteroid.Database;
-using UnityEngine;
-using Asteroid.Generation;
-using UnityEditor.Playables;
 using Asteroid.Enemies;
 
-public class EnemyDeathCounter
+namespace Asteroid.Statistic
 {
-    public void OnEnemyDied(BaseEnemy enemy)
+    public class EnemyDeathCounter
     {
-        IncreaseKilledEnemies(enemy);
-    }
+        public void OnEnemyDied(Enemy enemy)
+        {
+            IncreaseKilledEnemies(enemy);
+        }
 
-    private void IncreaseKilledEnemies(BaseEnemy enemy)
-    {
-        enemy.AddToStatistic();
+        private void IncreaseKilledEnemies(Enemy enemy)
+        {
+            enemy.AddToStatistic();
+        }
     }
- 
 }

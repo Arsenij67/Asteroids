@@ -1,15 +1,16 @@
+using System;
 using UnityEngine;
 
 namespace Asteroid.Enemies
 {
     [RequireComponent(typeof(CircleCollider2D))]
-    public class UFOEnemy : BaseEnemy
+    public class UFOEnemy : Enemy
     {
-        private const float MIN_LENGHT_REACT = 0.05f;
+        private const float MIN_LENGHT_REACT = 0.5f;
 
         public override void AddToStatistic()
         {
-            _shipStatisticController.IncreaseCountUFODestroyed();
+            ShipStatisticPresenter.IncreaseCountUFODestroyed();
         }
 
         public override void Move(Transform transformEnd)
@@ -17,17 +18,21 @@ namespace Asteroid.Enemies
             Vector2 transformStart = transform.position;
             Vector2 direction = (Vector2)transformEnd.position - transformStart;
             Vector2 forwardForce = direction.normalized * Speed * Time.fixedDeltaTime;
-            if (direction.sqrMagnitude > MIN_LENGHT_REACT)
+            if (direction.sqrMagnitude > MIN_LENGHT_REACT && !EnemyIsDied)
             {
-                _rigidBody2DEnemy.linearVelocity = forwardForce;
+                RigidBody2DEnemy.linearVelocity = forwardForce;
                 Rotate(forwardForce);
+            }
+            else
+            {
+                RigidBody2DEnemy.linearVelocity = Vector2.zero;
             }
         }
 
         private void Rotate(Vector2 direction)
         {
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
-            _rigidBody2DEnemy.MoveRotation(angle);
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            RigidBody2DEnemy.MoveRotation(angle);
         }
     }
 }

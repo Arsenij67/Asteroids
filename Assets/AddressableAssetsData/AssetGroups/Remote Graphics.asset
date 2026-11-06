@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Remote Graphics
+  m_EditorClassIdentifier: 
+  m_GroupName: Remote Graphics
+  m_GUID: c512e3d770971bc46ad2e370e667e2a7
+  m_SerializeEntries:
+  - m_GUID: 04759fb2ec03cd44f8d342d354fdf1d6
+    m_Address: UFODisplay
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0b0c27137eb4d504096874b80ace66bd
+    m_Address: RedFireball
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 16d5cfc8252347a4e85b7f236801c2ae
+    m_Address: WindowSaveModeVertical
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3481901475fadbe4fb1b179b06134dff
+    m_Address: AsteroidDisplay
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 379099edad5cfac49a2bfd5611387077
+    m_Address: ScriptableObjects/EntitiesGenerationData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8aeb9e233fbb8f14db39770841b78b94
+    m_Address: Assets/_Project/Content/2D Pixel Spaceship - Two Small Ships/Sprites/sprites.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d18f6d2b73e89b4882fbf3bb5aedb4b
+    m_Address: Assets/_Project/Content/spaceship_sprites/texture/spaceships.psd
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b17953544334993459b349b3f2642c15
+    m_Address: BlueAsteroid
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b353e60dec2b67040a3e72844bd71630
+    m_Address: spaceship_1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cec1b63416a578845823068e4c9046db
+    m_Address: WindowSaveModeHorizontal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd66b356fa5632d4493b1517b93c2ade
+    m_Address: RedLiser
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e28212ea638f7f84190f01ecb9839a2e
+    m_Address: UFOEnemy
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e9d3de259ff80d346a0f25fe0e9b210b
+    m_Address: spaceship_2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 78ca7375a6e85ba40a44782a60eff8dc, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: d62a241b41ace4e4697a6f8de36e95e9, type: 2}
+    - {fileID: 11400000, guid: 710e669c6d26d754492ab8ae482fa435, type: 2}

@@ -5,25 +5,27 @@ namespace Asteroid.Weapon
 {
     public class BulletWeaponController : WeaponShip, IWeaponStrategy
     {
-        [field: SerializeField] public short UniqueNumber { get; private set; }
-
         public void Fire()
         {
-            if (_countShoots > 0)
+            if (CountShoots > 0)
             {
-                var bullet = _resourceLoaderService.Instantiate(_concreteBulletPrefab, transform.position, Quaternion.identity).GetComponent<FireballBullet>();
+                var bullet = ResourceLoaderService.Instantiate(ConcreteBulletPrefab, transform.position, Quaternion.identity).GetComponent<FireballBullet>();
                 OnMissalSpawned?.Invoke(bullet, -transform.up);
-                _countShoots--;
-                bullet.Initialize(-transform.up,_remoteConfigService);
-                UpdateViewWeapon();
-                _controllerStatistics.IncreaseCountBulletShoots();
+                CountShoots--;
+                bullet.Initialize(-transform.up,RemoteConfigService,AudioLocator);
+                PlayFireSound(bullet);
+                UpdateWeapon();
             }
-
         }
 
-        protected override void UpdateViewWeapon()
+        protected override void PlayFireSound(BaseBullet bullet)
         {
-            _shipView.UpdateFireballCount(_countShoots);
+            bullet.PlaySoundShoot();
+        }
+
+        protected override void UpdateWeapon()
+        {
+            ShipStatisticsPresenter.UpdateCountBulletShoots(CountShoots);
         }
     }
 }

@@ -1,31 +1,43 @@
+using System;
 using UnityEngine;
 
 namespace Asteroid.SpaceObjectActions
 {
     public class SpaceObject : MonoBehaviour
     {
-        [field: SerializeField] public Vector2 DownLeftBorder { get; private set; }
-        [field: SerializeField] public Vector2 UpRightBorder { get; private set; }
+        private const short INDEX_CHILD_DOWN_LEFT = 3;
+        private const short TELEPORTATION_THRESHOLD = 5;
+        private const short INDEX_CHILD_UP_RIGHT = 1;
+
+        [field: SerializeField] public Transform Vertices { get; private set; }
+
+        private Transform DownLeftBorder => Vertices.GetChild(INDEX_CHILD_DOWN_LEFT);
+        private Transform UpRightBorder => Vertices.GetChild(INDEX_CHILD_UP_RIGHT);
 
         public bool TryTeleport(Vector2 position)
         {
             Vector2 newPosition = position;
 
-            if (position.x < DownLeftBorder.x)
-            {
-                newPosition = new Vector2(UpRightBorder.x, position.y);
+            if (Mathf.Abs((newPosition - (Vector2) UpRightBorder.position).magnitude) < TELEPORTATION_THRESHOLD || Mathf.Abs((newPosition - (Vector2)DownLeftBorder.position).magnitude) < TELEPORTATION_THRESHOLD)
+            { 
+                return false;
             }
-            else if (position.x > UpRightBorder.x)
+
+            if (position.x < DownLeftBorder.position.x)
             {
-                newPosition = new Vector2(DownLeftBorder.x, position.y);
+                newPosition = new Vector2(UpRightBorder.position.x, position.y);
             }
-            else if (position.y < DownLeftBorder.y)
+            else if (position.x > UpRightBorder.position.x)
             {
-                newPosition = new Vector2(position.x, UpRightBorder.y);
+                newPosition = new Vector2(DownLeftBorder.position.x, position.y);
             }
-            else if (position.y > UpRightBorder.y)
+            else if (position.y < DownLeftBorder.position.y)
             {
-                newPosition = new Vector2(position.x, DownLeftBorder.y);
+                newPosition = new Vector2(position.x, UpRightBorder.position.y);
+            }
+            else if (position.y > UpRightBorder.position.y)
+            {
+                newPosition = new Vector2(position.x, DownLeftBorder.position.y);
             }
             transform.localPosition = newPosition;
 

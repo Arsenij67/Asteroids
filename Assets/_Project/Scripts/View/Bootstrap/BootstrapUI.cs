@@ -1,42 +1,29 @@
-using Asteroid.Services.IAP;
 using Cysharp.Threading.Tasks;
 using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 namespace Asteroid.UI
 {
-    public class BootstrapUI : MonoBehaviour
+    public class BootstrapUI : MonoBehaviour, IDisposable
     {
-        public event Action OnPlayerClickButtonStart;
+        public event Func<UniTask> OnPlayerClickButtonStart;
         public event Action OnPlayerClickButtonExit;
 
-        [Inject(Id = "loadingSlider")] private Slider _sliderLoading;
-        [Inject(Id = "buttonStart")] private Button _buttonStartGame;
-        [Inject(Id = "buttonExit")] private Button _buttonExitGame;
+        [SerializeField] private Slider _sliderLoading;
+        [SerializeField] private Button _buttonStartGame;
+        [SerializeField] private Button _buttonExitGame;
+        [SerializeField] private RectTransform _interfaceMount;
 
-        private void Awake()
+        public void Initialize()
         {
             _buttonStartGame.onClick.AddListener(NotifyButtonStartPressed);
             _buttonExitGame.onClick.AddListener(NotifyButtonExitPressed);
         }
 
-        private void OnDestroy()
+        public void SetUpUI(RectTransform parent)
         {
-            _buttonStartGame.onClick.RemoveListener(NotifyButtonStartPressed);
-            _buttonExitGame.onClick.RemoveListener(NotifyButtonExitPressed);
-        }
-
-        private void NotifyButtonStartPressed()
-        {
-            OnPlayerClickButtonStart?.Invoke();
-        }
-
-        private void NotifyButtonExitPressed()
-        {
-            OnPlayerClickButtonExit?.Invoke();
+            _interfaceMount.SetParent(parent, false);
         }
 
         public void UpdateSlider(float endValue)
@@ -51,6 +38,22 @@ namespace Asteroid.UI
             {
                 _buttonStartGame.gameObject.SetActive(true);
             }
+        }
+
+        public void Dispose()
+        {
+            _buttonStartGame.onClick.RemoveListener(NotifyButtonStartPressed);
+            _buttonExitGame.onClick.RemoveListener(NotifyButtonExitPressed);
+        }
+
+        private void NotifyButtonStartPressed()
+        {
+            OnPlayerClickButtonStart?.Invoke();
+        }
+
+        private void NotifyButtonExitPressed()
+        {
+            OnPlayerClickButtonExit?.Invoke();
         }
     }
 }

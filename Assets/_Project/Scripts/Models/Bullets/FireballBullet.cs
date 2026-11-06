@@ -1,3 +1,4 @@
+using Asteroid.Audio;
 using Asteroid.Database;
 using Asteroid.Enemies;
 using Asteroid.Services.RemoteConfig;
@@ -17,7 +18,7 @@ namespace Asteroid.Weapon
             {
                 if (AssignmentMode.RemoteConfig.Equals(_assignmentMode))
                 {    
-                    string jsonConfig = _remoteConfigService.GetValue<string>("weapon_bullet_config");
+                    string jsonConfig = RemoteConfigService.GetValue<string>("weapon_bullet_config");
                     RemoteConfigFireball _remoteConfigFireball =  JsonUtility.FromJson<RemoteConfigFireball>(jsonConfig);
                     return _remoteConfigFireball.Damage;
                 }
@@ -36,7 +37,7 @@ namespace Asteroid.Weapon
             {
                 if (AssignmentMode.RemoteConfig.Equals(_assignmentMode))
                 {
-                    string jsonConfig = _remoteConfigService.GetValue<string>("weapon_bullet_config");
+                    string jsonConfig = RemoteConfigService.GetValue<string>("weapon_bullet_config");
                     RemoteConfigFireball _remoteConfigFireball = JsonUtility.FromJson<RemoteConfigFireball>(jsonConfig);
                     return _remoteConfigFireball.Speed;
                 }
@@ -54,7 +55,7 @@ namespace Asteroid.Weapon
             {
                 if (AssignmentMode.RemoteConfig.Equals(_assignmentMode))
                 {
-                    string jsonConfig = _remoteConfigService.GetValue<string>("weapon_bullet_config");
+                    string jsonConfig = RemoteConfigService.GetValue<string>("weapon_bullet_config");
                     RemoteConfigFireball _remoteConfigFireball = JsonUtility.FromJson<RemoteConfigFireball>(jsonConfig);
                     return _remoteConfigFireball.LifeTime;
                 }
@@ -66,20 +67,17 @@ namespace Asteroid.Weapon
             }
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        public void Initialize(Vector2 direction, IRemoteConfigService remoteConfigService,IAudioService audioLocator)
         {
-            if (collision.TryGetComponent(out BaseEnemy enemy))
-            {
-                Destroy(gameObject);
-            }
-        }
-
-        public void Initialize(Vector2 direction, IRemoteConfigService remoteConfigService)
-        {
-            base.Initialize(remoteConfigService);
+            base.Initialize(remoteConfigService,audioLocator);
             _rigidBody2D = GetComponent<Rigidbody2D>();
             _rigidBody2D.linearVelocity = direction.normalized * Speed;
             Destroy(gameObject, LifeTime);
+        }
+
+        public override void PlaySoundShoot()
+        {
+            AudioLocator.PlayFireballShoot();
         }
     }
 }

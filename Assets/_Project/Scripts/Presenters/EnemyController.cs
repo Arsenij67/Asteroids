@@ -1,14 +1,15 @@
+using Asteroid.Effects;
 using Asteroid.SpaceShip;
 using Asteroid.Weapon;
 using UnityEngine;
 
 namespace Asteroid.Enemies
 {
-    [RequireComponent(typeof(BaseEnemy))]
+    [RequireComponent(typeof(Enemy))]
     public class EnemyController : MonoBehaviour
     {
         private Transform? _shipTransform;
-        private BaseEnemy _enemy;
+        private Enemy _enemy;
         private void FixedUpdate()
         {
             if (_shipTransform!=null)
@@ -16,31 +17,40 @@ namespace Asteroid.Enemies
                 _enemy.Move(_shipTransform);
                 _enemy.TryTeleport(_enemy.transform.position);
             }
-        }
+        } 
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.TryGetComponent(out BaseEnemy enemy))
+            if (collision.TryGetComponent(out Enemy enemy) || _enemy.EnemyIsDied)
             {
                 return;
             }
 
-            if (collision.TryGetComponent(out BaseBullet bullet))
+            if (collision.transform.parent != null ? collision.transform.parent.TryGetComponent(out BaseBullet bullet) : false)
             {
                 _enemy.TakeDamage(bullet.Damage);
             }
 
-            if (collision.TryGetComponent(out SpaceShipPresenter ship))
+            if (collision.TryGetComponent(out bullet))
             {
-                _enemy.Die();
+                _enemy.TakeDamage(bullet.Damage);
+            }
+
+            else if (collision.TryGetComponent(out SpaceShipPresenter ship))
+            {
+                DieEnemy(_enemy);
             }
         }
 
         public void Initialize(Transform shipTransform)
         {
-            _enemy = GetComponent<BaseEnemy>();
+            _enemy = GetComponent<Enemy>();
             _shipTransform = shipTransform;
         }
 
+        private void DieEnemy(Enemy enemy)
+        {
+            enemy.Die();
+        }
     }
 }

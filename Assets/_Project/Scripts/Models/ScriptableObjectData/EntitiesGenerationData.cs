@@ -1,0 +1,97 @@
+using UnityEngine;
+using Asteroid.Enemies;
+using Asteroid.SpaceShip;
+using Asteroid.Services.RemoteConfig;
+using Asteroid.Database;
+using Asteroid.Weapon;
+using Asteroid.UI;
+
+namespace Asteroid.Generation
+{
+    [CreateAssetMenu(fileName = "EntitiesGenerationData", menuName = "ScriptableObjects/EntitiesGenerationData")]
+    public class EntitiesGenerationData : ScriptableObject
+    {
+        [SerializeField] private AssignmentMode _assignmentMode;
+        [SerializeField] private GameObject[] _obstacles;
+        [SerializeField] private GameObject[] _playerShips;
+        [SerializeField] private float _generationFrequency;
+
+        private IRemoteConfigService _remoteConfigService;
+
+        public float GenerationFrequency 
+        {
+            get
+            {
+                if (_assignmentMode.Equals(AssignmentMode.RemoteConfig))
+                {
+                    string shipJson = _remoteConfigService.GetValue<string>("obstacles_config");
+                    RemoteConfigObstacle _remoteConfigObstacle = JsonUtility.FromJson<RemoteConfigObstacle>(shipJson);
+                    return _remoteConfigObstacle.GenerationFrequency;
+                }
+                else
+                {
+                    return _generationFrequency;
+                }
+            } 
+        }
+        public Enemy ObstacleToGenerateNow => _obstacles[Random.Range(0, _obstacles.Length)].GetComponent<Enemy>();
+        public SpaceShipPresenter PlayerShipToGenerateNow {
+            get
+            {
+                if (_assignmentMode.Equals(AssignmentMode.RemoteConfig))
+                {
+                    string shipJson = _remoteConfigService.GetValue<string>("ship_config");
+                    Debug.Log("your json: "+shipJson);
+                    RemoteConfigShip _remoteConfigShip = JsonUtility.FromJson<RemoteConfigShip>(shipJson);
+                    return _playerShips[_remoteConfigShip.ShipVariant].GetComponent<SpaceShipPresenter>();
+                }
+
+                else
+                {
+                    return _playerShips[0].GetComponent<SpaceShipPresenter>();
+                }
+
+            }
+        }
+        public Vector2 PointObstacleToGenerate
+        {
+            get
+            {
+                int startIndex = Random.Range(0, GenerationVertices.childCount);
+                int endIndex = (startIndex + 1) % GenerationVertices.childCount;
+
+                Vector3 startPoint = GenerationVertices.GetChild(startIndex).position;
+                Vector3 endPoint = GenerationVertices.GetChild(endIndex).position;
+
+                float t = Random.Range(0f, 1f);
+                return Vector2.Lerp(startPoint, endPoint, t);
+            }
+        }
+        public Vector2 PointShipToGenerate
+        {
+            get
+            {
+                return new Vector2(
+                    (GenerationVertices.GetChild(0).position.x + GenerationVertices.GetChild(2).position.x) / 2,
+                    (GenerationVertices.GetChild(0).position.y + GenerationVertices.GetChild(2).position.y) / 2);
+            }
+        }
+        public Transform EndPointToFly { get; private set; }
+
+        [field: SerializeField] public Transform GenerationVertices { get; private set; }
+        [field: SerializeField] public BaseBullet FireballPrefab { get; private set; }
+        [field: SerializeField] public BaseBullet LaserPrefab { get; private set; }
+        [field: SerializeField] public string HomeSceneName { get; private set; }
+        [field: SerializeField] public GameOverView EndPanelView { get; private set; }
+
+        public void Initialize(IRemoteConfigService remoteConfig)
+        { 
+          _remoteConfigService = remoteConfig;  
+        }
+
+        public void Initialize(Transform EndPoint)
+        {
+            EndPointToFly = EndPoint;
+        }
+    } 
+}

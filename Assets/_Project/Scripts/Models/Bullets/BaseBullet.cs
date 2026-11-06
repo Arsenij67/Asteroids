@@ -1,10 +1,12 @@
+using Asteroid.Audio;
 using Asteroid.Database;
+using Asteroid.Enemies;
 using Asteroid.Services.RemoteConfig;
 using UnityEngine;
 
 namespace Asteroid.Weapon
 {
-    public class BaseBullet : MonoBehaviour
+    public abstract class BaseBullet : MonoBehaviour
     {
         [SerializeField] protected AssignmentMode _assignmentMode;
         [SerializeField] protected float _speed;
@@ -12,15 +14,32 @@ namespace Asteroid.Weapon
         [SerializeField] protected readonly float _maxDamage = Mathf.Infinity;
         [SerializeField] protected readonly float _maxSpeed = Mathf.Infinity;
 
-        protected IRemoteConfigService _remoteConfigService;
+        protected IRemoteConfigService RemoteConfigService;
+        protected IAudioService AudioLocator;
 
         protected virtual float Speed => Mathf.Clamp(_speed, 0, _maxSpeed);
 
         public virtual float Damage => Mathf.Clamp(_damage, 0, _maxDamage);
 
-        public virtual void Initialize(IRemoteConfigService remoteConfigService)
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            _remoteConfigService = remoteConfigService;
+             ReactOnCollisionStart(collision.GetComponent<Enemy>());
+        }
+
+        public virtual void Initialize(IRemoteConfigService remoteConfigService, IAudioService audioLocator)
+        {
+            RemoteConfigService = remoteConfigService;
+            AudioLocator = audioLocator;
+        }
+
+        public abstract void PlaySoundShoot();
+
+        protected virtual void ReactOnCollisionStart(Enemy enemy)
+        {
+            if (enemy != null)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
+using Asteroid.Audio;
 using Asteroid.Database;
+using Asteroid.Enemies;
 using Asteroid.Generation;
 using Asteroid.Services.RemoteConfig;
 using Asteroid.SpaceShip;
@@ -19,21 +21,19 @@ namespace Asteroid.Weapon
         private bool _laserTurned;
         private WaitForSeconds _waitSecondsGlow;
 
-        [field: SerializeField] public short UniqueNumber { get; private set; }
+        public bool LaserCollideNow => _laserObject.LaserCollideNow;
 
-        public bool LaserTurned => _laserTurned;
         protected override float TimeBulletRecovery
         {
             get
             {
                 if (AssignmentMode.RemoteConfig.Equals(AssignmentMode))
                 {
-                    string jsonConfig = _remoteConfigService.GetValue<string>("weapon_laser_config");
-                    Debug.Log(jsonConfig);
+                    string jsonConfig = RemoteConfigService.GetValue<string>("weapon_laser_config");
                     RemoteConfigLaser _remoteConfigFireball = JsonUtility.FromJson<RemoteConfigLaser>(jsonConfig);
                     return _remoteConfigFireball.TimeBulletRecovery;
                 }
-                return _timeBulletRecovery;
+                return TimeBulletRecovery;
             }
         }
         private float AttackTime
@@ -42,7 +42,7 @@ namespace Asteroid.Weapon
             {
                 if (AssignmentMode.Equals(AssignmentMode.RemoteConfig))
                 {
-                    string jsonConfig = _remoteConfigService.GetValue<string>("weapon_laser_config");
+                    string jsonConfig = RemoteConfigService.GetValue<string>("weapon_laser_config");
                     RemoteConfigLaser _remoteConfigFireball = JsonUtility.FromJson<RemoteConfigLaser>(jsonConfig);
                     return _remoteConfigFireball.AttackTime;
                 }
@@ -50,14 +50,13 @@ namespace Asteroid.Weapon
             }
         }
 
-        public override void Initialize(BaseBullet concreteBullet, ShipStatisticsView shipStView, ShipStatisticsPresenter controllerStatistics, IResourceLoaderService resourceLoader, IRemoteConfigService remoteConfigService)
+        public override void Initialize(GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticsPresenter, BaseBullet concreteBullet, IResourceLoader resourceLoader, IRemoteConfigService remoteConfigService, IAudioService audioService)
         {
-            base.Initialize(concreteBullet, shipStView,controllerStatistics, resourceLoader,remoteConfigService);
+            base.Initialize(gameOverPresenter, shipStatisticsPresenter, concreteBullet, resourceLoader, remoteConfigService,audioService);
             _waitSecondsGlow = new WaitForSeconds(AttackTime);
-            _laserObject = _resourceLoaderService.Instantiate(_concreteBulletPrefab, transform).GetComponent<LaserBullet>();
+            _laserObject = ResourceLoaderService.Instantiate(ConcreteBulletPrefab, transform).GetComponent<LaserBullet>();
             _laserObject.gameObject.SetActive(false);
-            _laserObject.transform.position = (Vector2)transform.position + _laserObject.SpawnOffset;
-            _laserObject.Initialize(remoteConfigService);
+            _laserObject.Initialize(remoteConfigService,audioService);
         }
 
          public void Fire()
@@ -65,30 +64,35 @@ namespace Asteroid.Weapon
             if (!_laserTurned)
             {
                 OnLaserTurned?.Invoke();
-                OnMissalSpawned?.Invoke(_concreteBulletPrefab, transform.up * -1);
+                OnMissalSpawned?.Invoke(ConcreteBulletPrefab, transform.up * -1);
                 _laserTurned = true;
                 StartCoroutine(FireLaser());
-                _controllerStatistics.IncreaseCountLaserShoots();
+                PlayFireSound(_laserObject);
             }
+        }
+
+        protected override void UpdateWeapon()
+        {
+            ShipStatisticsPresenter.UpdateCountLaserShoots(CountShoots);
+            ShipStatisticsPresenter.UpdateRollbackTime(AttackTime);
+        }
+
+        protected override void  PlayFireSound(BaseBullet bullet)
+        {
+            bullet.PlaySoundShoot();
         }
 
         private IEnumerator FireLaser()
         {
-            if (_countShoots > 0)
+            if (CountShoots > 0)
             {
                 _laserObject.gameObject.SetActive(true);
                 yield return _waitSecondsGlow;
                 _laserObject.gameObject.SetActive(false);
-                _laserTurned = false;
-                _countShoots--;
-                UpdateViewWeapon();
+                CountShoots--;
+                UpdateWeapon();
             }
-        }
-
-        protected override void UpdateViewWeapon()
-        {
-            _shipView.UpdateLaserCount(_countShoots);
-            _shipView.UpdateRollbackTime(_attackTime);
+            _laserTurned = false;
         }
     }
 }

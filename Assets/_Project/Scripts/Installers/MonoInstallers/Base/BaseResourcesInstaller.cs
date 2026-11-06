@@ -1,13 +1,17 @@
 using Asteroid.Database;
+using Asteroid.Database.Connection;
 using Asteroid.Exit;
 using Asteroid.Generation;
 using Asteroid.Services.Analytics;
 using Asteroid.Services.IAP;
+using Asteroid.Services.RemoteConfig;
 using Asteroid.Services.UnityAdvertisement;
 using Asteroid.Services.UnityCloud;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using Zenject;
+using Asteroid.Services.Checker;
+using Asteroid.Generation;
 
 namespace Asteroid.Installers
 {
@@ -15,19 +19,27 @@ namespace Asteroid.Installers
     {
         public override void InstallBindings()
         {
-            Container.Bind<IApplicationQuitter>().To<PCApplicationQuitter>().AsSingle();
+            Container.Bind<BaseResourceLoaderService>().AsCached();
+            Container.Bind<IApplicationQuitter>().To<AndroidApplicationQuitter>().AsSingle();
             Container.BindInterfacesAndSelfTo<UnityAdsAdvertisement>().AsSingle();
             Container.Bind<List<UniTask>>().AsTransient();
             Container.BindInterfacesAndSelfTo<InstanceCreator>().AsSingle();
             Container.Bind<AdvertisementPresenter>().AsSingle();
-            Container.BindInterfacesAndSelfTo<LocalBundleLoader>().AsSingle();
+            Container.BindInterfacesAndSelfTo<AddressableBundleLoader>().AsSingle();
             Container.BindInterfacesAndSelfTo<FirebaseAnalyticsSender>().AsSingle();
             Container.Bind<DataSave>().FromNew().AsSingle();
             Container.BindInterfacesAndSelfTo<IAPAnalyzer>().FromNew().AsSingle();
             Container.BindInterfacesAndSelfTo<UnitySaveCloud>().FromNew().AsSingle();
-            Container.BindInterfacesAndSelfTo<CloudKeyData>().FromNew().AsCached();
-            Container.Bind<CloudDataPresenter>().FromNew().AsCached();
-            Container.Bind<SavingModeDeterminer>().FromNew().AsSingle();
+            Container.BindInterfacesAndSelfTo<KeyData>().FromNew().AsCached();
+            Container.Bind<CloudDataPresenter>().FromNew().AsTransient();
+            Container.Bind<LocalSaveStrategy>().To<LocalSaveStrategy>().AsCached();
+            Container.Bind<LocalSaveMetaData>().FromMethod((context) => context.Container.Resolve<BaseResourceLoaderService>().LoadResource<LocalSaveMetaData>("ScriptableObjects/LocalSaveMetaData")).AsSingle();
+            Container.Bind<SaveDataStrategyManager>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<SaveDataStrategyManager>()).AsSingle();
+            Container.Bind<WIFIConnector>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<WIFIConnector>()).AsSingle();
+            Container.Bind<IServiceDependencyChecker>().To<FirebaseServiceDependencyChecker>().AsSingle();
+            Container.BindInterfacesAndSelfTo<AddressablesBundleSceneLoader>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<AddressablesBundleSceneLoader>()).AsSingle();
+            Container.BindInterfacesAndSelfTo<FirebaseRemoteConfigService>().FromMethod((context) => context.Container.Resolve<InstanceCreator>().CreateInstance<FirebaseRemoteConfigService>()).AsSingle();
+            Container.Bind<BootstrapSceneData>().FromMethod((context) => context.Container.Resolve<BaseResourceLoaderService>().LoadResource<BootstrapSceneData>("ScriptableObjects/BootstrapSceneData")).AsSingle();
         }
     }
 }

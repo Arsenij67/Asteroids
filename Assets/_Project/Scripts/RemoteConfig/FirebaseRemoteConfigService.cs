@@ -1,12 +1,11 @@
+using Asteroid.Database.Connection;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
-using Firebase;
 using Firebase.RemoteConfig;
 using ModestTree;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
 namespace Asteroid.Services.RemoteConfig
 {
@@ -15,34 +14,21 @@ namespace Asteroid.Services.RemoteConfig
         public event Action OnConfigUpdated;
 
         private bool _isInitialized = false;
-        public bool IsInitialized => _isInitialized;
+        private WIFIConnector _wifiConnector;
 
-        public async UniTask Initialize()
+        public bool IsInitialized => _isInitialized && _wifiConnector.IsConnected;
+
+        public async UniTask Initialize(bool isServiceAvailable, WIFIConnector wifiConnector)
         {
-            DependencyStatus statusResult =  await FirebaseApp.CheckAndFixDependenciesAsync().AsUniTask();
-            if (statusResult == DependencyStatus.Available)
+            _wifiConnector = wifiConnector;
+            if (isServiceAvailable)
             {
+                await _wifiConnector.IsConnectionAvailable();
                 FirebaseRemoteConfig.DefaultInstance.OnConfigUpdateListener += HandleConfigUpdate;
-                await FetchAndActivateAsync();
                 _isInitialized = true;
-                Debug.Log("Remote Config Initialized!");
+                await FetchAndActivateAsync();
+                ConfigValue configValue = FirebaseRemoteConfig.DefaultInstance.GetValue("ship_config");
             }
-            else
-            {
-                Debug.LogError($"Firebase init failed: {statusResult}");
-            }
-        }
-
-        private void HandleConfigUpdate(object sender, ConfigUpdateEventArgs args)
-        {
-            if (args.Error != RemoteConfigError.None)
-            {
-                Debug.LogError($"Config update error: {args.Error}");
-                return;
-            }
-            string updatedKeys = args.UpdatedKeys.Join(",");
-            Debug.Log(string.Format($"Remote Config updated in realtime! Updated Keys : {updatedKeys}"));
-            OnConfigUpdated?.Invoke();
         }
 
         public T GetValue<T>(string key)
@@ -58,12 +44,17 @@ namespace Asteroid.Services.RemoteConfig
 
         public async UniTask FetchAndActivateAsync()
         {
-            await FirebaseRemoteConfig.DefaultInstance.FetchAsync(TimeSpan.Zero);
-            await FirebaseRemoteConfig.DefaultInstance.ActivateAsync();
+            if (IsInitialized)
+            {
+                await FirebaseRemoteConfig.DefaultInstance.FetchAsync(TimeSpan.Zero);
+                await FirebaseRemoteConfig.DefaultInstance.ActivateAsync();
+            }
         }
 
         public UniTask SetUserAttributes(string[] keys, string[] values)
         {
+            if (!IsInitialized) return UniTask.CompletedTask;
+
             var userProperties = new Dictionary<string, object>();
             short indexValue = 0;
             foreach (var attr in keys)
@@ -76,6 +67,18 @@ namespace Asteroid.Services.RemoteConfig
         public void Dispose()
         {
             FirebaseRemoteConfig.DefaultInstance.OnConfigUpdateListener -= HandleConfigUpdate;
+        }
+
+        private void HandleConfigUpdate(object sender, ConfigUpdateEventArgs args)
+        {
+            if (args.Error != RemoteConfigError.None)
+            {
+                Debug.LogError($"Config update error: {args.Error}");
+                return;
+            }
+            string updatedKeys = args.UpdatedKeys.Join(",");
+            Debug.Log(string.Format($"Remote Config updated in realtime! Updated Keys : {updatedKeys}"));
+            OnConfigUpdated?.Invoke();
         }
     }
 }

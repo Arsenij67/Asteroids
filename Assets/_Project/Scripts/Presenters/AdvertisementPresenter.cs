@@ -13,6 +13,9 @@ namespace Asteroid.Services.UnityAdvertisement
 
         public event Action OnPlayerRevived;
 
+        public bool IsShowed =>_advertisementService.IsShowed;
+        public bool IsInitialized =>_advertisementService.IsInitialized;
+
         private IAdvertisementService _advertisementService;
 
         public void Initialize(IAdvertisementService advertisementService)
@@ -26,8 +29,14 @@ namespace Asteroid.Services.UnityAdvertisement
             if (!_advertisementService.IsShowed)
             {
                 ShowAnyAd(REWARDED_ANDROID);
-                OnPlayerRevived?.Invoke();
+                _advertisementService.OnAdsFinishedShow += OnAdsFinishedHandler;
             }
+        }
+
+        private void OnAdsFinishedHandler()
+        {
+            OnPlayerRevived?.Invoke();
+            _advertisementService.OnAdsFinishedShow -= OnAdsFinishedHandler;
         }
 
         public void ShowInterstitialAdBeforeRestart()

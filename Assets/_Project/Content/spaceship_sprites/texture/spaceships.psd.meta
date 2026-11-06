@@ -822,7 +822,7 @@ TextureImporter:
       name: spaceships_24
       rect:
         serializedVersion: 2
-        x: 160
+        x: 159
         y: 419
         width: 40
         height: 40
@@ -1174,7 +1174,7 @@ TextureImporter:
       name: spaceships_40
       rect:
         serializedVersion: 2
-        x: 240
+        x: 241
         y: 379
         width: 80
         height: 80
@@ -1570,7 +1570,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 44ca4f6b344d8dd4b9ce69961c490575
     internalID: 0
     vertices: []
     indices: 

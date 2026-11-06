@@ -4,33 +4,29 @@ using Firebase.Analytics;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Zenject;
+using Asteroid.Database.Connection;
 
 namespace Asteroid.Services.Analytics
 {
-    public class FirebaseAnalyticsSender : IAnalytics
+    public class FirebaseAnalyticsSender : WIFIConnector,IAnalytics
     {
         private bool _isInitialized = false;
-        public bool AnalyticsEnabled => _isInitialized;
 
-        public async UniTask<bool> Initialize()
+        public bool AnalyticsEnabled => _isInitialized && IsConnected;
+
+        public async UniTask<bool> Initialize(bool IsServiceAvailable)
         {
-            var dependencyStatus = await FirebaseApp.CheckAndFixDependenciesAsync();
+            await IsConnectionAvailable();
           
-            if (dependencyStatus == DependencyStatus.Available)
-            {
-                _isInitialized = true;
-                Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
-            }
-            else
-            {
-                Debug.LogError($"Could not resolve Firebase dependencies: {dependencyStatus}");
-            }
-            return _isInitialized;
+            _isInitialized = true;
+            Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
+           
+            return AnalyticsEnabled;
         }
 
         public void PushEvent<E>(string eventName, string parameterName, E parameterValue = default)
         {
-            if (!_isInitialized)
+            if (!AnalyticsEnabled)
             {
                 Debug.LogWarning("Firebase Analytics not initialized. Event not sent.");
                 return;
@@ -45,7 +41,7 @@ namespace Asteroid.Services.Analytics
 
         public void PushUserProperty<P>(string propertyName, P propertyValue = default)
         {
-            if (!_isInitialized)
+            if (!AnalyticsEnabled)
             {
                 Debug.LogWarning("Firebase Analytics not initialized. Property not set.");
                 return;
@@ -59,7 +55,7 @@ namespace Asteroid.Services.Analytics
 
         public void ResetAnalyticsData()
         {
-            if (!_isInitialized) return;
+            if (!AnalyticsEnabled) return;
 
             Firebase.Analytics.FirebaseAnalytics.ResetAnalyticsData();
             Debug.Log("Firebase Analytics data reset");

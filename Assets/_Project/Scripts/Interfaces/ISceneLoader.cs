@@ -6,7 +6,7 @@ namespace Asteroid.Generation
     {
         public void LoadScene(string name);
         public UniTask ReloadSceneAsync(string name, bool activateOnLoad);
-        public UniTask ReloadStartSceneAsync(string name);
+        public UniTask ReloadSceneAsync(string name);
         public void LoadSceneAdditive(string name);
         public UniTask LoadSceneAsync(string name, bool activateOnLoad);
         public UniTask LoadSceneAdditiveAsync(string name, bool allowSceneActivate = true);
@@ -14,6 +14,5 @@ namespace Asteroid.Generation
         public UniTask SwitchSceneActivation(string name,bool allowSceneBeActive);
         public void UnloadScene(string name);
         public UniTask <object> UnloadSceneAsync(string name);
-
     }
 }

@@ -1,3 +1,6 @@
+using Asteroid.Audio;
+using Asteroid.Generation;
+using Asteroid.SpaceShip;
 using Asteroid.Statistic;
 using System;
 using UnityEngine;
@@ -6,62 +9,82 @@ namespace Asteroid.Enemies
 {
     [RequireComponent(typeof(CircleCollider2D))]
     [RequireComponent(typeof(EnemyController))]
-    public class AsteroidEnemy : BaseEnemy
+    public class AsteroidEnemy : Enemy
     {
-        public Action<BaseEnemy> OnMeteoriteDestroyed;
+        private const float SPREAD_RANGE = 120f;
+
+        public Action<Enemy> OnMeteoriteDestroyed;
 
         [SerializeField] private MeteoriteEnemy _meteoriteExample;
         [SerializeField] private int _countMeteorites = 3;
 
-        public void Initialize(Transform transformEnd, Action<BaseEnemy> destroyEnemyCallBack,Vector2 PointEndFly)
+        private Vector2 _direction;
+        private Enemy _enemyPrefab;
+
+        public override void Initialize(Transform transformEnd, GameOverPresenter gameOverPresenter, ShipStatisticPresenter shipStatisticPresenter, IAudioService audioLocator)
         {
-            base.Initialize(transformEnd, _shipStatisticController);
-            Vector2 direction = PointEndFly - (Vector2)transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
-            _rigidBody2DEnemy.MoveRotation(angle);
+            base.Initialize(transformEnd,gameOverPresenter,shipStatisticPresenter, audioLocator);    
+            _direction = (TransformEnd.position - transform.position).normalized;
         }
 
         public override void Move(Transform transformEnd)
         {
-            _rigidBody2DEnemy.linearVelocity = transform.up * Time.fixedDeltaTime * Speed;
+            if (!EnemyIsDied)
+            {
+                RigidBody2DEnemy.linearVelocity = _direction * Time.fixedDeltaTime * Speed;
+            }
+            else
+            {
+                RigidBody2DEnemy.linearVelocity = Vector2.zero;
+            }
         }
 
         public override void TakeDamage(float damage)
         {
             if (damage >= Health)
             {
-                SplitIntoMeteorites();
+                SplitIntoMeteorites(SPREAD_RANGE);
             }
             base.TakeDamage(damage);
         }
 
-
         public override void AddToStatistic()
         {
-            _shipStatisticController.IncreaseCountAsteroidsDestroyed();
+            ShipStatisticPresenter.IncreaseCountAsteroidsDestroyed();
         }
 
-        private void SplitIntoMeteorites()
+        private void SplitIntoMeteorites(float angleRange)
         {
-            Vector2 offset = (Vector2)transform.up + (Vector2)transform.right;
-            Vector2 startDir = (Vector2)transform.up + offset;
-            for (int i = 0; i < _countMeteorites; i++)
+            if (_countMeteorites <= 0 || _meteoriteExample == null) return;
+
+            float baseAngle = Mathf.Atan2(_direction.y, _direction.x);
+
+            float angleStep = angleRange * Mathf.Deg2Rad / (_countMeteorites--);
+
+            float startAngle = baseAngle;
+
+            for (int i = 0; i < _countMeteorites; ++i)
             {
+                float currentAngle = startAngle + i * angleStep;
+
+                Vector2 direction = new Vector2(Mathf.Cos(currentAngle), Mathf.Sin(currentAngle));
+
                 MeteoriteEnemy meteorite = Instantiate(_meteoriteExample, transform.position, Quaternion.identity);
                 EnemyController enemyController = meteorite.GetComponent<EnemyController>();
 
-                meteorite.Initialize(_transformEnd,_shipStatisticController);
-                enemyController.Initialize(_transformEnd);
+                meteorite.Initialize(TransformEnd,GameOverPresenter,ShipStatisticPresenter,AudioLocator);
+                enemyController.Initialize(TransformEnd);
 
                 meteorite.OnEnemyDestroyed += MeteoriteDestroyedHandler;
-                meteorite.SetDirection(startDir += (Vector2)transform.up);
-                 
+
+                meteorite.SetDirection(direction.normalized);
             }
         }
 
-        private void MeteoriteDestroyedHandler(BaseEnemy meteorite)
+        private void MeteoriteDestroyedHandler(Enemy meteorite)
         {
             OnMeteoriteDestroyed?.Invoke(meteorite);
+            meteorite.OnEnemyDestroyed -= MeteoriteDestroyedHandler;
         }
     }
 }

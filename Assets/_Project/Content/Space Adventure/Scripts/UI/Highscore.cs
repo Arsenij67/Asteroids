@@ -36,7 +36,7 @@ public class Highscore : MonoBehaviour
     // Display highscore to the screen.
     private static void DisplayAmount()
     {
-        // Check if display with "TOP: " text or without it.
+        // Check if display with "TOP: " viewResultPrefab or without it.
         if(displayWithTextStatic)
         {
             highscoreText.text = "TOP: " + amount.ToString();

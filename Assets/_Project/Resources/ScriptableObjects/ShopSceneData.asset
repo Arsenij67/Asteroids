@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f03b1a8047f96884f99e8da61d1d5c70, type: 3}
   m_Name: ShopSceneData
   m_EditorClassIdentifier: 
-  <SceneName>k__BackingField: Shop
+  <StartSceneName>k__BackingField: Shop

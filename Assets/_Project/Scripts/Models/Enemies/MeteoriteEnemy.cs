@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Asteroid.Enemies
 {
-    public class MeteoriteEnemy : BaseEnemy
+    public class MeteoriteEnemy : Enemy
     {
         [SerializeField] private float _rotationSpeed = 2f;
 
@@ -10,8 +10,15 @@ namespace Asteroid.Enemies
 
         public override void Move(Transform transformEnd = null)
         {
-            _rigidBody2DEnemy.linearVelocity = _direction.normalized * Time.fixedDeltaTime * Speed;
-            Rotate(_rotationSpeed);
+            if (!EnemyIsDied)
+            {
+                RigidBody2DEnemy.linearVelocity = _direction.normalized * Time.fixedDeltaTime * Speed;
+                Rotate(_rotationSpeed);
+            }
+            else
+            {
+                RigidBody2DEnemy.linearVelocity = Vector2.zero;
+            }
         }
 
         public void SetDirection(Vector2 dir)
@@ -21,12 +28,12 @@ namespace Asteroid.Enemies
 
         public void Rotate(float angleOffset)
         {
-            _rigidBody2DEnemy.MoveRotation(_rigidBody2DEnemy.rotation + (angleOffset * Time.fixedDeltaTime));
+            RigidBody2DEnemy.MoveRotation(RigidBody2DEnemy.rotation + (angleOffset * Time.fixedDeltaTime));
         }
 
         public override void AddToStatistic()
         {
-            _shipStatisticController.IncreaseCountMeteoritesDestroyed();
+            ShipStatisticPresenter.IncreaseCountMeteoritesDestroyed();
         }
     }
 }

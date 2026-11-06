@@ -1,5 +1,6 @@
+using Asteroid.Audio;
 using Asteroid.Database;
-using Asteroid.Enemies;
+using Asteroid.Database.Connection;
 using Asteroid.Inputs;
 using Asteroid.Services.Analytics;
 using Asteroid.Services.RemoteConfig;
@@ -7,9 +8,11 @@ using Asteroid.Services.UnityAdvertisement;
 using Asteroid.Services.UnityCloud;
 using Asteroid.SpaceShip;
 using Asteroid.Statistic;
+using Asteroid.UI;
 using Asteroid.Weapon;
+using Cysharp.Threading.Tasks;
 using System;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -17,193 +20,126 @@ namespace Asteroid.Generation
 {
     public class SpaceEntryPoint : MonoBehaviour
     {
-        public event Action OnGameStarted;
-        public event Action OnPlayerDied;
-
-        private Action<EnemyController, BaseEnemy> _enemyInitializedHandler;
-        private Action<BaseEnemy> _enemyDestroyedHandler;
-        private Action _shipDieHandler;
-        private Action _panelRestartHandler;
-        private Action _onPlayerDiedAction;
-        private Action _showInterstitialAction;
-        private Action _reviveShipAction;
-        private Action _closePanelAction;
-        private Action _reloadSceneAction;
-        private Action _loadMainMenuAction;
-        private Action _showAdsAfterDeadAction;
-
         [Header("UI")]
         [SerializeField] private GameObject _restartPrefab;
         [SerializeField] private RectTransform _UIParent;
         [SerializeField] private ShipStatisticsView _shipStatisticViewPrefab;
+        [SerializeField] private SaveModeUI _saveModeUIPrefab;
+        [SerializeField] private WeaponView _weaponView;
 
         [Header("Bullet Settings")]
-        [SerializeField] private LaserBullet _laserPrefab;
-        [SerializeField] private FireballBullet _bulletPrefab;
+        [SerializeField] private AudioData _audioData;
+        [SerializeField] private ushort _poolSize;
 
         [Header("Space Settings")]
-        [Inject] private EntitiesGenerationPresenter _obstaclesGenerationController;
+        [Inject] private EntitiesGenerationFactory _entitiesGenerationFactory;
         [Inject] private EnemyDeathCounter _allEnemiesDeathCounter;
-        [Inject] private ShipStatisticsPresenter _shipStatisticController;
+        [Inject] private GameOverPresenter _gameOverPresenter;
         [Inject] private EntitiesGenerationData _entitiesGenerationData;
         [Inject] private AnalyticsEventHandler _analyticsEventHandler;
         [Inject] private SpaceShipData _spaceShipData;
-        [Inject] private IResourceLoaderService _resourceLoader;
-        [Inject] private IInstanceLoader _instanceLoader;
+        [Inject] private IResourceLoader _resourceLoader;
+        [Inject] private InstanceCreator _instanceLoader;
         [Inject] private ISceneLoader _sceneLoader;
         [Inject] private IDeviceInput _deviceInput;
         [Inject] private IAdvertisementService _advertisementService;
-        [Inject] private AdvertisementPresenter _advertisingController;
+        [Inject] private IAudioService _serviceLocator;
+        [Inject] private AdvertisementPresenter _advertisingPresenter;
         [Inject] private ShipStatisticsModel _shipStatisticModel;
         [Inject] private IRemoteConfigService _remoteConfigService;
         [Inject] private DataSave _dataForSave;
+        [Inject] private IAnalytics _analyticsService;
+        [Inject] private IInstanceCreator _instanceCreator; 
         [Inject] private IRemoteSavable _remoteSave;
-        [Inject] private CloudDataPresenter _cloudController;
+        [Inject] private SaveDataStrategyManager _saveDataStrategyController;
+        [Inject] private LocalSaveStrategy _localSaveStrategy;
+        [Inject] private CloudDataPresenter _cloudSaveStrategy;
+        [Inject] private LocalSaveMetaData _localSaveMetaData;
+        [Inject] private ShipStatisticPresenter _shipStatisticPresenter;
+        [Inject] private BootstrapSceneData  _bootstrapSceneData;
+        [Inject] private WIFIConnector _wifiConnector;
+        [Inject] private Joystick _joystick;
 
-        private GameOverView _endPanelView;
-        private SpaceShipPresenter _shipController;
         private ShipStatisticsView _shipStatisticView;
-        private Transform _shipTransform;
-        private WeaponController _weaponController;
         private WeaponShip _weaponShipLaser;
-        private WeaponShip _weaponShipBullet;
 
-        private void Awake()
+        private async void Awake()
         {
             InitializeUI();
             InitializeSpaceShipSystems();
+            await InitializeServicesSystems();
             InitializeEnemySystems();
-            InitializeServicesSystems();
         }
 
         private void Start()
         {
-            OnGameStarted?.Invoke();
+            _serviceLocator.PlayBackgroundMusic();
         }
 
         private void OnDestroy()
         {
-            UnsubscribeFromAllEvents();
-        }
-
-        private void UnsubscribeFromAllEvents()
-        {
-            if (_obstaclesGenerationController != null)
-            {
-                _obstaclesGenerationController.OnShipSpawned -= ShipInitializedHandler;
-                _obstaclesGenerationController.OnEnemySpawned -= EnemyInitializedHandler;
-            }
-
-            if (_endPanelView != null)
-            {
-                _endPanelView.OnGameReloadClicked -= _reloadSceneAction;
-                _endPanelView.OnButtonGoHomeClicked -= _loadMainMenuAction;
-                _endPanelView.OnButtonShowAdsClicked -= _showAdsAfterDeadAction;
-                _endPanelView.OnGameReloadClicked -= _showInterstitialAction;
-            }
-
-            if (_shipController != null)
-            {
-                _shipController.OnPlayerDie -= _shipDieHandler;
-            }
-
-            if (_advertisingController != null)
-            {
-                _advertisingController.OnPlayerRevived -= _reviveShipAction;
-                _advertisingController.OnPlayerRevived -= _closePanelAction;
-            }
-
-            _obstaclesGenerationController?.OnDestroy();
+            _entitiesGenerationFactory.Dispose();
+            _gameOverPresenter?.Dispose();
+            _saveDataStrategyController.Dispose();
         }
 
         private void InitializeUI()
         {
-            _shipStatisticView = _resourceLoader.Instantiate(_shipStatisticViewPrefab.gameObject, _UIParent.transform)
-                .GetComponent<ShipStatisticsView>();
+            _shipStatisticView = _resourceLoader.Instantiate<ShipStatisticsView>(_shipStatisticViewPrefab, _UIParent);
+            _shipStatisticPresenter.Initialize(_shipStatisticModel, _shipStatisticView);
+            _entitiesGenerationData.Initialize(_remoteConfigService);
+
+            _gameOverPresenter.Initialize(
+            _saveDataStrategyController,
+            _resourceLoader,
+            _UIParent,
+            _entitiesGenerationData.EndPanelView,
+           _advertisingPresenter,
+           _shipStatisticModel,
+           _UIParent,
+           _sceneLoader,
+           _bootstrapSceneData);
         }
 
         private void InitializeSpaceShipSystems()
         {
-            _obstaclesGenerationController.OnShipSpawned += ShipInitializedHandler;
-            _shipStatisticController.Initialize(_shipStatisticModel, _instanceLoader, _dataForSave);
-            _entitiesGenerationData.Initialize(_remoteConfigService);
-            _obstaclesGenerationController.Initialize(_entitiesGenerationData, _resourceLoader, _instanceLoader, _sceneLoader);
+          _deviceInput.Initialize(_joystick);
+          _serviceLocator.Initialize(_audioData,_instanceCreator,_resourceLoader, _poolSize);
+          _spaceShipData.Initialize(_remoteConfigService);
+          _entitiesGenerationFactory.Initialize(
+          _serviceLocator,
+          _weaponView,
+          _analyticsEventHandler,
+          _advertisingPresenter,
+          _entitiesGenerationData,
+          _resourceLoader,
+          _instanceLoader,
+          _allEnemiesDeathCounter,
+          _gameOverPresenter,
+          _shipStatisticPresenter,
+          _spaceShipData,
+          _shipStatisticView,
+          _remoteConfigService,
+          _deviceInput);
+
+          _weaponShipLaser = _entitiesGenerationFactory.CreateShip(_entitiesGenerationData.PlayerShipToGenerateNow).GetComponent<LaserWeaponController>();
+          _entitiesGenerationData.Initialize(_weaponShipLaser.transform);
+          _analyticsEventHandler.Initialize(_analyticsService, _shipStatisticModel, _weaponShipLaser as LaserWeaponController);
+          _entitiesGenerationFactory.SubscribeShip();
+        }
+
+        private async UniTask InitializeServicesSystems()
+        {
+            _wifiConnector.Initialize(_instanceLoader);
+            _advertisingPresenter.Initialize(_advertisementService);
+            await _localSaveStrategy.Initialize(_dataForSave, _localSaveMetaData, _instanceLoader, shipStatisticsPresenter: _gameOverPresenter);
+            await _cloudSaveStrategy.Initialize(_wifiConnector, _dataForSave, _instanceLoader, _remoteSave, shipStatisticsPresenter: _gameOverPresenter);
+            await _saveDataStrategyController.Initialize(_wifiConnector,_instanceLoader, _resourceLoader, _saveModeUIPrefab, _UIParent, _cloudSaveStrategy, _localSaveStrategy);
         }
 
         private void InitializeEnemySystems()
         {
-            _enemyInitializedHandler = EnemyInitializedHandler;
-            _obstaclesGenerationController.OnEnemySpawned += _enemyInitializedHandler;
-        }
-
-        private void InitializeServicesSystems()
-        {
-            _analyticsEventHandler.Initialize(this, _shipStatisticModel, _weaponShipLaser as LaserWeaponController);
-            _advertisingController.Initialize(_advertisementService);
-            _cloudController.Initialize(_remoteSave, _dataForSave);
-        }
-
-        private void EnemyInitializedHandler(EnemyController enemyController, BaseEnemy currentEnemy)
-        {
-            _enemyDestroyedHandler = (enemy) => EnemyDestroyedHandler(enemy);
-            currentEnemy.OnEnemyDestroyed += _enemyDestroyedHandler;
-            currentEnemy.Initialize(_shipTransform, _shipStatisticController);
-            enemyController.Initialize(_shipTransform);
-        }
-
-        private void EnemyDestroyedHandler(BaseEnemy enemyDestroy)
-        {
-            _allEnemiesDeathCounter.OnEnemyDied(enemyDestroy);
-            enemyDestroy.OnEnemyDestroyed -= _enemyDestroyedHandler;
-        }
-
-        private void ShipInitializedHandler(SpaceShipPresenter playerShip)
-        {
-            _shipTransform = playerShip.transform;
-            _shipController = playerShip;
-            _weaponController = playerShip.GetComponent<WeaponController>();
-            _weaponShipLaser = playerShip.GetComponent<LaserWeaponController>();
-            _weaponShipBullet = playerShip.GetComponent<BulletWeaponController>();
-
-            _onPlayerDiedAction = () => OnPlayerDied?.Invoke();
-            _reviveShipAction = () => _obstaclesGenerationController.ReviveShip();
-            _panelRestartHandler = PanelRestartSpawnedHandler;
-
-            _shipDieHandler = null;
-            _shipDieHandler += _onPlayerDiedAction;
-            _shipDieHandler += () => _advertisingController.OnPlayerRevived += _reviveShipAction;
-            _shipDieHandler += _panelRestartHandler;
-
-            _shipController.OnPlayerDie += _shipDieHandler;
-
-            _weaponShipBullet.Initialize(_bulletPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader, _remoteConfigService);
-            _weaponShipLaser.Initialize(_laserPrefab, _shipStatisticView, _shipStatisticController, _resourceLoader, _remoteConfigService);
-            _spaceShipData.Initialize(_remoteConfigService);
-            _shipController.Initialize(_shipStatisticView, _deviceInput, _shipStatisticController, _weaponShipLaser, _spaceShipData);
-            _weaponController.Initialize();
-            _entitiesGenerationData.Initialize(_shipTransform, _remoteConfigService);
-        }
-
-        private void PanelRestartSpawnedHandler()
-        {
-            _endPanelView = _resourceLoader.Instantiate(_restartPrefab, _UIParent).GetComponent<GameOverView>();
-            _endPanelView.Initialize();
-
-            _closePanelAction = () => _endPanelView.Close();
-            _reloadSceneAction = () => _sceneLoader.ReloadCurrentScene();
-            _loadMainMenuAction = () => _obstaclesGenerationController.LoadMainMenuScene();
-            _showAdsAfterDeadAction = () => _advertisingController.ShowRewardedAdAfterDead();
-            _showInterstitialAction = () => _advertisingController.ShowInterstitialAdBeforeRestart();
-
-            _advertisingController.OnPlayerRevived += _closePanelAction;
-            _endPanelView.OnGameReloadClicked += _reloadSceneAction;
-            _endPanelView.OnButtonGoHomeClicked += _loadMainMenuAction;
-            _endPanelView.OnButtonShowAdsClicked += _showAdsAfterDeadAction;
-            _endPanelView.OnGameReloadClicked += _showInterstitialAction;
-
-            _endPanelView.UpdateButtonShowAd(_advertisementService.IsShowed);
-            _shipStatisticController.UpdateDestroyedEnemies(_endPanelView);
-            _cloudController.AddCountDeadEnemies(_shipStatisticModel.CountEnemiesDestroyed);
+            _entitiesGenerationFactory.StartEnemiesCreation();
         }
     }
 }

@@ -9,12 +9,15 @@ namespace Asteroid.Statistic
 {
     public class ShipStatisticsView : MonoBehaviour
     {
+        private const float MAX_PROGRESS_HEALTH = 100;
+
         [SerializeField] private TMP_Text _fireballCountText;
         [SerializeField] private TMP_Text _laserCountText;
         [SerializeField] private TMP_Text _coordinatesText;
         [SerializeField] private TMP_Text _angleRotationText;
         [SerializeField] private TMP_Text _rollbackTimeText;
         [SerializeField] private TMP_Text _spaceShipVelocityText;
+        [SerializeField] private Slider _healthProgress;
 
         public void UpdateFireballCount(int count)
         {
@@ -59,6 +62,14 @@ namespace Asteroid.Statistic
             if (_spaceShipVelocityText != null)
             {
                 _spaceShipVelocityText.text = $"Speed: {velocity.magnitude:F1} m/s";
+            }
+        }
+
+        public void UpdateHealthProgressBar(float progress = 100)
+        {
+            if (_healthProgress != null)
+            {
+                _healthProgress.value = Mathf.Clamp(progress,0,MAX_PROGRESS_HEALTH);
             }
         }
 

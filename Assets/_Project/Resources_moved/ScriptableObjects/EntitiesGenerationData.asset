@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd18ff0d7ae22c47868bae763b27dab, type: 3}
+  m_Name: EntitiesGenerationData
+  m_EditorClassIdentifier: 
+  _assignmentMode: 0
+  _obstacles:
+  - {fileID: 3038870751785615970, guid: b17953544334993459b349b3f2642c15, type: 3}
+  - {fileID: 1445358723493019074, guid: e28212ea638f7f84190f01ecb9839a2e, type: 3}
+  _playerShips:
+  - {fileID: 2352494245927858696, guid: b353e60dec2b67040a3e72844bd71630, type: 3}
+  - {fileID: 2352494245927858696, guid: e9d3de259ff80d346a0f25fe0e9b210b, type: 3}
+  _generationFrequency: 5
+  <GenerationVertices>k__BackingField: {fileID: 921764346079199045, guid: 193dd5376e00e4e43a9366b1d43b36ca, type: 3}
+  <FireballPrefab>k__BackingField: {fileID: 4627742481004242442, guid: 0b0c27137eb4d504096874b80ace66bd, type: 3}
+  <LaserPrefab>k__BackingField: {fileID: 4925590382959650693, guid: dd66b356fa5632d4493b1517b93c2ade, type: 3}
+  <HomeSceneName>k__BackingField: BootstrapScene
+  <EndPanelView>k__BackingField: {fileID: 7216205763715956276, guid: 1deb9489119882c40a6ecf1f397a93a0, type: 3}

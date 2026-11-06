@@ -5,23 +5,22 @@ using Asteroid.Weapon;
 using Asteroid.Inputs;
 using Asteroid.SpaceObjectActions;
 using System;
-using Asteroid.Generation;
-using System.Collections.Generic;
 
 namespace Asteroid.SpaceShip
 {
     [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(LaserWeaponController))]
     public class SpaceShipPresenter : SpaceObject
     {
-        public event Action OnPlayerDie;
+        public event Action OnShipDied;
+        public event Action OnShipSpawned;
 
+        private float _health;
         private IDeviceInput _deviceInput;
         private ShipStatisticsView _statisticsView;
-        private ShipStatisticsPresenter _statisticsController;
         private SpaceShipData _shipData;
         private Rigidbody2D _rigidBody2D;
-        private WeaponShip _laserWeaponController;
-
+        private LaserWeaponController _weaponController;
 
         private void FixedUpdate()
         {
@@ -32,50 +31,60 @@ namespace Asteroid.SpaceShip
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            BaseEnemy someEnemy = collision.GetComponent<BaseEnemy>();
-            LaserWeaponController laserController = _laserWeaponController as LaserWeaponController;
-            if (someEnemy!=null && !laserController.LaserTurned)
+            Enemy someEnemy = collision.GetComponent<Enemy>();
+            if (someEnemy != null && !_weaponController.LaserCollideNow)
             {
-                Die();
+                TakeDamage(someEnemy.Damage);
             }
         }
 
-        public void Initialize(ShipStatisticsView statisticView, IDeviceInput concreteInput, ShipStatisticsPresenter statisticController, WeaponShip laserWeaponController, SpaceShipData shipData)
+        public void Initialize(ShipStatisticsView statisticView, IDeviceInput concreteInput, SpaceShipData shipData)
         {
             _rigidBody2D = GetComponent<Rigidbody2D>();
+            _weaponController = GetComponent<LaserWeaponController>();
             _deviceInput = concreteInput;
             _statisticsView = statisticView;
-            _statisticsController = statisticController;
-            _laserWeaponController = laserWeaponController;
-            _shipData = shipData; 
+            _shipData = shipData;
+            OnShipSpawned?.Invoke();
+            _health = _shipData.Health;
+            _statisticsView.UpdateHealthProgressBar(_health);
         }
 
-        private void TryRotate(float intensityInput)
+        public void Die()
         {
-            if (!Mathf.Approximately(intensityInput, 0f))
-            { 
-                float rotationAngle = -intensityInput * _shipData.AngularSpeed * Time.fixedDeltaTime;
-                _rigidBody2D.MoveRotation(_rigidBody2D.rotation + rotationAngle);
-                _statisticsView.UpdateAngleRotation(_rigidBody2D.rotation);
-             }
+            OnShipDied?.Invoke();
+            Destroy(gameObject);
         }
 
-        private void TryMove(float intensityInput)
+        private void TryRotate(float angleRotation)
         {
-            if (intensityInput > 0)
+            if (!Mathf.Approximately(angleRotation, 0f))
             {
-                Vector2 forwardForce = -transform.up * _shipData.Speed * intensityInput * Time.fixedDeltaTime;
-                _rigidBody2D.linearVelocity = forwardForce;
+                float rotationAngle = angleRotation;
+                _rigidBody2D.MoveRotation(rotationAngle);
+                _statisticsView.UpdateAngleRotation(_rigidBody2D.rotation);
+            }
+        }
+
+        private void TryMove(Vector2 direction)
+        {
+            if (Mathf.Abs(direction.magnitude) > 0)
+            {
+                Vector2 forwardForce = _shipData.Speed * direction * Time.fixedDeltaTime;
+                _rigidBody2D.MovePosition(_rigidBody2D.position + forwardForce);
                 _statisticsView.UpdateCoordinates(_rigidBody2D.position);
                 _statisticsView.UpdateSpaceShipVelocity(_rigidBody2D.linearVelocity);
             }
         }
 
-        private void Die()
+        private void TakeDamage(float damage)
         {
-            OnPlayerDie?.Invoke();
-            Destroy(gameObject);
-            
+            if (damage >= _health)
+            {
+                Die();
+            }
+            _health -= damage;
+            _statisticsView.UpdateHealthProgressBar(_health);
         }
     }
 }

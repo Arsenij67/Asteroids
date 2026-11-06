@@ -1,48 +1,86 @@
-
 using Asteroid.Database;
+using Asteroid.Database.Connection;
+using Asteroid.Generation;
+using Asteroid.SpaceShip;
+using Asteroid.UI;
 using Cysharp.Threading.Tasks;
-using System;
-using System.Diagnostics;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace Asteroid.Services.UnityCloud
 {
-    public class CloudDataPresenter
+    public class CloudDataPresenter: SaveStrategy
     {
-        public int CountCoins=> _dataSave[CloudKeyData.COINS_COUNT]!=null ? (int)_dataSave[CloudKeyData.COINS_COUNT] : 0;
-        public bool NoAdsStatus => (bool)_dataSave[CloudKeyData.ADS_DISABLED];
-
         private IRemoteSavable _remoteSavable;
-        private DataSave _dataSave;
-        public void Initialize(IRemoteSavable remoteSavable, DataSave dataSave)
-        { 
-            _remoteSavable = remoteSavable;   
-            _dataSave = dataSave;
-        }
-        public async void AddCountDeadEnemies(int enemiesToAdd)
+        private WIFIConnector _wifiConnector;
+
+        public UniTask Initialize(WIFIConnector wIFIConnector,DataSave dataSave,InstanceCreator instanceLoader, IRemoteSavable remoteSavable, ShopView shopUI = null, GameOverPresenter shipStatisticsPresenter = null)
         {
-            int oldEnemies = await _remoteSavable.GetKey<int>(CloudKeyData.DEAD_ENEMIES_COUNT_SUMMARY);
-            _dataSave[CloudKeyData.DEAD_ENEMIES_COUNT_SUMMARY] = oldEnemies + enemiesToAdd;
-            await _remoteSavable.SaveKey(CloudKeyData.DEAD_ENEMIES_COUNT_SUMMARY, _dataSave[CloudKeyData.DEAD_ENEMIES_COUNT_SUMMARY]);
-        }
-        public async UniTask AddCountCoins(int coinsToAdd)
-        {
-            int oldCoins = await _remoteSavable.GetKey<int>(CloudKeyData.COINS_COUNT);
-            _dataSave[CloudKeyData.COINS_COUNT] = oldCoins + coinsToAdd;
-            await _remoteSavable.SaveKey(CloudKeyData.COINS_COUNT, _dataSave[CloudKeyData.COINS_COUNT]);
-        }
-        public void UpdateNoAdsStatusCloud(bool adsDisabled)
-        {
-            _dataSave[CloudKeyData.ADS_DISABLED] = adsDisabled;
-            _remoteSavable.SaveKey(CloudKeyData.ADS_DISABLED, _dataSave[CloudKeyData.ADS_DISABLED]);
-        }
-        public async void RemoveCountCoins(int coinsToRemove)
-        {
-            int oldCoins = await _remoteSavable.GetKey<int>(CloudKeyData.COINS_COUNT);
-            await _remoteSavable.SaveKey(CloudKeyData.COINS_COUNT, oldCoins - coinsToRemove);
+            base.Initialize(dataSave,instanceLoader,shopUI,shipStatisticsPresenter);
+            _remoteSavable = remoteSavable;
+            _wifiConnector = wIFIConnector;
+            return UpdateLastSaveTime();
         }
 
+        public override async UniTask AddCountDeadEnemies(int enemiesToAdd)
+         {
+            if(enemiesToAdd<=0) return;
+
+            int oldEnemies = await _remoteSavable.GetKey<int>(KeyData.DEAD_ENEMIES_COUNT_SUMMARY);
+            DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY] = oldEnemies + enemiesToAdd;
+            if(!_remoteSavable.IsInitialized)
+            {
+               await _remoteSavable.Initialize(DataSave,_wifiConnector);
+            }
+            await _remoteSavable.SaveKey(KeyData.DEAD_ENEMIES_COUNT_SUMMARY, DataSave[KeyData.DEAD_ENEMIES_COUNT_SUMMARY]);
+            await UpdateLastSaveTime();
+        }
+
+        public override async UniTask AddCountCoins(int coinsToAdd)
+        {
+            int oldCoins = await _remoteSavable.GetKey<int>(KeyData.COINS_COUNT);
+            DataSave[KeyData.COINS_COUNT] = oldCoins + coinsToAdd;
+            if (!_remoteSavable.IsInitialized)
+            {
+                await _remoteSavable.Initialize(DataSave,_wifiConnector);
+            }
+            Debug.Log("Обновили" + oldCoins +" "+ coinsToAdd);
+            await _remoteSavable.SaveKey(KeyData.COINS_COUNT, DataSave[KeyData.COINS_COUNT]);
+            await UpdateLastSaveTime();
+        }
+
+        public override async UniTask UpdateNoAdsStatus(bool advertisementIsCanceled)
+        {
+            DataSave[KeyData.ADS_DISABLED] = advertisementIsCanceled;
+            if (!_remoteSavable.IsInitialized)
+            {
+                await _remoteSavable.Initialize(DataSave, _wifiConnector);
+            }
+           await _remoteSavable.SaveKey(KeyData.ADS_DISABLED, DataSave[KeyData.ADS_DISABLED]);
+        }
+
+        public override async UniTask RemoveCountCoins(int coinsToRemove)
+        {
+            if (!_remoteSavable.IsInitialized)
+            {
+                await _remoteSavable.Initialize(DataSave, _wifiConnector);
+            }
+            int oldCoins = await _remoteSavable.GetKey<int>(KeyData.COINS_COUNT);
+            await _remoteSavable.SaveKey(KeyData.COINS_COUNT, oldCoins - coinsToRemove);
+            await UpdateLastSaveTime();
+        }
+
+        public override SaveChoice GetMode()
+        {
+            return SaveChoice.UseCloud;
+        }
+
+        protected override async UniTask UpdateLastSaveTime()
+        {
+            if (!_remoteSavable.IsInitialized)
+            {
+                await _remoteSavable.Initialize(DataSave, _wifiConnector);
+            }
+            DataSave[KeyData.LAST_SAVE_TIME] = await _remoteSavable.GetTimeLastModified();
+        }
     }
 }
