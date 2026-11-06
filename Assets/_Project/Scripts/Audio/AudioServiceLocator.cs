@@ -102,13 +102,13 @@ namespace Asteroid.Audio
         private AudioSource CreateAudioSource(string name)
         {
             var sourceObj = _resourceLoader.Instantiate(_audioData.AudioSourcePrefab, _poolRoot);
-            sourceObj.name = name;
 
             if (!sourceObj.TryGetComponent<AudioSource>(out AudioSource source))
             {
                 source = sourceObj;
             }
 
+            source.name = name; 
             source.playOnAwake = false;
             return source;
         }

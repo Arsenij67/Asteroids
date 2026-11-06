@@ -30,6 +30,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3f26af55bcc7c974dbab4bfdf1c2e1a5
+    m_Address: AudioData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8c9cfa26abfee488c85f1582747f6a02
     m_Address: RocketEvadeScene
     m_ReadOnly: 0
@@ -37,6 +42,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 91a39ae328b0ae44aafaffc31c0f1668
     m_Address: UIStatistic
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b94a84681ce0e3849924681020bff2b4
+    m_Address: AudioSource
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
