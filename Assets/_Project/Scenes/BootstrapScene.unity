@@ -1182,7 +1182,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1045972840}
-  - component: {fileID: 1045972842}
   m_Layer: 5
   m_Name: Spaceship
   m_TagString: Untagged
@@ -1212,23 +1211,6 @@ RectTransform:
   m_AnchoredPosition: {x: -322, y: 239}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!111 &1045972842
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1045972839}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 7400000, guid: d9e5627f76e6d214e95e4cf8d5464f92, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: d9e5627f76e6d214e95e4cf8d5464f92, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
 --- !u!1 &1096412835
 GameObject:
   m_ObjectHideFlags: 0
@@ -2821,7 +2803,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2610422900269646767, guid: 2f445512d9b623f4fb07a783363d81b7, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6647362696145258977, guid: 2f445512d9b623f4fb07a783363d81b7, type: 3}
       propertyPath: m_Pivot.x
